@@ -134,14 +134,20 @@ def insert_unit_title(article_html, u, n):
 
 def build(units, arts, css, title, sub):
     body_units, toc_u, rows = [], [], []
+    used = set()
     for u in units:
         parts = []
         for i, it in enumerate(u["items"]):
             h = render_reuse(it, u, arts) if "reuse" in it else render_new(it, u)
+            aid = it.get("reuse") or it["id"]
+            if aid in used:  # 같은 문항이 여러 단원에 실린 경우
+                new = f'{aid}-u{u["no"]}'
+                h = h.replace(f'id="{aid}"', f'id="{new}"', 1)
+                aid = new
+            used.add(aid)
             if i == 0:
                 h = insert_unit_title(h, u, len(u["items"]))
             parts.append(h)
-            aid = it.get("reuse") or it["id"]
             it["_aid"] = aid
             rows.append((u, it))
         body_units.append(f'<section class="unit-sec" id="u{u["no"]}" style="--c:{C}">' + "".join(parts) + "</section>")
