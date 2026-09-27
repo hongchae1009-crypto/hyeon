@@ -111,7 +111,7 @@ def f2013_40():
 def f2012_40():
     f = Fig(800, 230)
     f.text(20, 20, "정답 ④  N-methylacetamide  CH₃CONHCH₃ (C₃H₇NO, 2차 아마이드)", size=13, anchor="start", weight="bold")
-    legend(f, 560, 20)
+    legend(f, 600, 20, (("¹H NMR", RED), ("IR", BLUE)))
     m = Mol()
     m.atom("a", 0, 0, "H_3C", "end")
     m.sub("c", "a", 30)
@@ -123,7 +123,7 @@ def f2012_40():
     f.mol(m, ox, oy)
     tag(f, m, "a", ox, oy, -40, 45, "δ 2.0 (s, 3H)")
     tag(f, m, "nm", ox, oy, 0, 42, "δ 2.8 (d, J ≈ 5 Hz, 3H)")
-    tag(f, m, "h", ox, oy, 60, -20, "δ ≈ 7.0 (넓은 봉우리, 1H)", anchor="start")
+    tag(f, m, "h", ox, oy, 60, -20, "δ ≈ 7.3 (넓은 봉우리, 1H)", anchor="start")
     tag(f, m, "o", ox, oy, 45, -12, "1654 C=O (amide I)", color=BLUE, anchor="start")
     tag(f, m, "h", ox, oy, 60, 20, "3300 N–H 신축", color=BLUE, anchor="start")
     # 공명
@@ -183,7 +183,7 @@ def f2011_40():
 def f2010_40():
     f = Fig(800, 250)
     f.text(20, 20, "정답 ③  (E)-cinnamaldehyde  Ph–CH=CH–CHO (C₉H₈O)", size=13, anchor="start", weight="bold")
-    legend(f, 560, 20)
+    legend(f, 600, 20, (("¹H NMR", RED), ("IR", BLUE)))
     m = Mol()
     benzene(m, "r", 0, 0, 90)
     m.sub("cb", "r1", 30)
@@ -265,29 +265,26 @@ def butynol(m, olabel="OH"):
 def f2008_13():
     f = Fig(800, 260)
     f.text(20, 20, "A = 3-butyn-1-ol (C₄H₆O)  →  B = 4-methoxy-1-butyne (C₅H₈O)", size=13, anchor="start", weight="bold")
-    legend(f, 560, 20)
+    legend(f, 600, 20, (("¹H NMR", RED), ("IR", BLUE)))
     m = Mol()
     butynol(m)
-    ox, oy = 50, 120
+    ox, oy = 60, 120
     f.mol(m, ox, oy)
     x, y = A(m, "c3", ox, oy)
     circ(f, x, y, 12)
-    tag(f, m, "c3", ox, oy, -5, -48, "δ 2.33 (td, 2H) ◯")
-    tag(f, m, "h", ox, oy, 5, 45, "δ 1.97 (t, J = 2.7 Hz, 1H)")
-    tag(f, m, "c4", ox, oy, 25, 50, "δ 3.59 (t, 2H)")
+    tag(f, m, "c3", ox, oy, -5, -48, "δ 2.33 (td, 2H)")
+    tag(f, m, "h", ox, oy, -10, 45, "δ 1.97 (t, J = 2.7 Hz, 1H)", anchor="start")
+    tag(f, m, "c4", ox, oy, 60, 40, "δ 3.59 (t, 2H)", anchor="start")
     tag(f, m, "o", ox, oy, 20, -40, "δ 2.67 (s, 1H)")
     f.text(40, 215, "IR: 3294 (O–H + ≡C–H), 2117 C≡C, 1049 C–O", size=11.5, anchor="start", color=BLUE)
     f.text(40, 237, "pKₐ: R–OH ≈ 16 < RC≡C–H ≈ 25", size=11.5, anchor="start", color=GRAY)
-    f.arrow(300, 110, 385, 110, "NaH (1.0 당량)", "−H₂", color=INK)
-    m = Mol()
-    butynol(m, "O^−Na^+")
-    f.mol(m, 400, 120)
-    f.text(465, 170, "알콕사이드 (더 강한 산 쪽이 먼저 탈양성자화)", size=11, color=GRAY)
-    f.arrow(565, 110, 630, 110, "CH_3I", "S_N2")
+    f.arrow(340, 110, 480, 110, "1) NaH (1.0 당량)", "2) CH_3I (S_N2)")
+    f.text(410, 160, "NaH 1당량은 더 강한 산인 O–H만 탈양성자화", size=11, color=GRAY)
+    f.text(410, 178, "→ RO⁻Na⁺ → CH₃I와 Williamson 에터 합성", size=11, color=GRAY)
     m = Mol()
     butynol(m, "OCH_3")
-    f.mol(m, 640, 120)
-    f.cap(700, 170, "B (C₅H₈O)", color=GREEN)
+    f.mol(m, 520, 120)
+    f.cap(600, 160, "B (C₅H₈O)", color=GREEN)
     return f.render()
 
 
@@ -357,7 +354,7 @@ def f2007_12_scheme():
 
 
 def f2007_12_nmr():
-    f = Fig(800, 250)
+    f = Fig(800, 275)
     legend(f, 560, 18, (("¹H NMR", RED), ("¹³C NMR", GREEN)))
     f.text(20, 18, "스펙트럼 귀속", size=13, anchor="start", weight="bold")
     m = Mol()
@@ -371,7 +368,7 @@ def f2007_12_nmr():
     tag(f, m, "c2", ox, oy, 15, 50, "δ 2.97 (t, 2H) / 43.6")
     tag(f, m, "n", ox, oy, 40, -35, "δ 1.1 (s, 2H)", anchor="start")
     tag(f, m, "r4", ox, oy, -10, 50, "δ 7.2–7.3 (m, 5H)")
-    f.text(20, 225, "A ¹³C: 139.8(ipso) 128.8·128.4(o, m) 126.1(p) 43.6 40.2", size=11.5, anchor="start", color=GREEN)
+    f.text(20, 258, "A ¹³C: 139.8(ipso) 128.8·128.4(o, m) 126.1(p) 43.6 40.2", size=11.5, anchor="start", color=GREEN)
     m = Mol()
     n = fused_iq(m, "q", 0, 0, aromatic=True)
     m.sub("me", n["1"], 90)
@@ -383,7 +380,7 @@ def f2007_12_nmr():
     tag(f, m, n["1"], ox, oy, 45, -30, "C1 158.4 (C=N)", color=GREEN, anchor="start")
     tag(f, m, n["8"], ox, oy, -45, -20, "H8 δ 8.1 (d)", anchor="end")
     tag(f, m, n["6"], ox, oy, -35, 30, "H5–H7 δ 7.5–7.8", anchor="end")
-    f.text(420, 225, "C ¹³C: 10개 신호(모두 다른 C) — 135.7(C4a), 125–130(나머지 4 CH + C8a)", size=11.5, anchor="start", color=GREEN)
+    f.text(430, 258, "C ¹³C: 10개 신호 — 135.7(C4a), 125–130(C5–C8, C8a)", size=11.5, anchor="start", color=GREEN)
     return f.render()
 
 
@@ -400,14 +397,14 @@ def f2006_13():
     m.sub("oe", "c2", 30, "O")
     m.sub("e1", "oe", -30)
     m.sub("e2", "e1", 30)
-    ox, oy = 130, 115
+    ox, oy = 200, 130
     f.mol(m, ox, oy)
-    tag(f, m, "c1", ox, oy, -20, 55, "109.5 (C≡N)", color=GREEN)
-    tag(f, m, "c2", ox, oy, 5, -45, "144.3 (C=O)", color=GREEN)
+    tag(f, m, "c1", ox, oy, -55, 30, "109.5 (C≡N)", color=GREEN, anchor="end")
+    tag(f, m, "c2", ox, oy, 0, -55, "144.3 (C=O)", color=GREEN)
     tag(f, m, "e1", ox, oy, 20, 45, "65.3 / δ 4.41 (q, 2H)")
     tag(f, m, "e2", ox, oy, 40, -30, "13.7 / δ 1.39 (t, 3H)", anchor="start")
-    tag(f, m, "n", ox, oy, -5, -40, "2246 C≡N", color=BLUE)
-    tag(f, m, "o", ox, oy, -50, 20, "1750 C=O, 1245 C–O", color=BLUE, anchor="end")
+    tag(f, m, "n", ox, oy, -10, -40, "2246 C≡N", color=BLUE)
+    tag(f, m, "o", ox, oy, -40, 35, "1750 C=O, 1245 C–O", color=BLUE, anchor="end")
     f.box(430, 45, 355, 180)
     f.text(442, 65, "분자식 구하기 (M = 99.1)", size=12, anchor="start", weight="bold")
     rows = ["C: 99.1 × 0.485 ÷ 12.01 = 4.00", "H: 99.1 × 0.051 ÷ 1.008 = 5.0",
@@ -420,9 +417,9 @@ def f2006_13():
 
 # ------------------------------------------------------------------ 2005 #13 4-methoxyphenylacetone
 def f2005_13():
-    f = Fig(800, 280)
+    f = Fig(800, 300)
     f.text(20, 20, "M⁺ = 164, C₁₀H₁₂O₂ = 1-(4-methoxyphenyl)propan-2-one (4-methoxyphenylacetone)", size=13, anchor="start", weight="bold")
-    legend(f, 560, 42)
+    legend(f, 560, 42, (("¹H NMR", RED), ("IR", BLUE), ("MS", PURPLE)))
     m = Mol()
     benzene(m, "r", 0, 0, 90)
     m.sub("c1", "r0", 90)
@@ -431,25 +428,24 @@ def f2005_13():
     m.sub("c3", "c2", -30)
     m.sub("o", "r3", -90, "O")
     m.sub("me", "o", -30, "CH_3", anchor="start")
-    ox, oy = 170, 145
+    ox, oy = 170, 165
     f.mol(m, ox, oy)
     tag(f, m, "c1", ox, oy, -50, -15, "δ 3.64 (s, 2H)", anchor="end")
     tag(f, m, "c3", ox, oy, 45, 10, "δ 2.14 (s, 3H)", anchor="start")
     tag(f, m, "r1", ox, oy, 55, 0, "δ 7.10 (d, J ≈ 8.5, 2H)", anchor="start")
-    tag(f, m, "r5", ox, oy, -50, 0, "(동등)", anchor="end", size=10.5)
     tag(f, m, "r2", ox, oy, 55, 5, "δ 6.86 (d, J ≈ 8.5, 2H)", anchor="start")
     tag(f, m, "me", ox, oy, 50, 10, "δ 3.79 (s, 3H)", anchor="start")
-    tag(f, m, "o2", ox, oy, 45, -5, "1715 C=O (비공액 케톤)", color=BLUE, anchor="start")
+    tag(f, m, "o2", ox, oy, 50, 12, "1715 C=O (비공액 케톤)", color=BLUE, anchor="start")
     tag(f, m, "o", ox, oy, -45, 10, "1250 Ar–O–C", color=BLUE, anchor="end")
-    f.box(470, 60, 315, 205)
-    f.text(482, 80, "판단 근거", size=12, anchor="start", weight="bold")
+    f.box(470, 75, 315, 205)
+    f.text(482, 95, "판단 근거", size=12, anchor="start", weight="bold")
     rows = [("적분 4 : 3 : 2 : 3 = 12 H", INK), ("AA′BB′ 두 doublet → para 이치환", INK),
             ("3.79(3H) = Ar–OCH₃, 3.64(2H, s) = ArCH₂C=O", INK),
             ("2.14(3H, s) = CH₃C=O (메틸 케톤)", INK), ("1715: 공액 안 된 C=O(CH₂가 끊음)", BLUE),
             ("830 cm⁻¹: para 치환 C–H 면외 굽힘", BLUE), ("MS 예상: 121 (MeO–C₆H₄–CH₂⁺, 기준),", PURPLE),
             ("         43 (CH₃C≡O⁺)", PURPLE)]
     for i, (t, c) in enumerate(rows):
-        f.text(482, 104 + i * 21, t, size=11.2, anchor="start", color=c)
+        f.text(482, 119 + i * 21, t, size=11.2, anchor="start", color=c)
     return f.render()
 
 
@@ -467,7 +463,7 @@ def heptanol(m):
 
 
 def f2004_6():
-    f = Fig(800, 330)
+    f = Fig(800, 345)
     f.text(20, 20, "A(C₈H₁₈O) —H₂SO₄, Δ→ B(C₈H₁₆) —O₃→ C(C₅H₁₀O) + D(C₃H₆O)", size=13, anchor="start", weight="bold")
     m = Mol()
     heptanol(m)
@@ -506,7 +502,7 @@ def f2004_6():
     tag(f, m, "c4", ox, oy, 30, 42, "δ 1.56 (6중선)")
     tag(f, m, "c5", ox, oy, 50, -15, "δ 0.90 (t)", anchor="start")
     tag(f, m, "o", ox, oy, -45, 20, "1710 C=O", color=BLUE, anchor="end")
-    f.cap(230, 310, "C: 2-pentanone")
+    f.cap(250, 332, "C: 2-pentanone")
     f.text(345, 245, "+", size=16)
     m = Mol()
     m.atom("o", 0, 0, "O")
@@ -515,7 +511,7 @@ def f2004_6():
     m.sub("c2", "c1", 30)
     m.sub("c3", "c2", -30)
     f.mol(m, 390, 245)
-    f.cap(430, 310, "D: propanal")
+    f.cap(430, 332, "D: propanal")
     f.box(520, 200, 265, 115)
     rows = ["D: 은거울(Tollens) + → 알데하이드", "   아이오도폼 − → CH₃CO– 없음", "   ∴ CH₃CH₂CHO (acetone 아님)",
             "C: 2.05(s, 3H) → CH₃CO– 메틸 케톤"]
@@ -622,34 +618,34 @@ def f2003_17():
 
 
 def f2003_17b():
-    f = Fig(800, 230)
+    f = Fig(800, 250)
     f.text(20, 20, "17-2  A의 ¹³C 신호 7종류   |   17-3  페놀의 O-아세틸화", size=13, anchor="start", weight="bold")
     m = Mol()
     anisole_acyl(m)
-    ox, oy = 120, 120
+    ox, oy = 120, 140
     f.mol(m, ox, oy)
-    for nm, lab, dx, dy in [("c", "1", 14, 4), ("me", "2", -4, -14), ("r0", "3", -13, 4), ("r1", "4", 14, -4),
+    for nm, lab, dx, dy in [("c", "1", 14, 4), ("me", "2", -4, -14), ("r0", "3", 0, 14), ("r1", "4", 14, -4),
                             ("r5", "4", -14, -4), ("r2", "5", 14, 4), ("r4", "5", -14, 4), ("r3", "6", 13, 2), ("om2", "7", 5, 15)]:
         x, y = A(m, nm, ox, oy)
         f.text(x + dx, y + dy, lab, size=12.5, color=GREEN, weight="bold")
     rows = ["1 C=O 196.8", "2 COCH₃ 26.3", "3 C1 130.3", "4 C2,6 130.6", "5 C3,5 113.7", "6 C4 163.5", "7 OCH₃ 55.5"]
     for i, t in enumerate(rows):
-        f.text(225, 62 + i * 21, t, size=11.3, anchor="start", color=GREEN)
-    f.text(225, 215, "대칭면 → C2=C6, C3=C5", size=11, anchor="start", color=GRAY)
+        f.text(225, 72 + i * 21, t, size=11.3, anchor="start", color=GREEN)
+    f.text(225, 232, "대칭면 → C2=C6, C3=C5", size=11, anchor="start", color=GRAY)
     m = Mol()
     benzene(m, "r", 0, 0, 90)
     m.sub("o", "r0", 90, "OH")
-    f.mol(m, 420, 130)
-    f.text(480, 130, "+ CH_3COCl", size=13)
-    f.arrow(535, 130, 605, 130, "염기", "(pyridine/NaOH)")
+    f.mol(m, 410, 140)
+    f.text(495, 140, "+ CH_3COCl", size=13)
+    f.arrow(545, 140, 615, 140, "염기", "(pyridine/NaOH)")
     m = Mol()
     benzene(m, "r", 0, 0, 90)
     m.sub("o", "r0", 90, "O")
     m.sub("c", "o", 30)
     m.sub("o2", "c", 90, "O", kind="2")
     m.sub("me", "c", -30)
-    f.mol(m, 660, 140)
-    f.cap(690, 205, "C: phenyl acetate (에스터)", color=RED)
+    f.mol(m, 670, 150)
+    f.cap(700, 225, "C: phenyl acetate (에스터)", color=RED)
     return f.render()
 
 
@@ -683,19 +679,19 @@ def f2002_15():
     f.arrow(160, 120, 230, 120, "1) O_3", "2) Zn, H_2O")
     m = Mol()
     dm_core(m, "cho")
-    f.mol(m, 290, 120)
-    f.cap(290, 185, "B (C₆H₁₂O)")
-    f.text(290, 203, "+ HCHO", size=11.5, color=GRAY)
-    f.text(290, 221, "Fehling (+): 알데하이드", size=11, color=GRAY)
-    f.arrow(360, 120, 450, 120, "1) Ag_2O, OH^−", "2) H_3O^+")
+    f.mol(m, 310, 120)
+    f.cap(310, 185, "B (C₆H₁₂O)")
+    f.text(310, 203, "+ HCHO", size=11.5, color=GRAY)
+    f.text(310, 221, "Fehling (+): 알데하이드", size=11, color=GRAY)
+    f.arrow(385, 120, 470, 120, "1) Ag_2O, OH^−", "2) H_3O^+")
     m = Mol()
     dm_core(m, "cooh")
-    ox, oy = 560, 130
+    ox, oy = 590, 130
     f.mol(m, ox, oy)
     tag(f, m, "hh", ox, oy, -10, 40, "δ 12.08 (s, 1H) / 185.2", anchor="end")
     tag(f, m, "m1", ox, oy, 45, -12, "δ 1.15 (s, 6H) / 24.4", anchor="start")
     tag(f, m, "e1", ox, oy, 0, 50, "δ 1.57 (q, 2H) / 33.2")
     tag(f, m, "e2", ox, oy, 40, 15, "δ 0.89 (t, 3H) / 9.2", anchor="start")
     tag(f, m, "q", ox, oy, -50, -55, "사차 C 42.5", color=GREEN, anchor="end")
-    f.cap(560, 245, "C (C₆H₁₂O₂)")
+    f.cap(590, 245, "C (C₆H₁₂O₂)")
     return f.render()
