@@ -1,0 +1,308 @@
+"""17 아민 · 18 고리형 협동반응 · 19 C–C 결합형성반응 · 20 유기화학실험 — 새로 작성한 문항 데이터.
+
+각 문항 dict:
+  id, year, exam(시험 구분), pts, sub(세부영역), title, stem, answer, concepts[list], sol(html), figs[(svg, caption)], faq[(q, a)]
+기존 모범답안 파일에 이미 있는 문항은 reuse=기존 article id 로 지정한다.
+"""
+import figs_a as A
+import figs_b as B
+
+UNITS = [
+    {"no": 17, "name": "아민", "items": [
+        {"reuse": "y-2024-전공A-서술형-11", "year": 2024, "exam": "전공A 서술형 11번", "pts": 4,
+         "sub": "방향족 화합물의 반응 — 다이아조늄 가수분해·Claisen 자리옮김과 고리화"},
+        {"reuse": "y-2017-전공A-기입형-5", "year": 2017, "exam": "전공A 기입형 5번", "pts": 2,
+         "sub": "방향족 화합물 — 다이아조늄 염(Sandmeyer)·친전자성 치환"},
+        {
+            "id": "u17-2011-36", "year": 2011, "exam": "1차 36번", "pts": None,
+            "sub": "아민의 반응 — 아조 짝지음과 공명의 입체 억제",
+            "title": "benzenediazonium과 N,N-dimethylaniline / N,N,2,6-tetramethylaniline의 짝지음",
+            "stem": "benzenediazonium chloride(A)는 N,N-dimethylaniline(B)과 짝지음 반응으로 아조 화합물 C를 만들지만, "
+                    "N,N,2,6-tetramethylaniline(D)과는 반응하지 않는다(E 생성 ✗). 그 이유로 가장 적절한 것은?<br>"
+                    "① D의 2,6-메틸기와 N,N-메틸기 사이의 입체 장애 ② 2,6-메틸기의 유발 효과 ③ 2,6-메틸기의 하이퍼콘쥬게이션 "
+                    "④ A의 벤젠 고리와 D의 2,6-메틸기 사이의 입체 장애 ⑤ D는 약한 친전자체",
+            "answer": "<b>①</b> — D에서는 고리의 2,6-CH₃와 N(CH₃)₂의 메틸기가 서로 부딪혀 N(CH₃)₂가 고리 평면에서 거의 90° 비틀린다. "
+                      "그러면 N의 비공유 전자쌍이 든 p 궤도가 고리 π계와 평행하지 않아 공명(+M) 전자 주개 효과가 사라지고(공명의 입체 억제), "
+                      "para 탄소의 전자 밀도가 낮아져 약한 친전자체인 ArN₂⁺와 짝지음이 일어나지 않는다.",
+            "concepts": [
+                "아조 짝지음(azo coupling): ArN₂⁺(약한 친전자체)는 <b>강하게 활성화된</b> 고리(페놀, 아닐린)의 주로 <b>para</b> 위치만 공격 (친전자성 방향족 치환)",
+                "–N(CH₃)₂의 활성화 = N 비공유쌍의 공명(+M) 주개 → ortho/para 탄소에 음전하(전자 밀도) 증가",
+                "공명(궤도 겹침)의 조건: N의 p 궤도(비공유쌍)와 고리 탄소 p 궤도가 <b>평행</b>(같은 평면)해야 함 — 겹침 ∝ cos²θ",
+                "공명의 입체 억제(steric inhibition of resonance): ortho 치환기가 N-알킬기를 밀어내어 평면성 상실 → +M 효과 소실",
+                "유발 효과·하이퍼콘쥬게이션(CH₃)은 오히려 전자를 주므로 반응성을 낮추는 원인이 될 수 없음",
+            ],
+            "sol": """<p><b>① B가 반응하는 이유</b>: B의 N(CH₃)₂는 고리와 거의 같은 평면에 있다. N의 비공유쌍이 고리로 비편재화되어 para 탄소에 음전하가 걸린 공명 구조(퀴노이드형 이미늄)가 기여하므로, para 탄소가 약한 친전자체 PhN₂⁺의 말단 N을 공격한다 → σ 착물 → H⁺ 이탈 → 방향족성 회복 → C(4-(dimethylamino)azobenzene, methyl yellow계 주황색 색소).</p>
+<p><b>② D가 반응하지 않는 이유</b>: 평면 형태를 취하면 N–CH₃와 ortho-CH₃가 van der Waals 반경 안으로 겹친다. 이 반발을 피하려고 C(aryl)–N 결합이 회전하여 N(CH₃)₂가 고리 평면과 수직에 가깝게 된다. 이때 N 비공유쌍 궤도는 고리 p 궤도와 직교하여 겹침이 0 → 공명 주개 효과가 사라진다. D의 고리에는 N의 유발 효과(−I)와 메틸기의 약한 주개 효과만 남아 알킬벤젠 수준의 친핵성밖에 없으므로 ArN₂⁺와 반응하지 못한다.</p>
+<p><b>③ 선지 분석</b></p>
+<table class="tb"><tr><th>선지</th><th>판정</th><th>근거</th></tr>
+<tr><td>①</td><td>○</td><td>2,6-CH₃ ↔ N-CH₃ 입체 장애 → N(CH₃)₂ 비틀림 → 공명 주개 효과 소실</td></tr>
+<tr><td>②</td><td>✗</td><td>CH₃의 유발 효과는 전자 주개(+I) → 고리를 오히려 활성화</td></tr>
+<tr><td>③</td><td>✗</td><td>하이퍼콘쥬게이션도 전자 주개 → 반응을 막는 원인이 아님</td></tr>
+<tr><td>④</td><td>✗</td><td>공격 위치는 para(C4) — 2,6-CH₃에서 멀어 A의 고리와 직접 부딪히지 않음</td></tr>
+<tr><td>⑤</td><td>✗</td><td>D는 친핵체(전자쌍 주개) 역할; 친전자체는 A(ArN₂⁺)</td></tr></table>
+<p>실험적 근거: 2,6-dimethyl 유도체는 N,N-dimethylaniline에서 보이는 N→고리 전하 이동(공액) 흡수 띠의 세기가 크게 줄어든다. 이는 비공유쌍이 고리와 공액되지 못함을 보여 주는 분광학적 증거이다.</p>""",
+            "figs": [(A.f2011_36_scheme, "A + B → C (para 짝지음), A + D → 반응 없음"),
+                     (A.f2011_36_resonance, "B의 공명 구조(para 탄소 음전하)와 N 비공유쌍 궤도 정렬: B(평행) vs D(수직)")],
+            "faq": [
+                ("짝지음은 왜 ortho가 아니라 para에서 일어나나요?",
+                 "ArN₂⁺는 부피가 크고 반응성이 약해 입체적으로 열린 para를 선호합니다. para가 막혀 있을 때만 ortho 짝지음이 일어납니다."),
+                ("D에서 para 위치는 비어 있는데, 입체 장애가 반응 위치와 무슨 상관인가요?",
+                 "입체 장애가 반응 위치를 막는 것이 아니라, N(CH₃)₂의 <b>형태(비틀림)</b>를 바꾸어 전자적 활성화를 없앤다는 것이 핵심입니다. 이를 ‘공명의 입체 억제’라고 합니다(④와 ①의 차이)."),
+                ("짝지음 반응에서 pH는 왜 중요한가요?",
+                 "아닐린류는 약산성(pH 4~7)에서 짝지음합니다. 너무 산성이면 아민이 양성자화(–NHMe₂⁺, 강한 불활성화기)되고, 너무 염기성이면 ArN₂⁺가 다이아조테이트(ArN=N–O⁻)로 바뀌어 친전자성을 잃습니다. 페놀은 약염기성에서 페녹사이드로 짝지음합니다."),
+                ("C는 왜 색을 띠나요?",
+                 "Ar–N=N–Ar의 확장된 π 공액에 N(CH₃)₂ 주개가 붙어 push–pull 계를 이루므로 π→π* 흡수가 가시광 영역(~450 nm 부근)으로 이동합니다(주황–노랑)."),
+            ],
+        },
+    ]},
+    {"no": 18, "name": "고리형 협동반응", "items": [
+        {"reuse": "y-2020-전공B-서술형-7", "year": 2020, "exam": "전공B 서술형 7번", "pts": 4,
+         "sub": "고리 첨가 반응 — Diels–Alder endo 규칙·오존 분해"},
+        {"reuse": "y-2019-전공B-서술형-4", "year": 2019, "exam": "전공B 서술형 4번", "pts": 4,
+         "sub": "고리 첨가 반응 — Diels–Alder 속도·위치 선택성과 Wittig 반응"},
+        {
+            "id": "u18-2013-39a", "year": 2013, "exam": "1차 39번 (가)", "pts": None,
+            "sub": "전자 고리화 반응 — 6π 광화학 고리화의 회전 방향",
+            "title": "(2E,4Z,6E)-octatriene의 광화학적 전자 고리화: 회전 방향과 두 메틸기의 입체 관계",
+            "stem": "(2E,4Z,6E)-octatriene의 광화학적 전자고리화 반응에서 콘쥬게이션된 π 궤도함수의 말단(2-, 7-위치) 두 로브의 회전 방향과 "
+                    "생성물(5,6-dimethylcyclohexa-1,3-diene)에서 두 메틸기의 입체 관계는? "
+                    "① 동일(con)–cis ② 동일–trans ③ 반대(dis)–cis ④ 반대–trans ⑤ 동일 혹은 반대–cis",
+            "answer": "<b>②</b> 동일 방향 회전(conrotatory), <b>trans</b>",
+            "concepts": [
+                "전자 고리화(electrocyclic): 공액 폴리엔 말단 사이에 σ 결합이 생기며 고리 형성 (π 결합 1개 → σ 결합 1개)",
+                "FMO 규칙: 반응을 지배하는 것은 폴리엔의 <b>HOMO</b> — 말단 두 로브가 같은 위상끼리 겹쳐야 결합 형성",
+                "열 반응: 바닥 상태 HOMO / 광반응: hν로 한 전자가 LUMO로 승위 → 들뜬 상태의 HOMO(= 바닥 상태 LUMO)",
+                "Woodward–Hoffmann: 4n+2 π 전자(6π) → 열: disrotatory, 빛: conrotatory / 4n π 전자(4π) → 열: conrotatory, 빛: disrotatory",
+                "헥사트라이엔 MO 위상(ψ<sub>n</sub> 계수 ∝ sin(nkπ/7)): ψ₃ = + + − − + + (말단 같음), ψ₄ = + − − + + − (말단 반대)",
+            ],
+            "sol": """<p><b>① π 전자 수</b>: C2=C3, C4=C5, C6=C7 → 6π (4n+2, n=1).</p>
+<p><b>② 광반응의 HOMO</b>: 바닥 상태 배치 ψ₁²ψ₂²ψ₃². hν 흡수 → ψ₁²ψ₂²ψ₃¹ψ₄*¹ 이므로 새 결합을 결정하는 궤도는 ψ₄*. ψ₄*의 C2, C7 로브는 위상이 반대이므로, 같은 위상의 로브끼리 만나려면 두 말단이 <b>같은 방향(conrotatory)</b>으로 90° 회전해야 한다.</p>
+<p><b>③ 입체 관계</b>: 고리화 직전의 U자형(s-cis, s-cis) 형태에서 (2E)와 (6E)의 두 CH₃는 모두 바깥쪽을 향한다. con 회전은 한 말단을 시계, 다른 말단도 시계 방향으로 돌리므로 한 CH₃는 고리 위로, 다른 CH₃는 고리 아래로 간다 → <b>trans</b>-5,6-dimethylcyclohexa-1,3-diene.</p>
+<p>(비교) 같은 기질을 가열하면 ψ₃(말단 위상 같음) → dis → 두 CH₃가 같은 면 → <b>cis</b>. 즉 E,Z,E 트라이엔: Δ → cis, hν → trans.</p>
+<div class="eq">바깥–바깥(E,E 말단) + dis → cis &nbsp;&nbsp;|&nbsp;&nbsp; 바깥–바깥 + con → trans</div>""",
+            "figs": [(B.f2013_39a, "헥사트라이엔 ψ₃(열)·ψ₄*(빛)의 말단 위상과 회전 방향"),
+                     (B.f2013_39a_rxn, "(2E,4Z,6E)-octatriene: hν(con) → trans, Δ(dis) → cis")],
+            "faq": [
+                ("‘로브의 회전 방향이 동일’이라는 말이 헷갈립니다.",
+                 "두 말단 C–C 결합축을 기준으로 두 p 궤도가 모두 시계(또는 모두 반시계) 방향으로 도는 것이 conrotatory, 서로 반대로 도는 것이 disrotatory입니다. 결과적으로 con은 두 치환기를 서로 반대 면으로, dis는 같은 면으로 보냅니다(바깥–바깥 치환기 기준)."),
+                ("선지 ⑤처럼 ‘동일 혹은 반대’일 수는 없나요?",
+                 "협동 반응은 궤도 대칭이 허용된 한 가지 경로로만 진행되므로 입체 특이적입니다. 광반응 6π는 con만 허용됩니다."),
+                ("광반응에서 왜 LUMO가 아니라 ‘들뜬 상태의 HOMO’를 보나요?",
+                 "빛을 흡수하면 전자 하나가 원래 LUMO(ψ₄)로 올라가 그 궤도가 가장 높은 채워진 궤도, 즉 새 HOMO가 됩니다. 결과적으로 ‘바닥 상태 LUMO의 대칭’을 보는 것과 같습니다."),
+                ("4n+2 규칙을 외우지 않고 빠르게 판단하는 방법은?",
+                 "‘열 + 4n = con’ 하나만 기억하고, 빛이나 전자 수(4n → 4n+2)가 바뀔 때마다 con ↔ dis를 한 번씩 뒤집으면 됩니다. 6π 광반응: 4n→4n+2(뒤집기: dis), 열→빛(뒤집기: con)."),
+            ],
+        },
+        {
+            "id": "u18-2013-39b", "year": 2013, "exam": "1차 39번 (나)", "pts": 2.5,
+            "sub": "고리형 협동반응 — Claisen·Cope 자리옮김, 전자 고리화, Diels–Alder endo",
+            "title": "주생성물의 구조가 옳은 것 고르기: 알릴 아릴 에터 가열 / 트라이엔 가열 / cyclopentadiene + MVK",
+            "stem": "ㄱ. 2,6-dimethoxyphenyl allyl ether 가열 → 4-allyl-2,6-dimethoxyphenol<br>"
+                    "ㄴ. 1,2-bis(styryl)cyclohexene형 트라이엔 가열 → 두 Ph가 trans(쐐기/점선)인 hexahydronaphthalene<br>"
+                    "ㄷ. cyclopentadiene + methyl vinyl ketone 가열 → 아세틸기가 exo인 norbornene<br>"
+                    "주생성물의 구조가 옳은 것만을 모두 고른 것은? ① ㄱ ② ㄴ ③ ㄱ,ㄷ ④ ㄴ,ㄷ ⑤ ㄱ,ㄴ,ㄷ",
+            "answer": "<b>① ㄱ</b><br>ㄱ ○: 두 ortho가 OMe로 막혀 있으므로 Claisen([3,3]) 후 Cope([3,3])를 한 번 더 거쳐 알릴기가 para로 이동 → 4-allyl-2,6-dimethoxyphenol.<br>"
+                      "ㄴ ✗: 6π 열 전자 고리화는 disrotatory → 바깥–바깥(E,E) 말단의 두 Ph는 <b>cis</b>여야 한다(보기는 trans).<br>"
+                      "ㄷ ✗: Diels–Alder는 endo 규칙에 따라 아세틸기가 <b>endo</b>인 생성물이 주생성물(보기는 exo).",
+            "concepts": [
+                "방향족 Claisen 자리옮김: 알릴 아릴 에터 —Δ→ [3,3]-σ 자리옮김(의자형 6원 고리 TS) → o-다이엔온 → 토토머화 → o-알릴페놀",
+                "두 ortho가 막혀 있으면 다이엔온이 방향족화할 수 없으므로 Cope([3,3]) 자리옮김이 한 번 더 일어나 para로 이동 (알릴 말단/내부 탄소가 두 번 뒤집혀 원래 배열로 돌아옴)",
+                "6π 전자 고리화: Δ → disrotatory, hν → conrotatory",
+                "Diels–Alder [4s+2s]: 협동·입체 특이적. endo 규칙(속도론적 생성물) — 친다이엔체의 π 받개(C=O)가 다이엔 C2·C3 아래에 놓이는 TS가 2차 궤도 상호작용으로 안정화",
+            ],
+            "sol": """<p><b>ㄱ</b>: 알릴 에터 O–CH₂ 결합이 끊어지고 ortho 탄소–CH₂(말단) 결합이 생기는 [3,3] 이동. 그러나 C2, C6에 OMe가 있으므로 생성된 2,4-사이클로헥사다이엔온의 C2는 사차 탄소(OMe + 알릴)가 되어 H를 잃고 방향족화할 수 없다. 이 다이엔온의 C2–알릴 부분과 C3=C4가 다시 1,5-다이엔을 이루어 Cope 자리옮김 → 알릴기가 C4(para)로 이동 → C4에 H가 남아 토토머화로 방향족 페놀 회복. 결과: <b>4-allyl-2,6-dimethoxyphenol</b> (보기와 일치, ○).</p>
+<p><b>ㄴ</b>: 고리 C=C(시스로 고정)를 가운데에 둔 PhCH=CH–C=C–CH=CHPh는 (E,Z,E) 헥사트라이엔(6π). 열 반응 → disrotatory. 두 Ph는 U자형 형태에서 모두 바깥쪽 → dis 회전 후 같은 면 → <b>cis</b>-diphenyl. 보기는 쐐기/점선(trans)이므로 ✗ (trans는 광반응 생성물).</p>
+<p><b>ㄷ</b>: cyclopentadiene(s-cis 고정, 반응성 큼) + MVK. endo TS에서 C=O의 π*가 다이엔 C2·C3와 2차 궤도 상호작용 → 활성화 에너지가 낮아 빠름(속도론적 지배). 생성물에서 아세틸기는 한 탄소 다리(C7)의 <b>반대쪽</b>, 즉 C5=C6 이중 결합 쪽(endo)에 놓인다. 보기 그림은 아세틸기가 C7 쪽(exo)이므로 ✗.</p>
+<table class="tb"><tr><th>보기</th><th>반응</th><th>규칙</th><th>판정</th></tr>
+<tr><td>ㄱ</td><td>Claisen → Cope</td><td>ortho 차단 → para</td><td>○</td></tr>
+<tr><td>ㄴ</td><td>6π 전자 고리화 (Δ)</td><td>dis → cis</td><td>✗</td></tr>
+<tr><td>ㄷ</td><td>Diels–Alder</td><td>endo 규칙</td><td>✗</td></tr></table>""",
+            "figs": [(B.f2013_39b_g, "ㄱ: Claisen [3,3] → (ortho 차단) Cope [3,3] → 토토머화 → para-알릴페놀"),
+                     (B.f2013_39b_n, "ㄴ: 6π 열 전자 고리화(disrotatory) → cis"),
+                     (B.f2013_39b_d, "ㄷ: Diels–Alder endo 규칙 — endo(주) vs 보기의 exo")],
+            "faq": [
+                ("ㄱ에서 알릴기의 어느 탄소가 고리에 붙나요?",
+                 "Claisen에서는 알릴의 말단 탄소(C3')가 ortho에 붙어 알릴이 ‘뒤집히고’, Cope에서 다시 한 번 뒤집히므로 para 생성물에서는 원래 O에 붙어 있던 CH₂가 고리에 붙습니다. ¹⁴C 표지 실험으로 확인된 결과입니다."),
+                ("ㄷ에서 exo 생성물이 더 안정하지 않나요?",
+                 "열역학적으로는 입체 반발이 작은 exo가 더 안정할 수 있습니다. 하지만 DA는 비가역적인 저온 조건에서 속도론적 지배를 받으므로 TS가 낮은 endo가 주생성물입니다. 고온·장시간(역-DA 가능)에서는 exo 비율이 늘 수 있습니다."),
+                ("endo/exo를 그림에서 어떻게 구별하나요?",
+                 "norbornene에서 치환기가 한 탄소 다리(CH₂, C7)와 같은 쪽이면 exo, 반대쪽(두 탄소 다리 C5=C6 쪽)이면 endo입니다."),
+                ("ㄴ의 트라이엔은 E,E인데 왜 (E,Z,E)라고 하나요?",
+                 "가운데 C=C는 사이클로헥센 고리의 이중 결합이라 두 사슬이 같은 쪽(cis, Z)에 고정되어 있습니다. 따라서 전체는 (E,Z,E)-1,6-diphenylhexatriene 골격이며, 6π 고리화가 가능한 U자형을 쉽게 취합니다."),
+            ],
+        },
+        {
+            "id": "u18-2005-14", "year": 2005, "exam": "서술형 14번", "pts": 2,
+            "sub": "전자 고리화 반응 — 4π 열·광화학 반응의 입체 특이성",
+            "title": "cis-3,4-dimethylcyclobutene 열 개환(→ 2E,4Z)과 (2E,4E)-hexadiene 광 고리화(→ cis)",
+            "stem": "cis-3,4-dimethylcyclobutene을 가열(175 ℃)하면 (2E,4Z)-hexadiene은 생성되지만 (2E,4E)-hexadiene은 생성되지 않는다. "
+                    "광화학 조건에서 (2E,4E)-hexadiene을 고리화하면 cis-3,4-dimethylcyclobutene만 생성되고 trans는 생성되지 않는다. "
+                    "열화학 반응과 광화학 반응의 결과를 설명하시오.",
+            "answer": "<b>열화학 반응</b>: 4π 전자 고리화(고리 열림)는 바닥 상태 HOMO ψ₂가 지배한다. ψ₂의 말단(C2, C5) 로브는 위상이 반대이므로 "
+                      "궤도 대칭이 보존되려면 두 말단이 같은 방향으로 회전(conrotatory)해야 한다. cis-3,4-dimethylcyclobutene에서 두 CH₃는 같은 면에 있으므로 "
+                      "con 회전하면 한 CH₃는 바깥쪽, 다른 CH₃는 안쪽으로 가서 (2E,4Z)가 생긴다. (2E,4E)가 되려면 dis 회전이 필요하므로 열적으로 금지된다.<br>"
+                      "<b>광화학 반응</b>: hν로 전자 하나가 ψ₃*로 승위하면 들뜬 상태 HOMO ψ₃*의 말단 로브는 위상이 같으므로 반대 방향 회전(disrotatory)이 허용된다. "
+                      "(2E,4E)-hexadiene의 두 CH₃(모두 바깥쪽)는 dis 회전으로 같은 면에 놓이므로 cis-3,4-dimethylcyclobutene만 생긴다(trans는 con이 필요하므로 ✗).",
+            "concepts": [
+                "4π 계(4n, n=1): 열 → conrotatory, 빛 → disrotatory",
+                "뷰타다이엔 MO: ψ₂ = + + − − (말단 반대), ψ₃* = + − − + (말단 같음)",
+                "미시적 가역성: 고리 열림과 고리 닫힘은 같은 TS를 지나므로 같은 회전 방식",
+                "바깥–바깥(E,E) 또는 안–안(Z,Z) 치환기: con → trans, dis → cis / 바깥–안(E,Z): con → cis, dis → trans",
+                "평형 방향: 열 반응은 고리 긴장이 풀리는 다이엔 쪽(ΔH < 0), 광반응은 다이엔만 빛을 흡수(λ<sub>max</sub> ≈ 220 nm)하므로 흡수하지 않는 사이클로뷰텐 쪽으로 축적",
+            ],
+            "sol": """<p><b>① 열 반응 (cis-사이클로뷰텐 → 다이엔)</b></p>
+<ul><li>사이클로뷰텐의 C3–C4 σ 결합이 끊어지면서 생기는 다이엔의 π 계는 4π → 바닥 상태 HOMO = ψ₂ (말단 위상 반대) → conrotatory.</li>
+<li>cis 이성질체의 두 CH₃는 고리의 같은 면(쐐기, 쐐기). con 회전은 C3를 시계, C4도 시계 방향으로 돌리므로 한 CH₃는 새 C=C의 바깥쪽(E), 다른 하나는 안쪽(Z)을 향함 → <b>(2E,4Z)</b>.</li>
+<li>(2E,4E)는 두 CH₃가 모두 바깥쪽이어야 하는데, 이는 cis 기질의 dis 회전으로만 가능 → 열적으로 대칭 금지 (반면 trans-사이클로뷰텐의 con 개환은 (2E,4E)를 줌).</li></ul>
+<p><b>② 광반응 ((2E,4E)-다이엔 → 사이클로뷰텐)</b></p>
+<ul><li>hν 흡수로 ψ₂ → ψ₃* 전자 승위 → 들뜬 상태 HOMO = ψ₃* (말단 위상 같음) → disrotatory.</li>
+<li>(2E,4E)의 두 CH₃는 모두 바깥쪽 → dis 회전 후 같은 면 → <b>cis</b>-3,4-dimethylcyclobutene만 생성, trans ✗.</li></ul>
+<table class="tb"><tr><th>조건</th><th>지배 궤도</th><th>말단 위상</th><th>회전</th><th>결과</th></tr>
+<tr><td>Δ (175 ℃)</td><td>ψ₂ (HOMO)</td><td>반대</td><td>con</td><td>cis-고리 ⇌ (2E,4Z)</td></tr>
+<tr><td>hν</td><td>ψ₃* (들뜬 HOMO)</td><td>같음</td><td>dis</td><td>(2E,4E) → cis-고리</td></tr></table>""",
+            "figs": [(B.f2005_14, "뷰타다이엔 ψ₂·ψ₃*의 말단 위상, 열(con)·광(dis) 반응의 입체 결과")],
+            "faq": [
+                ("사이클로뷰텐의 고리 ‘열림’인데 왜 다이엔의 HOMO를 보나요?",
+                 "미시적 가역성에 의해 고리 열림은 고리 닫힘의 역반응이며 같은 TS를 지납니다. 그래서 다이엔 쪽 π 계(4π)의 HOMO 대칭으로 회전 방식을 판단합니다. σ 결합 궤도와 π 궤도의 상관 도표로도 같은 결론이 나옵니다."),
+                ("con 회전 방향이 두 가지(둘 다 시계/둘 다 반시계)인데 결과가 같나요?",
+                 "cis 기질에서는 두 con 경로가 (2E,4Z)와 (2Z,4E)를 주는데, 이 둘은 같은 화합물입니다. 비대칭 기질이라면 두 con 경로 사이의 선택(torquoselectivity)이 따로 문제가 됩니다."),
+                ("광반응에서 왜 역반응(사이클로뷰텐 → 다이엔)은 일어나지 않나요?",
+                 "사이클로뷰텐은 고립된 C=C만 있어 다이엔보다 훨씬 짧은 파장에서 흡수합니다. 사용하는 빛(다이엔만 흡수하는 파장)에서는 생성물이 들뜨지 않으므로 축적됩니다."),
+                ("열 반응을 오래 해도 (2E,4E)가 전혀 안 생기나요?",
+                 "협동 경로로는 생기지 않습니다. 매우 높은 온도에서 라디칼 경로나 이후의 이성질화가 일어날 수는 있지만, 175 ℃의 협동 반응 조건에서는 입체 특이적으로 (2E,4Z)만 생깁니다."),
+            ],
+        },
+    ]},
+    {"no": 19, "name": "C–C 결합형성반응", "items": [
+        {
+            "id": "u19-2011-4", "year": 2011, "exam": "2차 논술형 4번", "pts": 15,
+            "sub": "C–C 결합 형성 — Grignard·Diels–Alder(FMO)·Heck 반응과 분광학적 확인",
+            "title": "Grignard(PhMgBr + CH₃CN), Diels–Alder(cyclopentadiene + maleic anhydride), Heck(PhI + styrene)",
+            "stem": "반응 Ⅰ: PhMgBr —(1. acetonitrile 2. H₃O⁺)→ A / 반응 Ⅱ: cyclopentadiene + maleic anhydride —(25 ℃)→ B(주생성물) / "
+                    "반응 Ⅲ: PhI + styrene —(Pd(PPh₃)₂, K₂CO₃, DMF)→ C(주생성물).<br>"
+                    "A, B, C의 입체 구조를 그리고, 각 반응에서 C–C 결합이 형성되는 과정을 메커니즘으로 설명(Ⅱ는 분자 궤도함수 이론 이용, "
+                    "Ⅲ은 산화성 첨가–알켄 첨가–환원성 제거의 3단계)하시오. 또한 각 생성물의 합성 여부를 확인하는 분광학적 방법을 하나씩 선택하고 스펙트럼의 특징을 설명하시오. [15점]",
+            "answer": "<b>A</b>: acetophenone (PhCOCH₃) — Ph⁻(탄소 친핵체)가 나이트릴 탄소에 첨가 → 이민 마그네슘 염 → 산 가수분해.<br>"
+                      "<b>B</b>: <i>endo</i>-bicyclo[2.2.1]hept-5-ene-2,3-dicarboxylic anhydride (cis-5-norbornene-2,3-<i>endo</i>-dicarboxylic anhydride) — [4s+2s] 협동 고리 첨가, endo 규칙.<br>"
+                      "<b>C</b>: (<i>E</i>)-stilbene (trans-1,2-diphenylethene) — Pd(0) 촉매 순환: 산화성 첨가 → 알켄 삽입(C–C 형성) + syn β-H 제거 → 환원성 제거(염기)로 Pd(0) 재생.<br>"
+                      "<b>분광 확인</b>: A — IR 1685 cm⁻¹(공액 C=O) 출현·2250 cm⁻¹(C≡N) 소실(또는 ¹H NMR δ 2.6, s, 3H); "
+                      "B — ¹H NMR δ ≈ 6.3(2H, 비닐), IR 1850·1780 cm⁻¹(무수물 C=O 두 띠); C — ¹H NMR δ ≈ 7.1(s, 2H, 대칭 비닐 H), IR ≈ 965 cm⁻¹(trans CH=CH 면외 굽힘).",
+            "concepts": [
+                "Grignard 시약 R–MgX: C–Mg 극성 결합(C δ−) → 탄소 친핵체. 나이트릴에는 1회만 첨가(이민 음이온 염은 음전하로 더 이상 공격받지 않음) → 가수분해로 케톤",
+                "Diels–Alder: 다이엔 HOMO(ψ₂)와 친다이엔체 LUMO(π*)의 말단 위상이 일치 → 초면–초면 [π4s + π2s] 열적 허용. 전자 끄는 기(C=O)가 LUMO를 낮춰 반응 가속",
+                "endo 규칙: 친다이엔체의 C=O π*와 다이엔 C2·C3 사이 2차 궤도 상호작용 → endo TS 안정화 (속도론적 생성물)",
+                "Heck 반응: Pd(0)L₂ + ArX → Ar–Pd(II)–X(산화성 첨가) → 알켄 배위·syn 삽입(1,2-이동 삽입, 새 C–C) → syn β-H 제거 → H–Pd–X → 염기로 HX 제거(환원성 제거) → Pd(0)",
+                "분광: IR(작용기), ¹H NMR(화학적 이동·적분·짝지음 상수 — trans 비닐 J ≈ 16 Hz, cis ≈ 12 Hz)",
+            ],
+            "sol": """<p><b>반응 Ⅰ (Grignard)</b></p>
+<ol><li>PhMgBr의 C–Mg 결합에서 탄소는 δ−(탄소 음이온 성격). 이 탄소가 CH₃C≡N의 친전자성 나이트릴 탄소(δ+)를 공격 → <b>Ph–C 결합 형성</b>, C≡N π 전자는 N으로 → 이민 음이온(Ph(CH₃)C=N⁻ MgBr⁺).</li>
+<li>이 염은 음전하를 띠어 두 번째 Grignard 첨가가 일어나지 않는다(에스터와의 차이).</li>
+<li>H₃O⁺ 처리: N 양성자화 → 이민(이미늄) → 물 첨가 → 카비놀아민 → NH₃(NH₄⁺) 이탈 → <b>A = acetophenone</b>.</li></ol>
+<p><b>반응 Ⅱ (Diels–Alder, 분자궤도함수 이론)</b></p>
+<ol><li>다이엔(cyclopentadiene, s-cis 고정) HOMO ψ₂: 말단 C1(+)·C4(−). 친다이엔체(maleic anhydride) LUMO π*: 두 탄소 위상 반대.</li>
+<li>다이엔 면 아래에 친다이엔체가 평행하게 접근하면 C1–Cα, C4–Cβ가 <b>각각 같은 위상</b>으로 겹침 → 두 σ 결합이 동시에(협동적) 형성, 초면–초면 [4s+2s] 열적 허용. 6개 π 전자가 고리 모양으로 재배열(방향족성 TS).</li>
+<li>두 C=O가 LUMO 에너지를 낮춰 HOMO–LUMO 간격이 작다 → 25 ℃에서도 빠름.</li>
+<li>endo TS에서 C=O 탄소의 π* 로브와 다이엔 C2·C3 로브가 같은 위상으로 겹치는 <b>2차 궤도 상호작용</b> → endo TS가 낮음 → <b>B = endo 부가물</b>. 친다이엔체의 cis 관계는 보존(입체 특이적: 무수물 고리는 cis-융합).</li></ol>
+<p><b>반응 Ⅲ (Heck, 3단계)</b></p>
+<ol><li><b>산화성 첨가</b>: Pd(0)L₂가 Ph–I의 C–I 결합에 끼어듦 → Ph–Pd(II)L₂–I (Pd 산화수 0 → +2, 배위수 2 → 4).</li>
+<li><b>알켄 첨가(삽입)</b>: styrene이 Pd에 π 배위 → Ph–Pd가 C=C에 syn으로 1,2-삽입. Ph는 입체적으로 덜 붐빈 말단 CH₂에, Pd는 벤질 탄소에 결합 → <b>새 Ph–C 결합 형성</b> (PhCH₂–CH(Ph)–PdL₂I). 이어서 C–C 회전 후 Pd와 syn 위치의 β-H가 제거(syn β-H 제거) → 두 Ph가 반대편인 형태에서 제거되므로 (<i>E</i>)-stilbene 방출 + H–Pd(II)L₂–I.</li>
+<li><b>환원성 제거</b>: 염기(K₂CO₃)가 H–Pd–I에서 HI를 제거(KI + KHCO₃) → Pd(0)L₂ 재생 → 촉매 순환.</li></ol>
+<p><b>분광학적 확인 (각 1가지)</b></p>
+<table class="tb"><tr><th>생성물</th><th>방법</th><th>특징</th></tr>
+<tr><td>A</td><td>IR</td><td>1685 cm⁻¹ 강한 C=O(방향족 공액으로 1715보다 낮음) 출현, 2250 cm⁻¹ C≡N 소실. (¹H NMR: δ 2.6 s 3H, δ 7.4–8.0 5H)</td></tr>
+<tr><td>B</td><td>¹H NMR</td><td>δ ≈ 6.3 (2H, 비닐 H) · 3.5 (2H, 무수물 α-H) · 3.4 (2H, 다리목 H) · 1.5–1.8 (2H, CH₂ 다리). IR: 1850·1780 cm⁻¹ (무수물 대칭·비대칭 C=O)</td></tr>
+<tr><td>C</td><td>¹H NMR</td><td>δ ≈ 7.1 (s, 2H) — 분자 대칭으로 두 비닐 H가 동등해 단일선; δ 7.2–7.5 (10H). IR: 965 cm⁻¹ (trans C–H 면외 굽힘, cis면 ~690). UV: λ<sub>max</sub> ≈ 295 nm (cis ≈ 280 nm)</td></tr></table>""",
+            "figs": [(B.f2011_4_grignard, "반응 Ⅰ: Grignard 시약의 나이트릴 첨가와 가수분해 → A"),
+                     (B.f2011_4_da, "반응 Ⅱ: HOMO–LUMO 상호작용(1차·2차 궤도)과 endo 생성물 B"),
+                     (B.f2011_4_heck, "반응 Ⅲ: Heck 반응의 Pd 촉매 순환과 생성물 C")],
+            "faq": [
+                ("Grignard 반응에서 물이 있으면 어떻게 되나요?",
+                 "PhMgBr는 강염기이므로 H₂O의 H⁺를 먼저 빼앗아 벤젠이 됩니다. 그래서 무수 에터(THF, Et₂O)에서 반응시킨 뒤 마지막에 H₃O⁺를 넣습니다."),
+                ("B의 무수물 고리가 cis로 융합된 이유는요?",
+                 "maleic anhydride는 cis-알켄이고 DA는 입체 특이적(초면 첨가)이므로 친다이엔체 치환기의 상대 배치가 그대로 보존됩니다. endo/exo는 그 cis 쌍이 다리(C7) 반대쪽인지 같은 쪽인지의 문제입니다."),
+                ("stilbene의 E/Z를 NMR로 구별할 때 짝지음 상수를 쓰면 안 되나요?",
+                 "대칭 stilbene은 두 비닐 H가 화학적으로 동등해 단일선으로 나타나 J를 직접 읽을 수 없습니다. ¹³C 위성 신호로는 가능하지만, 보통 화학적 이동(E ≈ 7.1, Z ≈ 6.6 ppm)이나 IR 965 cm⁻¹로 판별합니다."),
+                ("Heck 반응의 ‘환원성 제거’는 C–C 결합을 만드는 단계가 아닌가요?",
+                 "교차 짝지음(Suzuki 등)에서는 환원성 제거가 C–C를 만들지만, Heck에서는 C–C 결합이 <b>알켄 삽입</b> 단계에서 생기고, 마지막 단계는 H–Pd–X에서 HX를 제거해 Pd(0)를 재생하는 과정입니다(염기가 필요한 이유)."),
+                ("왜 Ph가 styrene의 치환된 탄소가 아니라 말단 탄소에 붙나요?",
+                 "삽입 TS에서 입체 장애가 작은 CH₂ 쪽으로 아릴기가 가고, Pd는 벤질 위치에 붙어 안정화되기 때문입니다(위치 선택성). 그래서 1,1-다이페닐에틸렌이 아니라 1,2-다이페닐에틸렌(stilbene)이 생깁니다."),
+            ],
+        },
+    ]},
+    {"no": 20, "name": "유기화학실험", "items": [
+        {
+            "id": "u20-2010-39", "year": 2010, "exam": "1차 39번", "pts": None,
+            "sub": "유기화학실험 — 카복실산 + 유기리튬(2당량) → 케톤, TLC·추출",
+            "title": "벤조산 + CH₃Li(2당량) → acetophenone: 시약량·TLC·추출·건조",
+            "stem": "벤조산(6.0 mmol) + THF 20 mL, 0 ℃에서 1.5 M CH₃Li 용액 (가) mL 첨가 → 20% EtOAc/n-hexane으로 정상 실리카 겔 TLC → "
+                    "1 M HCl 3 mL → 감압 농축 후 0.5 M HCl 30 mL, 분별 깔때기로 (나)로 추출 → 무수 MgSO₄, 여과·농축·감압 증류 → A. 옳지 <u>않은</u> 것은?<br>"
+                    "① (가)의 이론값은 8.0 ② TLC R<sub>f</sub>는 A가 벤조산보다 작다 ③ CH₂Cl₂는 (나) 용매로 적절 ④ MgSO₄는 물 제거 ⑤ A는 acetophenone",
+            "answer": "<b>②</b> — acetophenone은 수소 결합 주개(–OH)가 없어 벤조산보다 극성이 작으므로 정상 실리카 겔에서 더 멀리 이동한다. "
+                      "즉 R<sub>f</sub>(A) &gt; R<sub>f</sub>(벤조산)이다.",
+            "concepts": [
+                "RCOOH + 2 R'Li → RCOOLi(1당량: 산–염기) → R–C(OLi)₂R'(2당량: 첨가, 안정한 이음이온 사면체) → H₃O⁺ → 수화물 → 케톤 R–CO–R'",
+                "이음이온 중간체는 붕괴하지 않으므로 과첨가(3차 알코올)가 일어나지 않음 — 에스터 + RMgX와의 차이",
+                "시약 부피 = 필요 몰수 ÷ 몰농도 (mmol ÷ M = mL)",
+                "정상(normal phase) TLC: 극성 고정상(SiO₂), 극성 작을수록 R<sub>f</sub> 큼. R<sub>f</sub> = 점 이동 거리 / 용매 전선 이동 거리",
+                "액–액 추출: 물과 섞이지 않는 유기 용매(CH₂Cl₂, Et₂O, EtOAc); 무수 MgSO₄ 등 건조제로 유기층의 잔류 물 제거",
+            ],
+            "sol": """<p><b>① 시약량 계산</b></p>
+<div class="eq">n(CH₃Li) = 2 × 6.0 mmol = 12 mmol &nbsp;→&nbsp; V = <span class="frac"><span>12 mmol</span><span>1.5 mmol/mL</span></span> = <b>8.0 mL</b> (○)</div>
+<p>첫 번째 당량은 –COOH의 산성 H를 제거(CH₄ 발생)하는 데 쓰이고, 두 번째 당량이 카복실레이트 C=O에 첨가한다.</p>
+<p><b>② TLC</b>: 벤조산은 –COOH가 실리카의 Si–OH와 강하게 수소 결합 → 작은 R<sub>f</sub>(꼬리 끌림). acetophenone(케톤)은 수소 결합 받개만 있어 약하게 흡착 → 큰 R<sub>f</sub>. 따라서 “A가 더 작다”는 <b>틀림</b>. 반응 진행에 따라 원점 근처의 벤조산 점이 사라지고 위쪽에 A의 점이 나타난다.</p>
+<p><b>③ 추출</b>: CH₂Cl₂(밀도 1.33, 물과 섞이지 않음)는 A를 잘 녹이므로 (나)로 적절(아래층이 유기층). 0.5 M HCl 수층에는 LiCl 등 염이 남는다. (○)</p>
+<p><b>④</b> 무수 MgSO₄ → MgSO₄·7H₂O로 물 흡수(○). <b>⑤</b> A = PhCOCH₃ (○).</p>
+<table class="tb"><tr><th>선지</th><th>판정</th><th>근거</th></tr>
+<tr><td>①</td><td>○</td><td>2당량 × 6.0 mmol ÷ 1.5 M = 8.0 mL</td></tr>
+<tr><td>②</td><td><b>✗</b></td><td>R<sub>f</sub>(acetophenone) &gt; R<sub>f</sub>(benzoic acid)</td></tr>
+<tr><td>③</td><td>○</td><td>물과 섞이지 않는 유기 용매</td></tr>
+<tr><td>④</td><td>○</td><td>건조제</td></tr>
+<tr><td>⑤</td><td>○</td><td>RCOOH + 2 CH₃Li → 메틸 케톤</td></tr></table>""",
+            "figs": [(A.f2010_39, "벤조산 → 카복실레이트 → 이음이온 사면체 → acetophenone, 그리고 TLC 모식도")],
+            "faq": [
+                ("CH₃Li 대신 CH₃MgBr를 쓰면 같은 결과가 나오나요?",
+                 "Grignard 시약은 친핵성이 약해 카복실레이트 음이온에 거의 첨가하지 못합니다(산–염기 반응에서 멈춤). 유기리튬은 반응성이 커서 카복실레이트에도 첨가하므로 케톤 합성에 쓰입니다."),
+                ("왜 3차 알코올이 생기지 않나요?",
+                 "첨가 후 생긴 R–C(O⁻Li⁺)₂R' 이음이온은 이탈기(O²⁻)를 내보내 케톤이 될 수 없어 반응 혼합물 안에서는 케톤이 존재하지 않습니다. 케톤은 산 처리(물 존재) 후에야 생기므로 남은 CH₃Li와 만나지 않습니다."),
+                ("TLC 전개 용매의 EtOAc 비율을 높이면 어떻게 되나요?",
+                 "전개 용매의 극성이 커져 모든 점의 R<sub>f</sub>가 커집니다. 두 물질의 상대 순서(A가 위)는 그대로입니다."),
+                ("(4)에서 1 M HCl 3 mL를 넣는 이유는?",
+                 "남은 CH₃Li와 알콕사이드를 양성자화·분해(quench)하고, 이음이온을 수화물로 바꾸어 케톤이 생기게 하기 위해서입니다."),
+            ],
+        },
+        {
+            "id": "u20-2009-25", "year": 2009, "exam": "1차 25번", "pts": None,
+            "sub": "유기화학실험 — Claisen–Schmidt(교차 알돌) 축합: dibenzalacetone 합성",
+            "title": "dibenzalacetone 합성: 기하 이성질체 수, 알돌–탈수, 세척, 수득률, NMR",
+            "stem": "2 PhCHO(MW 106) + CH₃COCH₃(MW 58) —NaOH→ dibenzalacetone(MW 234). 2.5 M NaOH 50 mL + 에탄올 50 mL에 benzaldehyde 0.050 mol, "
+                    "acetone 0.025 mol, 30분 교반 → 결정 생성 → 감압 여과·물 세척·건조 → 재결정 후 3.51 g → 분광 측정. 옳지 <u>않은</u> 것은?<br>"
+                    "① dibenzalacetone의 기하 이성질체 수는 4개 ② 알돌 반응–탈수 반응 순서 ③ 물 세척은 잔여 NaOH 제거 ④ 수득률 60% ⑤ NMR로 합성 확인 가능",
+            "answer": "<b>①</b> — C=C가 2개이고 분자가 대칭이므로 가능한 기하 이성질체는 (E,E), (E,Z)[= (Z,E)], (Z,Z)의 <b>3개</b>이다.",
+            "concepts": [
+                "Claisen–Schmidt 축합: α-H가 없는 방향족 알데하이드 + 엔올화 가능한 케톤 (염기) → α,β-불포화 케톤 (교차 알돌 + 탈수)",
+                "E1cB 탈수: β-하이드록시 케톤의 α-H 제거 → 엔올레이트 → OH⁻ 이탈; 공액(Ph–C=C–C=O) 형성이 추진력",
+                "기하 이성질체 수: 입체 중심이 되는 C=C가 n개 → 최대 2ⁿ, 분자가 대칭이면 중복(E,Z = Z,E) 제거",
+                "수득률(%) = 실제 수득량 / 이론 수득량 × 100 — 이론량은 한계 반응물 기준 (화학량론 계수 고려)",
+                "결정성 생성물(dba, mp ≈ 110 ℃)은 반응 중 석출 → 여과로 분리",
+            ],
+            "sol": """<p><b>① 메커니즘</b>: OH⁻가 acetone의 α-H 제거 → 엔올레이트 → PhCHO의 C=O에 첨가(알돌) → β-하이드록시 케톤 → E1cB 탈수 → benzalacetone(PhCH=CHCOCH₃). 남은 CH₃의 α-H로 같은 과정을 한 번 더 → dibenzalacetone. 따라서 ② 알돌–탈수 순서는 옳다(○). benzaldehyde는 α-H가 없어 자기 축합하지 않는다.</p>
+<p><b>② 기하 이성질체</b>: C=C 2개 → 2² = 4가지 표기(EE, EZ, ZE, ZZ)가 가능하지만, 분자가 C=O를 중심으로 대칭이므로 EZ와 ZE는 같은 분자 → <b>3개</b>. ①의 “4개”는 틀림. 실제 생성물은 열역학적으로 가장 안정한 (E,E)가 주생성물.</p>
+<p><b>③ 세척</b>: 여과한 결정 표면에 붙은 NaOH(수용성)를 물로 씻어 제거(○). 남은 염기는 녹는점을 낮추고 분해를 촉진한다.</p>
+<p><b>④ 수득률</b></p>
+<div class="eq">한계 반응물 = acetone 0.025 mol (PhCHO 0.050 mol은 정확히 2당량)</div>
+<div class="eq">이론 수득량 = 0.025 mol × 234 g/mol = 5.85 g &nbsp;→&nbsp; 수득률 = <span class="frac"><span>3.51 g</span><span>5.85 g</span></span> × 100 = <b>60 %</b> (○)</div>
+<p><b>⑤ NMR</b>: (E,E)-dba의 ¹H NMR — δ 7.75 (d, J ≈ 16 Hz, 2H, β-H), δ 7.1 (d, J ≈ 16 Hz, 2H, α-H), δ 7.4–7.6 (10H, Ar). J ≈ 16 Hz로 trans(E) 확인 가능(○).</p>""",
+            "figs": [(A.f2009_25, "dibenzalacetone의 기하 이성질체 3개와 수득률 계산")],
+            "faq": [
+                ("왜 acetone을 한계 반응물로 보나요? 몰수는 benzaldehyde가 더 많은데요.",
+                 "반응식에서 PhCHO 2 : acetone 1로 반응합니다. PhCHO 0.050 mol은 acetone 0.025 mol과 정확히 당량이므로 어느 쪽을 기준으로 해도 생성물은 0.025 mol입니다. 한계 반응물은 ‘몰수/계수’가 가장 작은 물질입니다."),
+                ("acetone끼리의 자기 알돌 축합은 왜 주반응이 아닌가요?",
+                 "케톤의 C=O는 알데하이드보다 친전자성이 약하고 입체 장애가 커서, 엔올레이트는 더 반응성이 큰 benzaldehyde와 우선 반응합니다. 또 benzaldehyde를 2당량 사용해 교차 반응을 유리하게 합니다."),
+                ("탈수가 산 촉매 없이 염기에서 일어나는 이유는?",
+                 "β-하이드록시 케톤의 α-H는 산성(pK<sub>a</sub> ≈ 20)이라 염기로 엔올레이트가 되고, OH⁻가 이탈하는 E1cB 메커니즘으로 제거됩니다. 생성되는 C=C가 벤젠 고리 및 C=O와 공액을 이루어 열역학적으로 유리합니다."),
+                ("재결정 후 수득률이 떨어지는 이유는?",
+                 "재결정 용매에 일부 생성물이 녹은 채 남고(모액 손실), 여과·옮기는 과정에서 손실이 생기기 때문입니다. 대신 순도는 올라갑니다."),
+            ],
+        },
+    ]},
+]
