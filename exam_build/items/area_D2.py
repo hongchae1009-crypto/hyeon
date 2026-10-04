@@ -322,7 +322,7 @@ dict(
 {frame(scheme(M(SH_SM, 'S', 14)),
        scheme(arrow('<i>t</i>-BuOOH, Ti(O<i>i</i>-Pr)<sub>4</sub>', '(−)-DET, −20 ℃'), L('A'), arrow('CH<sub>3</sub>OH', 'H<sub>2</sub>SO<sub>4</sub>(촉매)'), L('B')),
        scheme(L('A'), arrow('NaN<sub>3</sub>, NH<sub>4</sub>Cl', 'CH<sub>3</sub>OH/H<sub>2</sub>O'), L('C')),
-       '<div class="chem">◦ DET = diethyl tartrate. 알릴 알코올을 평면에 놓고 CH<sub>2</sub>OH가 오른쪽 아래에 오도록 그리면, (−)-DET는 위쪽 면에서, (+)-DET는 아래쪽 면에서 산소를 전달한다.</div>')}
+       '<div class="chem">◦ DET = diethyl tartrate. 알릴 알코올의 C=C를 지면에 세로 방향으로 놓고 CH<sub>2</sub>OH가 아래쪽 알켄 탄소의 오른쪽 아래에 오도록 그리면, (−)-DET는 위쪽 면에서, (+)-DET는 아래쪽 면에서 산소를 전달한다.</div>')}
 <p class="ask"><b class="lbltxt">A</b>의 입체구조를 그리고 <b class="lbltxt">A</b>의 두 카이랄 중심의 <i>R</i>, <i>S</i> 배열을 쓰시오. <b class="lbltxt">B</b>와 <b class="lbltxt">C</b>의 입체구조를 각각 그리고, <b class="lbltxt">B</b>와 <b class="lbltxt">C</b>에서 친핵체가 공격한 탄소의 위치가 서로 다른 이유를 서술하시오. [[PTS]]</p>''',
     answer=f'''<div class="ansbox">{M(SH_A, 'A: (2R,3R)', 14)}</div>
 <div class="ansbox">{M(SH_B, 'B: (2S,3R)', 13)}{M(SH_C, 'C: (2S,3S)', 13)}</div>

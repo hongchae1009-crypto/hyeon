@@ -104,6 +104,7 @@ table.idx { border-collapse: collapse; width: 100%; font-size: 8.4pt; margin-bot
 table.idx th, table.idx td { border: 1px solid #000; padding: .6mm 1.5mm; text-align: center; }
 table.idx th { background:#eee; }
 table.idx td.l { text-align:left; }
+table.idx td:nth-child(-n+3), table.idx th { white-space: nowrap; }
 '''
 
 

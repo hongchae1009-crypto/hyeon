@@ -21,7 +21,7 @@ dict(
 C의 두 카이랄 중심: C2 = <i>S</i>, C3 = <i>S</i> (B = (<i>E</i>)-cinnamyl alcohol)''',
     explain='''<p>① 안정화 일라이드(Ph<sub>3</sub>P=CHCO<sub>2</sub>Et)는 oxaphosphetane 형성이 가역적이어서 열역학적으로 유리한 <i>trans</i>-oxaphosphetane을 거쳐 (<i>E</i>)-알켄을 준다(cf. 기출의 비안정화 일라이드 PhCH=PPh<sub>3</sub>는 <i>Z</i> 선택적).</p>
 <p>② DIBAL-H 2당량은 에스터를 1차 알코올로 환원하며 C=C는 보존된다 → B = (<i>E</i>)-cinnamyl alcohol.</p>
-<p>③ Sharpless 비대칭 에폭시화: Ti–tartrate 촉매가 알릴 알코올의 OH에 배위하여 한쪽 면에만 산소를 전달한다. 알릴 알코올을 CH<sub>2</sub>OH가 오른쪽 아래에 오도록 그리면 L-(+)-DET는 아래쪽 면, D-(−)-DET는 위쪽 면에서 산소를 전달한다. (<i>E</i>)-알켄의 기하가 그대로 유지(입체특이적)되므로 <i>trans</i>-에폭사이드, 즉 (2<i>S</i>,3<i>S</i>)-3-phenylglycidol이 생성된다.</p>
+<p>③ Sharpless 비대칭 에폭시화: Ti–tartrate 촉매가 알릴 알코올의 OH에 배위하여 한쪽 면에만 산소를 전달한다. C=C를 지면에 세로 방향으로 놓고 CH<sub>2</sub>OH가 아래쪽 알켄 탄소의 오른쪽 아래에 오도록 그리면 L-(+)-DET는 아래쪽 면, D-(−)-DET는 위쪽 면에서 산소를 전달한다. (<i>E</i>)-알켄의 기하가 그대로 유지(입체특이적)되므로 <i>trans</i>-에폭사이드, 즉 (2<i>S</i>,3<i>S</i>)-3-phenylglycidol이 생성된다.</p>
 <p>④ CIP: C2(–O–, –C3, –CH<sub>2</sub>OH, H), C3(–O–, –C2, –Ph, H) 모두 <i>S</i>. 기출(m-CPBA)은 라셈 <i>cis</i>-에폭사이드이므로 광학 비활성이지만, 이 문항의 C는 광학 활성이다.</p>''',
 ),
 ]
