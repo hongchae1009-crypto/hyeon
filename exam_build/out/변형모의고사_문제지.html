@@ -1,0 +1,166 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>유기화학 기출변형 모의고사</title><style>@page { size: A4; margin: 0; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: #fff; color: #000; }
+body { font-family: "NanumMyeongjo", "Noto Serif CJK KR", serif; font-size: 10.3pt; line-height: 1.72; }
+.page { width: 210mm; height: 297mm; padding: 14mm 15mm 12mm; position: relative; page-break-after: always; overflow: hidden; }
+.page:last-child { page-break-after: auto; }
+/* 표지 머리 */
+.title1 { text-align: center; font-size: 13.5pt; font-weight: 700; margin-top: 2mm; white-space: nowrap; }
+.title2 { text-align: center; font-size: 30pt; font-weight: 800; letter-spacing: 38px; margin: 1mm 0 2mm 38px; line-height: 1.3; }
+.blank { display: inline-block; } .blank.w1 { width: 48mm; } .blank.w2 { width: 32mm; }
+.idrow { display: flex; justify-content: space-around; font-family: "NanumGothic", sans-serif; font-weight: 700; font-size: 13pt; margin-bottom: 4mm; }
+table.info { width: 100%; border-collapse: collapse; margin-bottom: 4mm; font-size: 11pt; }
+table.info td { border: 1px solid #000; text-align: center; padding: 1.8mm 0; }
+.notice { font-size: 9.2pt; line-height: 1.6; }
+.topline { border-top: 1px solid #000; margin-top: 8mm; }
+/* 2단 */
+.cols { display: grid; grid-template-columns: 1fr 1fr; column-gap: 0; position: absolute; left: 15mm; right: 15mm; bottom: 18mm; }
+.cols.first { top: 80mm; } .cols.rest { top: 22mm; }
+.cols > .col { padding: 3mm 5mm 0 0; overflow: hidden; height: 100%; }
+.cols > .col + .col { border-left: 1px solid #000; padding: 3mm 0 0 5mm; }
+.q { margin-bottom: 6mm; text-align: justify; word-break: normal; }
+.qn { font-family: "NanumGothic", sans-serif; font-weight: 800; font-size: 12.5pt; margin-right: 1.5mm; }
+.q p { margin: 0 0 1.5mm; text-indent: 0; }
+.q .ask { text-indent: 1em; }
+.pts { white-space: nowrap; }
+.frame { border: 1px solid #000; padding: 2.5mm 3mm; margin: 2.5mm 0 3mm; font-size: 9.6pt; line-height: 1.6; }
+.frame .ft { font-family: "NanumGothic", sans-serif; font-weight: 700; }
+.frame ul { margin: 1mm 0; padding-left: 4mm; }
+.howto { margin-top: 2mm; }
+.howto .ht { text-align: center; font-family: "NanumGothic", sans-serif; font-weight: 700; margin-bottom: 1mm; }
+.howto ul { list-style: none; padding: 0 0 0 1mm; margin: 0; }
+.howto li { padding-left: 3.4mm; text-indent: -3.4mm; margin-bottom: .8mm; }
+.howto li::before { content: "◦ "; }
+/* 반응식 */
+.scheme { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 1mm 1.5mm; margin: 1mm 0; }
+.scheme.left { justify-content: flex-start; }
+.cmpd { display: flex; flex-direction: column; align-items: center; }
+.cmpd svg { display: block; }
+.cmpd .lbl { font-family: "Arial", "NanumGothic", sans-serif; font-weight: 700; font-size: 10pt; margin-top: -1mm; }
+.cmpd.letter { font-family: Arial, sans-serif; font-weight: 700; font-size: 13pt; padding: 0 1mm; }
+.arr { display: flex; flex-direction: column; align-items: center; font-family: Arial, "NanumGothic", sans-serif; font-size: 7.8pt; line-height: 1.25; }
+.arr .rt, .arr .rb { min-height: 10px; text-align: center; white-space: nowrap; }
+.arr .rt { margin-bottom: 1px; } .arr .rb { margin-top: 1px; }
+.plus { font-family: Arial, sans-serif; font-size: 12pt; }
+.chem { font-family: Arial, "NanumGothic", sans-serif; font-size: 9.4pt; }
+/* 표 */
+table.data { border-collapse: collapse; margin: 1.5mm auto; font-size: 9pt; }
+table.data td, table.data th { border: 1px solid #000; padding: .6mm 2.2mm; text-align: center; }
+table.data th { font-family: "NanumGothic", sans-serif; font-weight: 700; background: #f2f2f2; }
+.foot { position: absolute; bottom: 7mm; left: 15mm; right: 15mm; border-top: 1px solid #000; padding-top: 1.5mm; text-align: center; font-size: 9.5pt; }
+.foot b { font-size: 14pt; }
+.foot .tag { position: absolute; left: 0; top: 2mm; font-family: "NanumGothic", sans-serif; font-size: 8pt; color: #444; }
+.end { text-align: center; font-family: "NanumGothic", sans-serif; font-weight: 800; font-size: 14pt; margin-top: 10mm; }
+/* 변형 출처 꼬리표 */
+.src { font-family: "NanumGothic", sans-serif; font-size: 7.6pt; color: #333; border-top: 1px dashed #888; margin-top: 1.5mm; padding-top: .8mm; line-height: 1.45; }
+.rows { display: flex; flex-direction: column; align-items: center; gap: 1mm; }
+.varr { display: flex; align-items: center; gap: 1mm; font-family: Arial, "NanumGothic", sans-serif; font-size: 7.8pt; line-height: 1.25; }
+.varr .vl { text-align: right; min-width: 0; } .varr .vr { text-align: left; }
+.spec { display: flex; justify-content: center; margin: 1mm 0; }
+.lbltxt { font-family: Arial, sans-serif; font-weight: 700; }
+.ansbox { display: flex; flex-wrap: wrap; gap: 2mm 5mm; align-items: flex-end; margin: 1mm 0; }
+.q.overflow { outline: 2px solid red; }
+
+@media screen { body { background:#888; } .page { margin: 8mm auto; background:#fff; box-shadow:0 1px 6px rgba(0,0,0,.4); } }
+</style></head><body><template id="cover-1">
+<div class="title1">중등학교교사 임용 대비 유기화학 기출변형 모의고사 [1회]</div>
+<div class="title2">화 학</div>
+<div class="idrow"><span>수험 번호 : (<span class="blank w1"></span>)</span><span>성 명 : (<span class="blank w2"></span>)</span></div>
+<table class="info"><tr><td>제1차 시험 대비</td><td>전공 A</td><td>1문항 2점</td><td>시험 시간 90분</td></tr></table>
+<div class="notice">◦ 문제지 전체 면수가 맞는지 확인하시오.<br>◦ 모든 문항에는 배점이 표시되어 있습니다.　◦ 각 문항 아래에 변형 기출·소스 논문이 표시되어 있습니다.</div>
+</template><div id="book"></div>
+<div id="pool" data-sets='[{&quot;id&quot;: 1, &quot;label&quot;: &quot;전공 A&quot;, &quot;time&quot;: 90, &quot;count&quot;: 1, &quot;points&quot;: 2, &quot;tag&quot;: &quot;유기화학 변형 1회&quot;}]' style="position:absolute;left:-9999px;width:85mm"><div class="q" data-set="1"><span class="qn">4.</span>다음은 benzaldehyde로부터 중간 주생성물 <b class="lbltxt">A</b>(C<sub>11</sub>H<sub>12</sub>O<sub>2</sub>)와 <b class="lbltxt">B</b>를 거쳐 최종 주생성물 <b class="lbltxt">C</b>를 합성하는 반응을 나타낸 것이다. (단, 각 반응에서는 적절한 분리·정제 과정을 수행하였다.)
+<div class="frame"><div class="scheme "><div class="cmpd"><svg version='1.1' baseProfile='full'
+              xmlns='http://www.w3.org/2000/svg'
+                      xmlns:rdkit='http://www.rdkit.org/xml'
+                      xmlns:xlink='http://www.w3.org/1999/xlink'
+                  xml:space='preserve'
+width='73px' height='96px' viewBox='0 0 73 96'>
+
+<path class='bond-0 atom-0 atom-1' d='M 44.0,22.2 L 34.5,27.7' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-0 atom-0 atom-1' d='M 45.3,24.4 L 37.0,29.2' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-1 atom-1 atom-2' d='M 34.5,27.7 L 34.4,44.7' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-2 atom-2 atom-3' d='M 34.4,44.7 L 19.7,53.2' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-2 atom-2 atom-3' d='M 34.4,47.7 L 22.2,54.7' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-3 atom-3 atom-4' d='M 19.7,53.2 L 19.7,70.2' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-4 atom-4 atom-5' d='M 19.7,70.2 L 34.4,78.7' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-4 atom-4 atom-5' d='M 22.2,68.7 L 34.4,75.8' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-5 atom-5 atom-6' d='M 34.4,78.7 L 49.1,70.3' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-6 atom-6 atom-7' d='M 49.1,70.3 L 49.1,53.3' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-6 atom-6 atom-7' d='M 46.6,68.8 L 46.6,54.7' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-7 atom-7 atom-2' d='M 49.1,53.3 L 34.4,44.7' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path d='M 34.9,27.5 L 34.5,27.7 L 34.5,28.6' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 20.4,52.8 L 19.7,53.2 L 19.7,54.1' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 19.7,69.4 L 19.7,70.2 L 20.4,70.6' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 33.6,78.3 L 34.4,78.7 L 35.1,78.3' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 48.4,70.7 L 49.1,70.3 L 49.1,69.4' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 49.1,54.1 L 49.1,53.3 L 48.4,52.8' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path class='atom-0' d='M 46.6 20.4
+Q 46.6 18.7, 47.4 17.7
+Q 48.3 16.8, 49.8 16.8
+Q 51.4 16.8, 52.3 17.7
+Q 53.1 18.7, 53.1 20.4
+Q 53.1 22.1, 52.2 23.1
+Q 51.4 24.1, 49.8 24.1
+Q 48.3 24.1, 47.4 23.1
+Q 46.6 22.1, 46.6 20.4
+M 49.8 23.3
+Q 50.9 23.3, 51.5 22.5
+Q 52.1 21.8, 52.1 20.4
+Q 52.1 19.0, 51.5 18.3
+Q 50.9 17.6, 49.8 17.6
+Q 48.8 17.6, 48.2 18.3
+Q 47.6 19.0, 47.6 20.4
+Q 47.6 21.8, 48.2 22.5
+Q 48.8 23.3, 49.8 23.3
+' fill='#000000'/>
+</svg>
+</div><div class="arr" style="width:76px"><div class="rt">Ph<sub>3</sub>P=CHCO<sub>2</sub>Et</div><svg width="76" height="10" viewBox="0 0 76 10"><line x1="2" y1="5" x2="72" y2="5" stroke="#000" stroke-width="1.1"/><path d="M66,1 L74,5 L66,9 z" fill="#000"/></svg><div class="rb">CH<sub>2</sub>Cl<sub>2</sub></div></div><div class="cmpd letter">A</div><div class="arr" style="width:113px"><div class="rt">1) DIBAL-H (2 당량)</div><svg width="113" height="10" viewBox="0 0 113 10"><line x1="2" y1="5" x2="109" y2="5" stroke="#000" stroke-width="1.1"/><path d="M103,1 L111,5 L103,9 z" fill="#000"/></svg><div class="rb">2) H<sub>3</sub>O<sup>+</sup></div></div><div class="cmpd letter">B</div></div><div class="scheme "><div class="arr" style="width:125px"><div class="rt">Ti(O<i>i</i>-Pr)<sub>4</sub>, L-(+)-DET</div><svg width="125" height="10" viewBox="0 0 125 10"><line x1="2" y1="5" x2="121" y2="5" stroke="#000" stroke-width="1.1"/><path d="M115,1 L123,5 L115,9 z" fill="#000"/></svg><div class="rb"><i>t</i>-BuOOH, −20 ℃</div></div><div class="cmpd letter">C</div></div><div class="chem" style="text-align:center">DET = diethyl tartrate</div></div>
+<p class="ask"><b class="lbltxt">A</b>의 입체구조를 그리고, <b class="lbltxt">C</b>의 입체구조를 그린 후 <b class="lbltxt">C</b>에 있는 모든 카이랄 중심의 절대 배열(<i>R</i>/<i>S</i>)을 쓰시오. <span class="pts">[2점]</span></p><div class="src">◆ 변형 기출: 2026학년도 A형 1번 · 출처: Klein 14장 참고문헌 (reboxetine 공정 합성, Sharpless 비대칭 에폭시화) (Klein 14.63) · 노벨상: 2001 노벨 화학상(K. B. Sharpless — 키랄 촉매 산화반응), 1979 노벨 화학상(G. Wittig)</div></div></div>
+<script>// 브라우저에서 실행: #pool 안의 .q 블록을 2단 A4 페이지에 순서대로 배치한다.
+(function () {
+  const pool = document.getElementById('pool');
+  if (!pool) return;
+  const sets = JSON.parse(pool.dataset.sets);           // [{id,title,subtitle,count,points,time}]
+  const out = document.getElementById('book');
+  const mm = v => v * 96 / 25.4;
+  sets.forEach(set => {
+    const qs = Array.from(pool.querySelectorAll(`.q[data-set="${set.id}"]`));
+    let pages = [], page, cols, ci;
+    const newPage = first => {
+      page = document.createElement('div'); page.className = 'page';
+      if (first) page.innerHTML = document.getElementById('cover-' + set.id).innerHTML;
+      const c = document.createElement('div'); c.className = 'cols ' + (first ? 'first' : 'rest');
+      c.innerHTML = '<div class="col"></div><div class="col"></div>';
+      page.appendChild(c);
+      const f = document.createElement('div'); f.className = 'foot'; page.appendChild(f);
+      out.appendChild(page); pages.push(page);
+      cols = c.querySelectorAll('.col'); ci = 0;
+    };
+    newPage(true);
+    qs.forEach(q => {
+      for (;;) {
+        const col = cols[ci];
+        col.appendChild(q);
+        if (col.scrollHeight <= col.clientHeight + 1 || col.children.length === 1) {
+          if (col.scrollHeight > col.clientHeight + 1) q.classList.add('overflow');
+          break;
+        }
+        col.removeChild(q);
+        if (ci === 0) ci = 1; else newPage(false);
+      }
+    });
+    const last = cols[ci];
+    const end = document.createElement('div'); end.className = 'end'; end.textContent = '<수고하셨습니다.>';
+    last.appendChild(end);
+    if (last.scrollHeight > last.clientHeight + 1) { last.removeChild(end); }
+    pages.forEach((p, i) => {
+      p.querySelector('.foot').innerHTML =
+        `<span class="tag">${set.tag}</span>화 학 [${set.label}] (${pages.length}면 중 <b>${i + 1}</b> 면)`;
+    });
+  });
+  pool.remove();
+  document.body.dataset.ready = '1';
+})();
+</script></body></html>

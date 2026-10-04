@@ -5,19 +5,20 @@ body { font-family: "NanumMyeongjo", "Noto Serif CJK KR", serif; font-size: 10.3
 .page { width: 210mm; height: 297mm; padding: 14mm 15mm 12mm; position: relative; page-break-after: always; overflow: hidden; }
 .page:last-child { page-break-after: auto; }
 /* 표지 머리 */
-.title1 { text-align: center; font-size: 15pt; font-weight: 700; margin-top: 4mm; letter-spacing: .5px; }
-.title2 { text-align: center; font-size: 34pt; font-weight: 800; letter-spacing: 38px; margin: 2mm 0 3mm 38px; }
+.title1 { text-align: center; font-size: 13.5pt; font-weight: 700; margin-top: 2mm; white-space: nowrap; }
+.title2 { text-align: center; font-size: 30pt; font-weight: 800; letter-spacing: 38px; margin: 1mm 0 2mm 38px; line-height: 1.3; }
+.blank { display: inline-block; } .blank.w1 { width: 48mm; } .blank.w2 { width: 32mm; }
 .idrow { display: flex; justify-content: space-around; font-family: "NanumGothic", sans-serif; font-weight: 700; font-size: 13pt; margin-bottom: 4mm; }
 table.info { width: 100%; border-collapse: collapse; margin-bottom: 4mm; font-size: 11pt; }
-table.info td { border: 1px solid #000; text-align: center; padding: 2.2mm 0; }
-.notice { font-size: 9.4pt; border-bottom: 1px solid #000; padding-bottom: 1.5mm; margin-bottom: 3mm; }
+table.info td { border: 1px solid #000; text-align: center; padding: 1.8mm 0; }
+.notice { font-size: 9.2pt; line-height: 1.6; }
 .topline { border-top: 1px solid #000; margin-top: 8mm; }
 /* 2단 */
 .cols { display: grid; grid-template-columns: 1fr 1fr; column-gap: 0; position: absolute; left: 15mm; right: 15mm; bottom: 18mm; }
-.cols.first { top: 76mm; } .cols.rest { top: 22mm; }
-.cols > .col { padding: 3mm 5mm 0 0; overflow: hidden; }
+.cols.first { top: 80mm; } .cols.rest { top: 22mm; }
+.cols > .col { padding: 3mm 5mm 0 0; overflow: hidden; height: 100%; }
 .cols > .col + .col { border-left: 1px solid #000; padding: 3mm 0 0 5mm; }
-.q { margin-bottom: 6mm; text-align: justify; word-break: keep-all; }
+.q { margin-bottom: 6mm; text-align: justify; word-break: normal; }
 .qn { font-family: "NanumGothic", sans-serif; font-weight: 800; font-size: 12.5pt; margin-right: 1.5mm; }
 .q p { margin: 0 0 1.5mm; text-indent: 0; }
 .q .ask { text-indent: 1em; }
@@ -52,3 +53,10 @@ table.data th { font-family: "NanumGothic", sans-serif; font-weight: 700; backgr
 .end { text-align: center; font-family: "NanumGothic", sans-serif; font-weight: 800; font-size: 14pt; margin-top: 10mm; }
 /* 변형 출처 꼬리표 */
 .src { font-family: "NanumGothic", sans-serif; font-size: 7.6pt; color: #333; border-top: 1px dashed #888; margin-top: 1.5mm; padding-top: .8mm; line-height: 1.45; }
+.rows { display: flex; flex-direction: column; align-items: center; gap: 1mm; }
+.varr { display: flex; align-items: center; gap: 1mm; font-family: Arial, "NanumGothic", sans-serif; font-size: 7.8pt; line-height: 1.25; }
+.varr .vl { text-align: right; min-width: 0; } .varr .vr { text-align: left; }
+.spec { display: flex; justify-content: center; margin: 1mm 0; }
+.lbltxt { font-family: Arial, sans-serif; font-weight: 700; }
+.ansbox { display: flex; flex-wrap: wrap; gap: 2mm 5mm; align-items: flex-end; margin: 1mm 0; }
+.q.overflow { outline: 2px solid red; }
