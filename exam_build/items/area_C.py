@@ -116,7 +116,7 @@ def H1(peaks, title='¹H NMR 스펙트럼(300 MHz, CDCl₃)', mhz=300, x0=10, x1
                     xs[k] = xs[k + 1] - bw - 6
         yt, yb = 14, 14 + ih - 14
         for g, bx in zip(insets, xs):
-            ext = max(max(abs(o) for o, _ in PL[i]) / mhz if PL[i] else 0.03 for i in g)
+            ext = max(max(max(abs(o) for o, _ in PL[i]) / mhz, 0.025) if PL[i] else 0.03 for i in g)
             dmax = max(peaks[i][0] for i in g) + ext
             dmin = min(peaks[i][0] for i in g) - ext
             wpp = (dmax - dmin) * 1.25 + 0.02
@@ -536,4 +536,84 @@ ITEMS.append(dict(
 <p>③ IR 1718 cm<sup>−1</sup>: 벤젠 고리와 <b>콘쥬게이션되지 않은</b> 6원 고리 케톤(사이클로헥산온 ≈1715). 1-tetralone처럼 C=O가 고리에 직접 붙은 아릴 케톤이었다면 ≈1685 cm<sup>−1</sup>이고, 오쏘 H가 ≈8.0 ppm에 나타났을 것이다.</p>
 <p>④ ¹H: ㉢ 3.62(s, 2H) = 벤젠 고리와 C=O 사이에 낀 CH<sub>2</sub>(벤질 + α-카보닐로 이중 탈가림, 이웃 H 없음 → 단일선): 2-tetralone의 C1–H<sub>2</sub>. ㉣ 2.98(t, 2H) = Ar–CH<sub>2</sub>(C4), ㉤ 2.55(t, 2H) = CH<sub>2</sub>–C=O(C3); 서로만 짝지은 두 삼중선 → –CH<sub>2</sub>CH<sub>2</sub>– 단위. ㉥ 2.24(s, 3H) = Ar–CH<sub>3</sub>. ㉠ 7.38·㉡ 6.98(각 d, <i>J</i> = 8.2 Hz) → 서로 오쏘인 방향족 H 2개만 남은 사치환 벤젠(㉠은 Br의 오쏘 C7–H, ㉡은 CH<sub>3</sub>의 오쏘 C6–H). 810 cm<sup>−1</sup> = 이웃한 방향족 C–H 2개의 면외 굽힘.</p>
 <p>⑤ 함정: 분자식이 같은 사슬형 비닐 케톤 ArCH<sub>2</sub>C(=O)CH=CH<sub>2</sub>(아실화 후 HCl 제거 생성물)은 5.8~6.4 ppm의 비닐 H 3개와 콘쥬게이션 C=O(≈1690)를 보여야 하므로 아니다. 1-tetralone 골격은 단일선 CH<sub>2</sub>가 없고 C3–H<sub>2</sub>가 오중선(≈2.1)으로 나타난다.</p>''',
+))
+
+# 11 ─ 2016A-6 : 3-acetyl-7-(diethylamino)coumarin
+ITEMS.append(dict(
+    key='2016A-6',
+    src='2016학년도 A형 6번',
+    src_topic='C₁₂H₁₄O₃(ethyl (E)-4-methoxycinnamate)의 IR·¹H NMR — 콘쥬게이션 에스터, trans J = 16 Hz, para AA′BB′',
+    change='신남산 에스터(열린 사슬 α,β-불포화 에스터) 대신, Knoevenagel 축합–락톤화로 생기는 쿠마린(고리 안 α,β-불포화 락톤)을 다룸. '
+           '이웃 H가 없는 H4 단일선이 두 카보닐의 β-위치 + 공명으로 8.4 ppm까지 탈가림되는 이유, 7-NEt₂의 공명 주개에 의한 H6·H8 가림, '
+           '1,2,4-삼치환 고리의 d/dd/d 양상, 락톤·케톤 C=O 두 띠를 해석하게 함',
+    paper=dict(cite='J. Chem. Ed. 2006, 83, 287–289', book='Klein 16.75 (2.74)',
+               what='4-(diethylamino)salicylaldehyde + ethyl acetoacetate(piperidine) → 형광 색소 3-acetyl-7-(diethylamino)coumarin; ¹H 8.42(H4)·7.38(H5) 귀속'),
+    nobel='',
+    body=f'''다음은 4-(diethylamino)salicylaldehyde로부터 형광 화합물 {B_}(C<sub>15</sub>H<sub>17</sub>NO<sub>3</sub>)를 합성하는 반응과 {B_}의 <sup>1</sup>H NMR 스펙트럼 및 피크 자료이다. {B_}의 IR 스펙트럼에는 1720 cm<sup>−1</sup>와 1672 cm<sup>−1</sup>에 강한 흡수가 있고, 3200~3600 cm<sup>−1</sup>와 2700~2850 cm<sup>−1</sup>에는 흡수가 없다. (단, <sup>1</sup>H NMR 스펙트럼의 여백에 있는 그림은 6.4~8.5 ppm 영역의 피크를 확대한 것이다.)
+{frame(scheme(M('CCN(CC)c1ccc(C=O)c(O)c1', scale=11), plus(), M('CCOC(=O)CC(C)=O', scale=11), arrow('piperidine', 'EtOH, 가열', width=62), L('B')))}
+{spec(H1([(8.43, [], 1, '㉠'), (7.38, [(9.0, 1)], 1, '㉡'), (6.62, [(9.0, 1), (2.5, 1)], 1, '㉢'), (6.47, [(2.5, 1)], 1, '㉣'), (3.45, [(7.1, 3)], 4, '㉤'), (2.68, [], 3, '㉥'), (1.24, [(7.1, 2)], 6, '㉦')],
+          insets=[[0], [1], [2, 3]]))}
+<div class="chem" style="font-size:8.6pt">◦ ㉠ 8.43(s, 1H), ㉡ 7.38(d, <i>J</i> = 9.0 Hz, 1H), ㉢ 6.62(dd, <i>J</i> = 9.0, 2.5 Hz, 1H), ㉣ 6.47(d, <i>J</i> = 2.5 Hz, 1H), ㉤ 3.45(q, <i>J</i> = 7.1 Hz, 4H), ㉥ 2.68(s, 3H), ㉦ 1.24(t, <i>J</i> = 7.1 Hz, 6H)</div>
+<p class="ask">{B_}의 구조를 그리고, 피크 ㉠에 해당하는 수소에 동그라미로 표시하시오. [[PTS]]</p>''',
+    answer=f'''<div class="ansbox">{M('CCN(CC)c1ccc2cc(C(C)=O)c(=O)oc2c1', 'B: 3-acetyl-7-(diethylamino)-2H-chromen-2-one', 16)}</div>
+㉠(δ 8.43, s) = 쿠마린 고리의 H4(아세틸기가 붙은 C3 옆, 벤젠 고리 쪽 C=C의 수소)에 동그라미.''',
+    explain='''<p>① 반응: piperidine이 ethyl acetoacetate의 활성 메틸렌을 탈양성자화(또는 알데하이드와 이미늄 이온 형성)하여 Knoevenagel 축합 → C=C 형성(−H<sub>2</sub>O). 이어서 오쏘 위치 페놀 OH가 에틸 에스터 C=O를 분자 내 공격하여 EtOH가 빠지며 6원 락톤(쿠마린)이 닫힌다. C<sub>11</sub>H<sub>15</sub>NO<sub>2</sub> + C<sub>6</sub>H<sub>10</sub>O<sub>3</sub> − H<sub>2</sub>O − C<sub>2</sub>H<sub>5</sub>OH = C<sub>15</sub>H<sub>17</sub>NO<sub>3</sub> ✓ (불포화도 8).</p>
+<p>② IR: 페놀 O–H(3200~3600)와 알데하이드 C–H(2720·2820)가 사라짐 → 두 작용기가 모두 반응. 1720 cm<sup>−1</sup> = α,β-불포화 락톤 C=O, 1672 cm<sup>−1</sup> = 콘쥬게이션된 아세틸 케톤 C=O. 에틸 에스터(4.2 q/1.3 t)가 남아 있지 않다는 점도 ¹H에서 확인된다.</p>
+<p>③ ¹H: ㉤ 3.45(q, 4H)·㉦ 1.24(t, 6H) = N(CH<sub>2</sub>CH<sub>3</sub>)<sub>2</sub>(N–CH<sub>2</sub>는 O–CH<sub>2</sub>보다 높은 장), ㉥ 2.68(s, 3H) = C(=O)CH<sub>3</sub>.</p>
+<p>④ 벤젠 고리(1,2,4-삼치환): ㉡ 7.38(d, 9.0) = H5(오쏘 H6만), ㉢ 6.62(dd, 9.0, 2.5) = H6(오쏘 H5·메타 H8), ㉣ 6.47(d, 2.5) = H8(메타 H6만). H6·H8은 강한 공명 주개 NEt<sub>2</sub>의 오쏘 위치라 6.5~6.6 ppm으로 크게 가려진다. H5는 NEt<sub>2</sub>의 메타라 상대적으로 낮은 장.</p>
+<p>⑤ ㉠ 8.43(s, 1H) = H4. 짝지을 이웃 H가 없어 단일선이고, 락톤 C=O와 아세틸 C=O 두 개 모두의 β-위치여서 공명 구조에서 C4가 δ+를 띠며(C4=C3–C=O ↔ <sup>+</sup>C4–C3=C–O<sup>−</sup>) 두 C=O의 반자기 이방성 영역에도 놓여 강하게 탈가림된다. 함정: 가장 낮은 장 피크를 방향족 H나 알데하이드 H로 생각하는 것 — 알데하이드 C–H 띠가 없고 9.5~10 ppm 신호도 없다.</p>''',
+))
+
+# 12 ─ 2015A-기입10 : 2-decanone (McLafferty)
+ITEMS.append(dict(
+    key='2015A-기입10',
+    src='2015학년도 A형 기입형 10번 유형',
+    src_topic='할로젠 1개 화합물(2-bromoanisole)의 MS(M/M+2 1:1)·¹H·¹³C NMR — 동위원소 패턴과 ¹³C 신호 수로 구조 결정',
+    change='할로젠 동위원소 해석은 2021A-2·2023A-3 변형에서 다루므로, 이 자리에서는 MS 고빈출 개념인 McLafferty 자리옮김(γ-H 전이 + β-절단)과 '
+           'α-절단(아실륨 m/z 43)을 ¹H NMR 적분·갈라짐과 결합하여 위치 이성질체 케톤·알데하이드(3-decanone, decanal 등)를 구별하도록 대체. '
+           '“MS 피크의 조각 이온 구조”를 그리게 하는 요구는 기출(2023A-3)과 같은 형식',
+    paper=dict(cite='J. Nat. Prod. 2012, 75, 1765–1776', book='Klein 12.36',
+               what='미생물 휘발 성분 254종 중 구조 이성질체 2-decanone과 decanal — 1-decyne의 Markovnikov 수화(H₂SO₄/HgSO₄) vs 수소화붕소화–산화'),
+    nobel='',
+    body=f'''다음은 미생물이 내는 휘발 성분 중 하나인 화합물 {A_}(C<sub>10</sub>H<sub>20</sub>O)의 <sup>1</sup>H NMR 스펙트럼과 질량 스펙트럼이다. {A_}의 IR 스펙트럼에는 1718 cm<sup>−1</sup>에 강한 흡수가 있고 2700~2850 cm<sup>−1</sup>의 약한 이중 흡수는 없다. 피크의 적분 비 ㉠ : ㉡ : ㉢ : ㉣ : ㉤은 2 : 3 : 2 : 10 : 3이다. (단, <sup>1</sup>H NMR 스펙트럼의 여백에 있는 그림은 피크 ㉠과 ㉢을 확대한 것이다.)
+{spec(H1([(2.42, [(7.4, 2)], 2, '㉠'), (2.13, [], 3, '㉡'), (1.57, [(7.3, 4)], 2, '㉢'), (1.27, 'm', 10, '㉣'), (0.88, [(6.8, 2)], 3, '㉤')], insets=[[0], [2]]))}
+{spec(MS([(27, 8), (29, 12), (39, 10), (41, 30, '41'), (43, 100, '43'), (55, 12), (57, 18), (58, 86, '58'), (59, 40), (71, 22, '71'), (85, 8), (96, 5), (113, 4), (141, 4, '141'), (156, 7, '156')], x0=20, x1=180))}
+<p class="ask">{A_}의 구조를 그리고, 질량 스펙트럼에서 m/z가 58인 피크에 해당하는 조각 이온의 구조를 그리시오. [[PTS]]</p>''',
+    answer=f'''<div class="ansbox">{M('CCCCCCCCC(C)=O', 'A: decan-2-one', 16)}{M('C=C(O)C', 'm/z 58: [CH₂=C(OH)CH₃]⁺•', 18)}</div>
+m/z 58 = McLafferty 자리옮김으로 생긴 프로펜-2-올(아세톤 엔올) 라디칼 양이온 C<sub>3</sub>H<sub>6</sub>O<sup>+•</sup>''',
+    explain='''<p>① 불포화도 1, IR 1718 cm<sup>−1</sup>(포화 C=O)이고 알데하이드 Fermi 쌍(2720·2820)이 없으므로 케톤. ¹H에 9~10 ppm 신호도 없다.</p>
+<p>② ¹H: ㉡ 2.13(s, 3H) = CH<sub>3</sub>–C(=O) → 메틸 케톤. ㉠ 2.42(t, 2H) = C(=O)–CH<sub>2</sub>(이웃 CH<sub>2</sub>), ㉢ 1.57(quintet, 2H) = 그 다음 CH<sub>2</sub>, ㉣ 1.27(10H) = (CH<sub>2</sub>)<sub>5</sub>, ㉤ 0.88(t, 3H) = 말단 CH<sub>3</sub>. 가지(이중선 CH<sub>3</sub>)가 없으므로 곧은 사슬 → CH<sub>3</sub>CO(CH<sub>2</sub>)<sub>7</sub>CH<sub>3</sub> = 2-decanone. 2+3+2+10+3 = 20H ✓.</p>
+<p>③ MS: M<sup>+•</sup> = 156(C<sub>10</sub>H<sub>20</sub>O, 질소 없음 → 짝수). <b>McLafferty 자리옮김</b>: 카보닐 산소 라디칼 양이온이 6원 고리 전이 상태를 거쳐 γ-탄소(C5)의 수소를 끌어오고, β-결합(C3–C4)이 끊어져 중성 1-heptene(C<sub>7</sub>H<sub>14</sub>, 98)이 떨어진다. 남는 이온은 CH<sub>2</sub>=C(OH)CH<sub>3</sub><sup>+•</sup>, m/z 156 − 98 = 58(짝수 질량 = 홀전자 이온). 59는 수소가 하나 더 옮겨진 이온과 ¹³C 동위원소 기여.</p>
+<p>④ α-절단: C1–C2 사이가 끊기면 CH<sub>3</sub>–C≡O<sup>+</sup>(m/z 43, 기준 피크), C2–C3 사이가 끊기면 C<sub>8</sub>H<sub>17</sub>C≡O<sup>+</sup>(m/z 141). 71·57·43·29 등은 알킬 사슬 조각.</p>
+<p>⑤ 함정: 3-decanone은 2.40(q)·1.05(t)를 보이고 McLafferty 피크가 m/z 72, α-절단 피크가 57이다. decanal은 9.76(t) 신호, McLafferty m/z 44, IR 2720·2820을 보인다. 논문 연계: 1-decyne에 H<sub>2</sub>SO<sub>4</sub>/HgSO<sub>4</sub>(Markovnikov 수화 → 엔올 → 케톤 호변 이성)를 쓰면 2-decanone, 수소화붕소화–산화(반 Markovnikov)를 쓰면 decanal이 된다.</p>''',
+))
+
+# 13 ─ 2014A-기입8 : (Z)-3-hexenyl acetate
+_ZHA = 'CC/C=C\\CCOC(C)=O'
+ITEMS.append(dict(
+    key='2014A-기입8',
+    src='2014학년도 A형 기입형 8번',
+    src_topic='C₈H₁₄O(sulcatone)의 ¹H·¹³C·DEPT-90·DEPT-135 + 가오존 분해(아세톤 생성)로 구조 결정',
+    change='케톤 대신 녹엽 휘발 성분인 알켄 에스터를 쓰고, ¹³C/DEPT로 CH·CH₂·CH₃·C를 셈하는 평가 요소는 유지. '
+           '가오존 분해 단서를 propanal로 바꾸어 C=C 위치를 정하고, 비닐 ³J(10.8 Hz)로 Z 배치까지 결정하게 하여 “입체구조”를 요구하도록 강화. '
+           '같은 분자식의 methyl hept-4-enoate·ethyl hex-3-enoate 등과 구별',
+    paper=dict(cite='Nat. Prod. Rep. 2012, 29, 1288–1303', book='Klein 12.37',
+               what='상처 입은 애기장대가 방출하는 녹엽 휘발 성분 (Z)-3-hexenyl acetate — 1-butyne 알카인화 이온 + ethylene oxide → 3-hexyn-1-ol → Lindlar → (Z)-3-hexen-1-ol → 에스터화'),
+    nobel='',
+    body=f'''분자식이 C<sub>8</sub>H<sub>14</sub>O<sub>2</sub>이고 탄소–탄소 이중 결합과 에스터기를 가진 어떤 화합물 {A_}가 있다. {A_}를 가오존 분해(ozonolysis; O<sub>3</sub>, 이어서 (CH<sub>3</sub>)<sub>2</sub>S)하면 생성물 중 하나로 propanal이 얻어진다. 다음은 {A_}의 <sup>1</sup>H NMR 스펙트럼과 <sup>13</sup>C NMR·DEPT 자료이다. (단, <sup>1</sup>H NMR 스펙트럼의 여백에 있는 그림은 피크 ㉠~㉣을 확대한 것이며, 선택적 짝풀림 실험으로 측정한 두 올레핀 수소 사이의 <sup>3</sup>J는 10.8 Hz이다.)
+{spec(H1([(5.51, [(10.8, 1), (7.2, 2)], 1, '㉠'), (5.33, [(10.8, 1), (7.2, 2)], 1, '㉡'), (4.06, [(6.9, 2)], 2, '㉢'), (2.38, [(7.0, 3)], 2, '㉣'), (2.07, [(7.3, 4)], 2, ''), (2.04, [], 3, '㉤'), (0.97, [(7.5, 2)], 3, '㉥')],
+          insets=[[0, 1], [2], [3]]))}
+<div class="chem" style="font-size:9pt">◦ <sup>1</sup>H NMR: ㉠ 5.51(m, 1H), ㉡ 5.33(m, 1H), ㉢ 4.06(t, <i>J</i> = 6.9 Hz, 2H), ㉣ 2.38(q 모양, 2H), ㉤ 2.08~2.00(m, 5H; 단일선 3H 포함), ㉥ 0.97(t, <i>J</i> = 7.5 Hz, 3H)</div>
+{T([('171.0', '−', '−'), ('134.5', '+', '+'), ('123.8', '+', '+'), ('63.9', '−', '음(−)'), ('26.7', '−', '음(−)'), ('21.0', '−', '+'), ('20.6', '−', '음(−)'), ('14.2', '−', '+')],
+   head=('<sup>13</sup>C δ', 'DEPT-90', 'DEPT-135'))}
+<div class="chem" style="font-size:8.5pt;text-align:center">(DEPT 표: + 양의 피크, 음(−) 음의 피크, − 피크 없음)</div>
+<p class="ask">{A_}의 입체구조를 그리시오. [[PTS]]</p>''',
+    answer=f'''<div class="ansbox">{M(_ZHA, 'A: (Z)-hex-3-en-1-yl acetate', 18)}</div>
+CH<sub>3</sub>CH<sub>2</sub>–CH=CH–CH<sub>2</sub>CH<sub>2</sub>–O–C(=O)CH<sub>3</sub>, C3=C4는 <i>cis</i>(<i>Z</i>)''',
+    explain='''<p>① 불포화도 = (18−14)/2 = 2 → C=C 1개 + 에스터 C=O 1개(¹³C 171.0, 4차 탄소: DEPT에 없음). 다른 고리는 없다.</p>
+<p>② DEPT로 탄소 종류 세기: DEPT-90에 나타나는 134.5·123.8 = 두 =CH(이치환 알켄, 4차 알켄 탄소 없음). DEPT-135 음의 피크 63.9·26.7·20.6 = CH<sub>2</sub> 3개(63.9는 O–CH<sub>2</sub>). DEPT-135 양성이면서 DEPT-90에 없는 21.0·14.2 = CH<sub>3</sub> 2개. 4차 C는 171.0뿐. ⇒ C=O + 2 CH + 3 CH<sub>2</sub> + 2 CH<sub>3</sub> = C<sub>8</sub>H<sub>14</sub> 부분 ✓.</p>
+<p>③ ¹H: ㉢ 4.06(t, 2H) = O–CH<sub>2</sub>–CH<sub>2</sub>(에스터의 <b>알코올 쪽</b> 산소에 붙은 CH<sub>2</sub>), ㉤ 안의 2.04(s, 3H) = CH<sub>3</sub>C(=O)O → 아세테이트. 메틸 에스터라면 3.67(s)과 δ<sub>C</sub> 51이 있어야 한다. ㉥ 0.97(t) = CH<sub>3</sub>CH<sub>2</sub>–, 그 CH<sub>2</sub>(≈2.07, 알릴)는 ㉤에 겹쳐 있다. ㉣ 2.38(2H) = O–CH<sub>2</sub>와 C=C 사이의 알릴 CH<sub>2</sub>.</p>
+<p>④ 가오존 분해에서 propanal(CH<sub>3</sub>CH<sub>2</sub>CHO)이 나오므로 C=C의 한쪽은 CH<sub>3</sub>CH<sub>2</sub>CH=, 다른 쪽은 =CH–CH<sub>2</sub>CH<sub>2</sub>OAc(다른 생성물 3-oxopropyl acetate). ⇒ 3-hexenyl acetate.</p>
+<p>⑤ 기하: 올레핀 ³<i>J</i> = 10.8 Hz는 <i>cis</i> 범위(6~12 Hz; <i>trans</i>는 12~18 Hz) → (<i>Z</i>). 참고로 (<i>Z</i>)-알켄의 알릴 탄소(26.7, 20.6)는 (<i>E</i>)-이성질체(≈32, 25.6)보다 γ-gauche 입체 가림 때문에 높은 장에 나타난다. 논문 경로의 Lindlar 수소화(syn 첨가)가 <i>cis</i>-알켄을 주는 것과 일치한다.</p>
+<p>⑥ 함정: methyl hept-4-enoate(C<sub>8</sub>H<sub>14</sub>O<sub>2</sub>, 가오존 분해로 propanal 생성)는 OCH<sub>3</sub> 3.67(s), δ<sub>C</sub> 173·51을 보이고 4.06(t)가 없다. ethyl hex-3-enoate는 4.13(q)·3.03(d)를 보인다. 기하를 표시하지 않거나 <i>E</i>로 그리면 오답.</p>''',
 ))

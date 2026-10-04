@@ -9,7 +9,9 @@ CHEPTANONE = 'O=C1CCCCCC1'
 CP = 'C1=CCC=C1'
 E64 = 'O=C1C2C=CC=CC1C1CC2C=C1'                      # [6+4] 첨가물 C12H12O
 
-CNT = 'C1=CC=CCC=CCC1'                               # 1,3,6-cyclononatriene C9H12
+CNT = 'C1=C\\C=C/C\\C=C/CC/1'                      # 1,3,6-cyclononatriene C9H12 (all-cis)
+ANION1 = '[CH-]1/C=C\\C=C/C=C\\CC1'
+ANION3 = 'C1=C\\[CH-]/C=C\\C=C/CC/1'
 
 HEXENYL = 'CC(=O)OCCCCC=C'
 DIENE_E = 'CC(=O)OCC/C=C/C=C'
@@ -34,6 +36,32 @@ THIO_B = 'CC(C(=S)N1CCCC1)C1(C=C)CCCCC1'
 
 LYS_PH1 = '[NH3+][C@@H](CCCCNC(=O)OCC#C)C(=O)O'
 LYS_PH7 = '[NH3+][C@@H](CCCCNC(=O)OCC#C)C(=O)[O-]'
+
+def _svg_E(scale=15, label='E'):
+    """[6+4] 첨가물 E: RDKit 좌표에서 C=O 다리의 O를 칠원 고리 안쪽으로 옮겨 결합 겹침을 없앤 그림."""
+    import re
+    from rdkit import Chem
+    from rdkit.Chem import rdDepictor
+    from rdkit.Geometry import Point3D
+    from rdkit.Chem.Draw import rdMolDraw2D
+    from chem import box
+    rdDepictor.SetPreferCoordGen(True)
+    m = Chem.MolFromSmiles(E64); rdDepictor.Compute2DCoords(m)
+    c = m.GetConformer()
+    cc = c.GetAtomPosition(1)
+    c.SetAtomPosition(1, Point3D(cc.x + 0.34, cc.y, 0))
+    c.SetAtomPosition(0, Point3D(cc.x + 0.34 - 0.85, cc.y, 0))
+    xs = [c.GetAtomPosition(i).x for i in range(m.GetNumAtoms())]
+    ys = [c.GetAtomPosition(i).y for i in range(m.GetNumAtoms())]
+    w = int((max(xs) - min(xs)) * scale + 2.6 * scale); h = int((max(ys) - min(ys)) * scale + 2.2 * scale)
+    d = rdMolDraw2D.MolDraw2DSVG(w, h); o = d.drawOptions()
+    o.useBWAtomPalette(); o.clearBackground = False; o.bondLineWidth = 1.3; o.fixedBondLength = scale
+    o.fixedFontSize = int(scale * 0.62); o.padding = 0.06; o.additionalAtomLabelPadding = 0.08
+    d.DrawMolecule(m); d.FinishDrawing()
+    svg = re.sub(r"<\?xml[^>]*\?>\s*", "", d.GetDrawingText()).replace("<!-- END OF HEADER -->", "")
+    svg = re.sub(r"<rect[^>]*style='opacity:1.0;fill:#FFFFFF[^>]*>\s*</rect>", "", svg)
+    return box(svg, label)
+
 
 B_ = lambda t: f'<b class="lbltxt">{t}</b>'
 
@@ -64,7 +92,7 @@ dict(
 <p class="ask">{B_('A')}가 phenol보다 강한 산인 이유를 설명할 수 있도록, {B_('A')}의 짝염기의 공명 구조 중 칠원 고리가 방향족성을 갖는 구조를 그리시오.
 {B_('B')}~{B_('D')}를 카보닐 산소의 염기도(짝산의 pK<sub>a</sub>)가 큰 것부터 순서대로 나열하시오. 또한, {B_('E')}의 구조를 그리고,
 이 반응이 가열 조건에서 협동적으로 일어날 수 있는 이유를 참여하는 π 전자 수와 전선 궤도함수(HOMO·LUMO)의 위상에 근거하여 서술하시오. [[PTS]]</p>''',
-    answer=f'''<div class="ansbox">{M('[O-]c1ccccc[c+]1[O-]', 'A의 짝염기(방향족 공명 구조)', 15)}{M(E64, 'E', 15)}</div>
+    answer=f'''<div class="ansbox">{M('[O-]c1ccccc[c+]1[O-]', 'A의 짝염기(방향족 공명 구조)', 15)}{_svg_E(21, 'E (exo [6+4] 첨가물)')}</div>
 · 방향족 공명 구조: 두 산소가 모두 O<sup>−</sup>이고 칠원 고리가 tropylium(6π) 양이온인 구조(전체 전하 −1)<br>
 · 염기도: {B_('B')} &gt; {B_('C')} &gt; {B_('D')}<br>
 · {B_('E')}: tricyclo[4.4.1.1<sup>2,5</sup>]dodeca-3,7,9-trien-11-one 골격(트로폰 C2·C7이 cyclopentadiene C1·C4와 결합; exo 첨가물)<br>
@@ -106,7 +134,7 @@ dict(
        '<div class="chem" style="text-align:center">(sp<sup>3</sup> CH<sub>2</sub> 신호는 생략함)</div>',
        '<div class="chem">[참고] cyclononatetraenyl 음이온(C<sub>9</sub>H<sub>9</sub><sup>−</sup>, 평면 정구각형)의 <sup>1</sup>H NMR: δ ≈ 7에 단일선 1개</div>')}
 <p class="ask">{B_('Y')}에서 δ 3.39와 3.74에 해당하는 수소가 결합한 탄소의 번호를 모두 쓰시오. 또한, C<sub>9</sub>H<sub>9</sub><sup>−</sup>은 방향족이지만 {B_('Y')}는 방향족이 아닌 이유를 π 전자 수를 포함하여 서술하시오. [[PTS]]</p>''',
-    answer=f'''<div class="ansbox">{M('[CH-]1C=CC=CC=CCC1', 'C1에 음전하', 14)}{M('C1=C[CH-]C=CC=CCC1', 'C3에 음전하', 14)}</div>
+    answer=f'''<div class="ansbox">{M(ANION1, 'C1에 음전하', 14)}{M(ANION3, 'C3에 음전하', 14)}</div>
 · δ 3.39, 3.74: C1, C3, C5, C7에 결합한 H(음전하가 놓이는 홀수 번째 탄소; C1/C7, C3/C5는 각각 대칭 동등)<br>
 · C<sub>9</sub>H<sub>9</sub><sup>−</sup>: 9개 탄소 모두 sp<sup>2</sup>인 평면 고리에서 p 오비탈이 끊김 없이 고리를 따라 이어지고 π 전자가 10개(4<i>n</i>+2, <i>n</i> = 2)이므로 방향족이다.
 {B_('Y')}: π 전자는 8개가 7개 탄소(C1~C7)에 비편재화되어 있지만 C8·C9가 sp<sup>3</sup>이어서 고리 콘쥬게이션이 끊긴 사슬형(헵타트라이엔일) 음이온이므로 방향족이 아니다.''',

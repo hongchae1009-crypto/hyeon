@@ -1,5 +1,33 @@
 """영역 B: 방향족 치환·다이아조늄 화학 (12문항)."""
 from chem import M, L, arrow, varrow, scheme, rows, frame, nmr, ir, spec, plus
+from chem import box
+import re as _re
+from rdkit import Chem as _Chem
+from rdkit.Chem import rdDepictor as _dep
+from rdkit.Chem.Draw import rdMolDraw2D as _d2d
+
+
+def MK(smiles, label='', scale=15):
+    """방향족화(aromaticity perception)를 하지 않고 케쿨레 구조 그대로 그린다(벤자인의 삼중 결합 표시용)."""
+    mol = _Chem.MolFromSmiles(smiles, sanitize=False)
+    mol.UpdatePropertyCache(strict=False)
+    _Chem.SanitizeMol(mol, _Chem.SanitizeFlags.SANITIZE_ALL ^ _Chem.SanitizeFlags.SANITIZE_SETAROMATICITY
+                      ^ _Chem.SanitizeFlags.SANITIZE_KEKULIZE)
+    _dep.Compute2DCoords(mol)
+    conf = mol.GetConformer()
+    xs = [conf.GetAtomPosition(i).x for i in range(mol.GetNumAtoms())]
+    ys = [conf.GetAtomPosition(i).y for i in range(mol.GetNumAtoms())]
+    w = max(int((max(xs) - min(xs)) * scale + 2.6 * scale), 40)
+    h = max(int((max(ys) - min(ys)) * scale + 2.2 * scale), 34)
+    d = _d2d.MolDraw2DSVG(w, h)
+    o = d.drawOptions()
+    o.useBWAtomPalette(); o.clearBackground = False; o.bondLineWidth = 1.3
+    o.fixedBondLength = scale; o.fixedFontSize = int(scale * 0.62); o.padding = 0.06
+    d.DrawMolecule(mol); d.FinishDrawing()
+    svg = _re.sub(r"<\?xml[^>]*\?>\s*", "", d.GetDrawingText())
+    svg = _re.sub(r"<rect[^>]*style='opacity:1.0;fill:#FFFFFF[^>]*>\s*</rect>", "", svg)
+    return box(svg, label)
+
 
 BX = '<b class="lbltxt">{}</b>'.format
 A_, B_, C_, D_, E_, X_ = (BX(c) for c in 'ABCDEX')
@@ -24,7 +52,7 @@ dict(
               arrow('PhB(OH)<sub>2</sub>', 'Pd(OAc)<sub>2</sub>(촉매)'), L('C')),
        '<div class="chem" style="text-align:center">(Pd 짝지음 단계: CH<sub>3</sub>OH, 25 ℃, 염기 없음)</div>')}
 <p class="ask">중간체(C<sub>7</sub>H<sub>6</sub>O)의 구조를 그리시오. 또한 {A_}의 구조를 그리고, {A_}의 위치 이성질체가 아닌 {A_}가 주생성물로 생성되는 이유를 중간체에 대한 친핵체의 첨가 방향과 관련지어 서술하시오. 그리고 {C_}의 구조를 그리시오. [[PTS]]</p>''',
-    answer=f'''<div class="ansbox">{M('COC1=CC=CC#C1', '중간체: 3-methoxybenzyne', 15)}{M('COc1cccc(N)c1', 'A: 3-methoxyaniline', 15)}{M('COc1cccc(-c2ccccc2)c1', 'C: 3-methoxybiphenyl', 14)}</div>
+    answer=f'''<div class="ansbox">{MK('COC1=CC=CC#C1', '중간체: 3-methoxybenzyne', 15)}{M('COc1cccc(N)c1', 'A: 3-methoxyaniline', 15)}{M('COc1cccc(-c2ccccc2)c1', 'C: 3-methoxybiphenyl', 14)}</div>
 B = 3-methoxybenzenediazonium tetrafluoroborate. 이유: NH<sub>2</sub><sup>−</sup>가 OMe에서 먼 벤자인 탄소(C3)에 첨가해야 생기는 아릴 음이온(sp<sup>2</sup> 카브음이온)이 전기음성도가 큰 O에 인접(C2)하여 유발 효과로 안정화되므로, 이 방향의 첨가만 일어나 <i>m</i>-이성질체가 생긴다.''',
     explain='''<p><b>핵심 반응: 제거–첨가(벤자인) 메커니즘의 위치 선택성 + 아릴다이아조늄 염의 Suzuki–Miyaura 짝지음</b></p>
 <p>① 2-bromoanisole에서 Br의 오쏘 수소는 C3–H 하나뿐이다(C1에는 OMe). NH<sub>2</sub><sup>−</sup>가 C3–H를 떼어 내고(Br의 유발 효과로 산성도 증가), 생긴 아릴 음이온이 Br<sup>−</sup>를 내보내 C2≡C3 벤자인, 즉 <b>3-methoxybenzyne</b>(C<sub>7</sub>H<sub>6</sub>O)이 생성된다. 벤자인의 “삼중 결합”의 두 번째 π 결합은 고리 평면 안의 sp<sup>2</sup> 오비탈끼리의 약한 겹침이므로 반응성이 매우 크다.</p>
@@ -96,7 +124,7 @@ dict(
     paper=dict(cite='Tetrahedron Lett. 2010, 51, 4494–4496', book='Klein 20.88',
                what='furo[2,3-b]indole 합성: 2-nitrobenzaldehyde의 알릴옥시메틸렌 Wittig → 알릴 바이닐 에터 → 가열 [3,3] Claisen 자리옮김'),
     nobel='',
-    body=f'''다음은 2,6-dimethylaniline으로부터 중간 주생성물 {B_}(C<sub>8</sub>H<sub>10</sub>O)와 {C_}(C<sub>12</sub>H<sub>16</sub>O)를 거쳐 최종 주생성물 {D_}(C<sub>12</sub>H<sub>16</sub>O)를 합성하는 반응을 나타낸 것이다. {B_}와 {D_}의 IR 스펙트럼은 3400 cm<sup>−1</sup> 부근에서 강하고 넓은 띠를 보이지만 {C_}는 그렇지 않다. {D_}의 <sup>1</sup>H NMR 스펙트럼에서 방향족 수소의 피크는 1개(2H, s)이며, 1.0~1.3 ppm에서 이중선(doublet)은 나타나지 않는다. {NOTE}
+    body=f'''다음은 2,6-dimethylaniline으로부터 중간 주생성물 {B_}(C<sub>8</sub>H<sub>10</sub>O)와 {C_}(C<sub>12</sub>H<sub>16</sub>O)를 거쳐 최종 주생성물 {D_}(C<sub>12</sub>H<sub>16</sub>O)를 합성하는 반응을 나타낸 것이다. {B_}와 {D_}의 IR 스펙트럼은 3400 cm<sup>−1</sup> 부근에서 강하고 넓은 띠를 보이지만 {C_}는 그렇지 않다. {D_}의 <sup>1</sup>H NMR 스펙트럼에서 방향족 수소의 피크는 1개(2H, s)이며, 1.0~1.5 ppm에서 이중선(doublet)은 나타나지 않는다. {NOTE}
 {frame(scheme(M('Cc1cccc(C)c1N', scale=16), arrow('1) NaNO<sub>2</sub>, H<sub>2</sub>SO<sub>4</sub>, 0 ℃', '2) H<sub>2</sub>O, 가열'), L('B')),
        scheme(L('B'), arrow('(<i>E</i>)-CH<sub>3</sub>CH=CHCH<sub>2</sub>Br', 'K<sub>2</sub>CO<sub>3</sub>, 아세톤'), L('C'), arrow('200 ℃', ''), L('D')))}
 <p class="ask">{C_}와 {D_}의 구조를 각각 그리시오. 또한 {C_}가 {D_}로 전환되는 첫 단계에서 생성되는 비방향족 중간체(C<sub>12</sub>H<sub>16</sub>O)의 구조를 그리고, {D_}에서 곁사슬이 고리의 파라 자리에 가지 없이 결합하게 되는 이유를 페리고리 반응의 종류와 관련지어 서술하시오. [[PTS]]</p>''',
@@ -108,7 +136,7 @@ B = 2,6-dimethylphenol, C = 2-[(<i>E</i>)-but-2-enyloxy]-1,3-dimethylbenzene, �
 <p>② K<sub>2</sub>CO<sub>3</sub>가 페놀(p<i>K</i><sub>a</sub> ≈ 10)을 페녹사이드로 만들고 1차 알릴 브로마이드에 S<sub>N</sub>2 → <b>C</b> = 크로틸 아릴 에터(O–H 없음). C=C 기하는 유지(<i>E</i>).</p>
 <p>③ 200 ℃: 의자형 6원 고리 전이 상태의 협동 [3,3] 시그마 결합 자리옮김. O–CH<sub>2</sub> 결합이 끊어지고 크로틸의 CH(CH<sub>3</sub>) 말단(γ 탄소)이 오쏘 탄소와 결합 → 알릴기가 <b>뒤집혀</b> 1-methylallyl(but-3-en-2-yl)로 붙은 cyclohexa-2,4-dienone(중간체, C<sub>12</sub>H<sub>16</sub>O, 방향족 아님, C=O). 오쏘 탄소에 이미 CH<sub>3</sub>가 있어 H가 없으므로 토토머화할 수 없다.</p>
 <p>④ 이 다이엔온에서 C6(사차 탄소)–C(H)(CH<sub>3</sub>) 결합, 고리 C=C, 곁사슬 C=C가 1,5-다이엔을 이루므로 두 번째 [3,3](Cope) 자리옮김이 일어나 곁사슬 말단 CH<sub>2</sub>가 파라 탄소(C4)와 결합하고 사슬은 다시 뒤집혀 –CH<sub>2</sub>CH=CHCH<sub>3</sub>가 된다. 의자형 전이 상태에서 CH<sub>3</sub>가 평면형(equatorial) 자리를 차지하므로 (<i>E</i>)-알켄이 주로 생긴다. 파라 C–H가 토토머화되며 방향족 페놀 <b>D</b>로 회복 — 이것이 반응의 열역학적 구동력이다.</p>
-<p>⑤ NMR 단서: 방향족 H 1종(2H, s) → 3,5-H가 동등한 2,4,6-삼치환 페놀(파라 생성물). 1.0~1.3 ppm 이중선 없음 → –CH(CH<sub>3</sub>)CH=CH<sub>2</sub>(가지 사슬)가 아니라 CH<sub>3</sub>CH= (≈1.7 ppm, d이지만 알릴 위치) 형태의 가지 없는 사슬. 흔한 오답: 오쏘 생성물(오쏘가 막혀 불가), 또는 파라에 1-methylallyl이 붙은 구조(한 번만 뒤집힌 것으로 착각).</p>''',
+<p>⑤ NMR 단서: 방향족 H 1종(2H, s) → 3,5-H가 동등한 2,4,6-삼치환 페놀(파라 생성물). 1.0~1.5 ppm 이중선 없음 → –CH(CH<sub>3</sub>)CH=CH<sub>2</sub>(가지 사슬)가 아니라 CH<sub>3</sub>CH= (≈1.7 ppm, d이지만 알릴 위치) 형태의 가지 없는 사슬. 흔한 오답: 오쏘 생성물(오쏘가 막혀 불가), 또는 파라에 1-methylallyl이 붙은 구조(한 번만 뒤집힌 것으로 착각).</p>''',
 ),
 # ---------------------------------------------------------------- 2023A-2
 dict(
@@ -196,10 +224,10 @@ dict(
     nobel='1994 노벨 화학상(G. A. Olah — 탄소 양이온/아레늄 이온의 직접 관찰)',
     body=f'''다음 [반응 1]에서 {A_}와 {B_}가 각각 주생성물과 부생성물로 얻어졌다. [반응 2]는 {B_}를 주생성물로 합성하기 위한 3단계 반응이다. {NOTE}
 {frame('<div class="ft">[반응 1]</div>',
-       scheme(M('COc1ccccc1', scale=15), arrow('Br<sub>2</sub>', 'CH<sub>3</sub>COOH'), M('COc1ccc(Br)cc1', 'A', 15), plus(), M('COc1ccccc1Br', 'B', 15)),
+       scheme(M('COc1ccccc1', scale=13), arrow('Br<sub>2</sub>', 'CH<sub>3</sub>COOH'), M('COc1ccc(Br)cc1', 'A', 12), plus(), M('COc1ccccc1Br', 'B', 12)),
        '<div class="ft">[반응 2]</div>',
-       scheme(M('COc1ccccc1', scale=15), arrow('(1)', ''), L('C'), arrow('(2)', ''), L('D'), arrow('(3)', ''), L('B')),
-       '<div class="chem" style="margin-top:4px">&lt;보 기&gt; ㉠ HNO<sub>3</sub>, H<sub>2</sub>SO<sub>4</sub>　㉡ 진한 H<sub>2</sub>SO<sub>4</sub>(SO<sub>3</sub>)　㉢ Br<sub>2</sub>, FeBr<sub>3</sub><br>　　　　㉣ 묽은 H<sub>2</sub>SO<sub>4</sub>, H<sub>2</sub>O, 가열　㉤ NaNO<sub>2</sub>, HCl</div>')}
+       scheme(M('COc1ccccc1', scale=13), arrow('(1)', '', 36), L('C'), arrow('(2)', '', 36), L('D'), arrow('(3)', '', 36), L('B')),
+       '<div class="chem" style="margin-top:4px">&lt;보 기&gt;<br>㉠ HNO<sub>3</sub>, H<sub>2</sub>SO<sub>4</sub>　㉡ 진한 H<sub>2</sub>SO<sub>4</sub>(SO<sub>3</sub>)　㉢ Br<sub>2</sub>, FeBr<sub>3</sub><br>㉣ 묽은 H<sub>2</sub>SO<sub>4</sub>, H<sub>2</sub>O, 가열　㉤ NaNO<sub>2</sub>, HCl</div>')}
 <p class="ask">[반응 2]의 (1)~(3)에 들어갈 반응 조건을 &lt;보기&gt;에서 1개씩 골라 순서대로 쓰고, 중간 주생성물 {C_}와 {D_}의 구조를 그리시오. 또한 (3) 단계에서 {D_}가 {B_}로 전환되는 반응 메커니즘을 굽은 화살표를 사용하여 제시하시오. [[PTS]]</p>''',
     answer=f'''(1) ㉡, (2) ㉢, (3) ㉣
 <div class="ansbox">{M('COc1ccc(cc1)S(=O)(=O)O', 'C: 4-methoxybenzenesulfonic acid', 15)}{M('COc1ccc(cc1Br)S(=O)(=O)O', 'D: 3-bromo-4-methoxybenzenesulfonic acid', 15)}</div>
@@ -221,16 +249,16 @@ dict(
     paper=dict(cite='J. Org. Chem. 1999, 64, 6702–6705', book='Klein 19.90',
                what='quinuclidin-3-one + 벤젠, CF₃SO₃H → N·O 이중 양성자화 초친전자체 → 3,3-diphenylquinuclidinium'),
     nobel='1994 노벨 화학상(G. A. Olah — 초강산과 탄소 양이온, 초친전자체 개념)',
-    body=f'''다음은 quinuclidin-3-one을 초강산 CF<sub>3</sub>SO<sub>3</sub>H(p<i>K</i><sub>a</sub> ≈ −14) 속에서 과량의 벤젠과 반응시켜 {C_}(C<sub>19</sub>H<sub>22</sub>N<sup>+</sup>, 트라이플레이트 염)를 얻는 반응이다. 반응은 이가 양이온 중간체 {A_}(C<sub>7</sub>H<sub>13</sub>NO<sup>2+</sup>)와, 첫 번째 페닐화 후 물이 떨어져 생성되는 이가 양이온 중간체 {B_}(C<sub>13</sub>H<sub>17</sub>N<sup>2+</sup>)를 거친다. {NOTE}
-{frame(scheme(M('O=C1CN2CCC1CC2', scale=17), arrow('C<sub>6</sub>H<sub>6</sub>(과량)', 'CF<sub>3</sub>SO<sub>3</sub>H, 25 ℃'), L('[A]'), arrow('C<sub>6</sub>H<sub>6</sub>', '−H<sub>2</sub>O'), L('[B]')),
-       scheme(arrow('C<sub>6</sub>H<sub>6</sub>', ''), L('C')))}
+    body=f'''다음은 quinuclidin-3-one을 초강산 CF<sub>3</sub>SO<sub>3</sub>H(p<i>K</i><sub>a</sub> ≈ −14) 속에서 과량의 벤젠과 반응시켜 {C_}([C<sub>19</sub>H<sub>22</sub>N]<sup>+</sup>, 트라이플레이트 염)를 얻는 반응이다. 반응은 이가 양이온 중간체 {A_}([C<sub>7</sub>H<sub>13</sub>NO]<sup>2+</sup>)와, 첫 번째 페닐화 후 물이 떨어져 생성되는 이가 양이온 중간체 {B_}([C<sub>13</sub>H<sub>17</sub>N]<sup>2+</sup>)를 거친다. {NOTE}
+{frame(scheme(M('O=C1CN2CCC1CC2', scale=17), arrow('C<sub>6</sub>H<sub>6</sub>(과량)', 'CF<sub>3</sub>SO<sub>3</sub>H, 25 ℃'), L('[A]')),
+       scheme(L('[A]'), arrow('C<sub>6</sub>H<sub>6</sub>', '−H<sub>2</sub>O'), L('[B]'), arrow('C<sub>6</sub>H<sub>6</sub>', '−H<sup>+</sup>'), L('C')))}
 <p class="ask">{A_}와 {C_}의 구조를 각각 그리시오. 또한 {B_}의 공명 구조 중 양전하가 벤젠 고리의 탄소에 있는 구조를 1개 그리고, 아세톤과 같은 단순 케톤은 같은 조건에서 벤젠과 거의 반응하지 않지만 {A_}는 반응하는 이유를 서술하시오. [[PTS]]</p>''',
     answer=f'''<div class="ansbox">{M('[OH+]=C1C[NH+]2CCC1CC2', 'A', 16)}{M('[CH+]1C=CC(=C2C[NH+]3CCC2CC3)C=C1', 'B의 공명 구조(파라)', 15)}{M('[NH+]12CCC(CC1)C(c1ccccc1)(c1ccccc1)C2', 'C: 3,3-diphenylquinuclidinium', 15)}</div>
 이유: A에서는 카보닐 산소뿐 아니라 이웃(β) 위치의 질소도 양성자화되어 있어 암모늄 양전하가 강한 유발 효과로 카보닐 탄소의 양전하(옥소카베늄)를 비편재화·안정화하지 못하게 한다. 두 양전하가 가까이 있어 정전기적으로 불안정한 이가 양이온은 LUMO 에너지가 매우 낮은 “초친전자체”가 되므로, 친핵성이 약한 벤젠의 π 전자도 공격할 수 있다.''',
     explain='''<p><b>핵심 반응: Friedel–Crafts형 하이드록시알킬화(카보닐 친전자체) — 초산(superacid)에서의 초친전자적 활성화(Olah)</b></p>
-<p>① CF<sub>3</sub>SO<sub>3</sub>H는 먼저 염기성이 큰 3차 아민 N을 양성자화하고(암모늄), 이어 카보닐 O까지 양성자화하여 이가 양이온 <b>A</b>(C<sub>7</sub>H<sub>13</sub>NO<sup>2+</sup>)를 만든다. 보통 산에서는 O-양성자화 정도가 낮지만 초강산에서는 충분하다.</p>
+<p>① CF<sub>3</sub>SO<sub>3</sub>H는 먼저 염기성이 큰 3차 아민 N을 양성자화하고(암모늄), 이어 카보닐 O까지 양성자화하여 이가 양이온 <b>A</b>([C<sub>7</sub>H<sub>13</sub>NO]<sup>2+</sup>)를 만든다. 보통 산에서는 O-양성자화 정도가 낮지만 초강산에서는 충분하다.</p>
 <p>② 벤젠의 π 전자가 A의 카보닐 탄소를 공격 → 아레늄 이온(σ-착물) → 탈양성자화로 방향족성 회복 → 3-hydroxy-3-phenylquinuclidinium. OH가 양성자화되고 H<sub>2</sub>O가 떨어지면 3차·벤질 탄소 양이온 <b>B</b>가 생성된다. B의 양전하는 페닐 고리의 오쏘·파라 탄소로 비편재화된다(정답의 파라 공명 구조; 오쏘 구조도 정답).</p>
-<p>③ 두 번째 벤젠이 B의 양이온 탄소를 공격(두 번째 S<sub>E</sub>Ar), 탈양성자화 → <b>C</b> = 3,3-diphenylquinuclidinium(C<sub>19</sub>H<sub>22</sub>N<sup>+</sup>). 염기 처리하면 중성 아민 C<sub>19</sub>H<sub>21</sub>N이 된다.</p>
+<p>③ 두 번째 벤젠이 B의 양이온 탄소를 공격(두 번째 S<sub>E</sub>Ar), 탈양성자화 → <b>C</b> = 3,3-diphenylquinuclidinium([C<sub>19</sub>H<sub>22</sub>N]<sup>+</sup>). 염기 처리하면 중성 아민 C<sub>19</sub>H<sub>21</sub>N이 된다.</p>
 <p>④ 초친전자성의 근거: 양성자화된 카보닐은 보통 O의 비공유 전자쌍과 알킬기의 공여로 양전하가 분산된다. 그러나 A는 C=O<sup>+</sup>H 탄소에서 두 결합 떨어진 곳에 N<sup>+</sup>H가 있어 전자를 강하게 끌어당기므로 카보닐 탄소가 극도로 전자 부족해진다(전하–전하 반발 = 불안정 = 고반응성). 같은 이유로 B도 일반 벤질 양이온보다 친전자성이 커서 두 번째 페닐화가 빠르다.</p>
 <p>⑤ 기출(퓨란 브로민화)과의 공통 원리: 반응성과 위치 선택성은 <b>양이온 중간체(또는 그에 이르는 전이 상태)의 안정성</b>(Hammond 가설)으로 판단한다. 여기서는 반대로 친전자체가 불안정할수록(이가 양이온) 약한 친핵체와도 반응한다. 흔한 오답: 페닐이 1개만 붙은 3차 알코올을 최종 생성물로 쓰거나, N이 양성자화되지 않은 단일 양이온을 A로 그리는 것(분자식 불일치).</p>''',
 ),
@@ -246,8 +274,8 @@ dict(
                     '본 문항은 이러한 메타-브로모 메틸벤젠을 아미노기 배향–탈아미노화로 만드는 단계를 모델화'),
     nobel='',
     body=f'''다음은 <i>p</i>-toluidine으로부터 중간 주생성물 {A_}(C<sub>7</sub>H<sub>8</sub>BrN)를 거쳐 최종 주생성물 {B_}(C<sub>7</sub>H<sub>7</sub>Br)를 합성하는 반응을 나타낸 것이다. {NOTE}
-{frame(scheme(M('Cc1ccc(N)cc1', scale=16), arrow('1) (CH<sub>3</sub>CO)<sub>2</sub>O', '2) Br<sub>2</sub>, CH<sub>3</sub>COOH'), arrow('3) H<sub>3</sub>O<sup>+</sup>', '가열'), L('A')),
-       scheme(arrow('1) NaNO<sub>2</sub>, HCl, 0 ℃', '2) H<sub>3</sub>PO<sub>2</sub>'), L('B')))}
+{frame(scheme(M('Cc1ccc(N)cc1', scale=16), arrow('1) (CH<sub>3</sub>CO)<sub>2</sub>O　2) Br<sub>2</sub>, CH<sub>3</sub>COOH', '3) H<sub>3</sub>O<sup>+</sup>, 가열'), L('A')),
+       scheme(L('A'), arrow('1) NaNO<sub>2</sub>, HCl, 0 ℃', '2) H<sub>3</sub>PO<sub>2</sub>'), L('B')))}
 <p class="ask">{A_}와 {B_}의 구조를 각각 그리시오. [[PTS]]</p>''',
     answer=f'''<div class="ansbox">{M('Cc1ccc(N)c(Br)c1', 'A: 2-bromo-4-methylaniline', 16)}{M('Cc1cccc(Br)c1', 'B: 3-bromotoluene', 16)}</div>''',
     explain='''<p><b>핵심 반응: 아세틸 보호로 조절한 EAS + 다이아조늄의 H<sub>3</sub>PO<sub>2</sub> 환원(탈아미노화) — “임시 배향기” 전략</b></p>
@@ -269,7 +297,7 @@ dict(
     nobel='',
     body=f'''다음은 방향족 화합물의 친전자성 방향족 치환 반응을 나타낸 것이다. {NOTE}
 {frame('<div class="ft">[반응 1]</div>',
-       scheme(L('C<sub>6</sub>H<sub>5</sub>–X'), arrow('HNO<sub>3</sub>, H<sub>2</sub>SO<sub>4</sub>', '25 ℃'), L('X–C<sub>6</sub>H<sub>4</sub>–NO<sub>2</sub>')),
+       scheme('<span class="chem" style="white-space:nowrap">C<sub>6</sub>H<sub>5</sub>–X</span>', arrow('HNO<sub>3</sub>, H<sub>2</sub>SO<sub>4</sub>', '25 ℃'), '<span class="chem" style="white-space:nowrap">X–C<sub>6</sub>H<sub>4</sub>–NO<sub>2</sub></span>'),
        '<div class="chem" style="text-align:center">X = –OCH<sub>3</sub>, –CH<sub>3</sub>, –Cl, –CO<sub>2</sub>CH<sub>3</sub></div>',
        '<div class="ft">[반응 2]</div>',
        scheme(M('COc1ccc(CCN)cc1OC', scale=15), arrow('HCHO, HCl(aq)', '가열'), L('C')))}
