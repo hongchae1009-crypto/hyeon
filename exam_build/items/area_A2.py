@@ -5,61 +5,63 @@ ITEMS = [
 # ─────────────────────────────────────────────────────────────── 2021A-9
 dict(
     key='2021A-9',
-    src='2021학년도 A형 9번',
+    src='2021학년도 A형 9번 유형',
     src_topic='tetronic acid의 토토머·방향족성, 2-아세톡시 에스터의 LDA 분자 내 Claisen(Dieckmann형) 고리 형성',
-    change='O-아실 에스터(tetronic acid, 락톤)를 N-아실 아미노산 에스터(tetramic acid, 락탐)로 바꾸고, LDA 대신 '
-           'β-케토아마이드의 활성 메틸렌을 NaOCH3로 탈양성자화하는 Lacey–Dieckmann 고리화를 사용하였다. '
-           '“어느 α-탄소가 친핵체가 되는가”와 “트라이카보닐 C–H의 산성도(짝염기의 공명)”를 함께 묻도록 하여 '
-           'Claisen/Dieckmann 축합의 구동력(생성물의 탈양성자화)을 핵심 평가 요소로 삼았다.',
-    paper=dict(cite='J. Am. Chem. Soc. 2012, 134, 920–923', book='Klein 22.118',
-               what='fusarisetin A 비대칭 합성: β-케토아마이드의 α-C–H를 NaOMe로 떼어 N-메틸세린 메틸 에스터 부분과 '
-                    'Dieckmann 축합 → 테트람산(pyrrolidine-2,4-dione) 고리 형성(본 문항은 이 단계를 sarcosine 모델로 단순화)'),
+    change='원 기출의 평가 요소(케토–엔올 토토머, 방향족 토토머, Claisen형 C–C 결합 형성 메커니즘)를 유지하되, 분자 내 Claisen 대신 '
+           '<b>교차 Claisen 축합(ethyl formate에 의한 α-포밀화)</b>을 핵심 반응으로 삼았다. 생성된 1,3-다이카보닐의 가장 안정한 토토머'
+           '(분자 내 수소 결합 엔올)와 산성도, 그리고 hydrazine 고리 축합으로 생기는 방향족 피라졸(tetrahydroindazole)의 6π 방향족성과 '
+           '고리 토토머(1H/2H)를 묻는다.',
+    paper=dict(cite='Klein 22장 반응의 복습(교차 Claisen 축합: ethyl benzoate + ethyl acetate; Claisen 축합의 구동력)',
+               book='Klein 22 Key reactions (pp. 1057–1058)',
+               what='α-H가 없는 에스터(포메이트·벤조에이트)를 친전자체로 쓰는 교차 Claisen 축합으로 1,3-다이카보닐을 만들고, '
+                    '생성물의 산성 C–H 탈양성자화가 평형을 끄는 원리'),
     nobel='',
-    body=f'''다음은 sarcosine methyl ester로부터 중간 주생성물 <b class="lbltxt">A</b>(C<sub>8</sub>H<sub>13</sub>NO<sub>4</sub>)를 거쳐 최종 주생성물 <b class="lbltxt">B</b>(C<sub>7</sub>H<sub>9</sub>NO<sub>3</sub>)를 합성하는 반응식이다. <b class="lbltxt">B</b>는 곰팡이 천연물 fusarisetin A, equisetin 등에 들어 있는 3-아실테트람산(3-acyltetramic acid) 골격을 가진다. (단, 각 단계에서는 적절한 분리·정제 과정을 수행하였다.)
-{frame(scheme(M('CNCC(=O)OC', scale=16), arrow('diketene', 'CH<sub>2</sub>Cl<sub>2</sub>, 0 ℃'), L('A'),
-              arrow('1) NaOCH<sub>3</sub> (1.1 당량), CH<sub>3</sub>OH', '2) H<sub>3</sub>O<sup>+</sup>'), L('B')),
-       scheme('<div class="chem">diketene :</div>', M('C=C1CC(=O)O1', scale=15)),
-       '<div class="chem" style="text-align:center">(diketene은 아민을 아세토아세틸화한다: R<sub>2</sub>NH → R<sub>2</sub>N–COCH<sub>2</sub>COCH<sub>3</sub>)</div>')}
-<p class="ask"><b class="lbltxt">A</b>와 <b class="lbltxt">B</b>의 구조를 각각 그리시오(<b class="lbltxt">B</b>는 모든 카보닐이 C=O인 형태로). 또한, 굽은 화살표를 사용하여 <b class="lbltxt">A</b>로부터 고리가 형성되는 단계의 메커니즘을 제시하고, <b class="lbltxt">B</b>에서 고리의 C3–H가 매우 산성(p<i>K</i><sub>a</sub> ≈ 3)인 이유를 짝염기의 공명 구조를 이용하여 서술하시오. [[PTS]]</p>''',
-    answer=f'''<div class="ansbox">{M('CC(=O)CC(=O)N(C)CC(=O)OC', 'A: methyl N-acetoacetyl-N-methylglycinate', 14)}{M('CC(=O)C1C(=O)CN(C)C1=O', 'B: 3-acetyl-1-methylpyrrolidine-2,4-dione', 15)}</div>
-고리 형성: CH<sub>3</sub>O<sup>−</sup>가 케톤과 아마이드 사이 CH<sub>2</sub>(활성 메틸렌)의 H를 떼어 엔올레이트 → 엔올레이트 탄소가 분자 내 에스터 C=O를 공격(5원 고리, 사면체 중간체) → CH<sub>3</sub>O<sup>−</sup> 이탈 → 생성된 C3–H가 즉시 탈양성자화.<br>
-C3–H 산성: C3가 세 개의 카보닐(C2 아마이드, C4 케톤, 아세틸 C=O)에 둘러싸여 있어, 짝염기의 음전하가 C3와 세 산소 원자에 비편재화된다(엔올레이트 공명 구조 3개 + 탄소 음이온 구조).''',
-    explain='''<p>핵심 반응: <b>Dieckmann(분자 내 Claisen) 축합</b> — 엔올레이트가 에스터 카보닐을 친핵성 아실 치환하여 고리 β-다이카보닐을 만들고, 산성 C–H의 탈양성자화가 평형을 생성물 쪽으로 끈다.</p>
-<p>① <b>A</b>: diketene(4-methyleneoxetan-2-one)은 아세틸케텐 등가체로, 2차 아민 N이 락톤 C=O를 공격하여 고리가 열리면 엔올 → 케토 토토머화로 β-케토아마이드 CH<sub>3</sub>COCH<sub>2</sub>CON(CH<sub>3</sub>)CH<sub>2</sub>CO<sub>2</sub>CH<sub>3</sub>(C<sub>8</sub>H<sub>13</sub>NO<sub>4</sub>)가 된다.</p>
-<p>② <b>A</b>의 산성 수소 비교: 케톤–아마이드 사이 CH<sub>2</sub>(p<i>K</i><sub>a</sub> ≈ 11–13) ≫ 에스터 α-CH<sub>2</sub>(≈ 25) &gt; 케톤 CH<sub>3</sub>(≈ 20, 그러나 활성 메틸렌보다 훨씬 약함). NaOCH<sub>3</sub>(CH<sub>3</sub>OH p<i>K</i><sub>a</sub> ≈ 15.5)는 활성 메틸렌을 주로 탈양성자화한다.</p>
-<p>③ 고리 형성(굽은 화살표 흐름): (i) CH<sub>3</sub>O<sup>−</sup>의 비공유 전자쌍 → 활성 메틸렌 C–H의 H, C–H 결합 전자 → C=C(엔올레이트). (ii) 엔올레이트 C=C(또는 탄소 음이온) 전자쌍 → 에스터 카보닐 탄소, C=O π 전자 → 산소(사면체 알콕사이드). 원자 수: Cα–C(=O)–N–CH<sub>2</sub>–C(에스터) = 5원 고리(5-exo-trig). (iii) O<sup>−</sup> 전자쌍이 C=O를 다시 만들며 CH<sub>3</sub>O<sup>−</sup> 이탈 → 트라이카보닐 화합물. (iv) CH<sub>3</sub>O<sup>−</sup>가 C3–H를 떼어 매우 안정한 음이온 생성(비가역적 구동력) → H<sub>3</sub>O<sup>+</sup>로 양성자화하여 <b>B</b>.</p>
-<p>④ 경쟁 경로: 케톤 CH<sub>3</sub>의 엔올레이트가 에스터를 공격하면 7원 고리, 글리신 부분 CH<sub>2</sub>(에스터 α)의 엔올레이트가 케톤 C=O를 공격하면 5원 고리 알돌이 가능하지만, 이 두 엔올레이트는 활성 메틸렌 엔올레이트보다 10<sup>8</sup>배 이상 적게 존재하고 알돌 첨가는 가역적이다. 반면 Dieckmann 생성물은 곧바로 매우 안정한 음이온(⑤)으로 고정되므로 평형이 <b>B</b>의 음이온 쪽으로 모인다(Lacey–Dieckmann 고리화).</p>
-<p>⑤ C3–H의 산성: 짝염기는 (a) C3 탄소 음이온, (b) C2=O 쪽 엔올레이트(O<sup>−</sup> on C2), (c) C4=O 쪽 엔올레이트, (d) 아세틸 C=O 쪽 엔올레이트로 공명한다. 음전하가 세 개의 전기음성 산소에 분산되므로 매우 안정(p<i>K</i><sub>a</sub> ≈ 3, 카복실산 수준)하다. 이 때문에 Dieckmann 단계에는 염기가 <b>1당량 이상</b> 필요하다(촉매량이면 생성물이 염기를 소모). 실제로 <b>B</b>는 주로 엔올(외향 엔올, C=C–OH···O=C 분자 내 수소 결합) 형태로 존재한다.</p>
-<p>⑥ 흔한 오답: 아세틸 CH<sub>3</sub>가 고리를 닫았다고 보거나(7원 고리, C<sub>7</sub>H<sub>9</sub>NO<sub>3</sub>이지만 2,4-다이온이 아님), LDA를 쓴 원 기출처럼 에스터 α-탄소를 친핵체로 쓰는 것. 원 기출(tetronic acid)과 비교하면 고리 O가 N–CH<sub>3</sub>로 바뀐 질소 유사체(tetramic acid)이다.</p>''',
+    body=f'''다음은 cyclohexanone으로부터 중간 주생성물 <b class="lbltxt">A</b>(C<sub>7</sub>H<sub>10</sub>O<sub>2</sub>)를 거쳐 최종 주생성물 <b class="lbltxt">B</b>(C<sub>7</sub>H<sub>10</sub>N<sub>2</sub>)를 합성하는 반응식이다. <b class="lbltxt">A</b>는 CDCl<sub>3</sub> 용액에서 대부분 한 가지 엔올 형태로 존재하며, ¹H NMR에서 δ 14 부근에 넓은 단일선(1H)과 δ 8.6 부근에 단일선(1H)을 보이고 FeCl<sub>3</sub> 정색 반응에 양성이다. (단, 각 단계에서는 적절한 분리·정제 과정을 수행하였다.)
+{frame(scheme(M('O=C1CCCCC1', scale=15), arrow('1) HCO<sub>2</sub>Et, NaOEt (1 당량)', '2) H<sub>3</sub>O<sup>+</sup>'), L('A'),
+              arrow('H<sub>2</sub>NNH<sub>2</sub>', 'EtOH, 가열'), L('B')))}
+<p class="ask"><b class="lbltxt">A</b>를 다이카보닐(케토–알데하이드) 형태와 주된 엔올 형태로 각각 그리고, 굽은 화살표를 사용하여 cyclohexanone으로부터 <b class="lbltxt">A</b>의 C–C 결합이 형성되어 다이카보닐이 되기까지의 메커니즘을 제시하시오. 또한, <b class="lbltxt">B</b>의 구조를 그리고 <b class="lbltxt">B</b>의 고리가 방향족인 이유를 π 전자 수를 들어 서술하시오. [[PTS]]</p>''',
+    answer=f'''<div class="ansbox">{M('O=CC1CCCCC1=O', 'A (다이카보닐형): 2-oxocyclohexane-1-carbaldehyde', 15)}{M('O=C1CCCC/C1=C/O', 'A (주된 엔올형): (Z)-2-(hydroxymethylene)cyclohexanone', 15)}{M('c1n[nH]c2c1CCCC2', 'B: 4,5,6,7-tetrahydro-1H-indazole', 15)}</div>
+메커니즘: EtO<sup>−</sup>가 cyclohexanone α-H를 떼어 엔올레이트 → 엔올레이트 탄소가 HCO<sub>2</sub>Et의 C=O 탄소 공격(사면체 알콕사이드) → C=O 재형성하며 EtO<sup>−</sup> 이탈 → 2-oxocyclohexane-1-carbaldehyde.<br>
+(이어서 두 C=O 사이 C–H가 EtO<sup>−</sup>에 의해 즉시 탈양성자화되어 안정한 엔올레이트로 고정되고, H<sub>3</sub>O<sup>+</sup> 처리로 A가 된다.)<br>
+B의 방향족성: 피라졸 고리는 평면이고 순환 콘쥬게이트되어 있으며, C=C(2) + C=N(2) + N–H 질소의 비공유 전자쌍(2) = 6π 전자(4<i>n</i>+2, <i>n</i>=1)이므로 Hückel 규칙을 만족한다(피리딘형 N의 비공유 전자쌍은 고리 평면의 sp<sup>2</sup> 궤도함수에 있어 π계에 포함되지 않는다).''',
+    explain='''<p>핵심 반응: <b>교차 Claisen 축합</b>(α-H가 없는 에스터를 친전자체로 사용) → 1,3-다이카보닐의 <b>케토–엔올 토토머</b> → hydrazine과의 <b>고리 축합(Knorr형 피라졸 합성)</b>.</p>
+<p>① 교차 Claisen의 설계: ethyl formate는 α-H가 없어 엔올레이트를 만들 수 없으므로 친전자체로만 작용하고, 포밀기(H–C=O)는 매우 친전자성이 커서 케톤 엔올레이트가 우선적으로 공격한다. 케톤끼리의 자기 알돌은 가역적이며, 반응은 생성물 쪽으로 끌려간다.</p>
+<p>② 메커니즘(굽은 화살표): (i) EtO<sup>−</sup> 비공유 전자쌍 → α-H, C–H 결합 전자 → C=C(엔올레이트, 음전하는 산소에 비편재화). (ii) 엔올레이트 C=C π 전자 → HCO<sub>2</sub>Et의 카보닐 탄소, C=O π 전자 → 산소(사면체 중간체). (iii) O<sup>−</sup> 전자쌍이 C=O를 다시 만들면서 C–OEt 결합 전자가 EtO<sup>−</sup>로 이탈(친핵성 아실 치환). (iv) 생성된 1,3-다이카보닐의 C–H(p<i>K</i><sub>a</sub> ≈ 9–11)를 EtO<sup>−</sup>(EtOH p<i>K</i><sub>a</sub> ≈ 16)가 제거 — 이 비가역적 탈양성자화가 전체 평형의 구동력이므로 염기는 <b>1당량</b> 이상 필요하다.</p>
+<p>③ <b>A</b>의 토토머: 다이카보닐형(케토–알데하이드)보다 하이드록시메틸렌형 엔올이 압도적이다. 이유: (a) C=C가 C=O와 콘쥬게이트(비닐로가스 카복실산 구조), (b) OH와 C=O가 <i>cis</i>(<i>Z</i>)로 놓여 6원 고리형 분자 내 수소 결합(O–H···O=C) 형성. 이 수소 결합 때문에 엔올 OH가 δ ≈ 14로 매우 낮은 장으로 이동하고, =CH–O 비닐 수소가 δ ≈ 8.6에 나타나며 알데하이드 CHO(δ 9.5–10, d) 신호는 거의 없다. 다른 엔올(고리 안 C=C, 알데하이드 보존형)은 콘쥬게이션·수소 결합이 덜 유리하다. FeCl<sub>3</sub> 양성도 엔올 OH의 증거.</p>
+<p>④ <b>B</b>: hydrazine의 NH<sub>2</sub>가 더 친전자성인 알데하이드(엔올형에서는 비닐로가스 위치)에 먼저 축합하여 하이드라존을 만들고, 남은 NH<sub>2</sub>가 고리 케톤 C=O를 분자 내 공격 → 카비놀아민 → 탈수 → 방향족 피라졸 4,5,6,7-tetrahydro-1<i>H</i>-indazole(C<sub>7</sub>H<sub>10</sub>N<sub>2</sub> = C<sub>7</sub>H<sub>10</sub>O<sub>2</sub> + N<sub>2</sub>H<sub>4</sub> − 2H<sub>2</sub>O). 두 번의 탈수가 모두 일어나는 구동력이 방향족성 획득이다.</p>
+<p>⑤ 고리 토토머: N–H 수소는 N1과 N2 사이를 빠르게 이동(1<i>H</i>-/2<i>H</i>-indazole형 고리 토토머)하며, 두 형태 모두 6π 방향족이므로 어느 것으로 그려도 정답이다. 피롤형 N(N–H)의 비공유 전자쌍은 p 궤도함수에 있어 방향족 6π에 기여하고, 피리딘형 N(=N–)의 비공유 전자쌍은 sp<sup>2</sup> 궤도함수에 있어 염기성을 띤다.</p>
+<p>⑥ 흔한 오답: (i) Claisen 생성물을 에스터가 남은 β-케토 에스터로 그림(포메이트에는 남을 알콕시 탄소가 없음), (ii) A의 엔올을 OH와 C=O가 <i>trans</i>인 (<i>E</i>)형으로 그림(수소 결합 불가), (iii) B를 비방향족 다이하이드로피라졸(피라졸린)로 그림(분자식 C<sub>7</sub>H<sub>12</sub>N<sub>2</sub>로 불일치).</p>''',
 ),
 # ─────────────────────────────────────────────────────────────── 2020A-9
 dict(
     key='2020A-9',
-    src='2020학년도 A형 9번',
+    src='2020학년도 A형 9번 유형',
     src_topic='β-케토에스터 아실화 → MVK Michael 첨가 → 가수분해·탈카복실화 → 분자 내 알돌(다리걸친 고리)',
-    change='같은 “Michael 첨가 + 분자 내 알돌 축합(Robinson 고리 형성)” 흐름을 유지하되, 2-methylcyclohexane-1,3-dione의 '
-           'Michael 생성물(비카이랄 트라이케톤)을 L-proline으로 고리화하는 Hajos–Parrish–Eder–Sauer–Wiechert 반응으로 바꾸었다. '
-           '엔아민 촉매 메커니즘, 엔안티오토픽 카보닐의 구별(비대칭화), 절대 배열(S)을 묻도록 하여 2021 노벨상 주제와 연결.',
-    paper=dict(cite='Tetrahedron Lett. 1969, 10, 4233–4236', book='Klein 22.116 · 22장 반응의 복습(Robinson 고리 형성)',
-               what='광학 활성 proline 에스터와 cyclohexanone의 엔아민으로 Michael 첨가를 수행해 거울상 과잉을 얻은 연구'
-                    '(프롤린 유래 키랄 엔아민) + 교재의 2-methylcyclohexane-1,3-dione/MVK Robinson 고리 형성(Wieland–Miescher 케톤)'),
-    nobel='2021 노벨 화학상(B. List·D. W. C. MacMillan — 비대칭 유기 촉매; List의 프롤린 촉매 알돌은 Hajos–Parrish 반응에서 출발)',
-    body=f'''다음은 2-methylcyclohexane-1,3-dione으로부터 중간 주생성물 <b class="lbltxt">A</b>(C<sub>11</sub>H<sub>16</sub>O<sub>3</sub>)를 거쳐 최종 주생성물 <b class="lbltxt">B</b>(C<sub>11</sub>H<sub>14</sub>O<sub>2</sub>, Wieland–Miescher 케톤)를 합성하는 반응식이다. 2단계에서는 소량의 L-proline이 촉매로 작용하여 <b class="lbltxt">B</b>가 한쪽 거울상 이성질체 과량으로 얻어진다. (단, 각 단계에서는 적절한 분리·정제 과정을 수행하였다.)
-{frame(scheme(M('CC1C(=O)CCCC1=O', scale=16), arrow('CH<sub>2</sub>=CHCOCH<sub>3</sub>', 'Et<sub>3</sub>N (촉매), H<sub>2</sub>O'), L('A'),
-              arrow('L-proline (3 mol%)', 'DMSO, 가열'), L('B')),
-       scheme('<div class="chem">L-proline :</div>', M('OC(=O)[C@@H]1CCCN1', scale=15)))}
-<p class="ask"><b class="lbltxt">A</b>의 구조를 그리고, <b class="lbltxt">B</b>의 주 거울상 이성질체의 입체구조를 그린 후 카이랄 중심의 절대 배열(<i>R</i>/<i>S</i>)을 쓰시오. 또한, 굽은 화살표를 사용하여 <b class="lbltxt">A</b>로부터 프롤린 엔아민을 거쳐 새 고리의 C–C 결합이 형성되는 단계의 메커니즘을 제시하고, 카이랄 중심이 없는 <b class="lbltxt">A</b>로부터 광학 활성인 <b class="lbltxt">B</b>가 생기는 이유를 서술하시오. [[PTS]]</p>''',
-    answer=f'''<div class="ansbox">{M('CC(=O)CCC1(C)C(=O)CCCC1=O', 'A: 2-methyl-2-(3-oxobutyl)cyclohexane-1,3-dione', 15)}{M('C[C@]12CCC(=O)C=C1CCCC2=O', 'B: (S)-Wieland–Miescher ketone', 16)}</div>
-B의 카이랄 중심(C8a, 각 메틸이 붙은 사급 탄소) = <i>S</i>.<br>
-메커니즘: 프롤린 N이 곁사슬 메틸 케톤과 이미늄 → 엔아민(말단 CH<sub>3</sub> 쪽 C=C) 형성 → 엔아민 C=C 전자가 고리 C=O 탄소를 공격(6원 고리, COOH가 그 C=O 산소에 수소 결합으로 양성자 전달) → 이미늄 가수분해 → β-하이드록시 케톤 → 탈수(E1cB)로 엔온.<br>
-광학 활성 이유: A의 두 고리 C=O는 엔안티오토픽(거울면으로 연결)하다. 키랄 촉매(L-proline) 엔아민과 각 C=O의 전이 상태는 부분입체 관계여서 에너지가 다르므로 한쪽 C=O가 우선 공격받아(비대칭화) 한 거울상 이성질체가 과량 생성된다.''',
-    explain='''<p>핵심 반응: <b>Michael 첨가 + 분자 내 알돌 축합 = Robinson 고리 형성</b>, 그리고 <b>엔아민 촉매(프롤린) 비대칭 알돌</b>.</p>
-<p>① <b>A</b>(Michael): 2-methylcyclohexane-1,3-dione의 C2–H는 두 C=O 사이에 있어 p<i>K</i><sub>a</sub> ≈ 5 정도로 산성이며, 약염기(Et<sub>3</sub>N)로도 엔올레이트가 된다. 이 안정화된 엔올레이트(연한 친핵체)는 MVK의 β-탄소에 1,4-첨가하고, 생성된 엔올레이트가 양성자화되어 사급 탄소를 가진 트라이케톤 <b>A</b>(C<sub>11</sub>H<sub>16</sub>O<sub>3</sub>)가 된다. <b>A</b>는 거울면을 가진 비카이랄 화합물이다.</p>
-<p>② 엔아민 형성: L-proline의 2차 아민 N이 가장 덜 가려진 곁사슬 메틸 케톤 C=O를 공격 → 카비놀아민 → 탈수하여 이미늄 → α-H 제거로 엔아민. (고리 C=O 두 개는 사급 탄소 옆이라 입체 장애가 크다.) 말단 CH<sub>3</sub> 쪽으로 생긴 엔아민만이 6원 고리를 만들 수 있다.</p>
-<p>③ C–C 결합 형성(굽은 화살표): N 비공유 전자쌍 → N=C, 엔아민 C=C π 전자 → 고리 C=O 탄소; 동시에 C=O π 전자 → O, 프롤린 COOH의 O–H가 이 산소에 H를 전달(카복실산 O–H 결합 전자 → O). 고리 원자: C(=O 고리), C(사급), CH<sub>2</sub>, CH<sub>2</sub>, C(=N<sup>+</sup>), CH<sub>2</sub> → 6원 고리(6-(enolendo)-exo-trig). 생성된 이미늄이 물로 가수분해되어 촉매가 재생되고 β-하이드록시 케톤(케톨)이 된다.</p>
-<p>④ 탈수: 케톨의 3차 OH가 케톤 α-H와 함께 E1cB(또는 산 촉매 E1)로 빠져 콘쥬게이트 엔온(C=C–C=O)이 되므로 <b>B</b>(C<sub>11</sub>H<sub>14</sub>O<sub>2</sub>)가 된다. 분자식 확인: A(C<sub>11</sub>H<sub>16</sub>O<sub>3</sub>) − H<sub>2</sub>O.</p>
-<p>⑤ 입체화학: Houk–List 모형에 따르면 프롤린의 COOH가 공격받는 C=O에 수소 결합하면서 엔아민(<i>anti</i>)이 한쪽 면에서만 접근하는 의자형 유사 전이 상태가 유리하다. L-proline은 (<i>S</i>)-Wieland–Miescher 케톤을 준다(문헌 약 70% ee, 재결정으로 높임). CIP: C8a 치환기 우선순위 C1(C=O; O,O,C) &gt; C4a(C=C; C,C,C) &gt; C8(CH<sub>2</sub>) &gt; CH<sub>3</sub>.</p>
-<p>⑥ 거울상 선택의 본질: <b>A</b>에는 카이랄 중심이 없지만, 두 고리 C=O 중 어느 것이 공격받느냐에 따라 사급 탄소의 배열이 결정된다(엔안티오토픽 기의 구별, desymmetrization). 비키랄 염기(예: 피롤리딘)를 쓰면 두 경로의 에너지가 같아 라셈체가 된다. 흔한 오답: 메틸 케톤 대신 고리 C=O에서 엔아민을 만들어 고리를 닫는 경우(4원 고리) 또는 탈수 전 케톨을 최종 생성물로 쓰는 경우(분자식 불일치).</p>''',
+    change='원 기출의 “엔올(엔올레이트)의 C–C 결합 형성 → Michael 첨가 → 메커니즘 서술” 흐름을 유지하되, 핵심 반응을 '
+           '<b>Mannich 반응</b>(산성 조건의 엔올 + 이미늄)과 <b>Mannich 염기의 완전 메틸화–E1cB 탈리</b>로 바꾸었다. '
+           '이렇게 생긴 반응성 큰 α-메틸렌 케톤(Michael 받개)을 제자리에서 말론산 에스터로 포획하게 하여, '
+           '“이미늄 친전자체”와 “Michael 받개의 마스킹(masked enone)”을 함께 평가.',
+    paper=dict(cite='J. Am. Chem. Soc. 1945, 67, 860–874', book='Klein 23.92 · 22장 반응의 복습(Michael 첨가)',
+               what='Woodward–Doering 퀴닌 형식 합성: 1차 아민을 과량 CH<sub>3</sub>I로 완전 메틸화한 뒤 염기·가열로 Hofmann 탈리하여 '
+                    '바이닐기를 만드는 단계(본 문항은 이 완전 메틸화–탈리를 β-아미노 케톤(Mannich 염기)에 적용)'),
+    nobel='1965 노벨 화학상(R. B. Woodward — 유기 합성 기술; 퀴닌 합성)',
+    body=f'''다음은 cyclohexanone으로부터 중간 주생성물 <b class="lbltxt">A</b>(C<sub>9</sub>H<sub>17</sub>NO)와 <b class="lbltxt">B</b>, 중간체 <b class="lbltxt">C</b>(C<sub>7</sub>H<sub>10</sub>O)를 거쳐 최종 주생성물 <b class="lbltxt">D</b>(C<sub>14</sub>H<sub>22</sub>O<sub>5</sub>)를 합성하는 반응식이다. <b class="lbltxt">C</b>는 분리하지 않고 반응 혼합물 안에서 바로 다음 반응에 사용하였다. (단, 각 단계에서는 적절한 분리·정제 과정을 수행하였다.)
+{frame(rows(scheme(M('O=C1CCCCC1', scale=15), arrow('HCHO, (CH<sub>3</sub>)<sub>2</sub>NH·HCl', 'EtOH, 가열; NaHCO<sub>3</sub>'), L('A'),
+                   arrow('CH<sub>3</sub>I (과량)', ''), L('B')),
+            scheme(arrow('NaOEt, EtOH, 가열', ''), '<div class="cmpd letter">[<b>C</b>]</div>',
+                   arrow('CH<sub>2</sub>(CO<sub>2</sub>Et)<sub>2</sub>', 'NaOEt'), L('D'))))}
+<p class="ask"><b class="lbltxt">A</b>, <b class="lbltxt">C</b>, <b class="lbltxt">D</b>의 구조를 각각 그리시오. 또한, 굽은 화살표를 사용하여 <b class="lbltxt">A</b>가 생성될 때 C–C 결합이 형성되는 단계의 메커니즘을 (친전자체가 만들어지는 과정을 포함하여) 제시하고, <b class="lbltxt">B</b>가 <b class="lbltxt">C</b>로 될 때 탈리가 쉽게 일어나는 이유를 서술하시오. [[PTS]]</p>''',
+    answer=f'''<div class="ansbox">{M('CN(C)CC1CCCCC1=O', 'A: 2-[(dimethylamino)methyl]cyclohexanone', 15)}{M('C=C1CCCCC1=O', 'C: 2-methylenecyclohexanone', 15)}{M('CCOC(=O)C(CC1CCCCC1=O)C(=O)OCC', 'D: diethyl 2-[(2-oxocyclohexyl)methyl]malonate', 14)}</div>
+(B = 2-oxocyclohexylmethyl-trimethylammonium iodide)<br>
+메커니즘: (CH<sub>3</sub>)<sub>2</sub>NH가 HCHO에 첨가 → 카비놀아민 → OH 양성자화·H<sub>2</sub>O 이탈 → 이미늄 이온 CH<sub>2</sub>=N<sup>+</sup>(CH<sub>3</sub>)<sub>2</sub>. 산 촉매로 생긴 cyclohexanone의 엔올 C=C가 이미늄 탄소를 공격(C–C 결합) → 양성자화된 카보닐 → 탈양성자화 → A(염산염, 중화하여 A).<br>
+탈리가 쉬운 이유: B에서 NMe<sub>3</sub><sup>+</sup>는 카보닐의 β-위치에 있고 α-H는 카보닐에 의해 산성(p<i>K</i><sub>a</sub> ≈ 19)이므로, 염기가 α-H를 떼어 엔올레이트를 만든 뒤 좋은 중성 이탈기 N(CH<sub>3</sub>)<sub>3</sub>를 밀어내는 E1cB 탈리가 일어나고, 생성된 C=C는 C=O와 콘쥬게이트된다.''',
+    explain='''<p>핵심 반응: <b>Mannich 반응</b>(엔올 + 이미늄 → β-아미노 카보닐), <b>완전 메틸화–E1cB(Hofmann형) 탈리</b>, <b>Michael 첨가</b>.</p>
+<p>① 친전자체 생성: 2차 아민과 폼알데하이드는 산성 조건(아민 염산염)에서 카비놀아민을 거쳐 이미늄 CH<sub>2</sub>=N<sup>+</sup>Me<sub>2</sub>(Eschenmoser 염과 같은 종)을 만든다. 이미늄 탄소는 알데하이드 탄소보다 훨씬 친전자성이 크다.</p>
+<p>② C–C 결합 형성: 산성 조건이므로 친핵체는 엔올레이트가 아니라 <b>엔올</b>이다. 엔올 O의 비공유 전자쌍이 C=C를 밀어 C=C π 전자가 이미늄 탄소를 공격하고, C=N π 전자는 질소로 간다 → 옥소카베늄(양성자화된 케톤) → 탈양성자화. 생성물은 염산염으로 침전하며 NaHCO<sub>3</sub>로 중화하면 자유 아민 <b>A</b>(C<sub>9</sub>H<sub>17</sub>NO). 아민 염 형태라 두 번째 Mannich(2,6-이치환)는 억제된다.</p>
+<p>③ <b>B</b>: 3차 아민 질소가 CH<sub>3</sub>I에 S<sub>N</sub>2 → 4차 암모늄 염(완전 메틸화, 퀴닌 합성의 Hofmann 탈리 전 단계와 동일).</p>
+<p>④ <b>B → C</b>: 일반 Hofmann 탈리(E2, Ag<sub>2</sub>O/가열)는 강한 가열이 필요하지만, 여기서는 이탈기가 카보닐의 β-위치에 있어 α-H가 산성이므로 약한 조건에서 E1cB로 빠르게 빠진다: α-H 제거 → 엔올레이트 → 엔올레이트 전자쌍이 C=C를 만들며 NMe<sub>3</sub> 이탈 → 2-methylenecyclohexanone(C<sub>7</sub>H<sub>10</sub>O). 이 엑소-메틸렌 엔온은 β-탄소가 치환되지 않은 매우 반응성 큰 Michael 받개로, 그대로 두면 이합체화(헤테로 Diels–Alder)·중합하므로 제자리에서 포획한다. 즉 Mannich 염기는 “가려진(masked) 엔온”이다.</p>
+<p>⑤ <b>D</b>: 말론산 에스터 엔올레이트(안정화된 무른 친핵체)가 C의 말단 CH<sub>2</sub>(β-탄소)에 1,4-첨가 → 케톤 엔올레이트 → 양성자화 → diethyl 2-[(2-oxocyclohexyl)methyl]malonate(C<sub>14</sub>H<sub>22</sub>O<sub>5</sub> = C<sub>7</sub>H<sub>10</sub>O + C<sub>7</sub>H<sub>12</sub>O<sub>4</sub>). 1,2-첨가는 가역적이고 무른 친핵체는 1,4-첨가가 유리하다.</p>
+<p>⑥ 흔한 오답: (i) Mannich에서 아민 N이 고리 탄소에 직접 붙은 엔아민/이민을 그림, (ii) C를 고리 안 C=C 엔온(2-methylcyclohex-2-enone, 같은 C<sub>7</sub>H<sub>10</sub>O)으로 그림 — 탈리는 CH<sub>2</sub>–N 결합이 끊어지므로 C=C는 고리 밖 CH<sub>2</sub>= 이다, (iii) D를 말론산 에스터가 카보닐 탄소에 붙은 1,2-첨가물로 그림.</p>''',
 ),
 # ─────────────────────────────────────────────────────────────── 2019A-12
 dict(
@@ -93,25 +95,25 @@ C → D: β-케토산 C(1-allyl-3-methyl-2-oxocyclopentane-1-carboxylic acid)가
 # ─────────────────────────────────────────────────────────────── 2016A-4
 dict(
     key='2016A-4',
-    src='2016학년도 A형 4번',
+    src='2016학년도 A형 4번 유형',
     src_topic='E1 탈수 → 환원성 오존 분해(1,6-다이카보닐) → 분자 내 알돌 축합(1-acetylcyclopentene)',
-    change='오존 분해로 만든 1,6-다이카보닐 대신 1,4-다이케톤(1-phenylpentane-1,4-dione)의 분자 내 알돌 축합(5원 고리)을 사용하고, '
-           '이어지는 Grignard 1,2-첨가와 산 촉매 탈수로 콘쥬게이트 다이엔(풀벤 전구체)까지 연결하여 '
-           '“어느 α-탄소/어느 C=O 조합이 5·6원 고리를 만드는가”를 평가.',
-    paper=dict(cite='J. Org. Chem. 2012, 77, 6371–6376', book='Klein 22.112',
-               what='1,3,6-치환 풀벤 합성: 1-phenylpentane-1,4-dione의 분자 내 알돌 축합 → PhMgCl 첨가 → 진한 H<sub>2</sub>SO<sub>4</sub> 탈수로 C<sub>17</sub>H<sub>14</sub> 다이엔'),
-    nobel='1912 노벨 화학상(V. Grignard — Grignard 시약)',
-    body=f'''다음은 1-phenylpentane-1,4-dione으로부터 중간 주생성물 <b class="lbltxt">A</b>(C<sub>11</sub>H<sub>10</sub>O)와 <b class="lbltxt">B</b>를 거쳐 최종 주생성물 <b class="lbltxt">C</b>(C<sub>17</sub>H<sub>14</sub>)를 합성하는 반응식이다. (단, 각 단계에서는 적절한 분리·정제 과정을 수행하였다.)
-{frame(rows(scheme(M('CC(=O)CCC(=O)c1ccccc1', scale=15), arrow('NaOH, H<sub>2</sub>O', '가열'), L('A')),
-            scheme(arrow('1) PhMgCl, THF', '2) H<sub>2</sub>O'), L('B'), arrow('진한 H<sub>2</sub>SO<sub>4</sub>', ''), L('C'))))}
-<p class="ask"><b class="lbltxt">A</b>와 <b class="lbltxt">C</b>의 구조를 각각 그리시오. [[PTS]]</p>''',
-    answer=f'''<div class="ansbox">{M('O=C1CCC(c2ccccc2)=C1', 'A: 3-phenylcyclopent-2-en-1-one', 15)}{M('C1(c2ccccc2)=CC(c2ccccc2)=CC1', 'C: 1,3-diphenylcyclopenta-1,3-diene', 14)}</div>''',
-    explain='''<p>핵심 반응: <b>분자 내 알돌 축합</b>(5·6원 고리 선호, E1cB 탈수) + <b>Grignard 1,2-첨가</b> + 산 촉매 E1 탈수.</p>
-<p>① 다이케톤 Ph–C1(=O)–C2H<sub>2</sub>–C3H<sub>2</sub>–C4(=O)–C5H<sub>3</sub>의 엔올레이트 후보: C2 → C4 공격(3원), C3 → C1 공격(3원), C5(메틸) → C1(벤조일 C=O) 공격(5원). 5원 고리만 가능하므로 메틸 케톤의 CH<sub>3</sub> 엔올레이트가 벤조일 C=O에 첨가한다(1,4-다이케톤 → 사이클로펜텐온, cf. hexane-2,5-dione → 3-methylcyclopent-2-enone).</p>
-<p>② 생성된 β-하이드록시 케톤의 3차 벤질 OH가 E1cB로 빠져 C=C가 C=O 및 페닐과 동시에 콘쥬게이션된 <b>A</b> = 3-phenylcyclopent-2-en-1-one (C<sub>11</sub>H<sub>10</sub>O; C<sub>11</sub>H<sub>12</sub>O<sub>2</sub> − H<sub>2</sub>O).</p>
-<p>③ <b>B</b>: Grignard 시약은 단단한(hard) 친핵체로 엔온에 주로 1,2-첨가 → 1,3-diphenylcyclopent-2-en-1-ol (C<sub>17</sub>H<sub>16</sub>O). (1,4-첨가를 원하면 큐프레이트를 써야 함.)</p>
-<p>④ <b>C</b>: 진한 H<sub>2</sub>SO<sub>4</sub>가 OH를 양성자화 → H<sub>2</sub>O 이탈로 생긴 탄소 양이온은 C1과 C3에 양전하가 분산된 알릴·이중 벤질 양이온(매우 안정). 고리 CH<sub>2</sub>(C5)에서 H<sup>+</sup>가 빠지면 두 C=C와 두 페닐이 모두 콘쥬게이트된 1,3-diphenylcyclopenta-1,3-diene (C<sub>17</sub>H<sub>14</sub>)이 된다. 이 다이엔의 sp<sup>3</sup> CH<sub>2</sub>는 산성(p<i>K</i><sub>a</sub> ≈ 16–18, 방향족 사이클로펜타다이엔일 음이온)이어서 이후 알데하이드/케톤과 축합하면 풀벤이 된다(논문의 목적).</p>
-<p>⑤ 흔한 오답: (i) C3 엔올레이트가 벤조일을 공격한다고 보고 3원 고리를 그리는 것, (ii) A를 탈수 전 알돌 생성물(C<sub>11</sub>H<sub>12</sub>O<sub>2</sub>)로 쓰는 것, (iii) C를 페닐이 콘쥬게이션되지 않은 1,4-위치 다이엔으로 그리는 것.</p>''',
+    change='알돌 축합은 다른 문항(영역 A 1부)에서 다루므로, 같은 “α-탄소의 엔올/엔올레이트 반응” 중 고빈도인 '
+           '<b>할로폼 반응</b>(염기성 다중 할로젠화 → C–C 절단)과 <b>Hell–Volhard–Zelinsky(HVZ) 반응</b>(산 브로민화물의 엔올을 통한 α-브로민화)을 '
+           '연결하였다. 염기성/산성 α-할로젠화의 차이(다중 vs 단일 치환)와 카복실산이 직접 α-할로젠화되지 않는 이유를 평가.',
+    paper=dict(cite='Klein 22장 반응의 복습(할로폼 반응: NaOH, Br<sub>2</sub>; H<sub>3</sub>O<sup>+</sup> / Hell–Volhard–Zelinsky: Br<sub>2</sub>, PBr<sub>3</sub>; H<sub>2</sub>O)',
+               book='Klein 22 Key reactions (pp. 1057–1058)',
+               what='메틸 케톤 → 카복실산(할로폼), 카복실산 → α-브로모 카복실산(HVZ)'),
+    nobel='',
+    body=f'''다음은 1-cyclohexylethan-1-one으로부터 중간 주생성물 <b class="lbltxt">A</b>(C<sub>7</sub>H<sub>12</sub>O<sub>2</sub>)를 거쳐 최종 주생성물 <b class="lbltxt">B</b>(C<sub>7</sub>H<sub>11</sub>BrO<sub>2</sub>)를 합성하는 반응식이다. 첫 단계에서는 물에 녹지 않는 무거운 액체(CHBr<sub>3</sub>)가 부산물로 생긴다. (단, 각 단계에서는 적절한 분리·정제 과정을 수행하였다.)
+{frame(scheme(M('CC(=O)C1CCCCC1', scale=15), arrow('1) Br<sub>2</sub> (과량), NaOH, H<sub>2</sub>O', '2) H<sub>3</sub>O<sup>+</sup>'), L('A'),
+              arrow('1) Br<sub>2</sub>, PBr<sub>3</sub> (촉매)', '2) H<sub>2</sub>O'), L('B')))}
+<p class="ask"><b class="lbltxt">A</b>와 <b class="lbltxt">B</b>의 구조를 각각 그리시오. [[PTS]]</p>''',
+    answer=f'''<div class="ansbox">{M('OC(=O)C1CCCCC1', 'A: cyclohexanecarboxylic acid', 15)}{M('OC(=O)C1(Br)CCCCC1', 'B: 1-bromocyclohexane-1-carboxylic acid', 15)}</div>''',
+    explain='''<p>핵심 반응: <b>할로폼 반응</b>(메틸 케톤 → 카복실산 + CHX<sub>3</sub>)과 <b>Hell–Volhard–Zelinsky 반응</b>(카복실산의 α-브로민화).</p>
+<p>① 할로폼: OH<sup>−</sup>가 메틸 α-H를 떼어 엔올레이트 → Br<sub>2</sub>와 반응하여 CH<sub>2</sub>Br. 도입된 Br의 유발 효과로 남은 α-H가 더 산성이 되어 같은 탄소에서 두 번째, 세 번째 브로민화가 더 빨리 일어난다 → CBr<sub>3</sub> 케톤. 따라서 염기성 조건에서는 한 번 할로젠화된 탄소가 끝까지 할로젠화된다(산 촉매 α-할로젠화가 단일 치환에서 멈추는 것과 대조).</p>
+<p>② C–C 절단: OH<sup>−</sup>가 카보닐 탄소에 첨가 → 사면체 중간체가 C=O를 다시 만들며 <sup>−</sup>CBr<sub>3</sub>(세 Br로 안정화된 탄소 음이온)를 이탈기로 내보냄 → 카복실산 + <sup>−</sup>CBr<sub>3</sub> → 양성자 교환으로 카복실레이트 + CHBr<sub>3</sub>(브로모폼, d ≈ 2.9 g/cm<sup>3</sup>). H<sub>3</sub>O<sup>+</sup> 처리로 <b>A</b> = cyclohexanecarboxylic acid(C<sub>7</sub>H<sub>12</sub>O<sub>2</sub>). 고리 쪽 3차 α-H는 입체 장애가 크고 한 번만 치환될 수 있어 절단에 관여하지 않으며, CH<sub>3</sub>의 연속 브로민화가 훨씬 빠르다.</p>
+<p>③ HVZ: 카복실산은 염기와 만나면 카복실레이트가 되고, 산 조건에서도 엔올 함량이 매우 낮아 Br<sub>2</sub>와 직접 반응하지 않는다. PBr<sub>3</sub>가 일부를 산 브로민화물 RCOBr로 바꾸면, 산 브로민화물은 엔올화가 쉬워 엔올이 Br<sub>2</sub>를 공격 → α-브로모 산 브로민화물. 이것이 다른 카복실산과 교환(또는 H<sub>2</sub>O로 가수분해)하여 α-브로모 카복실산이 된다. 유일한 α-H가 고리의 3차 C–H이므로 <b>B</b> = 1-bromocyclohexane-1-carboxylic acid(C<sub>7</sub>H<sub>11</sub>BrO<sub>2</sub>).</p>
+<p>④ 흔한 오답: (i) A를 α-브로모 케톤(1-bromo-1-cyclohexylethanone)으로 그림(과량 Br<sub>2</sub>·염기이므로 할로폼까지 진행), (ii) A를 탄소 수가 유지된 산으로 착각(CH<sub>3</sub> 탄소는 CHBr<sub>3</sub>로 빠져 C<sub>8</sub> → C<sub>7</sub>), (iii) B에서 Br을 고리 2번 탄소(β)에 넣음 — HVZ는 엔올을 거치므로 반드시 α-탄소.</p>''',
 ),
 # ─────────────────────────────────────────────────────────────── 2016A-5
 dict(
@@ -142,25 +144,25 @@ dict(
 # ─────────────────────────────────────────────────────────────── 2015A-기입9
 dict(
     key='2015A-기입9',
-    src='2015학년도 A형 기입형 9번',
+    src='2015학년도 A형 기입형 9번 유형',
     src_topic='사이클로헥산온–피롤리딘 엔아민의 Stork Michael 첨가 → 가수분해 → Robinson 고리 형성',
-    change='비대칭 케톤 2-methylcyclohexanone을 사용하여 엔아민의 <b>위치 선택성</b>(A<sup>1,3</sup> 변형으로 덜 치환된 엔아민)을 묻고, '
-           'Michael 받개를 methyl acrylate로 바꾸어 생성물(2,6-이치환 사이클로헥산온)을 결정하게 하였다. '
-           'LDA 동역학적 엔올레이트와 같은 쪽에서 반응하지만 다중 알킬화가 없다는 Stork 엔아민의 장점을 평가.',
-    paper=dict(cite='J. Am. Chem. Soc. 1954, 76, 2029–2030', book='Klein 22.110 (cf. 22.111, J. Org. Chem. 1977, 42, 1663–1664)',
-               what='Stork 엔아민 알킬화: cyclohexanone–pyrrolidine 엔아민을 C-친핵체로 사용한 단일 알킬화/Michael 첨가 후 가수분해'),
-    nobel='2021 노벨 화학상(B. List·D. W. C. MacMillan — 엔아민/이미늄 활성화에 기반한 비대칭 유기 촉매)',
-    body=f'''다음은 2-methylcyclohexanone으로부터 중간 주생성물 <b class="lbltxt">A</b>(C<sub>11</sub>H<sub>19</sub>N)를 거쳐 최종 주생성물 <b class="lbltxt">B</b>(C<sub>11</sub>H<sub>18</sub>O<sub>3</sub>)를 합성하는 반응식이다. (단, 각 단계에서는 적절한 분리·정제 과정을 수행하였고, 입체 이성질체는 구별하지 않는다.)
-{frame(scheme(M('CC1CCCCC1=O', scale=16), arrow('pyrrolidine', 'TsOH (촉매), −H<sub>2</sub>O'), L('A'),
-              arrow('1) CH<sub>2</sub>=CHCO<sub>2</sub>CH<sub>3</sub>', '2) H<sub>3</sub>O<sup>+</sup>'), L('B')))}
+    change='엔아민(Stork) 화학은 다른 문항에서 다루므로, 같은 평가 요소인 “비대칭 케톤의 어느 α-탄소가 반응하는가”를 '
+           '<b>동역학적 엔올레이트(LDA, −78 ℃) vs 열역학적 엔올레이트(NaH, 25 ℃ 평형 조건)</b>의 알킬화로 바꾸었다. '
+           '두 생성물이 같은 분자식(C<sub>10</sub>H<sub>16</sub>O)의 구조 이성질체가 되도록 하여 위치 선택성 판단만으로 답을 가르게 하였다.',
+    paper=dict(cite='Klein 22장 반응의 복습(엔올레이트 알킬화: LDA, −78 ℃ 동역학적 vs NaH, 25 ℃ 열역학적)',
+               book='Klein 22 Key reactions (pp. 1057–1058)',
+               what='비대칭 케톤에서 LDA는 덜 치환된 α-탄소, 평형 조건 염기는 더 치환된 α-탄소에서 엔올레이트를 만들어 알킬화'),
+    nobel='',
+    body=f'''다음은 2-methylcyclohexanone을 서로 다른 조건에서 allyl bromide로 알킬화하여 주생성물 <b class="lbltxt">A</b>와 <b class="lbltxt">B</b>를 각각 얻는 반응식이다. <b class="lbltxt">A</b>와 <b class="lbltxt">B</b>는 분자식이 C<sub>10</sub>H<sub>16</sub>O로 같다. (단, 각 단계에서는 적절한 분리·정제 과정을 수행하였고, 입체 이성질체는 구별하지 않는다.)
+{frame(rows(scheme(M('CC1CCCCC1=O', scale=15), arrow('1) LDA, THF, −78 ℃', '2) CH<sub>2</sub>=CHCH<sub>2</sub>Br'), L('A')),
+            scheme(M('CC1CCCCC1=O', scale=15), arrow('1) NaH, THF, 25 ℃ (평형 조건)', '2) CH<sub>2</sub>=CHCH<sub>2</sub>Br'), L('B'))))}
 <p class="ask"><b class="lbltxt">A</b>와 <b class="lbltxt">B</b>의 구조를 각각 그리시오. [[PTS]]</p>''',
-    answer=f'''<div class="ansbox">{M('CC1CCCC=C1N1CCCC1', 'A: 1-(6-methylcyclohex-1-en-1-yl)pyrrolidine', 15)}{M('COC(=O)CCC1CCCC(C)C1=O', 'B: methyl 3-(3-methyl-2-oxocyclohexyl)propanoate', 15)}</div>''',
-    explain='''<p>핵심 반응: <b>Stork 엔아민 반응</b>(엔아민 형성 → Michael 첨가 → 이미늄 가수분해, 1,5-다이카보닐 합성).</p>
-<p>① 엔아민 형성: 카비놀아민 → 탈수 → 이미늄 → α-H 제거. 두 가지 엔아민이 가능하다: 더 치환된 C=C(C1=C2, CH<sub>3</sub>이 C=C 위)와 덜 치환된 C=C(C1=C6). 질소의 비공유 전자쌍이 C=C와 콘쥬게이트하려면 피롤리딘 고리가 C=C와 같은 평면에 있어야 하는데, 더 치환된 엔아민에서는 C2–CH<sub>3</sub>와 피롤리딘 α-CH<sub>2</sub>가 심하게 부딪친다(A<sup>1,3</sup> 변형). 따라서 덜 치환된 엔아민 <b>A</b>가 주생성물(~9:1)이고, 남은 CH<sub>3</sub>은 유사 축 방향을 차지한다.</p>
-<p>② Michael 첨가: 엔아민 β-탄소(C6)의 친핵성(N→C=C 공명)으로 methyl acrylate의 β-탄소에 1,4-첨가 → 이미늄 + 에스터 엔올레이트 → 양성자 이동. 엔아민은 중성이고 생성된 이미늄은 더 이상 친핵성이 없어 다중 알킬화가 없다.</p>
-<p>③ H<sub>3</sub>O<sup>+</sup>: 이미늄 가수분해 → 케톤 재생, 피롤리딘 회수. <b>B</b> = methyl 3-(3-methyl-2-oxocyclohexyl)propanoate (C<sub>11</sub>H<sub>18</sub>O<sub>3</sub>): 케톤 양옆에 CH<sub>3</sub>과 CH<sub>2</sub>CH<sub>2</sub>CO<sub>2</sub>CH<sub>3</sub>가 있는 2,6-이치환 사이클로헥산온.</p>
-<p>④ 비교: NaOEt 등 열역학적 조건의 엔올레이트였다면 더 치환된 C2에서 반응하여 2-methyl-2-(…)형 사급 탄소 생성물(2,2-이치환)이 된다. 엔아민은 LDA(동역학적 엔올레이트)와 같은 위치 선택성을 약한 조건에서 준다.</p>
-<p>⑤ 흔한 오답: 더 치환된 엔아민(1-(2-methylcyclohex-1-en-1-yl)pyrrolidine)을 A로 그리는 것, 또는 B를 2,2-이치환으로 그리는 것. 원 기출과 달리 MVK가 아니므로 이후 Robinson 고리 형성은 일어나지 않는다(에스터는 알돌 받개가 아님).</p>''',
+    answer=f'''<div class="ansbox">{M('C=CCC1CCCC(C)C1=O', 'A: 2-allyl-6-methylcyclohexanone', 15)}{M('C=CCC1(C)CCCCC1=O', 'B: 2-allyl-2-methylcyclohexanone', 15)}</div>''',
+    explain='''<p>핵심 반응: <b>엔올레이트 알킬화의 위치 선택성</b> — 동역학적 조절(LDA, −78 ℃, 비가역) vs 열역학적 조절(약한 염기/양성자 공급원 존재, 25 ℃, 가역).</p>
+<p>① LDA: 부피가 큰 강염기(짝산 p<i>K</i><sub>a</sub> ≈ 36)로, 낮은 온도에서 케톤(p<i>K</i><sub>a</sub> ≈ 20)을 비가역적·정량적으로 탈양성자화한다. 입체적으로 덜 가려지고 H가 더 많은(통계적으로 유리한) C6–H(CH<sub>2</sub>)가 더 빨리 떨어진다 → 덜 치환된 엔올레이트(동역학적 생성물). 남은 케톤이 없으므로 엔올레이트 사이의 양성자 교환(평형화)이 일어나지 않는다. S<sub>N</sub>2 알킬화 → <b>A</b> = 2-allyl-6-methylcyclohexanone(cis/trans 혼합).</p>
+<p>② NaH, 25 ℃: 탈양성자화가 느리고 남아 있는 케톤과 엔올레이트 사이에서 양성자 교환이 일어나 두 엔올레이트가 평형을 이룬다. 더 많이 치환된 C=C를 가진 엔올레이트(C1=C2, 사치환 알켄형)가 더 안정하므로 우세하다 → 더 치환된 C2에서 알킬화 → 사급 탄소를 가진 <b>B</b> = 2-allyl-2-methylcyclohexanone. (실제로는 위치 이성질체와 다중 알킬화가 일부 섞이지만, 주생성물은 B이다.)</p>
+<p>③ 비교 정리: 동역학적 엔올레이트 = 덜 치환된 쪽, 빠르게 생성 / 열역학적 엔올레이트 = 더 치환된 쪽, 더 안정. 엔아민(Stork)도 A<sup>1,3</sup> 변형 때문에 덜 치환된 쪽에서 반응하므로 A와 같은 위치 선택성을 준다.</p>
+<p>④ 흔한 오답: 두 조건의 생성물을 뒤바꾸어 쓰거나, 동역학적 조건에서 O-알킬화(알릴 엔올 에터)를 그리는 것 — Li 엔올레이트와 알킬 브로마이드의 반응은 주로 C-알킬화이다.</p>''',
 ),
 # ─────────────────────────────────────────────────────────────── 2014A-서술4
 dict(
