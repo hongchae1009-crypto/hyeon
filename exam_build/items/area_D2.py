@@ -169,6 +169,7 @@ EPOX_T = 'CC[C@@H]1O[C@H]1CC'                              # trans-2,3-diethylox
 TDEC = 'C1CC[C@H]2CCCC[C@@H]2C1'
 CDEC = 'C1CC[C@H]2CCCC[C@H]2C1'
 
+BEF_BOX = '<div class="ansbox">' + M('C/C=C/C', 'B: (E)-2-butene', 14) + M('C/C=C\\C', 'E: (Z)-2-butene', 14) + M('C[C@@H](O)CC', 'F: (R)-2-butanol (주)', 14) + '</div>'
 DEF = '(단, 각 반응에서는 적절한 분리·정제 과정을 수행하였다.)'
 
 ITEMS = [
@@ -279,7 +280,7 @@ dict(
     explain='''<p><b>핵심 반응:</b> E2 제거 — 이탈기와 β-H가 anti-periplanar(고리에서는 <b>trans-이축</b>)여야 한다. 그 결과 위치선택성(Zaitsev 여부)과 속도가 형태로 결정된다.</p>
 <p>① <b class="lbltxt">A</b> = (1<i>R</i>,2<i>R</i>)-<i>trans</i>-1-bromo-2-methylcyclohexane. 안정한 형태는 Br·CH<sub>3</sub>가 모두 적도인 형태인데, 이때 Br과 anti인 β-H가 없다. 고리가 뒤집혀 Br·CH<sub>3</sub>가 모두 축이 되어야 E2가 가능하다. 그 형태에서 C2의 축 자리는 CH<sub>3</sub>가 차지하므로 C2–H는 적도이고 제거될 수 없다. 남은 것은 C6의 축 H뿐이다. 그래서 Zaitsev 규칙에 어긋나는 <b class="lbltxt">B</b> = 3-methylcyclohexene만 생긴다. C2는 반응에 참여하지 않으므로 배열이 유지된다 → (<i>R</i>)-3-methylcyclohexene.</p>
 <p>② <b class="lbltxt">C</b> = (1<i>S</i>,2<i>R</i>)-<i>cis</i>-이성질체. 두 의자 형태 중 (Br 축, CH<sub>3</sub> 적도)가 (Br 적도, CH<sub>3</sub> 축)보다 A값 차이(CH<sub>3</sub> 7.3 vs Br ≈ 2 kJ/mol)만큼 안정하다. 바로 이 <b>가장 안정한 형태가 반응성 형태</b>다. Br(축)과 anti인 축 H가 C2와 C6에 모두 있으므로 더 치환된 <b class="lbltxt">D</b> = 1-methylcyclohexene(Zaitsev)이 주생성물이다(3-methylcyclohexene은 소량).</p>
-<p>③ 속도: <b class="lbltxt">A</b>는 불리한 이축 형태(평형 분율이 매우 작음, 약 CH<sub>3</sub> 7.3 + Br 2 + gauche 해소분)를 거쳐야 하므로 느리다. <b class="lbltxt">C</b>는 바닥 상태 형태 그대로 반응하므로 빠르다(neomenthyl > menthyl과 같은 원리). 1,3-이축 반발을 덜어 주는 것이 아니라 <b>반응 가능한 형태의 몰분율</b>이 속도를 결정한다는 점이 핵심이다.</p>
+<p>③ 속도: <b class="lbltxt">A</b>는 평형 분율이 매우 작은 불리한 이축 형태(이적도 형태보다 대략 CH<sub>3</sub> 7.3 + Br ≈ 2 kJ/mol에서 이적도의 CH<sub>3</sub>/Br gauche 반발만큼을 뺀 수 kJ/mol 불안정)를 거쳐야 하므로 느리다. <b class="lbltxt">C</b>는 바닥 상태 형태 그대로 반응하므로 빠르다(neomenthyl > menthyl과 같은 원리). <b>반응 가능한(이탈기가 축인) 형태의 몰분율</b>이 속도를 결정한다는 점이 핵심이다.</p>
 <p>④ [반응 2] <b class="lbltxt">A′</b>(1<i>R</i>,2<i>R</i>,6<i>R</i>)에서 D는 Br과 <i>cis</i>이다. 반응성 형태(Br 축)에서 C6의 축 자리는 Br과 <i>trans</i>인 쪽이므로 <b>축에는 H, 적도에는 D</b>가 놓인다. C1–C6 결합을 따라 본 Newman 투영도에서 앞 탄소(C1)의 Br(아래)과 정확히 180°인 뒤 탄소(C6)의 원자는 H이다. D는 Br과 gauche(약 60°)라 제거될 수 없다. EtO<sup>−</sup>가 anti인 H를 떼고, C–H σ 전자쌍이 새 π 결합을 이루면서 Br<sup>−</sup>가 동시에 떠난다. 그 결과 D는 새 C=C의 탄소(C6 → 생성물 C1)에 남아 <b class="lbltxt">E</b> = (<i>R</i>)-1-deuterio-3-methylcyclohexene(C<sub>7</sub>H<sub>11</sub>D)이 된다.</p>
 <p>⑤ 만약 D가 Br과 <i>trans</i>인 이성질체였다면 D가 축(anti) 자리에 놓여 제거되므로 생성물에 D가 남지 않는다(C–D 절단이므로 1차 동위원소 효과로 더 느리다). 논문(스테로이드 12α-OTs → Δ<sup>11</sup>)에서도 축 방향 11β에 D를 표지한 기질은 D를 잃고, 적도 방향에 표지한 기질만 D를 보존했다. Barton이 정립한 “축 이탈기의 trans-이축 제거”를 그대로 보여 준 실험이다.</p>''',
 ),
@@ -307,7 +308,7 @@ dict(
 <p>① 역추론: 최종 생성물 C<sub>4</sub>H<sub>10</sub>O가 라세미 또는 광학 활성이므로 OH가 입체 중심에 있어야 하고, 이 조건을 만족하는 것은 2-butanol뿐이다. 수소화붕소 첨가로 2-butanol을 주려면 알켄이 2-butene이어야 한다. 1-butene은 anti-Markovnikov 첨가로 비카이랄 1-butanol을 주고, 2-methylpropene은 비카이랄 2-methyl-1-propanol을 준다.</p>
 <p>② [반응 1]: <b class="lbltxt">A</b>(C<sub>4</sub>H<sub>9</sub>Br) + NaOEt → 2-butene(주)이 되려면 <b class="lbltxt">A</b> = <b>2-bromobutane</b>이다. Zaitsev 규칙에 따라 더 치환된 2-butene(<i>trans</i> &gt; <i>cis</i>)이 1-butene보다 많다. 1-bromobutane은 S<sub>N</sub>2가 우세하고 E2를 해도 1-butene만 준다. <b class="lbltxt">B</b> = (<i>E</i>)-2-butene(주)이다.</p>
 <p>③ [반응 2]: <b class="lbltxt">D</b>(C<sub>4</sub>H<sub>6</sub>)를 Lindlar 촉매로 수소화(syn 첨가 1당량)하여 2-butene을 얻으려면 <b class="lbltxt">D</b> = <b>2-butyne</b>이다(1-butyne → 1-butene → 1-butanol은 비카이랄이고, 1,3-butadiene은 Lindlar로 2-butene을 주지 않는다). <b class="lbltxt">E</b> = <i>cis</i>-2-butene이다.</p>
-{'<div class="ansbox">' + M('C/C=C/C', 'B: (E)-2-butene', 14) + M('C/C=C\\\\C', 'E: (Z)-2-butene', 14) + M('C[C@@H](O)CC', 'F: (R)-2-butanol (주)', 14) + '</div>'}
+{BEF_BOX}
 <p>④ Ipc<sub>2</sub>BH: (+)-α-pinene에 BH<sub>3</sub>가 gem-다이메틸 다리의 반대쪽 면으로만 syn 첨가하고, B는 덜 치환된 탄소에 붙는다. 두 pinene이 똑같은 방식으로 붙으므로 단일 입체이성질체가 생긴다(논문의 요지). 이 부피 큰 카이랄 보레인은 <i>cis</i>-2-butene과 특히 잘 맞물려, Brown의 실험에서 (<i>R</i>)-2-butanol이 높은 거울상 초과율로 얻어졌다. 산화(H<sub>2</sub>O<sub>2</sub>, NaOH) 단계는 B를 OH로 바꿀 때 배열을 유지하므로(1,2-이동이 배열 유지), 수소화붕소 첨가에서 정해진 입체가 그대로 남는다.</p>
 <p>⑤ 오답 주의: “BH<sub>3</sub>의 syn 첨가는 입체특이적이니 C도 한 입체이성질체”라고 쓰면 틀린다. syn 첨가는 두 원자가 <b>같은 면</b>으로 들어온다는 뜻이다. 비카이랄 시약은 두 거울상 면을 구별하지 못하므로 결국 라세미가 된다. 거울상선택성은 카이랄 시약·촉매가 있어야만 생긴다(Brown 1979 노벨상: 유기 붕소 화학).</p>''',
 ),
