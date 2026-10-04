@@ -122,8 +122,8 @@ dict(
     nobel='',
     body=f'''다음은 아닐린으로부터 중간 주생성물 {A_}(C<sub>6</sub>H<sub>7</sub>NO<sub>3</sub>S)를 거쳐 산성 아조 염료 {B_}(C<sub>16</sub>H<sub>11</sub>N<sub>2</sub>NaO<sub>4</sub>S)를 합성하는 반응을 나타낸 것이다. {B_}는 소듐 염으로 분리하였다. {NOTE}
 {frame(scheme(M('Nc1ccccc1', scale=16), arrow('진한 H<sub>2</sub>SO<sub>4</sub>', '180 ℃'), L('A'),
-              arrow('NaNO<sub>2</sub>, HCl', '0~5 ℃'), L('(다이아조늄)')),
-       scheme(arrow('', ''), M('Oc1ccc2ccccc2c1', scale=15), arrow('NaOH, H<sub>2</sub>O', '0~5 ℃'), L('B')))}
+              arrow('1) NaNO<sub>2</sub>, HCl, 0~5 ℃', '2) 2-naphthol, NaOH'), L('B')),
+       scheme('<span class="chem">2-naphthol =</span>', M('Oc1ccc2ccccc2c1', scale=15)))}
 <p class="ask">{A_}와 {B_}의 구조를 각각 그리시오. [[PTS]]</p>''',
     answer=f'''<div class="ansbox">{M('Nc1ccc(cc1)S(=O)(=O)O', 'A: sulfanilic acid', 15)}{M('[Na+].[O-]S(=O)(=O)c1ccc(cc1)/N=N/c1c(O)ccc2ccccc12', 'B: Orange II', 13)}</div>
 (A는 실제로 쯔비터이온 H<sub>3</sub>N<sup>+</sup>–C<sub>6</sub>H<sub>4</sub>–SO<sub>3</sub><sup>−</sup>로 존재. B = sodium 4-[(2-hydroxynaphthalen-1-yl)diazenyl]benzenesulfonate)''',
@@ -146,11 +146,11 @@ dict(
     nobel='',
     body=f'''다음은 방향족 화합물의 Friedel–Crafts 반응을 나타낸 것이다. {NOTE}
 {frame('<div class="ft">[반응 1]</div>',
-       scheme(M('O=C(Cl)Cc1cc(C)ccc1Br', scale=15), arrow('H<sub>2</sub>C=CH<sub>2</sub>, AlCl<sub>3</sub>', 'CH<sub>2</sub>Cl<sub>2</sub>'), L('A'), '<span class="chem">(C<sub>11</sub>H<sub>11</sub>BrO)</span>'),
+       scheme(M('O=C(Cl)Cc1cc(C)ccc1Br', scale=15), arrow('H<sub>2</sub>C=CH<sub>2</sub>, AlCl<sub>3</sub>', 'CH<sub>2</sub>Cl<sub>2</sub>'), L('A')),
        '<div class="ft">[반응 2]</div>',
-       scheme(M('c1ccccc1', scale=15), arrow('(CH<sub>3</sub>)<sub>2</sub>CHCH<sub>2</sub>Cl', 'AlCl<sub>3</sub>'), L('B'), '<span class="chem">(C<sub>10</sub>H<sub>14</sub>, 단일 주생성물)</span>'),
+       scheme(M('c1ccccc1', scale=15), arrow('(CH<sub>3</sub>)<sub>2</sub>CHCH<sub>2</sub>Cl', 'AlCl<sub>3</sub>'), L('B')),
        '<div class="chem" style="margin-top:4px">&lt;보 기&gt; (CH<sub>3</sub>)<sub>2</sub>CHCOCl, (CH<sub>3</sub>)<sub>2</sub>C=CH<sub>2</sub>, AlCl<sub>3</sub>, H<sub>3</sub>PO<sub>4</sub>, NaBH<sub>4</sub>, Zn(Hg)/HCl</div>')}
-<p class="ask">[반응 1]에서 {A_}의 구조를 그리시오. [반응 2]에서 {B_}의 구조를 그리고, {B_}가 isobutylbenzene이 아닌 이유를 서술하시오. 또한 &lt;보기&gt;에서 시약을 골라 벤젠으로부터 isobutylbenzene(이부프로펜의 원료)을 합성하는 가장 적절한 반응식을 2단계로 쓰시오. [[PTS]]</p>''',
+<p class="ask">[반응 1]에서 {A_}(C<sub>11</sub>H<sub>11</sub>BrO)의 구조를 그리시오. [반응 2]에서 단일 주생성물 {B_}(C<sub>10</sub>H<sub>14</sub>)의 구조를 그리고, {B_}가 isobutylbenzene이 아닌 이유를 서술하시오. 또한 &lt;보기&gt;에서 시약을 골라 벤젠으로부터 isobutylbenzene(이부프로펜의 원료)을 합성하는 가장 적절한 반응식을 2단계로 쓰시오. [[PTS]]</p>''',
     answer=f'''<div class="ansbox">{M('O=C1CCc2c(C)ccc(Br)c2C1', 'A: 8-bromo-5-methyl-2-tetralone', 15)}{M('CC(C)(C)c1ccccc1', 'B: tert-butylbenzene', 15)}</div>
 이유: AlCl<sub>3</sub>와 1차 할로젠화 알킬의 착물에서 C–Cl이 이온화되는 동시에 이웃 C–H의 하이드라이드가 1,2-이동하여 안정한 3차 탄소 양이온((CH<sub>3</sub>)<sub>3</sub>C<sup>+</sup>)이 생성되고, 이것이 벤젠을 공격하기 때문이다.<br>
 합성: ① 벤젠 + (CH<sub>3</sub>)<sub>2</sub>CHCOCl, AlCl<sub>3</sub> → PhCOCH(CH<sub>3</sub>)<sub>2</sub> (아실륨은 재배열하지 않음) ② Zn(Hg)/HCl(Clemmensen 환원) → PhCH<sub>2</sub>CH(CH<sub>3</sub>)<sub>2</sub>''',

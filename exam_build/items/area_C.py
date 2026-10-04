@@ -486,3 +486,54 @@ ITEMS.append(dict(
 <p>④ 방향족(1,2,4-삼치환; C1 = NHCOR, C3 = CF<sub>3</sub>, C4 = NO<sub>2</sub>): 남은 H는 C2, C5, C6. 오쏘 짝지음 ≈ 8~9 Hz, 메타 ≈ 2 Hz, 파라 ≈ 0. C2–H는 오쏘 이웃 H가 없고 C6–H와 메타 → <b>d, 2.2 Hz = ㉠</b>. C5–H는 C6–H와 오쏘, C2–H와 파라 → <b>d, 8.9 Hz = ㉡</b>. C6–H는 C5–H(오쏘)·C2–H(메타) → <b>dd = ㉢</b>.</p>
 <p>⑤ 출발 아닐린에서는 NH<sub>2</sub>의 강한 공명 주개 효과로 오쏘 H(C2, C6)가 6.98, 6.78 ppm으로 가려지고 NO<sub>2</sub> 오쏘의 C5–H만 7.95 ppm이다. 아마이드화하면 N 비공유 전자쌍이 C=O 쪽으로도 비편재되어 주개 효과가 약해지므로 C2–H, C6–H는 1 ppm 이상 낮은 장으로 이동(+ C=O의 이방성)하지만, N의 메타 위치인 C5–H(㉡)는 거의 변하지 않는다. 함정: 가장 낮은 장 피크 ㉠을 NO<sub>2</sub> 오쏘 H로 고르는 것 — 갈라짐(<i>J</i>)이 결정적 근거이다.</p>''',
 ))
+
+# 9 ─ 2018A-6 : methyl 2-acetoxypropanoate
+ITEMS.append(dict(
+    key='2018A-6',
+    src='2018학년도 A형 6번',
+    src_topic='ethyl propionate의 IR·¹H·¹³C NMR에서 C=O 결합, OCH₂·C(=O)CH₂ 수소, OCH₂ 탄소를 구조의 (ㄱ)~(ㅇ)에서 찾기',
+    change='구조를 주고 귀속만 묻던 기출을, 분자식 C₆H₁₀O₄의 미지 화합물(에스터 2개)을 IR·¹H·¹³C로 먼저 결정한 뒤 ¹³C 피크와 ¹H 피크를 귀속하도록 강화. '
+           '같은 분자식의 dimethyl methylmalonate·dimethyl succinate·ethylene glycol diacetate와 δ로 구별',
+    paper=dict(cite='Angew. Chem. Int. Ed. 2011, 50, 8387–8390', book='Klein 16.66',
+               what='C₆H₁₀O₄의 IR(1747), ¹H(5.1 q, 3.75 s, 2.1 s, 1.5 d), ¹³C(≈171, 170, 69, 52, 21, 17)로 methyl 2-acetoxypropanoate(O-acetyl methyl lactate) 결정'),
+    nobel='',
+    body=f'''다음은 분자식이 C<sub>6</sub>H<sub>10</sub>O<sub>4</sub>인 어떤 화합물의 IR, <sup>1</sup>H NMR(300 MHz), <sup>13</sup>C NMR(75 MHz) 스펙트럼이다. (단, <sup>1</sup>H NMR 스펙트럼의 여백에 있는 그림은 피크 ㉡과 ㉥을 확대한 것이며, <sup>13</sup>C NMR에서 용매 피크는 생략하였다.)
+{spec(IRS([(2995, .18, 25), (2955, .15, 20), (1747, .88, 16, '1747'), (1455, .3, 12), (1375, .35, 10), (1240, .75, 22, '1240'), (1210, .5, 15), (1100, .5, 14), (1050, .45, 12)]))}
+{spec(H1([(5.09, [(7.1, 3)], 1, '㉡'), (3.75, [], 3, '㉢'), (2.13, [], 3, '㉣'), (1.48, [(7.1, 1)], 3, '㉥')], insets=[[0], [3]]))}
+{spec(C13([(171.0, .5, ''), (170.4, .5, ''), (68.6, .9, '㉠'), (52.3, .95, ''), (20.6, 1.0, ''), (16.9, .95, '')], x0=200, x1=0))}
+<div class="chem" style="font-size:9pt">◦ <sup>13</sup>C NMR: δ 171.0, 170.4, 68.6(㉠), 52.3, 20.6, 16.9 &nbsp; ◦ <sup>1</sup>H NMR: ㉡ 5.09(q, <i>J</i> = 7.1 Hz, 1H), ㉢ 3.75(s, 3H), ㉣ 2.13(s, 3H), ㉥ 1.48(d, <i>J</i> = 7.1 Hz, 3H)</div>
+<p class="ask">이 화합물의 구조를 그리고, <sup>13</sup>C NMR 피크 ㉠에 해당하는 탄소에 *를, <sup>1</sup>H NMR 피크 ㉣에 해당하는 수소에 동그라미를 표시하시오. [[PTS]]</p>''',
+    answer=f'''<div class="ansbox">{M('CC(=O)OC(C)C(=O)OC', 'methyl 2-acetoxypropanoate', 17)}</div>
+㉠(δ<sub>C</sub> 68.6) = O에 결합한 메타인 탄소 CH<sub>3</sub>–<u>C</u>H(OAc)–CO<sub>2</sub>CH<sub>3</sub>에 *. ㉣(δ<sub>H</sub> 2.13, s) = 아세틸기 CH<sub>3</sub>–C(=O)–O의 CH<sub>3</sub> 수소에 동그라미.''',
+    explain='''<p>① 불포화도 = (14−10)/2 = 2. IR 1747 cm<sup>−1</sup>(매우 강함, 폭이 약간 넓음) + 1240·1210 cm<sup>−1</sup>(C–O), O–H 없음 → 에스터. ¹³C에서 C=O가 171.0·170.4로 <b>두 개</b> → 에스터기 2개가 불포화도 2를 모두 차지한다(C=C·고리 없음).</p>
+<p>② ¹H: ㉢ 3.75(s, 3H) = 에스터 O–CH<sub>3</sub>(δ<sub>C</sub> 52.3), ㉣ 2.13(s, 3H) = CH<sub>3</sub>–C(=O)O 아세틸(δ<sub>C</sub> 20.6). ㉡ 5.09(q, 1H)와 ㉥ 1.48(d, 3H)는 <i>J</i>가 같은 CH–CH<sub>3</sub> 조각(δ<sub>C</sub> 68.6, 16.9).</p>
+<p>③ 메타인 수소가 5.09 ppm까지 낮은 장에 나타나는 것은 (i) 아실옥시 산소(–O–C(=O)R, 약 +3 ppm)와 (ii) 카보닐(CO<sub>2</sub>Me, +1 ppm)에 동시에 결합해 있기 때문이다. ⇒ CH<sub>3</sub>CH(OC(=O)CH<sub>3</sub>)CO<sub>2</sub>CH<sub>3</sub> — 젖산 메틸의 O-아세틸 유도체.</p>
+<p>④ 귀속: ㉠ 68.6 = sp<sup>3</sup> 탄소 중 산소 결합 + 카보닐 α 위치라 가장 탈가림된 C2(CH). 2018 기출의 OCH<sub>2</sub>(≈60)보다 더 높은 δ인 이유도 같다(α-카보닐 + 2차 탄소).</p>
+<p>⑤ 같은 분자식의 함정: dimethyl methylmalonate CH<sub>3</sub>CH(CO<sub>2</sub>Me)<sub>2</sub>는 3.74(s, <b>6H</b>)·3.46(q)·1.42(d)이고 C=O 신호 1개, CH δ<sub>C</sub> ≈ 46이다. dimethyl succinate(3.69 s 6H, 2.63 s 4H)와 ethylene glycol diacetate(4.28 s 4H, 2.08 s 6H)는 신호가 2개뿐이다. 5.09(q)와 68.6은 O–CH(CH<sub>3</sub>)–C=O만 설명한다.</p>''',
+))
+
+# 10 ─ 2017A-6 : 8-bromo-5-methyl-2-tetralone
+ITEMS.append(dict(
+    key='2017A-6',
+    src='2017학년도 A형 6번',
+    src_topic='C₉H₈O₂ 고리 화합물(4-chromanone): NaBH₄ → 2차 알코올, IR(아릴 케톤)·¹H NMR(짝지은 두 CH₂ 삼중선)로 구조 결정',
+    change='아릴 케톤(콘쥬게이션, ≈1690) 대신 비콘쥬게이션 고리 케톤인 2-tetralone 골격(≈1718)을 써서 C=O 진동수로 1-/2-tetralone을 구별하게 함. '
+           '이웃 H가 없는 ArCH₂C=O 단일선, Br 동위원소(1:1), 오쏘 이중선 쌍을 함께 해석. 분자식이 같은 비닐 케톤(사슬형) 함정 포함. '
+           'AlCl₃/에틸렌 Friedel–Crafts 고리 형성 생성물로 출제',
+    paper=dict(cite='J. Org. Chem. 2012, 77, 5503–5514', book='Klein 19.84',
+               what='aminotetralin 항우울제 후보 합성: 2-(2-bromo-5-methylphenyl)acetyl chloride + 에틸렌/AlCl₃ → 8-bromo-5-methyl-2-tetralone(지방족 Friedel–Crafts 아실화 + 분자 내 알킬화)'),
+    nobel='',
+    body=f'''다음은 2-(2-bromo-5-methylphenyl)acetyl chloride로부터 고리 화합물 {B_}(C<sub>11</sub>H<sub>11</sub>BrO)를 합성하는 반응이다. {B_}를 NaBH<sub>4</sub>와 반응시키면 2차 알코올이 생성되며, {B_}의 질량 스펙트럼에는 m/z 238과 240의 피크가 1 : 1로 나타난다. 그림은 {B_}의 IR와 <sup>1</sup>H NMR 스펙트럼이다. (단, <sup>1</sup>H NMR 스펙트럼의 여백에 있는 그림은 피크 ㉠~㉤을 확대한 것이다.)
+{frame(scheme(M('O=C(Cl)Cc1cc(C)ccc1Br', scale=15), arrow('H<sub>2</sub>C=CH<sub>2</sub>', 'AlCl<sub>3</sub>, CH<sub>2</sub>Cl<sub>2</sub>'), L('B')))}
+{spec(IRS([(3010, .1, 20), (2930, .25, 30), (2850, .12, 20), (1718, .85, 15, '1718'), (1460, .4, 12), (1410, .25, 10), (1190, .3, 15), (1030, .2, 10), (810, .45, 12, '810')]))}
+{spec(H1([(7.38, [(8.2, 1)], 1, '㉠'), (6.98, [(8.2, 1)], 1, '㉡'), (3.62, [], 2, '㉢'), (2.98, [(6.8, 2)], 2, '㉣'), (2.55, [(6.8, 2)], 2, '㉤'), (2.24, [], 3, '㉥')],
+          insets=[[0, 1], [3], [4]]))}
+<p class="ask">{B_}의 구조를 그리고, 피크 ㉢에 해당하는 수소에 동그라미로 표시하시오. [[PTS]]</p>''',
+    answer=f'''<div class="ansbox">{M('O=C1CCc2c(C)ccc(Br)c2C1', 'B: 8-bromo-5-methyl-3,4-dihydronaphthalen-2(1H)-one', 17)}</div>
+㉢(δ 3.62, s, 2H) = 고리 C1의 CH<sub>2</sub>(벤젠 고리와 C=O 사이, Br 쪽) 수소 2개에 동그라미.''',
+    explain='''<p>① 반응: AlCl<sub>3</sub>가 산 염화물에서 Cl<sup>−</sup>를 떼어 아실륨 이온 ArCH<sub>2</sub>C≡O<sup>+</sup>를 만든다 → 에틸렌의 π 전자가 아실륨을 공격(지방족 Friedel–Crafts 아실화) → ArCH<sub>2</sub>C(=O)CH<sub>2</sub>CH<sub>2</sub><sup>+</sup>(또는 Cl<sup>−</sup>가 붙은 β-클로로케톤이 AlCl<sub>3</sub>로 다시 이온화) → 같은 분자 안 벤젠 고리의 비어 있는 오쏘 탄소(CH<sub>3</sub>의 오쏘, 활성화됨)가 공격하여 6원 고리를 만드는 분자 내 Friedel–Crafts 알킬화(아레늄 이온) → 탈양성자화로 방향족성 회복.</p>
+<p>② 분자식·MS: M = 238/240(1:1) → Br 1개. 불포화도 = (2×11+2−11−1)/2 = 6 → 벤젠(4) + 고리(1) + C=O(1). NaBH<sub>4</sub>로 2차 알코올 → 케톤(알데하이드 아님).</p>
+<p>③ IR 1718 cm<sup>−1</sup>: 벤젠 고리와 <b>콘쥬게이션되지 않은</b> 6원 고리 케톤(사이클로헥산온 ≈1715). 1-tetralone처럼 C=O가 고리에 직접 붙은 아릴 케톤이었다면 ≈1685 cm<sup>−1</sup>이고, 오쏘 H가 ≈8.0 ppm에 나타났을 것이다.</p>
+<p>④ ¹H: ㉢ 3.62(s, 2H) = 벤젠 고리와 C=O 사이에 낀 CH<sub>2</sub>(벤질 + α-카보닐로 이중 탈가림, 이웃 H 없음 → 단일선): 2-tetralone의 C1–H<sub>2</sub>. ㉣ 2.98(t, 2H) = Ar–CH<sub>2</sub>(C4), ㉤ 2.55(t, 2H) = CH<sub>2</sub>–C=O(C3); 서로만 짝지은 두 삼중선 → –CH<sub>2</sub>CH<sub>2</sub>– 단위. ㉥ 2.24(s, 3H) = Ar–CH<sub>3</sub>. ㉠ 7.38·㉡ 6.98(각 d, <i>J</i> = 8.2 Hz) → 서로 오쏘인 방향족 H 2개만 남은 사치환 벤젠(㉠은 Br의 오쏘 C7–H, ㉡은 CH<sub>3</sub>의 오쏘 C6–H). 810 cm<sup>−1</sup> = 이웃한 방향족 C–H 2개의 면외 굽힘.</p>
+<p>⑤ 함정: 분자식이 같은 사슬형 비닐 케톤 ArCH<sub>2</sub>C(=O)CH=CH<sub>2</sub>(아실화 후 HCl 제거 생성물)은 5.8~6.4 ppm의 비닐 H 3개와 콘쥬게이션 C=O(≈1690)를 보여야 하므로 아니다. 1-tetralone 골격은 단일선 CH<sub>2</sub>가 없고 C3–H<sub>2</sub>가 오중선(≈2.1)으로 나타난다.</p>''',
+))
