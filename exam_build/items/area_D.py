@@ -8,7 +8,7 @@ dict(
     src_topic='benzaldehyde의 Wittig 반응(oxaphosphetane) → (Z)-stilbene → m-CPBA 입체특이적 에폭시화',
     change='불안정화 일라이드(Z) 대신 안정화 일라이드(E-선택성)를 사용하고, m-CPBA 대신 Sharpless 비대칭 에폭시화로 바꾸어 '
            '“입체특이성 + 거울상선택성”을 동시에 묻도록 변형',
-    paper=dict(cite='Klein 14장 참고문헌 (reboxetine 공정 합성, Sharpless 비대칭 에폭시화)', book='Klein 14.63',
+    paper=dict(cite='Org. Proc. Res. & Devel. 2007, 11, 354–358', book='Klein 14.63',
                what='(E)-cinnamyl alcohol류의 Sharpless 비대칭 에폭시화로 3-phenylglycidol을 얻고 이를 (S,S)-reboxetine으로 전환'),
     nobel='2001 노벨 화학상(K. B. Sharpless — 키랄 촉매 산화반응), 1979 노벨 화학상(G. Wittig)',
     body=f'''다음은 benzaldehyde로부터 중간 주생성물 <b class="lbltxt">A</b>(C<sub>11</sub>H<sub>12</sub>O<sub>2</sub>)와 <b class="lbltxt">B</b>를 거쳐 최종 주생성물 <b class="lbltxt">C</b>를 합성하는 반응을 나타낸 것이다. (단, 각 반응에서는 적절한 분리·정제 과정을 수행하였다.)
