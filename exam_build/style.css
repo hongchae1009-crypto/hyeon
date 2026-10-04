@@ -1,0 +1,54 @@
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: #fff; color: #000; }
+body { font-family: "NanumMyeongjo", "Noto Serif CJK KR", serif; font-size: 10.3pt; line-height: 1.72; }
+.page { width: 210mm; height: 297mm; padding: 14mm 15mm 12mm; position: relative; page-break-after: always; overflow: hidden; }
+.page:last-child { page-break-after: auto; }
+/* 표지 머리 */
+.title1 { text-align: center; font-size: 15pt; font-weight: 700; margin-top: 4mm; letter-spacing: .5px; }
+.title2 { text-align: center; font-size: 34pt; font-weight: 800; letter-spacing: 38px; margin: 2mm 0 3mm 38px; }
+.idrow { display: flex; justify-content: space-around; font-family: "NanumGothic", sans-serif; font-weight: 700; font-size: 13pt; margin-bottom: 4mm; }
+table.info { width: 100%; border-collapse: collapse; margin-bottom: 4mm; font-size: 11pt; }
+table.info td { border: 1px solid #000; text-align: center; padding: 2.2mm 0; }
+.notice { font-size: 9.4pt; border-bottom: 1px solid #000; padding-bottom: 1.5mm; margin-bottom: 3mm; }
+.topline { border-top: 1px solid #000; margin-top: 8mm; }
+/* 2단 */
+.cols { display: grid; grid-template-columns: 1fr 1fr; column-gap: 0; position: absolute; left: 15mm; right: 15mm; bottom: 18mm; }
+.cols.first { top: 76mm; } .cols.rest { top: 22mm; }
+.cols > .col { padding: 3mm 5mm 0 0; overflow: hidden; }
+.cols > .col + .col { border-left: 1px solid #000; padding: 3mm 0 0 5mm; }
+.q { margin-bottom: 6mm; text-align: justify; word-break: keep-all; }
+.qn { font-family: "NanumGothic", sans-serif; font-weight: 800; font-size: 12.5pt; margin-right: 1.5mm; }
+.q p { margin: 0 0 1.5mm; text-indent: 0; }
+.q .ask { text-indent: 1em; }
+.pts { white-space: nowrap; }
+.frame { border: 1px solid #000; padding: 2.5mm 3mm; margin: 2.5mm 0 3mm; font-size: 9.6pt; line-height: 1.6; }
+.frame .ft { font-family: "NanumGothic", sans-serif; font-weight: 700; }
+.frame ul { margin: 1mm 0; padding-left: 4mm; }
+.howto { margin-top: 2mm; }
+.howto .ht { text-align: center; font-family: "NanumGothic", sans-serif; font-weight: 700; margin-bottom: 1mm; }
+.howto ul { list-style: none; padding: 0 0 0 1mm; margin: 0; }
+.howto li { padding-left: 3.4mm; text-indent: -3.4mm; margin-bottom: .8mm; }
+.howto li::before { content: "◦ "; }
+/* 반응식 */
+.scheme { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 1mm 1.5mm; margin: 1mm 0; }
+.scheme.left { justify-content: flex-start; }
+.cmpd { display: flex; flex-direction: column; align-items: center; }
+.cmpd svg { display: block; }
+.cmpd .lbl { font-family: "Arial", "NanumGothic", sans-serif; font-weight: 700; font-size: 10pt; margin-top: -1mm; }
+.cmpd.letter { font-family: Arial, sans-serif; font-weight: 700; font-size: 13pt; padding: 0 1mm; }
+.arr { display: flex; flex-direction: column; align-items: center; font-family: Arial, "NanumGothic", sans-serif; font-size: 7.8pt; line-height: 1.25; }
+.arr .rt, .arr .rb { min-height: 10px; text-align: center; white-space: nowrap; }
+.arr .rt { margin-bottom: 1px; } .arr .rb { margin-top: 1px; }
+.plus { font-family: Arial, sans-serif; font-size: 12pt; }
+.chem { font-family: Arial, "NanumGothic", sans-serif; font-size: 9.4pt; }
+/* 표 */
+table.data { border-collapse: collapse; margin: 1.5mm auto; font-size: 9pt; }
+table.data td, table.data th { border: 1px solid #000; padding: .6mm 2.2mm; text-align: center; }
+table.data th { font-family: "NanumGothic", sans-serif; font-weight: 700; background: #f2f2f2; }
+.foot { position: absolute; bottom: 7mm; left: 15mm; right: 15mm; border-top: 1px solid #000; padding-top: 1.5mm; text-align: center; font-size: 9.5pt; }
+.foot b { font-size: 14pt; }
+.foot .tag { position: absolute; left: 0; top: 2mm; font-family: "NanumGothic", sans-serif; font-size: 8pt; color: #444; }
+.end { text-align: center; font-family: "NanumGothic", sans-serif; font-weight: 800; font-size: 14pt; margin-top: 10mm; }
+/* 변형 출처 꼬리표 */
+.src { font-family: "NanumGothic", sans-serif; font-size: 7.6pt; color: #333; border-top: 1px dashed #888; margin-top: 1.5mm; padding-top: .8mm; line-height: 1.45; }
