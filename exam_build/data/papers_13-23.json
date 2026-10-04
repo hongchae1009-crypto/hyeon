@@ -1,0 +1,1921 @@
+{
+ "chapters": [
+  {
+   "no": 13,
+   "title": "알코올과 페놀",
+   "summary": [
+    "ROH + SOCl2/py 또는 TsCl/py → NaX → RX (SN2, 입체 반전); 3° ROH + HX → SN1",
+    "3° ROH + 진한 H2SO4, 가열 → 알켄(E1); ROTs + NaOEt → 알켄(E2)",
+    "1° ROH + PCC·DMP·Swern → 알데하이드; Na2Cr2O7/H2SO4 → 카복실산; 2° ROH → 케톤",
+    "페놀 + Na2Cr2O7/H2SO4 → 벤조퀴논 (퀴논 ⇌ 하이드로퀴논 산화환원)",
+    "NaBH4: 알데하이드·케톤만 환원 / LiAlH4: 에스터·카복실산까지 1° ROH로 환원",
+    "RMgBr + 알데하이드·케톤 → 2°·3° ROH; + 에스터 → R 2개 첨가된 3° ROH",
+    "OH 보호: TMSCl/Et3N → ROTMS (Grignard 공존) → TBAF 또는 H3O+로 탈보호",
+    "알코올 산성도: 공명·유도·용매화 (페놀 pKa ≈ 10 ≫ 알코올 pKa 15–18)"
+   ],
+   "refs": [
+    {
+     "problem": "(본문 인용)",
+     "cite": "J. Org. Chem. 2012, 77, 3390–3400",
+     "compound": "",
+     "reaction_ko": "장 본문(예제·학습 문제)에서 인용된 문헌 — 제공된 문제 페이지에는 해당 문제가 없음",
+     "concept_ko": "",
+     "importance": 1,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "(본문 인용)",
+     "cite": "J. Org. Chem. 2000, 65, 9249–9251",
+     "compound": "",
+     "reaction_ko": "장 본문(예제·학습 문제)에서 인용된 문헌 — 제공된 문제 페이지에는 해당 문제가 없음",
+     "concept_ko": "",
+     "importance": 1,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "(본문 인용)",
+     "cite": "J. Agric. Food Chem. 1986, 34, 140–144",
+     "compound": "",
+     "reaction_ko": "장 본문(예제·학습 문제)에서 인용된 문헌 — 제공된 문제 페이지에는 해당 문제가 없음",
+     "concept_ko": "",
+     "importance": 1,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "13.63",
+     "cite": "Tetrahedron Lett. 2007, 48, 8479–8481",
+     "compound": "(S)-gizzerosine 합성 중간체",
+     "reaction_ko": "Boc-아미노 엔알 에스터 → 1) H2, Pd/C (C=C 수소화) 2) NaBH4, MeOH (CHO → 1° OH) → 6-하이드록시 Boc-아미노 에스터",
+     "concept_ko": "화학선택적 환원: NaBH4는 에스터·카바메이트를 건드리지 않음(LiAlH4 사용 불가)",
+     "importance": 3,
+     "nobel": "1912 Grignard · Sabatier — Grignard 시약 · 촉매 수소화",
+     "scheme": [
+      {
+       "smiles": "O=C/C=C/C[C@H](NC(=O)OC(C)(C)C)C(=O)OC",
+       "label": "출발물"
+      },
+      {
+       "arrow": "1) H2, Pd/C  2) NaBH4"
+      },
+      {
+       "smiles": "OCCCC[C@H](NC(=O)OC(C)(C)C)C(=O)OC",
+       "label": "생성물"
+      }
+     ]
+    },
+    {
+     "problem": "13.68",
+     "cite": "J. Org. Chem. 2009, 74, 5458–5470",
+     "compound": "briarellin E",
+     "reaction_ko": "OTBS 2개를 가진 브리아렐린 골격 → TBAF → 두 실릴 에터가 모두 OH로 바뀐 트라이올(골격·입체 유지)",
+     "concept_ko": "F⁻에 의한 실릴 보호기 제거(Si–F 결합이 매우 강함)",
+     "importance": 2,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "13.69",
+     "cite": "J. Nat. Prod. 2011, 74, 1262–1267",
+     "compound": "duryne",
+     "reaction_ko": "탄소 11개 이하 단위로 대칭 C30 다이엔다이인 다이올 합성: 아세틸렌 이중 알킬화 → Lindlar(cis); 말단은 E-엔알 + HC≡CMgBr → 프로파질 알코올",
+     "concept_ko": "알카인 알킬화, Lindlar(cis)/Na–NH3(trans) 환원, 아세틸라이드의 카보닐 첨가, 대칭 분자 설계",
+     "importance": 2,
+     "nobel": "1912 Grignard · Sabatier — Grignard 시약 · 촉매 수소화",
+     "scheme": []
+    },
+    {
+     "problem": "13.70",
+     "cite": "J. Nat. Prod. 1987, 50, 990–991",
+     "compound": "estragole",
+     "reaction_ko": "p-크레솔 → NaOH, CH3I (O-메틸화) → NBS, hν (벤질 브로민화) → Mg → 에틸렌 옥사이드 → TsCl/py → t-BuOK → 4-알릴아니솔",
+     "concept_ko": "페녹사이드 Williamson, 벤질 라디칼 브로민화, Grignard 탄소 사슬 연장, 부피 큰 염기 E2",
+     "importance": 2,
+     "nobel": "1912 Grignard · Sabatier — Grignard 시약 · 촉매 수소화",
+     "scheme": [
+      {
+       "smiles": "Cc1ccc(O)cc1",
+       "label": "p-크레솔"
+      },
+      {
+       "arrow": "O-메틸화 → 벤질 Br → Grignard ..."
+      },
+      {
+       "smiles": "C=CCc1ccc(OC)cc1",
+       "label": "estragole"
+      }
+     ]
+    },
+    {
+     "problem": "13.71",
+     "cite": "J. Nat. Prod. 1996, 59, 49–51",
+     "compound": "2-methylheptan-4-one / 3-methylheptan-4-one",
+     "reaction_ko": "1-뷰텐 → BH3·THF; H2O2, NaOH → PCC → 뷰탄알; i-BuMgBr(또는 sec-BuMgBr) 첨가 → 2° ROH → Na2Cr2O7 산화 → 케톤",
+     "concept_ko": "알켄 → 알코올(anti-Markovnikov), Grignard 역합성, 2° 알코올 산화",
+     "importance": 3,
+     "nobel": "1912 Grignard · Sabatier — Grignard 시약 · 촉매 수소화",
+     "scheme": [
+      {
+       "smiles": "CCCC=O",
+       "label": "뷰탄알"
+      },
+      {
+       "arrow": "1) i-BuMgBr 2) H2O 3) PCC"
+      },
+      {
+       "smiles": "CC(C)CC(=O)CCC",
+       "label": "2-메틸헵탄-4-온"
+      }
+     ]
+    },
+    {
+     "problem": "13.72",
+     "cite": "J. Chem. Ecol. 2012, 38, 814–824",
+     "compound": "5,9,12,16-tetramethyleicosane (토마토 노린재 페로몬)",
+     "reaction_ko": "2-사이클로프로필헥산-2-올 + HBr → 사이클로프로필카비닐 양이온 고리 열림 → 동종알릴 브로민화물(E/Z); Grignard 2당량 + 헥세인-2,5-다이온 → 탈수 → H2/Pd",
+     "concept_ko": "SN1형 사이클로프로필카비닐 → 동종알릴 고리 열림(고리 변형 해소), Grignard·탈수·수소화 조합",
+     "importance": 2,
+     "nobel": "1912 Grignard · Sabatier — Grignard 시약 · 촉매 수소화",
+     "scheme": [
+      {
+       "smiles": "CCCCC(C)(O)C1CC1",
+       "label": "3° 알코올"
+      },
+      {
+       "arrow": "HBr"
+      },
+      {
+       "smiles": "CCCC/C(C)=C/CCBr",
+       "label": "동종알릴 브로민화물"
+      }
+     ]
+    },
+    {
+     "problem": "13.73",
+     "cite": "J. Am. Chem. Soc. 1989, 111, 6682–6690",
+     "compound": "brevetoxin B (K 고리, Nicolaou)",
+     "reaction_ko": "K 고리 테트라하이드로피란 → TBAF(실릴 제거, 다이올) → TsCl/py(1° OH만 토실화) → NaOMe(3° 알콕사이드의 분자 내 SN2) → 다리걸친 이환 에터",
+     "concept_ko": "선택적 1° 토실화, 분자 내 Williamson 에터 합성, 두 작용기가 같은 면(syn)일 때만 고리 닫힘",
+     "importance": 3,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "C=CCC1OC(COS(=O)(=O)c2ccc(C)cc2)CC(OCc2ccccc2)C1(C)O",
+       "label": "토실레이트 4"
+      },
+      {
+       "arrow": "NaOMe"
+      },
+      {
+       "smiles": "C=CCC1OC2CC(OCc3ccccc3)C1(C)OC2",
+       "label": "이환 에터 5"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "no": 14,
+   "title": "에터와 에폭사이드; 싸이올과 설파이드",
+   "summary": [
+    "Williamson 에터 합성: ROH → 1) NaH 2) 1° RX → ROR (SN2; 3° RX는 E2)",
+    "알콕시수은화–탈수은화: 알켄 + Hg(OAc)2, ROH → NaBH4 → Markovnikov 에터",
+    "에터 산 분해: ROR + 과량 HX, 가열 → 2 RX (ArOR → ArOH + RX)",
+    "에폭시화: RCO3H(입체특이적 syn) 또는 Br2/H2O → NaOH (할로하이드린 고리 닫힘)",
+    "Sharpless 비대칭 에폭시화: 알릴 알코올 + t-BuOOH, Ti(OiPr)4, (+)/(−)-DET",
+    "에폭사이드 열림: 강한 친핵체(RO⁻, CN⁻, RS⁻, RMgBr, LiAlH4) → 덜 치환된 C에 SN2(반전); 산 촉매 → 더 치환된 C",
+    "Grignard + 에폭사이드 → OH가 새 사슬 2번 탄소 (C=O 첨가는 1번 탄소)",
+    "싸이올: RX + NaSH → RSH; 2 RSH ⇌ RSSR (산화 Br2/환원 Zn·HCl); R2S → NaIO4 → 설폭사이드 → H2O2 → 설폰"
+   ],
+   "refs": [
+    {
+     "problem": "14.60",
+     "cite": "Tetrahedron Lett. 2009, 50, 5012–5014",
+     "compound": "reidispongiolide A 합성 단편",
+     "reaction_ko": "트리틸 글리시딜 에터 → 1) CH2=CHMgBr 2) H2O (덜 치환된 CH2 공격) → A → NaH, CH3I → B → cat. OsO4, NMO → 다이올 부분입체이성질체 C + D",
+     "concept_ko": "Grignard의 에폭사이드 SN2 열림(입체중심 유지), Williamson 메틸화, syn-다이하이드록시화",
+     "importance": 3,
+     "nobel": "1912 Grignard · Sabatier — Grignard 시약 · 촉매 수소화",
+     "scheme": [
+      {
+       "smiles": "c1ccccc1C(c1ccccc1)(c1ccccc1)OCC1CO1",
+       "label": "트리틸 글리시딜 에터"
+      },
+      {
+       "arrow": "1) CH2=CHMgBr 2) H2O"
+      },
+      {
+       "smiles": "C=CCC(O)COC(c1ccccc1)(c1ccccc1)c1ccccc1",
+       "label": "A"
+      }
+     ]
+    },
+    {
+     "problem": "14.61",
+     "cite": "Tetrahedron Lett. 2012, 53, 3233–3236",
+     "compound": "fumonisin B1 (C7–C9 도입)",
+     "reaction_ko": "말단 에폭사이드 + 프로파질 브로민화물에서 만든 프로파질 Grignard → 덜 치환된 C6 공격 → 알카인 알코올",
+     "concept_ko": "탄소 친핵체에 의한 에폭사이드 위치선택적 열림(SN2)",
+     "importance": 2,
+     "nobel": "1912 Grignard · Sabatier — Grignard 시약 · 촉매 수소화",
+     "scheme": []
+    },
+    {
+     "problem": "14.62",
+     "cite": "J. Org. Chem. 2009, 74, 6151–6156",
+     "compound": "(+)-myrrhanol A (guggul 성분)",
+     "reaction_ko": "엑소 메틸렌 데칼린 → 1) MCPBA (덜 가려진 면 에폭시화, 스피로 에폭사이드) 2) LiAlH4 3) H2O → 3° 알코올 단일 부분입체이성질체",
+     "concept_ko": "과산 에폭시화의 면선택성, LiAlH4 H⁻의 덜 치환된 C 공격 — C–O 결합이 끊어지지 않아 입체 보존",
+     "importance": 3,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "14.63",
+     "cite": "Org. Proc. Res. & Devel. 2007, 11, 354–358",
+     "compound": "(S,S)-reboxetine (Pfizer 공정)",
+     "reaction_ko": "(E)-신나밀 알코올 → t-BuOOH, Ti(OiPr)4, (−)-DIPT → (2R,3R)-에폭시 알코올 → 2-에톡시페녹사이드 SN2(벤질 C, 반전) → 다이올 → TMS 보호/2° OMs/탈보호 → NaOH (분자 내 SN2) → 말단 에폭사이드",
+     "concept_ko": "Sharpless 비대칭 에폭시화, 에폭사이드 SN2 열림 위치·반전, 선택적 보호, 분자 내 Williamson",
+     "importance": 3,
+     "nobel": "2001 Knowles · Noyori · Sharpless — 비대칭 촉매 산화(Sharpless 에폭시화)",
+     "scheme": [
+      {
+       "smiles": "OC/C=C/c1ccccc1",
+       "label": "신나밀 알코올"
+      },
+      {
+       "arrow": "t-BuOOH, Ti(OiPr)4, (−)-DIPT"
+      },
+      {
+       "smiles": "OC[C@H]1O[C@@H]1c1ccccc1",
+       "label": "(2R,3R)-에폭시 알코올"
+      }
+     ]
+    },
+    {
+     "problem": "14.64",
+     "cite": "J. Org. Chem. 2002, 67, 4856–4859",
+     "compound": "2-C-methyl-D-erythritol",
+     "reaction_ko": "(E)-알릴 알코올 → Sharpless((−)-DET) 에폭시화 → 1° OH 아세틸화 → H3O+: 아세테이트 C=O 산소가 3° 에폭사이드 C 공격 → 다이옥솔라닐륨 → 이환 오쏘에스터",
+     "concept_ko": "Sharpless 에폭시화 시약 선택, 인접기 관여(아세톡시)에 의한 산 촉매 에폭사이드 열림",
+     "importance": 2,
+     "nobel": "2001 Knowles · Noyori · Sharpless — 비대칭 촉매 산화(Sharpless 에폭시화)",
+     "scheme": [
+      {
+       "smiles": "OC/C(C)=C/COCc1ccccc1",
+       "label": "알릴 알코올 1"
+      },
+      {
+       "arrow": "t-BuOOH, Ti(OiPr)4, (−)-DET"
+      },
+      {
+       "smiles": "CC1(CO)OC1COCc1ccccc1",
+       "label": "에폭시 알코올 2"
+      }
+     ]
+    },
+    {
+     "problem": "14.65",
+     "cite": "Synth. Commun. 2003, 33, 2135–2143",
+     "compound": "Corey–Chaykovsky 에폭시화",
+     "reaction_ko": "트라이메틸설포늄 + NaH → 황 일리드; 아세토페논 C=O 공격 → 베타인 알콕사이드 → 분자 내 SN2(Me2S 이탈) → 2-메틸-2-페닐옥시레인",
+     "concept_ko": "황 일리드의 카보닐 첨가 후 고리 닫힘(Wittig과 대비: 알켄 대신 에폭사이드)",
+     "importance": 2,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "CC(=O)c1ccccc1",
+       "label": "아세토페논"
+      },
+      {
+       "arrow": "(CH3)3S⁺, NaH"
+      },
+      {
+       "smiles": "CC1(c2ccccc2)CO1",
+       "label": "에폭사이드"
+      },
+      {
+       "plus": true
+      },
+      {
+       "smiles": "CSC",
+       "label": "Me2S"
+      }
+     ]
+    },
+    {
+     "problem": "14.66",
+     "cite": "J. Am. Chem. Soc. 1982, 104, 3515–3516",
+     "compound": "Payne 자리옮김 (탄수화물 합성 전략)",
+     "reaction_ko": "2,3-에폭시 알코올 + NaOH/H2O, PhSH → 1° 알콕사이드가 C2 공격(반전)하여 말단 에폭사이드로 이동(Payne) → PhS⁻가 CH2 공격 → 1-페닐싸이오-2,3-다이올; (b) Sharpless((+)-DET) 후 같은 과정",
+     "concept_ko": "Payne 자리옮김 평형 + 말단 에폭사이드 선택적 포획, Sharpless 에폭시화와 결합한 당 합성",
+     "importance": 2,
+     "nobel": "2001 Knowles · Noyori · Sharpless — 비대칭 촉매 산화(Sharpless 에폭시화)",
+     "scheme": [
+      {
+       "smiles": "CC1(C)OCC(O1)C1OC1CO",
+       "label": "2,3-에폭시 알코올"
+      },
+      {
+       "arrow": "NaOH, H2O, PhSH"
+      },
+      {
+       "smiles": "CC1(C)OCC(O1)C(O)C(O)CSc1ccccc1",
+       "label": "싸이오 다이올"
+      }
+     ]
+    },
+    {
+     "problem": "14.67",
+     "cite": "J. Org. Chem. 2012, 77, 7883–7890",
+     "compound": "laureatin (골격 자리옮김)",
+     "reaction_ko": "옥세테인 알켄 + Br2 → 브로모늄 → 옥세테인 O가 5-exo 공격(옥소늄) → 인접 OH가 옥세타늄 C 공격(반전) → THF + 에폭사이드",
+     "concept_ko": "할로늄 이온의 분자 내 산소 포획, 고리 변형 해소에 의한 옥세테인 → THF 고리 확장",
+     "importance": 1,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "14.68",
+     "cite": "J. Org. Chem. 1981, 46, 930–939",
+     "compound": "에폭시알켄의 옥시수은화",
+     "reaction_ko": "2-알릴옥시레인 + 1) Hg(OAc)2, H2O 2) NaBH4 → Markovnikov 수화물(96%); 사슬이 한 개 긴 경우 에폭사이드 O가 머큐리늄을 5-exo 공격 → 이환 옥소늄 → THF·THP 고리 생성물",
+     "concept_ko": "옥시수은화(Markovnikov, 자리옮김 없음), 고리 크기(5원 TS)에 따른 분자 내 친핵체 경쟁",
+     "importance": 2,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "C=CCC1CO1",
+       "label": "2-알릴옥시레인"
+      },
+      {
+       "arrow": "1) Hg(OAc)2, H2O 2) NaBH4"
+      },
+      {
+       "smiles": "CC(O)CC1CO1",
+       "label": "생성물 2"
+      }
+     ]
+    },
+    {
+     "problem": "14.69",
+     "cite": "J. Org. Chem. 2008, 73, 5592–5594",
+     "compound": "할로늄 유도 알콕시 이동",
+     "reaction_ko": "MOM 에터 알켄 + 1) I2 2) PhSH, Et3N → 아이오도늄을 MOM의 OMe 산소가 공격(6원 고리 옥소늄) → 단편화로 OMe 이동 + 옥소카베늄을 PhS⁻가 포획 → 1,3-syn 아이오도 에터",
+     "concept_ko": "할로늄 이온의 인접기 관여, 옥소카베늄 이온 포획, 의자형 6원 TS의 입체 제어",
+     "importance": 1,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "C=CCC(Cc1ccccc1)OCOC",
+       "label": "MOM 에터"
+      },
+      {
+       "arrow": "1) I2 2) PhSH, Et3N"
+      },
+      {
+       "smiles": "ICC(OC)CC(Cc1ccccc1)OCSc1ccccc1",
+       "label": "생성물"
+      }
+     ]
+    },
+    {
+     "problem": "14.70",
+     "cite": "J. Org. Chem. 2002, 67, 1253–1260",
+     "compound": "artemisinin 유도체",
+     "reaction_ko": "9,10-에폭사이드 + (CF3)2CHOH, cat. H3O+ → C10(아노머 탄소)에 옥소카베늄 형성 → HFIP가 덜 가려진 면 첨가 → OH와 OCH(CF3)2가 cis",
+     "concept_ko": "산 촉매 에폭사이드 열림에서 고리 산소의 옥소카베늄 안정화 → 위치·입체 선택성 역전(SN1형)",
+     "importance": 1,
+     "nobel": "",
+     "scheme": []
+    }
+   ]
+  },
+  {
+   "no": 15,
+   "title": "적외선 분광법과 질량 분석법",
+   "summary": [
+    "IR 진동수 ∝ 결합 세기·환산 질량: C≡C/C≡N 2100–2300, C=O 1650–1850, X–H 2750–4000 cm⁻¹",
+    "콘쥬게이션 C=O는 낮은 파수로 이동; 3000 cm⁻¹ 기준 sp²/sp³ C–H 구분",
+    "세기 ∝ 쌍극자 변화: C=O 강함, 대칭 C=C·C≡C 약하거나 보이지 않음",
+    "수소결합 O–H는 넓은 띠, 묽은 용액 자유 O–H는 좁은 띠; 1° 아민 N–H 2개 띠",
+    "MS: M⁺•, 기준 봉우리, 질소 규칙, M+1(탄소 수 ≈ 상대세기/1.1%), M+2(Cl 1/3, Br 1:1)",
+    "단편화: α-절단, 벤질 절단, McLafferty 자리옮김(γ-H 이동), 안정한 양이온 생성 방향",
+    "HRMS 정확 질량으로 분자식 결정; ESI는 큰 생체분자에 사용",
+    "수소 결핍 지수(HDI): 할로젠은 H로, O 무시, N은 H 하나 빼기"
+   ],
+   "refs": [
+    {
+     "problem": "15.69",
+     "cite": "Anal. Chem. 2013, 85, 831–836",
+     "compound": "안트라퀴논 산성 염료",
+     "reaction_ko": "섬유에서 레이저로 직접 추출한 염료의 음이온 HRMS: 423.0647(M⁻), 424.0681(¹³C), 425.0605(³⁴S), 425.0715(¹³C₂)",
+     "concept_ko": "동위원소 패턴과 HRMS 질량 결손으로 ¹³C₂와 ³⁴S 봉우리 구분",
+     "importance": 1,
+     "nobel": "2002 Fenn · Tanaka · Wüthrich — 생체분자 질량분석(ESI)·NMR",
+     "scheme": []
+    },
+    {
+     "problem": "15.70",
+     "cite": "J. Am. Chem. Soc. 1952, 74, 4070–4073",
+     "compound": "ethyl 2-oxocyclohexanecarboxylate 케토–엔올",
+     "reaction_ko": "β-케토 에스터 케토형(1740 에스터, 1720 케톤) ⇌ 엔올형(1660 콘쥬게이션·수소결합 에스터 C=O, 1620 C=C)",
+     "concept_ko": "케토–엔올 토토머화, 콘쥬게이션·분자 내 수소결합에 의한 C=O 흡수 이동과 엔올 안정화",
+     "importance": 3,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "CCOC(=O)C1CCCCC1=O",
+       "label": "케토형 A"
+      },
+      {
+       "arrow": "⇌"
+      },
+      {
+       "smiles": "CCOC(=O)C1=C(O)CCCC1",
+       "label": "엔올형 B"
+      }
+     ]
+    },
+    {
+     "problem": "15.71",
+     "cite": "J. Chem. Ed. 2008, 85, 832–833",
+     "compound": "2-/1-(4-bromophenyl)ethanol",
+     "reaction_ko": "X(1-아릴에탄올): M–15(α-절단, CH3 손실) 187/185; Y(2-아릴에탄올): M–31(CH2OH 손실) → 브로모벤질(트로필륨) 양이온 171/169",
+     "concept_ko": "알코올의 α-절단, 벤질 절단, Br 동위원소 쌍(M/M+2 ≈ 1:1)",
+     "importance": 2,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "15.72",
+     "cite": "Anal. Chem. 1954, 26, 1428–1431",
+     "compound": "myosmine",
+     "reaction_ko": "IR에 N–H 띠(3300–3500) 없음 → 엔아민형이 아닌 이민형(1-피롤린) 토토머; 1621 cm⁻¹ 강한 띠 = 콘쥬게이션 C=N",
+     "concept_ko": "IR로 토토머 판별(N–H 유무, C=N 신축)",
+     "importance": 2,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "C1CNC(=C1)c1cccnc1",
+       "label": "제안 구조(엔아민)"
+      },
+      {
+       "arrow": "⇌"
+      },
+      {
+       "smiles": "C1CC(=NC1)c1cccnc1",
+       "label": "실제 토토머(이민)"
+      }
+     ]
+    },
+    {
+     "problem": "15.73",
+     "cite": "J. Am. Chem. Soc. 1959, 81, 4671–4673",
+     "compound": "테트라졸 ⇌ 아자이드 원자가 토토머",
+     "reaction_ko": "이환 테트라졸 1 ⇌ 2-아자이도-1-피롤린 2; 2120–2160 cm⁻¹ 아자이드 비대칭 신축 띠가 없음 → 평형이 테트라졸 쪽",
+     "concept_ko": "IR 특성 띠(–N3 ≈ 2100–2160 cm⁻¹)로 평형 위치 판단",
+     "importance": 2,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "C1CC2=NN=NN2C1",
+       "label": "테트라졸 1"
+      },
+      {
+       "arrow": "⇌"
+      },
+      {
+       "smiles": "[N-]=[N+]=NC1=NCCC1",
+       "label": "아자이드 2"
+      }
+     ]
+    },
+    {
+     "problem": "15.74",
+     "cite": "Appl. Spectrosc. 1960, 14, 95–97",
+     "compound": "cyclohexanone",
+     "reaction_ko": "저분해능 기준 봉우리 m/z 55가 HRMS에서 55.0183(C3H3O⁺)과 55.0546(C4H7⁺)로 분리",
+     "concept_ko": "HRMS 정확 질량으로 같은 정수 질량 이온의 분자식 구분",
+     "importance": 2,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "15.75",
+     "cite": "J. Org. Chem. 1977, 42, 126–129",
+     "compound": "사이클로프로페인 지방산 피롤리딘 아마이드",
+     "reaction_ko": "기준 봉우리 m/z 113 = McLafferty 자리옮김(γ-H가 C=O로 이동, β-절단) → CH2=C(OH)–N(C4H8)⁺•",
+     "concept_ko": "McLafferty 자리옮김",
+     "importance": 3,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "15.76",
+     "cite": "Anal. Chem. 2011, 83, 4738–4744",
+     "compound": "pinolenic acid",
+     "reaction_ko": "오존 존재 ESI: [M+H]⁺ 279 + 오존 분해 알데하이드 211·171·117 → 이중결합 위치 Δ5, Δ9, Δ12 결정; 음이온 모드 277·209·169·115",
+     "concept_ko": "오존 분해로 C=C 위치 결정, ESI [M+H]⁺/[M−H]⁻",
+     "importance": 2,
+     "nobel": "2002 Fenn · Tanaka · Wüthrich — 생체분자 질량분석(ESI)·NMR",
+     "scheme": [
+      {
+       "smiles": "OC(=O)CCC/C=C\\CC/C=C\\C/C=C\\CCCCC",
+       "label": "pinolenic acid"
+      },
+      {
+       "arrow": "O3 (ESI 중)"
+      },
+      {
+       "smiles": "O=CCCCC(=O)O",
+       "label": "m/z 117 단편(중성)"
+      }
+     ]
+    },
+    {
+     "problem": "15.77",
+     "cite": "J. Am. Chem. Soc. 1957, 79, 243–247",
+     "compound": "스테로이드 클로로하이드린",
+     "reaction_ko": "trans-2,3-클로로하이드린: 이중 적도(gauche) 이성질체는 분자 내 O–H···Cl 수소결합 → 3594 cm⁻¹(더 넓음); 이중 축(anti)은 자유 OH 3617",
+     "concept_ko": "형태(축/적도)와 분자 내 수소결합에 의한 O–H 흡수 이동",
+     "importance": 1,
+     "nobel": "1969 Barton · Hassel — 형태 분석",
+     "scheme": []
+    },
+    {
+     "problem": "15.78",
+     "cite": "J. Am. Chem. Soc. 2006, 128, 58–59",
+     "compound": "phosphatidic acid (16:0/18:1)",
+     "reaction_ko": "음이온 MS m/z 673 → 오존 처리 시 563(Δ9 알데하이드), 용매 MeOH 611 / EtOH 625 (Criegee 카보닐 옥사이드가 알코올에 포획)",
+     "concept_ko": "오존 분해 단편으로 C=C 위치 결정, Criegee 중간체",
+     "importance": 1,
+     "nobel": "2002 Fenn · Tanaka · Wüthrich — 생체분자 질량분석(ESI)·NMR",
+     "scheme": []
+    }
+   ]
+  },
+  {
+   "no": 16,
+   "title": "핵자기공명 분광법",
+   "summary": [
+    "화학적 동등성: 동위·거울상위 양성자는 동등, 부분입체위 양성자는 비동등(치환 시험)",
+    "화학적 이동: CH3 0.9, CH2 1.2, CH 1.7 + 보정(알코올·에터 O +2.5, 에스터 O +3.0, C=O +1.0)",
+    "방향족 H ≈ 7 ppm(반자기 이방성), 알데하이드 H ≈ 10, COOH ≈ 12 ppm",
+    "적분 = 상대 양성자 수; n+1 규칙, 짝지음 상수 J, OH는 보통 갈라지지 않음",
+    "구조 결정 순서: HDI → 신호 수·적분 → (δ, 다중도) → 조각 → 조립 → 검증",
+    "¹³C: C=O 160–220, sp² 100–150, C–O 50–100, sp³ 0–50 ppm; 대칭으로 신호 수 결정",
+    "DEPT-90: CH만; DEPT-135: CH·CH3 양, CH2 음, 4차 C 없음"
+   ],
+   "refs": [
+    {
+     "problem": "(본문 인용)",
+     "cite": "Food Chem. 2016, 196, 211–219",
+     "compound": "",
+     "reaction_ko": "장 본문(예제·학습 문제)에서 인용된 문헌 — 제공된 문제 페이지에는 해당 문제가 없음",
+     "concept_ko": "",
+     "importance": 1,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "16.66",
+     "cite": "Angew. Chem. Int. Ed. 2011, 50, 8387–8390",
+     "compound": "methyl 2-acetoxypropanoate",
+     "reaction_ko": "C6H10O4, IR 1747(에스터), ¹H 5.1(q,1H)·3.75(s,3H)·2.1(s,3H)·1.5(d,3H), ¹³C 171·170·69·52·21·17 → O-아세틸 락트산 메틸",
+     "concept_ko": "IR·¹H·¹³C 종합 구조 결정, 아실옥시·에스터 α-CH의 강한 탈차폐(5.1 ppm)",
+     "importance": 3,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "16.72",
+     "cite": "Org. Lett. 2012, 14, 4770–4773",
+     "compound": "brevianamide S",
+     "reaction_ko": "이량체 다이케토피페라진 알칼로이드의 모든 ¹H 신호 δ·다중도 예측(역프레닐 CH3 1.5 s, 비닐 6.1 dd/5.1 dd, N–CH2 4.1 t 등)",
+     "concept_ko": "복잡 분자의 화학적 이동·갈라짐 예측",
+     "importance": 1,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "16.73",
+     "cite": "J. Am. Chem. Soc. 1973, 95, 3437–3438",
+     "compound": "1,3,6-cyclononatriene 음이온",
+     "reaction_ko": "사이클로노나트라이엔 + KNH2/액체 NH3 → 이중 알릴 C–H 탈양성자화 → 헵타트라이엔일 음이온; 음전하 탄소(홀수 위치) H는 3.4–3.7, 마디 위치 H는 5.5–5.6 ppm",
+     "concept_ko": "공명 구조와 전하 분포에 따른 차폐, 대칭과 신호 수",
+     "importance": 2,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "16.74",
+     "cite": "J. Chem. Ed. 2003, 80, 1439–1443",
+     "compound": "flutamide",
+     "reaction_ko": "4-나이트로-3-(트라이플루오로메틸)아닐린 + 아이소뷰티릴 클로라이드, 피리딘 → 플루타마이드; 아마이드화 후 방향족 H 모두 저자기장 이동(N 고립쌍이 C=O로 비편재)",
+     "concept_ko": "치환기의 공명·유도 효과가 방향족 H 화학적 이동에 미치는 영향, 아민 아실화",
+     "importance": 2,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "Nc1ccc([N+](=O)[O-])c(C(F)(F)F)c1",
+       "label": "아닐린 1"
+      },
+      {
+       "arrow": "(CH3)2CHCOCl, py"
+      },
+      {
+       "smiles": "CC(C)C(=O)Nc1ccc([N+](=O)[O-])c(C(F)(F)F)c1",
+       "label": "flutamide"
+      }
+     ]
+    },
+    {
+     "problem": "16.75",
+     "cite": "J. Chem. Ed. 2006, 83, 287–289",
+     "compound": "3-acetyl-7-(diethylamino)coumarin",
+     "reaction_ko": "가장 저자기장 신호 8.42 = H4(두 C=O와 공명하는 β-H), 7.38 = H5; 밀고–당기는 편극으로 C3=C4 IR 신축이 쿠마린보다 강함",
+     "concept_ko": "공명에 의한 β-H 탈차폐, 쌍극자 변화와 IR 세기",
+     "importance": 2,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "16.76",
+     "cite": "Tetrahedron Lett. 2011, 52, 4182–4185",
+     "compound": "하이드로나프타센 부분입체이성질체",
+     "reaction_ko": "비스(TMS-에타인일)벤즈알데하이드 + Fischer 카벤 (CO)5Cr=C(OMe)R → 오환 비스(사이클로헥센온) 부분입체이성질체 3·4; ¹³C 신호 수로 구별",
+     "concept_ko": "분자 대칭(거울면 유무)과 ¹³C 신호 수",
+     "importance": 1,
+     "nobel": "1973 E. O. Fischer · Wilkinson — 유기금속(금속 카벤) 화학",
+     "scheme": []
+    }
+   ]
+  },
+  {
+   "no": 17,
+   "title": "콘쥬게이션 파이계와 페리고리 협동반응",
+   "summary": [
+    "1,3-뷰타다이엔 + HBr: 저온 1,2-첨가(속도론적) vs 고온 1,4-첨가(열역학적) — 알릴 양이온 공명",
+    "Diels–Alder [4+2]: s-cis 다이엔 + EWG 친다이엔체 → 사이클로헥센; 입체특이적, endo 우세",
+    "FMO: 다이엔 HOMO–친다이엔체 LUMO; 열적 [4+2] 허용, 열적 [2+2] 금지·광화학 허용",
+    "전자고리화: 4π 열 콘로테이션/광 디스로테이션, 6π 열 디스로테이션/광 콘로테이션",
+    "시그마 자리옮김 [3,3]: Cope(1,5-다이엔), Claisen(알릴 바이닐 에터 → γ,δ-불포화 카보닐)",
+    "UV–Vis: 콘쥬게이션 증가 → λmax 증가; Woodward–Fieser 규칙(217 + 30·5·5·39)",
+    "시각: 11-cis-레티날 → 전부-trans 광이성질화(로돕신)"
+   ],
+   "refs": [
+    {
+     "problem": "17.71",
+     "cite": "J. Am. Chem. Soc. 2011, 133, 17634–17637",
+     "compound": "gelsemoxonine",
+     "reaction_ko": "cis-다이바이닐사이클로프로페인(실릴 엔올 에터 + 옥스인돌 알킬리덴) 70 °C → [3,3] 시그마 자리옮김(보트 TS) → 스피로-옥스인돌 사이클로헵타다이엔",
+     "concept_ko": "다이바이닐사이클로프로페인–사이클로헵타다이엔 자리옮김(Cope형), 고리 변형 해소",
+     "importance": 2,
+     "nobel": "1981 Fukui · Hoffmann — 프런티어 오비탈·궤도 대칭 보존",
+     "scheme": []
+    },
+    {
+     "problem": "17.72",
+     "cite": "J. Photochem. Photobiol. A 2006, 184, 177–183",
+     "compound": "다이싸이엔일에텐 광변색 무수물",
+     "reaction_ko": "다이싸이엔일 말레산 무수물 → UV(6π 광화학 콘로테이션 고리 닫힘) → 고리형 착색 이성질체(두 CH3 trans, 키랄·라셈) → 가시광으로 고리 열림",
+     "concept_ko": "광화학 6π 전자고리화 = 콘로테이션, 광변색(photochromism)",
+     "importance": 3,
+     "nobel": "1981 Fukui · Hoffmann — 프런티어 오비탈·궤도 대칭 보존",
+     "scheme": [
+      {
+       "smiles": "O=C1OC(=O)C(c2c(C)sc(C)c2C)=C1c1c(C)sc(C)c1C",
+       "label": "열린 형 1"
+      },
+      {
+       "arrow": "hν (UV) / 가시광 역반응"
+      },
+      {
+       "smiles": "CC1=C(C)SC2(C)C1=C1C(=O)OC(=O)C1=C1C(C)=C(C)SC12C",
+       "label": "닫힌 형 2"
+      }
+     ]
+    },
+    {
+     "problem": "17.73",
+     "cite": "J. Am. Chem. Soc. 1971, 93, 3836–3837",
+     "compound": "chelidonine (최초 전합성)",
+     "reaction_ko": "벤조사이클로뷰텐 120 °C → 4π 열적 콘로테이션 고리 열림(o-퀴노다이메테인) → 분자 내 Diels–Alder(알카인 친다이엔체) → 벤조[c]페난트리딘 골격",
+     "concept_ko": "전자고리화 고리 열림 + 분자 내 Diels–Alder 연쇄",
+     "importance": 3,
+     "nobel": "1981 Fukui · Hoffmann — 프런티어 오비탈·궤도 대칭 보존",
+     "scheme": []
+    },
+    {
+     "problem": "17.74",
+     "cite": "Org. Lett. 2010, 12, 1152–1155",
+     "compound": "atropurpuran 합성 연구",
+     "reaction_ko": "아미노 테트라엔 135 °C → 6π 열적 디스로테이션 전자고리화(사이클로헥사다이엔) → 사슬의 알릴기와 분자 내 Diels–Alder → 바이사이클로[2.2.2]옥텐 + 피페리딘",
+     "concept_ko": "6π 전자고리화 → 분자 내 [4+2] 연쇄 반응",
+     "importance": 3,
+     "nobel": "1981 Fukui · Hoffmann — 프런티어 오비탈·궤도 대칭 보존",
+     "scheme": []
+    },
+    {
+     "problem": "17.75",
+     "cite": "Org. Lett. 2001, 3, 723–726",
+     "compound": "헤테로 Diels–Alder 거대고리 이량체",
+     "reaction_ko": "β,γ-불포화 α-케토에스터(1-옥사다이엔) + 다른 분자의 바이닐 에터(전자 풍부 친다이엔체) 195 °C → 분자 간 → 분자 내 역전자요구 헤테로 DA 2회 → 다이하이드로피란 2개 포함 거대고리",
+     "concept_ko": "역전자요구 hetero-Diels–Alder, 위치선택성",
+     "importance": 2,
+     "nobel": "1950 Diels · Alder — Diels–Alder 반응",
+     "scheme": []
+    },
+    {
+     "problem": "17.76",
+     "cite": "Org. Lett. 2012, 14, 502–505",
+     "compound": "terfuran + maleimide",
+     "reaction_ko": "트라이퓨란 + 말레이미드 → 말단 퓨란에서만 Diels–Alder 첨가물(가역, 열역학 지배); 중앙 퓨란 첨가물은 콘쥬게이션 상실·입체 장애로 불리",
+     "concept_ko": "퓨란 DA의 가역성·열역학 지배, 콘쥬게이션 유지",
+     "importance": 2,
+     "nobel": "1950 Diels · Alder — Diels–Alder 반응",
+     "scheme": []
+    },
+    {
+     "problem": "17.77",
+     "cite": "J. Am. Chem. Soc. 2012, 134, 9199–9208",
+     "compound": "다이벤조아자사이클로옥타인 (SPAAC)",
+     "reaction_ko": "고리 변형 사이클로옥타인 + 벤질 아자이드 → 구리 없는 [3+2] 1,3-쌍극자 고리화 첨가 → 트라이아졸 위치이성질체 B·C(약 1:1); 2-뷰타인은 반응 없음",
+     "concept_ko": "변형 촉진 아자이드–알카인 고리화 첨가(SPAAC), 고리 변형 해소, 위치선택성 부재",
+     "importance": 2,
+     "nobel": "2022 Bertozzi · Meldal · Sharpless — 클릭·생체직교 화학(SPAAC)",
+     "scheme": [
+      {
+       "smiles": "CN1C(=O)c2ccccc2C#Cc2ccccc21",
+       "label": "사이클로옥타인 A"
+      },
+      {
+       "plus": true
+      },
+      {
+       "smiles": "[N-]=[N+]=NCc1ccccc1",
+       "label": "벤질 아자이드"
+      }
+     ]
+    },
+    {
+     "problem": "17.78",
+     "cite": "Aust. J. Chem. 1982, 35, 2247–2256",
+     "compound": "endiandric acid (Black 연쇄)",
+     "reaction_ko": "비키랄 테트라엔 → 8π 열적 콘로테이션(사이클로옥타트라이엔, 라셈) → 6π 열적 디스로테이션(바이사이클로[4.2.0]) → 분자 내 Diels–Alder → endiandric acid C",
+     "concept_ko": "8π/6π 전자고리화 선택 규칙, 비키랄 출발물 → 라셈 천연물, 생합성 연쇄",
+     "importance": 3,
+     "nobel": "1981 Fukui · Hoffmann — 프런티어 오비탈·궤도 대칭 보존",
+     "scheme": []
+    },
+    {
+     "problem": "17.79",
+     "cite": "J. Am. Chem. Soc. 2008, 130, 6281–6287",
+     "compound": "roquefortine C / isoroquefortine C",
+     "reaction_ko": "엑소 C=C 기하이성질체: isoroquefortine C는 아마이드 N–H···이미다졸 N 분자 내 수소결합으로 더 안정하나 효소(속도론) 생합성은 roquefortine C를 생성",
+     "concept_ko": "기하이성질체 안정성, 분자 내 수소결합, 속도론 vs 열역학 지배",
+     "importance": 1,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "17.80",
+     "cite": "J. Am. Chem. Soc. 2000, 122, 190–191",
+     "compound": "C2-대칭 피롤리딘 싸이오-Claisen",
+     "reaction_ko": "싸이오아마이드 → 1) BuLi((Z)-싸이오엔올레이트) 2) 2-사이클로헥실리덴에틸 브로민화물(S-알킬화) → 케텐 N,S-아세탈 → [3,3] 싸이오-Claisen(의자 TS) → 새 α-입체중심 단일 배열",
+     "concept_ko": "Claisen [3,3] 자리옮김, 의자형 전이 상태, C2-대칭 키랄 보조기의 면선택성",
+     "importance": 2,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "CCC(=S)N1C(c2ccccc2)CCC1c1ccccc1",
+       "label": "싸이오아마이드 1"
+      },
+      {
+       "arrow": "1) BuLi 2) 알릴 브로민화물"
+      },
+      {
+       "smiles": "CC=C(SCC=C1CCCCC1)N1C(c2ccccc2)CCC1c1ccccc1",
+       "label": "케텐 N,S-아세탈 2"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "no": 18,
+   "title": "방향족 화합물",
+   "summary": [
+    "벤질 산화: Na2Cr2O7/H2SO4 또는 KMnO4, 가열 → 벤조산 (벤질 H 필요)",
+    "NBS, 가열/hν → 벤질 브로민화; 벤질 할라이드는 SN1·SN2·E1·E2 모두 가능",
+    "Birch 환원(Na, MeOH, NH3) → 1,4-사이클로헥사다이엔: EDG 탄소는 환원 안 됨, EWG 탄소는 환원",
+    "벤젠 촉매 수소화는 강한 조건(Ni, 100 atm, 150 °C); 바이닐기는 선택적 수소화",
+    "Hückel 4n+2 규칙: 방향족/반방향족/비방향족; Frost 원; 사이클로뷰타다이엔 반방향족, COT 비방향족(통 모양)",
+    "사이클로펜타다이엔일 음이온·트로필륨 양이온·사이클로프로펜일 양이온 방향족",
+    "피리딘 N 고립쌍(sp², 염기성) vs 피롤 N 고립쌍(방향족 6π에 참여, 비염기성)",
+    "분광: 방향족 H ≈ 7 ppm, 벤질 H 2–3 ppm, ¹³C 100–150 ppm; 고리 전류에 의한 차폐/탈차폐"
+   ],
+   "refs": [
+    {
+     "problem": "18.66",
+     "cite": "Tetrahedron Lett. 2012, 53, 5385–5388",
+     "compound": "다이하이드로[14]아뉼렌 다이음이온",
+     "reaction_ko": "퀴노이드 다이사이아노메틸렌 거대고리 A + 2e⁻ → 다이음이온 B: 14π 둘레(4n+2, n=3) → 방향족화가 쉬운 환원의 추진력",
+     "concept_ko": "Hückel 규칙, 음전하·홀전자 공명 비편재",
+     "importance": 2,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "18.67",
+     "cite": "J. Am. Chem. Soc. 1959, 81, 4671–4673",
+     "compound": "테트라졸로-벤즈아이소싸이아졸 ⇌ 아자이드",
+     "reaction_ko": "고리에 남는 N(S에 결합)은 양쪽 모두 sp²: 테트라졸에서는 피롤형(고립쌍이 p 궤도, 방향족 6π), 아자이드에서는 피리딘형(고립쌍 sp²)",
+     "concept_ko": "헤테로고리 N의 혼성과 고립쌍의 방향족성 참여 여부",
+     "importance": 2,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "c1ccc2c(c1)sn1nnnc12",
+       "label": "테트라졸 1"
+      },
+      {
+       "arrow": "⇌"
+      },
+      {
+       "smiles": "[N-]=[N+]=Nc1nsc2ccccc12",
+       "label": "아자이드 2"
+      }
+     ]
+    },
+    {
+     "problem": "18.68",
+     "cite": "J. Am. Chem. Soc. 2005, 127, 13070–13078",
+     "compound": "1,2,5,6-tetracyanocyclooctatetraene–Mg⁺",
+     "reaction_ko": "통 모양 COT의 1,2,5,6-CN 4개가 같은 면으로 모여 Mg⁺에 동시 배위; 평면 테트라사이아노벤젠은 CN이 평면 내에서 발산하여 불가",
+     "concept_ko": "COT 비방향족(통 모양) vs 벤젠 평면 방향족, 분자 기하",
+     "importance": 2,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "18.69",
+     "cite": "J. Am. Chem. Soc. 1985, 107, 6678–6683",
+     "compound": "phenanthrene (결합 고정)",
+     "reaction_ko": "나프탈렌 C1–C2 < C2–C3 결합 길이; 페난트렌 C9–C10은 공명 구조 5개 중 4개에서 이중결합 → Br2가 C9=C10에 첨가 → trans-9,10-다이브로모-9,10-다이하이드로페난트렌",
+     "concept_ko": "다환 방향족의 결합 차수(공명 구조 수), 방향족 육중항을 유지하는 첨가",
+     "importance": 3,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "c1ccc2c(c1)ccc1ccccc12",
+       "label": "phenanthrene"
+      },
+      {
+       "arrow": "Br2"
+      },
+      {
+       "smiles": "BrC1c2ccccc2-c2ccccc2C1Br",
+       "label": "9,10-다이브로모 첨가물"
+      }
+     ]
+    },
+    {
+     "problem": "18.70",
+     "cite": "Angew. Chem. Int. Ed. 1988, 27, 1437–1455",
+     "compound": "안정한 사이클로뷰타다이엔",
+     "reaction_ko": "트라이-t-뷰틸 사이클로뷰타다이엔: 입체 장애로 이량화(DA) 차단(속도론적 안정화); 밀고–당기는 NEt2/CO2Et 치환: 양쪽성 이온 공명으로 반방향족 비편재 감소",
+     "concept_ko": "반방향족성, 속도론적 vs 열역학적 안정화, 밀고–당기는(captodative) 효과",
+     "importance": 2,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "18.71",
+     "cite": "J. Org. Chem. 2004, 69, 549–554",
+     "compound": "사이클로펜타다이엔 접합 다이하이드로피렌",
+     "reaction_ko": "KH로 탈양성자화 → 방향족 사이클로펜타다이엔일 음이온 형성 → [14]아뉼렌 고리 전류 약화 → 내부 CH3 −3.9 → −1.8 ppm",
+     "concept_ko": "반자기성 고리 전류에 의한 내부 양성자 강한 차폐, 방향족 고리 간 π 전자 경쟁",
+     "importance": 2,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "18.72",
+     "cite": "J. Nat. Prod. 2011, 74, 1972–1979",
+     "compound": "bromo-β-carboline (항말라리아)",
+     "reaction_ko": "염기도: 구아니딘(공명 안정 구아니디늄) > β-카볼린 피리딘형 N > 인돌 N–H(방향족 6π, 비염기성); 2 HCl → 구아니디늄·피리디늄 이염산염",
+     "concept_ko": "질소 염기도와 고립쌍의 방향족성 참여·짝산 공명 안정화",
+     "importance": 3,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "18.73",
+     "cite": "J. Org. Chem. 1964, 29, 2065–2066",
+     "compound": "N-헤테로방향족의 m/z 39",
+     "reaction_ko": "m/z 39 = C3H3⁺ 사이클로프로펜일 양이온(2π 방향족, n=0); 연속 C–C–C 단위가 없는 이미다졸·트라이아졸에서는 나타나지 않음",
+     "concept_ko": "Hückel 규칙(n=0) 방향족 양이온, MS 단편 구조",
+     "importance": 3,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "18.74",
+     "cite": "J. Org. Chem. 2002, 67, 7029–7036",
+     "compound": "9,9'-bifluorenylidene 다이양이온",
+     "reaction_ko": "바이플루오렌일리덴 −2e⁻ → 다이양이온: 양전하가 C9/C9'에 있는 구조가 벤젠 육중항 4개를 모두 유지하므로 가장 중요(두 단위는 직교)",
+     "concept_ko": "공명 구조 기여도 판단(방향족성 유지), 플루오렌일 양이온의 반방향족성",
+     "importance": 1,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "18.75",
+     "cite": "Bioorg. Med. Chem. 2009, 17, 4047–4063",
+     "compound": "피리미딘온 제초제",
+     "reaction_ko": "피리미딘-4(3H)-온 + NaOMe, 프로파질 브로민화물 → N-알킬화 A(활성) : O-알킬화 B(비활성) = 1 : 40; O-알킬화는 완전 방향족 피리미딘 생성",
+     "concept_ko": "양쪽성(ambident) 친핵체의 N/O-알킬화, 방향족성 획득과 입체 장애",
+     "importance": 2,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "CCc1c(C(F)(F)F)nc(-c2ccccc2)[nH]c1=O",
+       "label": "피리미딘온"
+      },
+      {
+       "arrow": "NaOMe, HC≡CCH2Br"
+      },
+      {
+       "smiles": "CCc1c(OCC#C)nc(-c2ccccc2)nc1C(F)(F)F",
+       "label": "B (O-알킬화, 주생성물)"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "no": 19,
+   "title": "방향족 치환반응",
+   "summary": [
+    "EAS: Br2/FeBr3, Cl2/AlCl3, HNO3/H2SO4(NO2⁺), 발연 H2SO4(SO3, 가역) — 시그마 착물(아레늄) 경유",
+    "Friedel–Crafts 알킬화(자리옮김·다중 알킬화 문제) vs 아실화(아실륨, 자리옮김 없음) → Clemmensen Zn(Hg)/HCl",
+    "ArNO2 → Fe(Zn, Sn)/HCl → ArNH2; 곁사슬 KMnO4 산화 → ArCOOH",
+    "배향: 강·중 활성화기(–NH2, –OH, –OR, –NHCOR) o/p; 할로젠 약한 불활성화 o/p; C=O·CN·NO2·CX3 m",
+    "다중 치환: 가장 강한 활성화기가 지배, 입체 효과, SO3H 차단기 활용",
+    "SNAr: 이탈기 o/p에 강한 EWG(NO2) → 첨가–제거(Meisenheimer 착물), F > Cl",
+    "벤자인: ArCl + NaNH2/NH3 또는 NaOH 350 °C → 제거–첨가(동위원소 표지 증거)"
+   ],
+   "refs": [
+    {
+     "problem": "19.83",
+     "cite": "J. Org. Chem. 1973, 38, 493–499",
+     "compound": "4-X-4'-Y-스틸벤 브로민화",
+     "reaction_ko": "스틸벤 + Br2 → 1,2-다이브로모 다이아릴에테인; 속도 Y = OMe > Me > Cl > NO2 (양전하 발생 TS를 EDG가 안정화, Hammett ρ < 0)",
+     "concept_ko": "치환기 전자 효과와 친전자성 첨가 속도",
+     "importance": 2,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "COc1ccc(/C=C/c2ccc(OC)cc2)cc1",
+       "label": "4,4'-다이메톡시스틸벤"
+      },
+      {
+       "arrow": "Br2"
+      },
+      {
+       "smiles": "COc1ccc(C(Br)C(Br)c2ccc(OC)cc2)cc1",
+       "label": "다이브로마이드"
+      }
+     ]
+    },
+    {
+     "problem": "19.84",
+     "cite": "J. Org. Chem. 2012, 77, 5503–5514",
+     "compound": "아미노테트랄린 중간체 (2-tetralone)",
+     "reaction_ko": "아릴아세틸 클로라이드 + CH2=CH2, AlCl3 → 아실륨에 에틸렌 첨가 → 1° 탄소 양이온(또는 β-클로로케톤) → 분자 내 Friedel–Crafts 알킬화 → 8-브로모-5-메틸-2-테트랄론",
+     "concept_ko": "아실륨 이온, 분자 내 Friedel–Crafts 알킬화(고리 형성), 방향족성 회복",
+     "importance": 3,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "O=C(Cl)Cc1cc(C)ccc1Br",
+       "label": "아실 클로라이드"
+      },
+      {
+       "arrow": "CH2=CH2, AlCl3"
+      },
+      {
+       "smiles": "O=C1CCc2c(C)ccc(Br)c2C1",
+       "label": "2-테트랄론"
+      }
+     ]
+    },
+    {
+     "problem": "19.85",
+     "cite": "Org. Lett. 2007, 9, 2741–2743",
+     "compound": "SNAr 알카인화",
+     "reaction_ko": "1-클로로-3-플루오로-2-나이트로벤젠 + Na 아세틸라이드 → F만 치환(Cl 유지) — 첨가(Meisenheimer 착물 형성)가 속도 결정 단계",
+     "concept_ko": "SNAr 첨가–제거, 이탈기 F > Cl의 근거(전기음성도에 의한 ipso C 활성화)",
+     "importance": 3,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "O=[N+]([O-])c1c(F)cccc1Cl",
+       "label": "출발물"
+      },
+      {
+       "arrow": "Na⁺ ⁻C≡C–C6H4OMe"
+      },
+      {
+       "smiles": "COc1ccc(C#Cc2cccc(Cl)c2[N+](=O)[O-])cc1",
+       "label": "생성물"
+      }
+     ]
+    },
+    {
+     "problem": "19.86",
+     "cite": "J. Am. Chem. Soc. 1967, 89, 4418–4424",
+     "compound": "삼중수소 표지 메톡시벤젠",
+     "reaction_ko": "ArT + H3O+ → T가 결합한 C에 양성자화(아레늄 이온, OMe가 o/p 안정화) → T⁺ 손실(탈삼중수소화); OMe 3개(2,4,6) 쪽이 더 빠름",
+     "concept_ko": "EAS 양성자 교환 메커니즘, 활성화기 수와 시그마 착물 안정성",
+     "importance": 3,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "[3H]c1ccc(OC)cc1OC",
+       "label": "표지 화합물 1"
+      },
+      {
+       "arrow": "H3O⁺ (장시간)"
+      },
+      {
+       "smiles": "COc1cccc(OC)c1",
+       "label": "1,3-다이메톡시벤젠"
+      }
+     ]
+    },
+    {
+     "problem": "19.87",
+     "cite": "Prog. Stereochem. 1958, 2, 125",
+     "compound": "picryl iodide",
+     "reaction_ko": "큰 I 원자 때문에 오쏘 NO2 2개가 고리 평면 밖으로 비틀림 → 공명 불가(C–N 1.45 Å); 파라 NO2는 공평면·콘쥬게이션(1.35 Å)",
+     "concept_ko": "공명의 입체 저해(steric inhibition of resonance)",
+     "importance": 2,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "19.88",
+     "cite": "Org. Lett. 1999, 1, 985–988",
+     "compound": "7-hydroxynitidine (벤조[c]페난트리딘)",
+     "reaction_ko": "아릴 브로마이드 + NaNH2(2당량) → N–H 탈양성자화 + 오쏘 H 제거 → 벤자인 → 나프틸 C2의 분자 내 친핵 공격(고리 형성) → H2O → 다이하이드로벤조[c]페난트리딘",
+     "concept_ko": "제거–첨가(벤자인) 메커니즘, 분자 내 아라인 고리화",
+     "importance": 2,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "19.89",
+     "cite": "J. Org. Chem. 2005, 70, 3511–3517",
+     "compound": "9-iodo-10-phenylphenanthrene",
+     "reaction_ko": "2-(페닐에타인일)바이페닐 + ICl → I⁺가 알카인 활성화 → 메톡시페닐 고리의 분자 내 SEAr(6-endo) → OMe 파라 위치 공격 A : 오쏘 위치 B ≈ 3 : 1",
+     "concept_ko": "분자 내 친전자성 방향족 치환, 배향(o/p) + 입체 장애",
+     "importance": 2,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "COc1cccc(-c2ccccc2C#Cc2ccccc2)c1",
+       "label": "바이페닐 알카인"
+      },
+      {
+       "arrow": "ICl"
+      },
+      {
+       "smiles": "Ic1c(-c2ccccc2)c2ccc(OC)cc2c2ccccc12",
+       "label": "A (주생성물)"
+      }
+     ]
+    },
+    {
+     "problem": "19.90",
+     "cite": "J. Org. Chem. 1999, 64, 6702–6705",
+     "compound": "3,3-diphenylquinuclidinium (초친전자체)",
+     "reaction_ko": "퀴누클리딘-3-온 + 벤젠, CF3SO3H → N·O 이중 양성자화 다이양이온(초친전자체) → 벤젠 SEAr 2회(카보닐 C, 이후 벤질 3° 양이온) → 3,3-다이페닐 퀴누클리디늄",
+     "concept_ko": "초강산·초친전자체, 하이드록시알킬화형 Friedel–Crafts",
+     "importance": 2,
+     "nobel": "1994 Olah — 탄소 양이온·초강산 화학",
+     "scheme": [
+      {
+       "smiles": "O=C1CN2CCC1CC2",
+       "label": "퀴누클리딘-3-온"
+      },
+      {
+       "arrow": "C6H6, CF3SO3H"
+      },
+      {
+       "smiles": "[NH+]12CCC(CC1)C(c1ccccc1)(c1ccccc1)C2",
+       "label": "생성물 3"
+      }
+     ]
+    },
+    {
+     "problem": "19.91",
+     "cite": "J. Am. Chem. Soc. 2011, 133, 18614–18617",
+     "compound": "BN-dibenzo[g,p]chrysene",
+     "reaction_ko": "다이아릴아민 → 1) BuLi 2) BCl3 (N–BCl2) → AlCl3(보레늄 양이온) → 분자 내 친전자성 붕소화 2회 → BN 도핑 다환 방향족",
+     "concept_ko": "보레늄 친전자체의 SEAr, BN/CC 등전자 방향족성, 만(fjord) 영역 입체 반발",
+     "importance": 1,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "c1ccc(-c2ccccc2Nc2ccccc2-c2ccccc2)cc1",
+       "label": "아민 1"
+      },
+      {
+       "arrow": "1) BuLi 2) BCl3 3) AlCl3"
+      },
+      {
+       "smiles": "B12c3ccccc3-c3ccccc3N1c1ccccc1-c1ccccc12",
+       "label": "BN 화합물 3"
+      }
+     ]
+    },
+    {
+     "problem": "19.92",
+     "cite": "Org. Lett. 2004, 6, 2381–2383",
+     "compound": "spirobifluorene",
+     "reaction_ko": "비스(바이페닐-2-일) 케톤 + cat. H3O+ → 카보닐 양성자화 → 분자 내 SEAr(OMe 오쏘) → 플루오렌-9-올 → 탈수 → 9-아릴플루오렌일 양이온 → 2차 SEAr → 9,9'-스피로바이플루오렌",
+     "concept_ko": "이중 분자 내 Friedel–Crafts(하이드록시알킬화), 탄소 양이온",
+     "importance": 2,
+     "nobel": "",
+     "scheme": []
+    }
+   ]
+  },
+  {
+   "no": 20,
+   "title": "알데하이드와 케톤",
+   "summary": [
+    "친핵성 첨가: H2O(수화물), ROH/[H⁺](헤미아세탈 → 아세탈), HOCH2CH2OH(고리 아세탈 보호기), HS(CH2)nSH(싸이오아세탈 → Raney Ni → CH2)",
+    "1° 아민 → 이민, 2° 아민 → 엔아민, NH2OH → 옥심, NH2NH2 → 하이드라존 → Wolff–Kishner(NaOH, 가열) → CH2",
+    "LiAlH4·NaBH4 → 알코올; RMgBr → 알코올; HCN/KCN → 사이아노하이드린",
+    "Wittig: Ph3P=CHR → 알켄 (불안정 일리드 Z, 안정 일리드 E); Ph3P=CHOMe → 엔올 에터 → H3O⁺ → 1C 연장 알데하이드",
+    "Baeyer–Villiger: RCO3H → 에스터/락톤 (이동 경향 3° > 2°·Ph > 1° > CH3)",
+    "아세탈은 염기·친핵체에 안정 → 화학선택적 보호",
+    "분광: C=O 1715 cm⁻¹, 알데하이드 C–H 2700/2850, CHO ≈ 10 ppm, ¹³C C=O ≈ 200 ppm"
+   ],
+   "refs": [
+    {
+     "problem": "(본문 인용)",
+     "cite": "Tetrahedron 2012, 68, 9289–9292",
+     "compound": "",
+     "reaction_ko": "장 본문(예제·학습 문제)에서 인용된 문헌 — 제공된 문제 페이지에는 해당 문제가 없음",
+     "concept_ko": "",
+     "importance": 1,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "20.83",
+     "cite": "Tetrahedron Lett. 2009, 50, 4587–4591",
+     "compound": "cyclodidemniserinol trisulfate 합성 연구",
+     "reaction_ko": "β-케토 에스터 → 1) HOCH2CH2OH, TsOH (케톤 아세탈 보호) 2) LiAlH4 (에스터 → 1° OH) 3) PCC (→ CHO) 4) HS(CH2)3SH, H⁺ → 1,3-다이싸이안",
+     "concept_ko": "화학선택적 보호(케톤 아세탈), 에스터 환원·산화, 싸이오아세탈 형성",
+     "importance": 3,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "20.84",
+     "cite": "J. Org. Chem. 2001, 66, 2072–2077",
+     "compound": "케이지 케톤 고리 확장",
+     "reaction_ko": "다리 걸친 케톤 → RCO3H (Baeyer–Villiger, 락톤) → 과량 LiAlH4 (다이올) → TsCl/py (1° OTs) → 염기 (분자 내 Williamson) → 고리 에터; 대칭 상실로 ¹H 신호 증가",
+     "concept_ko": "Baeyer–Villiger, 락톤 환원, 선택적 토실화, 분자 대칭과 NMR",
+     "importance": 3,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "20.85",
+     "cite": "Tetrahedron 2014, 43, 8161–8167",
+     "compound": "scorzocreticin",
+     "reaction_ko": "ArCH2OH → PCC (ArCHO) → Ph3P=CHOMe (Wittig, 엔올 에터) → H3O⁺ (ArCH2CHO) → NaBH4 → ArCH2CH2OH (탄소 1개 연장)",
+     "concept_ko": "메톡시메틸렌 Wittig에 의한 1탄소 동족화, 엔올 에터 가수분해",
+     "importance": 3,
+     "nobel": "1979 Brown · Wittig — 수소화붕소화 · Wittig 반응",
+     "scheme": []
+    },
+    {
+     "problem": "20.86",
+     "cite": "Tetrahedron Lett. 1969, 10, 4233–4236",
+     "compound": "에틸 프롤리네이트 엔아민",
+     "reaction_ko": "사이클로헥산온 + 광학 활성 에틸 프롤리네이트, TsOH, −H2O → 엔아민; N–C(sp²) 결합의 부분 이중결합성 때문에 두 회전 이성질체의 상호 전환이 느림",
+     "concept_ko": "엔아민 형성, N 고립쌍 콘쥬게이션에 의한 회전 제한(형태 이성질체)",
+     "importance": 2,
+     "nobel": "2021 List · MacMillan — 비대칭 유기촉매(엔아민 촉매)",
+     "scheme": [
+      {
+       "smiles": "O=C1CCCCC1",
+       "label": "사이클로헥산온"
+      },
+      {
+       "arrow": "에틸 (S)-프롤리네이트, TsOH"
+      },
+      {
+       "smiles": "CCOC(=O)C1CCCN1C1=CCCCC1",
+       "label": "엔아민"
+      }
+     ]
+    },
+    {
+     "problem": "20.87",
+     "cite": "J. Org. Chem. 2003, 68, 6455–6458",
+     "compound": "사이클로옥텐온 사슬 도입",
+     "reaction_ko": "고리 C=C가 있는 사이클로옥텐온에 –CH2CH2CHO 도입: 아세탈 보호 Grignard → H2SO4(탈수) → AcOH/H2O(탈보호) 경로만 성공; O3·BH3 경로는 고리 C=C도 공격",
+     "concept_ko": "화학선택성, 아세탈 = 가려진 알데하이드(Grignard 공존)",
+     "importance": 2,
+     "nobel": "1912 Grignard · Sabatier — Grignard 시약 · 촉매 수소화",
+     "scheme": []
+    },
+    {
+     "problem": "20.88",
+     "cite": "Tetrahedron Lett. 2010, 51, 4494–4496",
+     "compound": "furo[2,3-b]indole 중간체",
+     "reaction_ko": "2-나이트로벤즈알데하이드 → Ph3P=CH–O–CH2CH=CH2 (Wittig, 알릴 바이닐 에터) → 가열 [3,3] Claisen 자리옮김 → 2-(2-나이트로페닐)펜트-4-엔알",
+     "concept_ko": "알콕시메틸렌 Wittig + Claisen 자리옮김",
+     "importance": 2,
+     "nobel": "1979 Brown · Wittig — 수소화붕소화 · Wittig 반응",
+     "scheme": [
+      {
+       "smiles": "O=Cc1ccccc1[N+](=O)[O-]",
+       "label": "2-나이트로벤즈알데하이드"
+      },
+      {
+       "arrow": "1) Wittig 2) 가열(Claisen)"
+      },
+      {
+       "smiles": "O=CC(CC=C)c1ccccc1[N+](=O)[O-]",
+       "label": "생성물 2"
+      }
+     ]
+    },
+    {
+     "problem": "20.89",
+     "cite": "Chem. Sci. 2010, 1, 37–42",
+     "compound": "(+)-frondosin B (Shapiro 반응)",
+     "reaction_ko": "2,2-다이메틸사이클로헥산온 트라이실하이드라존 + t-BuLi(2당량) → N–H·α-C–H 탈양성자화 → ArSO2⁻ 이탈 → 바이닐 다이아제나이드 → N2 손실 → 바이닐리튬",
+     "concept_ko": "Bamford–Stevens–Shapiro 반응(Wolff–Kishner 유사), 바이닐 음이온 생성",
+     "importance": 2,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "20.90",
+     "cite": "Chem. Ber. 1962, 95, 2514–2525",
+     "compound": "메톡시메틸렌 Wittig",
+     "reaction_ko": "사이클로헥산온 + Ph3P=CHOMe → (메톡시메틸렌)사이클로헥세인 → H3O⁺ (엔올 에터 C 양성자화 → 옥소카베늄 → 헤미아세탈 → MeOH 손실) → 사이클로헥세인카브알데하이드",
+     "concept_ko": "Wittig 메커니즘, 엔올 에터의 산 촉매 가수분해",
+     "importance": 3,
+     "nobel": "1979 Brown · Wittig — 수소화붕소화 · Wittig 반응",
+     "scheme": [
+      {
+       "smiles": "O=C1CCCCC1",
+       "label": "사이클로헥산온"
+      },
+      {
+       "arrow": "Ph3P=CHOMe"
+      },
+      {
+       "smiles": "COC=C1CCCCC1",
+       "label": "엔올 에터"
+      },
+      {
+       "arrow": "H3O⁺"
+      },
+      {
+       "smiles": "O=CC1CCCCC1",
+       "label": "알데하이드"
+      }
+     ]
+    },
+    {
+     "problem": "20.91",
+     "cite": "J. Am. Chem. Soc. 1998, 120, 4039–4040",
+     "compound": "hispidospermidin",
+     "reaction_ko": "–CH2CH2COCl 곁사슬 하이드린데인 + AlCl3 → 아실륨 → 고리 알켄의 분자 내 공격(지방족 Friedel–Crafts 아실화) → 2° 양이온: Cl⁻ 포획(1) 또는 1,2-H 이동 후 탈양성자(2), 3 : 2",
+     "concept_ko": "아실륨 이온, 탄소 양이온 자리옮김(1,2-수소화 이동)",
+     "importance": 1,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "20.92",
+     "cite": "J. Am. Chem. Soc. 2011, 133, 9956–9959",
+     "compound": "kibdelone C",
+     "reaction_ko": "2-아로일-다이하이드록시사이클로헥센온 + cat. H3O⁺, 아세톤 → 페놀 OH의 헤미케탈 → 옥소카베늄(알릴형) → H2O의 알릴 위치 첨가 → cis-다이올 → 아세토나이드 → 테트라하이드로잔톤",
+     "concept_ko": "산 촉매 헤미케탈·아세탈 형성, 알릴 전위(비닐로가 양이온)",
+     "importance": 2,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "20.93",
+     "cite": "J. Am. Chem. Soc. 2006, 128, 6499–6507",
+     "compound": "비닐로가 아실 트리플레이트 단편화",
+     "reaction_ko": "3-옥소사이클로헥센일 트리플레이트 + 1) LiAlH4 2) H2O → 알릴 알코올 A + B: 알콕사이드가 C=O를 재형성하며 C–C 절단, TfO⁻ 이탈과 함께 C≡C 형성(Grob형) → 알카인 알데하이드 → 재환원 → 2,2-다이메틸헥스-5-인-1-올",
+     "concept_ko": "Grob/Eschenmoser–Tanabe형 단편화, IR(3305 ≡C–H, 2117 C≡C)·¹H NMR 구조 결정",
+     "importance": 2,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "CC1(C)CCC(OS(=O)(=O)C(F)(F)F)=CC1=O",
+       "label": "비닐로가 트리플레이트"
+      },
+      {
+       "arrow": "1) LiAlH4 2) H2O"
+      },
+      {
+       "smiles": "CC(C)(CO)CCC#C",
+       "label": "B (C8H14O)"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "no": 21,
+   "title": "카복실산과 그 유도체",
+   "summary": [
+    "RCOOH 제조: RCH2Br → NaCN → H3O⁺, 가열; RBr → Mg → CO2 → H3O⁺; RCOOH → LiAlH4/BH3 → RCH2OH",
+    "친핵성 아실 치환(사면체 중간체) 반응성: 산 할로젠화물 > 무수물 > 에스터 > 아마이드",
+    "RCOCl + ROH/py → 에스터, + 아민 → 아마이드, + LiAl(OtBu)3H → 알데하이드, + R2CuLi → 케톤, + 과량 RMgBr → 3° 알코올",
+    "에스터: Fischer 에스터화, 비누화(NaOH), DIBAH → 알데하이드, LiAlH4 → 알코올",
+    "아마이드: 가수분해, LiAlH4 → 아민, SOCl2 → 나이트릴",
+    "나이트릴: 가수분해 → RCOOH, RMgBr → 케톤, LiAlH4 → RCH2NH2",
+    "분광: C=O 1650–1850 cm⁻¹, ¹³C 160–185(나이트릴 115–130), COOH ¹H ≈ 12 ppm"
+   ],
+   "refs": [
+    {
+     "problem": "21.81",
+     "cite": "Org. Lett. 2000, 2, 791–794",
+     "compound": "3,6-dihydro-2H-pyran (RCM)",
+     "reaction_ko": "1-페닐뷰트-3-엔-1-올 → 1) NaH, 에틸 2-브로모프로파노에이트(SN2, 반전) 2) DIBAH(→ CHO) 3) Ph3P=CH2 → 다이엔 에터 → Grubbs 촉매(RCM, −C2H4) → 2-메틸-6-페닐-3,6-다이하이드로-2H-피란",
+     "concept_ko": "Williamson 에터, DIBAH 부분 환원, Wittig, 고리 닫음 복분해(RCM)",
+     "importance": 2,
+     "nobel": "2005 Chauvin · Grubbs · Schrock — 올레핀 복분해",
+     "scheme": [
+      {
+       "smiles": "C=CC(C)OC(CC=C)c1ccccc1",
+       "label": "다이엔 2"
+      },
+      {
+       "arrow": "Grubbs 촉매 (RCM)"
+      },
+      {
+       "smiles": "CC1OC(c2ccccc2)CC=C1",
+       "label": "다이하이드로피란 3"
+      },
+      {
+       "plus": true
+      },
+      {
+       "smiles": "C=C",
+       "label": "에틸렌"
+      }
+     ]
+    },
+    {
+     "problem": "21.82",
+     "cite": "J. Org. Chem. 2012, 77, 5503–5514",
+     "compound": "aminotetralin 중간체",
+     "reaction_ko": "1-브로모-3,5-다이메틸벤젠 → 1) NBS, hν (벤질 일브로민화) 2) NaCN (SN2) 3) H3O⁺, 가열 → (3-브로모-5-메틸페닐)아세트산",
+     "concept_ko": "벤질 브로민화, 나이트릴 경유 1탄소 연장 카복실산 합성",
+     "importance": 3,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "Cc1cc(C)cc(Br)c1",
+       "label": "출발물"
+      },
+      {
+       "arrow": "1) NBS, hν 2) NaCN 3) H3O⁺, Δ"
+      },
+      {
+       "smiles": "Cc1cc(Br)cc(CC(=O)O)c1",
+       "label": "아릴아세트산"
+      }
+     ]
+    },
+    {
+     "problem": "21.83",
+     "cite": "Tetrahedron Lett. 2012, 53, 1859–1862",
+     "compound": "콜산 유도 스테로이드",
+     "reaction_ko": "12α-OH 메틸 에스터 → 1) NaH, 알릴 브로민화물 (O-알릴화) 2) 과량 LiAlH4 (C24 에스터 → 1° OH) 3) 아크릴로일 클로라이드, 피리딘 → 아크릴레이트 에스터",
+     "concept_ko": "Williamson 에터, 에스터 환원, 산 염화물에 의한 에스터화 — 단계 순서 설계",
+     "importance": 2,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "21.84",
+     "cite": "Org. Biomol. Chem. 2006, 4, 2119–2157",
+     "compound": "amphidinolide N 유사체 단편",
+     "reaction_ko": "(E)-α,β-불포화 카복실산 → LiAlH4 (알릴 1° 알코올) → PBr3 (또는 CBr4/PPh3) → 알릴 브로민화물; PMB·TBS·TMS 보호기 유지",
+     "concept_ko": "카복실산 환원, 알코올 → 할로젠화물 변환, 보호기 호환성",
+     "importance": 2,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "21.85",
+     "cite": "Tetrahedron Lett. 2010, 51, 6542–6544",
+     "compound": "BMS-708163 중간체",
+     "reaction_ko": "4-(브로모메틸)-3-플루오로벤조나이트릴 + KOAc, DMF (SN2) → 아세테이트 → NaOMe, MeOH (에스터 교환) → 벤질 알코올; NaOH(aq) 직접 처리는 나이트릴 가수분해·SNAr 부반응",
+     "concept_ko": "SN2, 염기 촉매 에스터 교환(사면체 중간체), 작용기 선택성",
+     "importance": 3,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "N#Cc1ccc(CBr)c(F)c1",
+       "label": "1"
+      },
+      {
+       "arrow": "KOAc, DMF"
+      },
+      {
+       "smiles": "CC(=O)OCc1ccc(C#N)cc1F",
+       "label": "2"
+      },
+      {
+       "arrow": "NaOMe, MeOH"
+      },
+      {
+       "smiles": "N#Cc1ccc(CO)c(F)c1",
+       "label": "3"
+      }
+     ]
+    },
+    {
+     "problem": "21.86",
+     "cite": "J. Am. Chem. Soc. 1961, 83, 4214–4216",
+     "compound": "치환 벤조산 메틸의 비누화 속도",
+     "reaction_ko": "ArCO2Me + NaOH → ArCO2⁻: 속도 p-NO2 > m-NO2 > m-Cl ≈ m-Br > H > p-CH3 > p-OCH3 > p-NH2 (EWG가 C=O 친전자성 증가, 공명 EDG는 감소)",
+     "concept_ko": "친핵성 아실 치환 속도 결정 단계(OH⁻ 첨가), 치환기 공명·유도 효과(Hammett)",
+     "importance": 3,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "21.87",
+     "cite": "J. Am. Chem. Soc. 1970, 92, 397–398",
+     "compound": "Corey 프로스타글란딘 중간체",
+     "reaction_ko": "7-(메톡시메틸)바이사이클로[2.2.1]헵트-5-엔-2-온 → MCPBA, NaHCO3 (Baeyer–Villiger, 다리목 C 이동) → 이환 락톤 → NaOH(aq), H3O⁺ → cis-하이드록시 산",
+     "concept_ko": "Baeyer–Villiger 위치선택성(더 치환된 C 이동), 락톤 가수분해",
+     "importance": 3,
+     "nobel": "1990 Corey — 역합성 분석",
+     "scheme": [
+      {
+       "smiles": "O=C1CC2C=CC1C2COC",
+       "label": "바이사이클로헵텐온 1"
+      },
+      {
+       "arrow": "MCPBA, NaHCO3"
+      },
+      {
+       "smiles": "O=C1CC2C=CC(O1)C2COC",
+       "label": "락톤 2"
+      }
+     ]
+    },
+    {
+     "problem": "21.88",
+     "cite": "J. Org. Chem. 1984, 49, 4094–4095",
+     "compound": "quadrone",
+     "reaction_ko": "삼환 메실레이트 카복실산 → 1) NaH (메실레이트 이온화와 함께 Wagner–Meerwein 1,2-알킬 이동 → 알켄) 2) H2SO4, H2O (Markovnikov 양성자화 → 3° 양이온을 CO2H가 포획) → 락톤",
+     "concept_ko": "탄소 양이온 골격 자리옮김, 분자 내 락톤화",
+     "importance": 1,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "21.89",
+     "cite": "Tetrahedron Lett. 2008, 49, 6853–6855",
+     "compound": "브로모하이드린 락톤 자리옮김",
+     "reaction_ko": "cis-접합 γ-락톤 브로모하이드린 + NaH → 알콕사이드의 분자 내 아실 이동(락톤 교환) → 해방된 알콕사이드가 anti C–Br에 분자 내 SN2 → 에폭시 락톤",
+     "concept_ko": "분자 내 친핵성 아실 치환(트랜스락톤화), 할로하이드린 → 에폭사이드(anti 배열)",
+     "importance": 2,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "21.90",
+     "cite": "Angew. Chem. Int. Ed. 2009, 48, 9105–9108",
+     "compound": "englerin A",
+     "reaction_ko": "에폭시 δ-락톤 + cat. NaOMe → MeO⁻ 아실 첨가로 락톤 열림 → 알콕사이드가 C=O 재형성하며 에폭사이드 C–O 절단(알데하이드) → 3° 알콕사이드가 메틸 에스터 공격 → γ-락톤(고리 축소)",
+     "concept_ko": "친핵성 아실 치환 연쇄, 염기 촉매 고리 축소",
+     "importance": 2,
+     "nobel": "",
+     "scheme": []
+    }
+   ]
+  },
+  {
+   "no": 22,
+   "title": "알파 탄소 화학: 엔올과 엔올 음이온",
+   "summary": [
+    "α-할로젠화: 산 촉매 Br2(일치환), HVZ(Br2, PBr3; H2O), 할로폼 반응(메틸 케톤 → 카복실산)",
+    "알돌 첨가 → 가열 시 축합(E1cb) → α,β-불포화 카보닐; 교차·분자 내 알돌(5·6원 고리)",
+    "Claisen 축합(NaOEt) → β-케토 에스터; Dieckmann(분자 내) → 고리 β-케토 에스터",
+    "LDA, −78 °C → 속도론적(덜 치환) 엔올레이트 / NaH, 25 °C → 열역학적(더 치환) 엔올레이트 → 알킬화",
+    "말론산 에스터 합성 → RCH2COOH; 아세토아세트산 에스터 합성 → 메틸 케톤 (β-케토산 탈카복실화)",
+    "Michael 첨가: R2CuLi, 안정화 엔올레이트; Stork 엔아민(알킬화·Michael) → H3O⁺",
+    "Robinson 고리 형성 = Michael + 분자 내 알돌 축합",
+    "짝 첨가–알킬화 연쇄(α,β-이중 알킬화), 1,3- vs 1,5-이작용기 역합성"
+   ],
+   "refs": [
+    {
+     "problem": "22.110",
+     "cite": "J. Am. Chem. Soc. 1954, 76, 2029–2030",
+     "compound": "Stork 엔아민 알킬화",
+     "reaction_ko": "사이클로헥산온 + 피롤리딘, TsOH, −H2O → 엔아민 A → 1) CH3I (C-알킬화, 이미늄) 2) H3O⁺ → 2-메틸사이클로헥산온 B",
+     "concept_ko": "엔아민 = 중성 엔올레이트 등가체, Stork 엔아민 알킬화",
+     "importance": 3,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "O=C1CCCCC1",
+       "label": "사이클로헥산온"
+      },
+      {
+       "arrow": "피롤리딘, TsOH"
+      },
+      {
+       "smiles": "C1CCN(C1)C1=CCCCC1",
+       "label": "엔아민 A"
+      },
+      {
+       "arrow": "1) CH3I 2) H3O⁺"
+      },
+      {
+       "smiles": "CC1CCCCC1=O",
+       "label": "B"
+      }
+     ]
+    },
+    {
+     "problem": "22.111",
+     "cite": "J. Org. Chem. 1977, 42, 1663–1664",
+     "compound": "C2-대칭 trans-2,5-dimethylpyrrolidine 엔아민",
+     "reaction_ko": "사이클로헥산온 + 광학 순수 trans-2,5-다이메틸피롤리딘 → 단일 엔아민(C2 대칭) → CH3I, H3O⁺ → 2-메틸사이클로헥산온 83% ee",
+     "concept_ko": "C2-대칭 키랄 보조기, 면선택적 알킬화, ee",
+     "importance": 2,
+     "nobel": "2021 List · MacMillan — 비대칭 유기촉매(엔아민 촉매)",
+     "scheme": []
+    },
+    {
+     "problem": "22.112",
+     "cite": "J. Org. Chem. 2012, 77, 6371–6376",
+     "compound": "1,3-diphenylcyclopentadiene (풀벤 전구체)",
+     "reaction_ko": "1-페닐펜테인-1,4-다이온 → 1) NaOH/H2O, 가열 (분자 내 알돌 축합, 5원 고리) 2) PhMgCl (1,2-첨가) 3) 진한 H2SO4 (탈수) → C17H14",
+     "concept_ko": "분자 내 알돌 축합(5원 고리 선호), Grignard 1,2-첨가, 산 촉매 탈수",
+     "importance": 3,
+     "nobel": "1912 Grignard · Sabatier — Grignard 시약 · 촉매 수소화",
+     "scheme": [
+      {
+       "smiles": "CC(=O)CCC(=O)c1ccccc1",
+       "label": "1,4-다이온"
+      },
+      {
+       "arrow": "NaOH, H2O, Δ"
+      },
+      {
+       "smiles": "O=C1CCC(c2ccccc2)=C1",
+       "label": "사이클로펜텐온"
+      },
+      {
+       "arrow": "1) PhMgCl 2) H2SO4"
+      },
+      {
+       "smiles": "C1(c2ccccc2)=CC(c2ccccc2)=CC1",
+       "label": "C17H14"
+      }
+     ]
+    },
+    {
+     "problem": "22.113",
+     "cite": "J. Am. Chem. Soc. 2012, 134, 9291–9295",
+     "compound": "haouamine B",
+     "reaction_ko": "아릴 치환 다이하이드로피리디논 + Tf2O, 피리딘 → O-트리플릴 옥소카베늄(β-C 강친전자성) → 전자 풍부 다이메톡시아릴의 분자 내 Friedel–Crafts형 짝 첨가 → 4차 탄소 + 엔올 트리플레이트",
+     "concept_ko": "Tf2O에 의한 Michael 받개 활성화, 분자 내 짝 첨가, 짧은 사슬에 의한 cis 입체 제어",
+     "importance": 1,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "22.114",
+     "cite": "Tetrahedron Lett. 2010, 51, 6918–6920",
+     "compound": "α-옥소케텐 다이싸이오아세탈 고리화",
+     "reaction_ko": "α-옥소케텐 다이싸이오아세탈 + 다이에틸 말로네이트, K2CO3 → 말로네이트 짝 첨가–EtS⁻ 제거(바이닐 치환) → 분자 내 Michael(6-endo) → 사이클로헥센온",
+     "concept_ko": "Michael 첨가–제거, 분자 내 Michael 고리 형성",
+     "importance": 2,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "22.115",
+     "cite": "J. Am. Chem. Soc. 2011, 133, 15797–15799",
+     "compound": "(−)-N-methylwelwitindolinone C isothiocyanate",
+     "reaction_ko": "5-브로모인돌–사이클로헥산온 + 과량 NaNH2 → 케톤 엔올레이트 + 4,5-인돌라인(아라인) → 엔올레이트 α-C가 C4 공격(분자 내) → 다리 걸친 이환 케톤; 부생성물 = O-아릴화 엔올 에터",
+     "concept_ko": "아라인(벤자인) 포획, 엔올레이트의 양쪽성(C- vs O-공격)",
+     "importance": 1,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "22.116",
+     "cite": "Tetrahedron Lett. 1969, 10, 4233–4236",
+     "compound": "에틸 프롤리네이트 엔아민 Michael 첨가",
+     "reaction_ko": "프롤리네이트 엔아민의 두 회전 이성질체 + 메틸 아크릴레이트 → H3O⁺ → 메틸 3-(2-옥소사이클로헥실)프로파노에이트 21% ee; 두 회전 이성질체가 서로 반대 면을 가려 거의 라셈",
+     "concept_ko": "Stork 엔아민 Michael 첨가, 키랄 보조기의 면선택성과 형태 이성질체",
+     "importance": 2,
+     "nobel": "2021 List · MacMillan — 비대칭 유기촉매(엔아민 촉매)",
+     "scheme": [
+      {
+       "smiles": "O=C1CCCCC1",
+       "label": "사이클로헥산온"
+      },
+      {
+       "arrow": "1) 프롤리네이트 엔아민·아크릴레이트 2) H3O⁺"
+      },
+      {
+       "smiles": "O=C1CCCCC1CCC(=O)OC",
+       "label": "A (21% ee)"
+      }
+     ]
+    },
+    {
+     "problem": "22.117",
+     "cite": "Tetrahedron Lett. 2010, 51, 5291–5293",
+     "compound": "Pseudococcus viburni 성 페로몬",
+     "reaction_ko": "락톨 → Ph3P=CHCO2Et (Wittig, E-에노에이트) → TsCl/py (1° OTs) → Me2CuLi (1,4-첨가 → 에스터 엔올레이트의 분자 내 SN2, 5-exo) → 사이클로펜테인 → LiAlH4 → Ac2O/py → 아세테이트",
+     "concept_ko": "안정 일리드 Wittig, 큐프레이트 짝 첨가–분자 내 알킬화 연쇄",
+     "importance": 3,
+     "nobel": "1979 Brown · Wittig — 수소화붕소화 · Wittig 반응",
+     "scheme": []
+    },
+    {
+     "problem": "22.118",
+     "cite": "J. Am. Chem. Soc. 2012, 134, 920–923",
+     "compound": "fusarisetin A",
+     "reaction_ko": "β-케토 아마이드(N-메틸 세린 메틸 에스터) + NaOMe → 엔올레이트의 Dieckmann 축합(테트라믹산 5원 고리) → 곁사슬 2° OH의 분자 내 헤미케탈 형성 → 오환 골격",
+     "concept_ko": "Dieckmann 축합, 헤미케탈 형성",
+     "importance": 2,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "22.119",
+     "cite": "Org. Lett. 2012, 14, 4738–4741",
+     "compound": "음이온 가속 Claisen 고리 확장",
+     "reaction_ko": "cis-2-벤조일-6-바이닐-다이하이드로피란 + 1) NaHMDS 2) H2O → 엔올레이트(알릴 바이닐 에터 공명형) → 음이온 가속 [3,3] Claisen → 8원 고리 2-하이드록시-2-페닐사이클로옥타다이엔온",
+     "concept_ko": "엔올레이트 공명, Claisen [3,3] 자리옮김, 보트형 TS 키랄성 전달",
+     "importance": 2,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "O=C(c1ccccc1)C1CC=CC(C=C)O1",
+       "label": "1"
+      },
+      {
+       "arrow": "1) NaHMDS 2) H2O"
+      },
+      {
+       "smiles": "O=C1CC=CC=CCC1(O)c1ccccc1",
+       "label": "2"
+      }
+     ]
+    },
+    {
+     "problem": "22.120",
+     "cite": "Can. J. Chem. 2004, 82, 293–300",
+     "compound": "¹⁴C 표지 지베렐린 유도체",
+     "reaction_ko": "A고리 열린 지베렐린 알데하이드 + 1) K2CO3, H2O (락톤 엔올레이트) 2) HCl → 분자 내 알돌 첨가 → A고리 재형성, 3-OH(에피머 혼합)",
+     "concept_ko": "분자 내 알돌 첨가(역알돌의 역), 동위원소 표지 합성",
+     "importance": 2,
+     "nobel": "",
+     "scheme": []
+    }
+   ]
+  },
+  {
+   "no": 23,
+   "title": "아민",
+   "summary": [
+    "아민 제조: RBr + NaCN → LiAlH4; 아마이드 → LiAlH4; ArNO2 → H2/Pt 또는 Fe·Zn·Sn/HCl",
+    "아자이드 합성(NaN3 → H2/Pt 또는 LiAlH4), Gabriel 합성(프탈이미드, KOH; RBr; H2NNH2)",
+    "환원성 아민화: 카보닐 + NH3/RNH2/R2NH, [H⁺], NaBH3CN (과알킬화 없음)",
+    "Hofmann 제거: 과량 CH3I → Ag2O, H2O, 가열 → 덜 치환된 알켄",
+    "1° ArNH2 + NaNO2/HCl → 아릴 다이아조늄 → Sandmeyer(CuX, CuCN), HBF4(ArF), H2O/가열(ArOH), H3PO2(ArH), 아조 짝지음",
+    "2° 아민 + HNO2 → N-나이트로소아민; 아민 아실화 → 아마이드",
+    "염기도: 알킬 아민 > 아릴 아민 ≫ 아마이드; 피리딘 > 피롤; 피롤 EAS는 C2, 피리딘은 C3(강한 조건)"
+   ],
+   "refs": [
+    {
+     "problem": "23.89",
+     "cite": "Tetrahedron Lett. 2012, 53, 1119–1121",
+     "compound": "(−)-(S,S)-homaline",
+     "reaction_ko": "2° 아민(3-클로로프로필) → 1) HCHO, [H⁺], NaBH3CN (환원성 N-메틸화) 2) NaN3 (1° 염화물 SN2) → 3° 아민 아자이드",
+     "concept_ko": "환원성 아민화(과알킬화 방지), 아자이드 SN2",
+     "importance": 3,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "COC(=O)CC(NCCCCl)c1ccccc1",
+       "label": "1"
+      },
+      {
+       "arrow": "1) HCHO, NaBH3CN 2) NaN3"
+      },
+      {
+       "smiles": "COC(=O)CC(N(C)CCCN=[N+]=[N-])c1ccccc1",
+       "label": "2"
+      }
+     ]
+    },
+    {
+     "problem": "23.90",
+     "cite": "Bioorg. Med. Chem. Lett. 2006, 16, 2013–2016",
+     "compound": "니코틴 유사 진통제",
+     "reaction_ko": "6-클로로니코틴산 → 1) SOCl2 (산 염화물) 2) 사이클로펜틸아민 (아마이드) 3) 과량 LiAlH4, H2O → 2° 아민",
+     "concept_ko": "아마이드 경유 아민 합성(LiAlH4 환원), 대안: 알데하이드 환원성 아민화",
+     "importance": 3,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "O=C(O)c1ccc(Cl)nc1",
+       "label": "6-클로로니코틴산"
+      },
+      {
+       "arrow": "1) SOCl2 2) c-C5H9NH2 3) LiAlH4"
+      },
+      {
+       "smiles": "Clc1ccc(CNC2CCCC2)cn1",
+       "label": "2° 아민"
+      }
+     ]
+    },
+    {
+     "problem": "23.91",
+     "cite": "Org. Lett. 2007, 9, 2673–2676",
+     "compound": "halosaline",
+     "reaction_ko": "8원 아자이도 락톤 → H2, Pd (N3 → NH2) → 분자 내 아민의 락톤 C=O 공격(락톤 → δ-락탐, 고리 축소) → 과량 LiAlH4 → 할로살린",
+     "concept_ko": "아자이드 환원, 분자 내 아마이드 교환, 락탐 환원",
+     "importance": 2,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "CCCC1CC(N=[N+]=[N-])CCCC(=O)O1",
+       "label": "아자이도 락톤"
+      },
+      {
+       "arrow": "H2, Pd"
+      },
+      {
+       "smiles": "CCCC(O)CC1CCCC(=O)N1",
+       "label": "δ-락탐"
+      },
+      {
+       "arrow": "LiAlH4; H2O"
+      },
+      {
+       "smiles": "CCCC(O)CC1CCCCN1",
+       "label": "halosaline"
+      }
+     ]
+    },
+    {
+     "problem": "23.92",
+     "cite": "J. Am. Chem. Soc. 1945, 67, 860–874",
+     "compound": "quinine (Woodward–Doering), homomeroquinene",
+     "reaction_ko": "N-아세틸 피페리딘 1° 아민 → 1) 과량 CH3I (–NMe3⁺) 2) 60% NaOH, 가열 (Hofmann 제거 → 바이닐; 에스터·아마이드 가수분해) → 호모메로퀴넨 C10H17NO2",
+     "concept_ko": "철저 메틸화–Hofmann 제거(덜 치환된 알켄), 아마이드·에스터 가수분해",
+     "importance": 3,
+     "nobel": "1965 Woodward — 유기 합성(퀴닌 등 전합성)",
+     "scheme": [
+      {
+       "smiles": "CC(=O)N1CCC(CCC(=O)OCC)C(C(C)N)C1",
+       "label": "출발물"
+      },
+      {
+       "arrow": "1) xs CH3I 2) NaOH, Δ"
+      },
+      {
+       "smiles": "OC(=O)CCC1CCNCC1C=C",
+       "label": "homomeroquinene"
+      }
+     ]
+    },
+    {
+     "problem": "23.93",
+     "cite": "Tetrahedron Lett. 2009, 50, 3817–3819",
+     "compound": "piperazinone 유도체",
+     "reaction_ko": "페나실 브로마이드 + L-알라닌 메틸 에스터, NaHCO3 (SN2) → 아미노 케톤 → BnNH2, NaBH3CN, AcOH, 가열 (환원성 아민화 → 락탐화) → 피페라진-2-온 (부분입체이성질체 혼합)",
+     "concept_ko": "SN2 N-알킬화, 환원성 아민화의 입체 비선택성, 분자 내 아마이드화",
+     "importance": 2,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "COC(=O)[C@H](C)NCC(=O)c1ccccc1",
+       "label": "2"
+      },
+      {
+       "arrow": "BnNH2, NaBH3CN, AcOH, Δ"
+      },
+      {
+       "smiles": "C[C@@H]1NCC(c2ccccc2)N(Cc2ccccc2)C1=O",
+       "label": "4"
+      }
+     ]
+    },
+    {
+     "problem": "23.94",
+     "cite": "Tetrahedron Lett. 2004, 45, 5807–5810",
+     "compound": "아데노신 기반 알킬화 항암제",
+     "reaction_ko": "5'-아미노 아데노신(TES 보호) + 에틸 (E)-4,5-다이브로모펜트-2-엔오에이트, DBU → SN2 2회(분자 간 → 분자 내) → N-치환 2-바이닐 아지리딘",
+     "concept_ko": "아민의 연속 SN2, 아지리딘 고리 형성(알킬화제)",
+     "importance": 2,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "23.95",
+     "cite": "Tetrahedron Lett. 2005, 46, 979–982",
+     "compound": "엔아미노에스터(비닐로가 카바메이트)",
+     "reaction_ko": "Boc-아미노 아자이드 → H2, Pd → 1° 아민 2 → 메틸 아세토아세테이트와 이민 3 → 토토머화 → (Z)-엔아민 4 (콘쥬게이션 + 분자 내 N–H···O=C 수소결합)",
+     "concept_ko": "아자이드 환원, 이민–엔아민 토토머화, 콘쥬게이션·수소결합에 의한 엔아민 안정화",
+     "importance": 2,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "CC(N)CNC(=O)OC(C)(C)C",
+       "label": "아민 2"
+      },
+      {
+       "arrow": "메틸 아세토아세테이트"
+      },
+      {
+       "smiles": "COC(=O)/C=C(/C)NC(C)CNC(=O)OC(C)(C)C",
+       "label": "엔아민 4"
+      }
+     ]
+    },
+    {
+     "problem": "23.96",
+     "cite": "J. Org. Chem. 2011, 76, 1605–1613",
+     "compound": "crispine A",
+     "reaction_ko": "다이메톡시페닐알라닌 메틸 에스터 + 4-클로로뷰탄알, [H3O⁺] → 이미늄 → Pictet–Spengler(6-endo SEAr) → 테트라하이드로아이소퀴놀린 → 분자 내 N-알킬화(SN2) → 피롤로아이소퀴놀린",
+     "concept_ko": "이민/이미늄 형성, Pictet–Spengler 고리화, 분자 내 SN2",
+     "importance": 2,
+     "nobel": "",
+     "scheme": [
+      {
+       "smiles": "COC(=O)[C@@H](N)Cc1ccc(OC)c(OC)c1",
+       "label": "1"
+      },
+      {
+       "arrow": "Cl(CH2)3CHO, H3O⁺"
+      },
+      {
+       "smiles": "COc1cc2c(cc1OC)C1CCCN1[C@H](C(=O)OC)C2",
+       "label": "2"
+      }
+     ]
+    },
+    {
+     "problem": "23.97",
+     "cite": "J. Org. Chem. 1999, 64, 4966–4968",
+     "compound": "epibatidine 고리 열린 유사체",
+     "reaction_ko": "N-CO2Et 트로페인 3° 알코올 + CF3CO2H, NaBH3CN → 3° 양이온 → N 고립쌍이 밀어주는 Grob형 단편화(C1–C2 절단) → N-아실이미늄 + 1,1-이치환 알켄 → NaBH3CN 환원 → 2-알릴 피롤리딘",
+     "concept_ko": "Grob 단편화, N-아실이미늄 이온 환원",
+     "importance": 1,
+     "nobel": "",
+     "scheme": []
+    },
+    {
+     "problem": "23.98",
+     "cite": "J. Org. Chem. 1999, 64, 4617–4626",
+     "compound": "2-아미노퓨란 IMDAF",
+     "reaction_ko": "2-아미노퓨란 + 사슬 아크릴레이트, 가열·MeOH → 분자 내 퓨란 Diels–Alder → 산소 다리 개열(N 밀어줌, 이미늄) → MeOH 짝 첨가 → 헥사하이드로인돌(OH·OMe trans)",
+     "concept_ko": "분자 내 Diels–Alder(퓨란), 산소 다리 개열, 이미늄 짝 첨가",
+     "importance": 1,
+     "nobel": "1950 Diels · Alder — Diels–Alder 반응",
+     "scheme": []
+    }
+   ]
+  }
+ ]
+}
