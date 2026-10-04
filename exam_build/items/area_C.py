@@ -44,15 +44,15 @@ def H1(peaks, title='¹H NMR 스펙트럼(300 MHz, CDCl₃)', mhz=300, x0=10, x1
     """peaks = [(δ, Js, 수소수, '표시'), ...]; Js = [(J, n), ...] | [] (단일선) | 'br' | 'm'.
     insets = [[피크 index, ...], ...] → 위 여백에 확대 그림."""
     pad = 14
-    ih = 50 if insets else 0
-    H = 150 + ih
+    ih = 46 if insets else 0
+    H = 136 + ih
     base = H - 22
     ptop = ih + 22
     span = W - 2 * pad
     X = lambda d: pad + (x0 - d) / (x0 - x1) * span
     pxHz = span / ((x0 - x1) * mhz) * exag
     s = f'<svg width="{W}" height="{H}" viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg">'
-    s += f'<text x="{pad}" y="9" font-size="8" font-weight="700" {_F}>[{title}]</text>'
+    s += f'<text x="{pad}" y="9" font-size="8" font-weight="700" {_F}>[{_t(title)}]</text>'
     # 눈금
     s += f'<line x1="{pad}" y1="{base}" x2="{W-pad}" y2="{base}" stroke="#000" stroke-width="0.8"/>'
     for v in range(int(x0), int(x1) - 1, -1):
@@ -149,7 +149,7 @@ def C13(peaks, title='¹³C NMR 스펙트럼(75 MHz, CDCl₃)', x0=220, x1=0, W=
     hm = max(abs(p[1]) for p in peaks)
     room = (base - 24) if not neg else (base - 22)
     s = f'<svg width="{W}" height="{H}" viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg">'
-    s += f'<text x="{pad}" y="9" font-size="8" font-weight="700" {_F}>[{title}]</text>'
+    s += f'<text x="{pad}" y="9" font-size="8" font-weight="700" {_F}>[{_t(title)}]</text>'
     ya = H - 22
     s += f'<line x1="{pad}" y1="{ya}" x2="{W-pad}" y2="{ya}" stroke="#000" stroke-width="0.8"/>'
     for v in range(int(x0), int(x1) - 1, -step):
@@ -182,7 +182,7 @@ def C13(peaks, title='¹³C NMR 스펙트럼(75 MHz, CDCl₃)', x0=220, x1=0, W=
 
 def IRS(bands, title='IR 스펙트럼', W=300, H=112, v0=4000, v1=500, ticks=(4000, 3000, 2000, 1500, 1000, 500)):
     """IR 투과율 스펙트럼. bands = [(파수, 깊이0~1, 폭, '표시'), ...]; 표시는 화살표와 함께 띠 아래에 쓴다."""
-    pad = 18; top = 14; base = H - 22; span = W - pad - 10
+    pad = 18; top = 16; base = H - 22; span = W - pad - 10
     X = lambda v: pad + (v0 - v) / (v0 - v1) * span
     def T(v):
         t = 0.93
@@ -193,7 +193,7 @@ def IRS(bands, title='IR 스펙트럼', W=300, H=112, v0=4000, v1=500, ticks=(40
     n = 600
     pts = [f'{X(v0 - (v0 - v1) * i / n):.1f},{Y(T(v0 - (v0 - v1) * i / n)):.1f}' for i in range(n + 1)]
     s = f'<svg width="{W}" height="{H}" viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg">'
-    s += f'<text x="{pad}" y="9" font-size="8" font-weight="700" {_F}>[{title}]</text>'
+    s += f'<text x="{pad}" y="9" font-size="8" font-weight="700" {_F}>[{_t(title)}]</text>'
     s += f'<rect x="{pad}" y="{top}" width="{span}" height="{base-top}" fill="none" stroke="#000" stroke-width="0.7"/>'
     for v in ticks:
         x = X(v)
@@ -203,7 +203,7 @@ def IRS(bands, title='IR 스펙트럼', W=300, H=112, v0=4000, v1=500, ticks=(40
         y = Y(t / 100)
         s += f'<text x="{pad-2}" y="{y+2.5:.1f}" font-size="6.5" text-anchor="end" {_A}>{t}</text>'
     s += f'<polyline points="{" ".join(pts)}" fill="none" stroke="#000" stroke-width="0.8"/>'
-    s += f'<text x="{pad+span/2}" y="{H-1}" font-size="7.5" text-anchor="middle" {_F}>파수(cm⁻¹)</text>'
+    s += f'<text x="{pad+span/2}" y="{H-1}" font-size="7.5" text-anchor="middle" {_F}>파수(cm<tspan baseline-shift="super" font-size="5.5">−1</tspan>)</text>'
     s += f'<text x="6" y="{(top+base)/2}" font-size="7" {_F} transform="rotate(-90 6 {(top+base)/2})" text-anchor="middle">투과율(%)</text>'
     for b in bands:
         if len(b) > 3 and b[3]:
@@ -223,7 +223,7 @@ def MS(peaks, title='질량 스펙트럼', x0=20, x1=220, W=300, H=118, step=20)
     X = lambda m: pad + (m - x0) / (x1 - x0) * span
     Y = lambda r: base - r / 100 * (base - top)
     s = f'<svg width="{W}" height="{H}" viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg">'
-    s += f'<text x="{pad}" y="9" font-size="8" font-weight="700" {_F}>[{title}]</text>'
+    s += f'<text x="{pad}" y="9" font-size="8" font-weight="700" {_F}>[{_t(title)}]</text>'
     s += f'<line x1="{pad}" y1="{base}" x2="{pad+span}" y2="{base}" stroke="#000" stroke-width="0.8"/>'
     s += f'<line x1="{pad}" y1="{base}" x2="{pad}" y2="{top}" stroke="#000" stroke-width="0.8"/>'
     for r in (0, 50, 100):
@@ -247,10 +247,23 @@ def MS(peaks, title='질량 스펙트럼', x0=20, x1=220, W=300, H=118, step=20)
     return s + '</svg>'
 
 
-def T(rows_, head=('피크', 'δ (ppm)', '갈라짐 (<i>J</i>, Hz)', '수소 수')):
-    h = ''.join(f'<th>{c}</th>' for c in head)
-    b = ''.join('<tr>' + ''.join(f'<td>{c}</td>' for c in r) + '</tr>' for r in rows_)
-    return f'<table class="data"><tr>{h}</tr>{b}</table>'
+def T(rows_, head=('피크', 'δ (ppm)', '갈라짐', '<i>J</i> (Hz)', '수소 수')):
+    """가로형 압축 표: rows_ = [(표시, δ, 갈라짐, J, 수소수), ...]"""
+    cols = list(zip(*rows_))
+    st = 'style="font-size:7.8pt;margin:1mm auto"'
+    out = ''
+    for h, c in zip(head, cols):
+        out += f'<tr><th style="padding:.4mm 1.2mm">{h}</th>' + ''.join(f'<td style="padding:.4mm 1.2mm">{x}</td>' for x in c) + '</tr>'
+    return f'<table class="data" {st}>{out}</table>'
+
+
+def _t(title):
+    """SVG 제목: ¹H, ¹³C, CDCl₃ 등 첨자를 tspan으로."""
+    title = title.replace('¹H', '<tspan baseline-shift="super" font-size="5.5">1</tspan>H')
+    title = title.replace('¹³C', '<tspan baseline-shift="super" font-size="5.5">13</tspan>C')
+    title = title.replace('CDCl₃', 'CDCl<tspan baseline-shift="sub" font-size="5.5">3</tspan>')
+    title = title.replace('CCl₄', 'CCl<tspan baseline-shift="sub" font-size="5.5">4</tspan>')
+    return title
 
 
 def lb(x):
@@ -277,8 +290,8 @@ ITEMS.append(dict(
 {spec(IRS([(2960, .42, 35), (2875, .28, 25), (2815, .22, 18), (2730, .24, 18, '2730'), (1692, .86, 18, '1692'), (1640, .3, 12), (1460, .28, 18), (1380, .15, 12), (1140, .28, 25), (975, .52, 12, '975')]))}
 {spec(H1([(9.51, [(7.9, 1)], 1, '㉠'), (6.85, [(15.6, 1), (6.8, 2)], 1, '㉡'), (6.12, [(15.6, 1), (7.9, 1)], 1, '㉢'),
           (2.32, [(7.0, 3)], 2, '㉣'), (1.54, [(7.4, 5)], 2, '㉤'), (0.97, [(7.4, 2)], 3, '㉥')], insets=[[0], [1], [2]]))}
-{T([('㉠', '9.51', 'd (7.9)', '1'), ('㉡', '6.85', 'dt (15.6, 6.8)', '1'), ('㉢', '6.12', 'dd (15.6, 7.9)', '1'),
-    ('㉣', '2.32', 'q 모양 (7.0)', '2'), ('㉤', '1.54', 'sextet (7.4)', '2'), ('㉥', '0.97', 't (7.4)', '3')])}
+{T([('㉠', '9.51', 'd', '7.9', '1'), ('㉡', '6.85', 'dt', '15.6, 6.8', '1'), ('㉢', '6.12', 'dd', '15.6, 7.9', '1'),
+    ('㉣', '2.32', 'q 모양', '7.0', '2'), ('㉤', '1.54', 'sext', '7.4', '2'), ('㉥', '0.97', 't', '7.4', '3')])}
 <p class="ask">{A_}의 구조를 기하 이성질 관계가 드러나도록 그리고, 피크 ㉡에 해당하는 수소에 동그라미로 표시하시오. [[PTS]]</p>''',
     answer=f'''<div class="ansbox">{M('CCC/C=C/C=O', '(E)-hex-2-enal', 18)}</div>
 ㉡(δ 6.85)은 C3–H(β-수소, CH<sub>2</sub>와 이웃한 비닐 수소)이다. 즉 CH<sub>3</sub>CH<sub>2</sub>CH<sub>2</sub>–<u>C<b>H</b></u>=CH–CHO의 밑줄 수소에 동그라미.''',
