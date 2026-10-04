@@ -88,7 +88,9 @@ h1 { font-size: 17pt; text-align:center; margin: 2mm 0 1mm; }
 h2 { font-size: 13pt; border-bottom: 2px solid #000; padding-bottom: 1mm; margin: 6mm 0 3mm; page-break-after: avoid; break-before: page; }
 h2.nobreak { break-before: auto; }
 .sub { text-align:center; color:#333; margin-bottom: 4mm; }
-.a { border: 1px solid #000; margin: 0 0 4mm; page-break-inside: avoid; break-inside: avoid; }
+.a { border: 1px solid #000; margin: 0 0 4mm; }
+.a .ah, .a .meta { break-after: avoid; break-inside: avoid; }
+.a .ans, .a .exp p, .a .ansbox, .a svg { break-inside: avoid; }
 .a .ah { display:flex; justify-content:space-between; align-items:center; background:#eee; border-bottom:1px solid #000; padding: 1.2mm 3mm; font-weight:700; }
 .a .ah .st { letter-spacing: 1px; }
 .a .meta { padding: 1.5mm 3mm; border-bottom: 1px dashed #999; font-size: 8.6pt; }

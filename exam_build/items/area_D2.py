@@ -15,46 +15,41 @@ def _sub(t):
     return out
 
 
-def chair(subs, label='', w=170, h=104, R=46, hz=13, elev=0.30, L_ax=24, L_eq=24, fs=10.5, ring_lbl=None):
-    """의자 형태 사이클로헥세인.
-    고리 원자 번호 k=0..5 (k=0 오른쪽 끝[위로 솟은 끝], k=3 왼쪽 끝[아래로 처진 끝]).
-    짝수 k 의 축 방향은 위(up), 홀수 k 의 축 방향은 아래(down).
-    subs = {(k, 'ax'|'eq'): '라벨'}"""
-    cx, cy = w / 2, h / 2 + 2
-    P, AX, EQ = [], [], []
+def chair(subs, label='', sc=1.15, L_ax=22, L_eq=24, fs=10.5, ring_lbl=None):
+    """교과서식 의자 형태(평행 결합 규칙으로 작도).
+    고리 원자 번호: 0 = 왼쪽 끝(축 ↓), 1 = 뒤-왼쪽(축 ↑), 2 = 뒤-오른쪽(축 ↓), 3 = 오른쪽 끝(축 ↑), 4 = 앞-오른쪽(축 ↓), 5 = 앞-왼쪽(축 ↑).
+    적도 결합은 한 칸 건너 고리 결합과 평행. subs = {(k, 'ax'|'eq'): '라벨'}"""
+    base = [(0, 30), (25, 12), (60, 22), (90, 10), (65, 28), (30, 18)]
+    P = [(x * sc, y * sc * 1.45) for x, y in base]
+    prims, xs, ys = [], [p[0] for p in P], [p[1] for p in P]
     for k in range(6):
-        th = math.radians(60 * k)
-        z = hz if k % 2 == 0 else -hz
-        x, y = R * math.cos(th), R * math.sin(th)
-        P.append((cx + x, cy - (z + y * elev)))
-        sgn = 1 if k % 2 == 0 else -1
-        AX.append((0, -sgn))
-        ex, ey, ez = math.cos(th), math.sin(th), -0.38 * sgn
-        vx, vy = ex, -(ez * 1.0 + ey * elev)
-        n = math.hypot(vx, vy)
-        EQ.append((vx / n, vy / n))
-    s = f'<svg width="{w}" height="{h}" viewBox="0 0 {w} {h}" xmlns="http://www.w3.org/2000/svg">'
-    for k in range(6):
-        a, b = P[k], P[(k + 1) % 6]
-        s += f'<line x1="{a[0]:.1f}" y1="{a[1]:.1f}" x2="{b[0]:.1f}" y2="{b[1]:.1f}" stroke="#000" stroke-width="1.3"/>'
+        prims.append(('l', P[k], P[(k + 1) % 6], 1.3))
     for (k, kind), lab in subs.items():
-        d = AX[k] if kind == 'ax' else EQ[k]
-        Ln = L_ax if kind == 'ax' else L_eq
-        x0, y0 = P[k]
-        x1, y1 = x0 + d[0] * Ln, y0 + d[1] * Ln
-        s += f'<line x1="{x0:.1f}" y1="{y0:.1f}" x2="{x1:.1f}" y2="{y1:.1f}" stroke="#000" stroke-width="1.1"/>'
-        if d[0] > 0.35:
-            anc, tx = 'start', x1 + 1
-        elif d[0] < -0.35:
-            anc, tx = 'end', x1 - 1
+        if kind == 'ax':
+            d = (0, -1) if k % 2 == 1 else (0, 1); Ln = L_ax
         else:
-            anc, tx = 'middle', x1
-        ty = y1 + (fs * 0.85 if d[1] > 0.3 else (-2 if d[1] < -0.3 else fs * 0.35))
-        s += f'<text x="{tx:.1f}" y="{ty:.1f}" font-size="{fs}" text-anchor="{anc}" {_F}>{_sub(lab)}</text>'
+            a1, a2 = P[(k + 1) % 6], P[(k + 2) % 6]
+            vx, vy = a1[0] - a2[0], a1[1] - a2[1]; n = math.hypot(vx, vy); d = (vx / n, vy / n); Ln = L_eq
+        x0, y0 = P[k]; x1, y1 = x0 + d[0] * Ln, y0 + d[1] * Ln
+        prims.append(('l', (x0, y0), (x1, y1), 1.1))
+        tw = len(lab.replace('3', '').replace('2', '')) * fs * 0.62 + 4
+        if d[0] > 0.35: anc, tx = 'start', x1 + 1; bx = (tx, tx + tw)
+        elif d[0] < -0.35: anc, tx = 'end', x1 - 1; bx = (tx - tw, tx)
+        else: anc, tx = 'middle', x1; bx = (tx - tw / 2, tx + tw / 2)
+        ty = y1 + (fs * 0.9 if d[1] > 0.3 else (-2 if d[1] < -0.3 else fs * 0.35))
+        prims.append(('t', tx, ty, anc, lab)); xs += list(bx); ys += [ty - fs * 0.85, ty + 3]
     if ring_lbl:
         for k, t in ring_lbl.items():
-            x0, y0 = P[k]
-            s += f'<text x="{x0+3:.1f}" y="{y0+11:.1f}" font-size="7.5" {_F} fill="#444">{t}</text>'
+            x0, y0 = P[k]; prims.append(('n', x0 - 9, y0 + 3, t))
+    m = 3; X0 = min(xs) - m; Y0 = min(ys) - m; W = max(xs) - X0 + m; H = max(ys) - Y0 + m
+    s = f'<svg width="{W:.0f}" height="{H:.0f}" viewBox="{X0:.1f} {Y0:.1f} {W:.1f} {H:.1f}" xmlns="http://www.w3.org/2000/svg">'
+    for p in prims:
+        if p[0] == 'l':
+            s += f'<line x1="{p[1][0]:.1f}" y1="{p[1][1]:.1f}" x2="{p[2][0]:.1f}" y2="{p[2][1]:.1f}" stroke="#000" stroke-width="{p[3]}"/>'
+        elif p[0] == 't':
+            s += f'<text x="{p[1]:.1f}" y="{p[2]:.1f}" font-size="{fs}" text-anchor="{p[3]}" {_F}>{_sub(p[4])}</text>'
+        else:
+            s += f'<text x="{p[1]:.1f}" y="{p[2]:.1f}" font-size="7.5" fill="#444" {_F}>{p[3]}</text>'
     s += '</svg>'
     lab = f'<div class="lbl">{label}</div>' if label else ''
     return f'<div class="cmpd">{s}{lab}</div>'
@@ -186,7 +181,7 @@ dict(
     nobel='1969 노벨 화학상(D. H. R. Barton·O. Hassel — 형태 분석의 개념 확립)',
     body=f'''다음은 사이클로헥세인(cyclohexane)의 고리 뒤집힘 과정에서 나타나는 형태 <b class="lbltxt">A</b>~<b class="lbltxt">D</b>의 상대 에너지를 나타낸 것이다. <b class="lbltxt">A</b>~<b class="lbltxt">D</b>는 각각 의자(chair), 반쪽의자(half-chair), 보트(boat), 꼬인보트(twist-boat) 형태 중 하나이다.
 {frame('<div class="spec">' + energy_profile() + '</div>')}
-다음은 all-<i>trans</i>-1,2,3,4,5,6-hexaisopropylcyclohexane(<b class="lbltxt">X</b>)에 대한 자료이다.
+<p style="text-align:left">다음은 all-<i>trans</i>-1,2,3,4,5,6-hexaisopropylcyclohexane(<b class="lbltxt">X</b>)에 대한 자료이다.</p>
 {frame(scheme(M(HEXA_IPR, 'X', 13)),
        '<div class="chem">◦ <b class="lbltxt">X</b>의 가장 안정한 의자 형태에서, 이웃한 두 고리 탄소에 결합한 수소의 H–C–C–H 이면각은 모두 약 60°이다.</div>')}
 <p class="ask"><b class="lbltxt">B</b>와 <b class="lbltxt">D</b>에 해당하는 형태의 이름을 각각 쓰고, <b class="lbltxt">D</b>의 점군을 쓰시오. 또한 <b class="lbltxt">X</b>의 가장 안정한 의자 형태에서 6개의 아이소프로필기가 축(axial) 방향과 적도(equatorial) 방향 중 어느 쪽에 놓이는지 쓰시오. [[PTS]]</p>''',
@@ -211,15 +206,15 @@ dict(
            '피크 면적비 → ee → 실험 조건(용매)을 역추적하게 하여 사고 단계를 늘림',
     paper=dict(cite='J. Am. Chem. Soc. 2012, 134, 8054–8057', book='Klein 5.65',
                what='산화·환원으로 전환되는 카이랄 Cu 촉매: Cu(I)형은 (S), Cu(II)형은 (R) Michael 부가물(diethyl malonate + trans-β-nitrostyrene)을 주로 생성; 용매별 ee 자료'),
-    nobel='2001 노벨 화학상(W. S. Knowles·R. Noyori — 카이랄 금속 촉매에 의한 비대칭 반응). 같은 malonate–nitroalkene 비대칭 Michael 첨가는 2021 노벨 화학상(B. List·D. MacMillan) 비대칭 유기촉매 반응의 대표 예이기도 하다',
-    body=f'''다음은 카이랄 구리 촉매를 이용한 diethyl malonate와 <i>trans</i>-β-nitrostyrene의 비대칭 마이클(Michael) 첨가 반응의 [반응식]과, 카이랄 칼럼을 이용한 액체 크로마토그래피로 생성물을 분석한 [자료]이다. 이 촉매는 Cu(I) 형태일 때 <b class="lbltxt">P</b>를, Cu(II) 형태일 때 <b class="lbltxt">P</b>의 거울상이성질체를 주로 생성한다. (단, 반응에서는 적절한 정제 과정을 수행하였다.)
-{frame(scheme(M('CCOC(=O)CC(=O)OCC', '', 13), plus(), M('[O-][N+](=O)/C=C/c1ccccc1', '', 13)),
-       scheme(arrow('카이랄 Cu(I) 촉매', '염기, 용매 <i>X</i>'), M(MICHAEL_S, 'P', 14)), title='[반응식]')}
-{frame('<table class="data"><tr><th>용매</th><th>톨루엔</th><th>THF</th><th>CH<sub>3</sub>CN</th><th>CHCl<sub>3</sub></th><th>CH<sub>2</sub>Cl<sub>2</sub></th><th>헥세인</th></tr>'
-       '<tr><td><b class="lbltxt">P</b>의 ee(%)</td><td>24</td><td>48</td><td>72</td><td>30</td><td>46</td><td>51</td></tr></table>',
-       scheme(svgbox(chrom([(8, .8, ''), (12, .8, '')], 'P의 라세믹 표준 시료')),
-              svgbox(chrom([(8, .16, '㉠'), (12, .95, '㉡')], 'Cu(I), 용매 X 생성물'))),
-       '<div class="chem" style="text-align:center">라세믹 표준 시료의 두 피크 면적비는 1 : 1이고, 생성물의 ㉠ : ㉡ 면적비는 7 : 43이다.</div>', title='[자료]')}
+    nobel='2001 노벨 화학상(Knowles·Noyori — 카이랄 촉매 비대칭 반응); 2021(List·MacMillan — 같은 반응형의 비대칭 유기촉매)',
+    body=f'''다음은 카이랄 구리 촉매를 이용한 비대칭 마이클(Michael) 첨가 [반응식]과, 카이랄 칼럼 액체 크로마토그래피 분석 [자료]이다. 이 촉매는 Cu(I) 형태일 때 <b class="lbltxt">P</b>를, Cu(II) 형태일 때 <b class="lbltxt">P</b>의 거울상이성질체를 주로 생성한다. (단, 반응에서는 적절한 정제 과정을 수행하였다.)
+{frame(scheme(M('[O-][N+](=O)/C=C/c1ccccc1', '', 10), arrow('CH<sub>2</sub>(CO<sub>2</sub>Et)<sub>2</sub>, 염기', 'Cu(I) 촉매, 용매 <i>X</i>'), M(MICHAEL_S, 'P', 10)), title='[반응식]')}
+{frame('<table class="data" style="font-size:8.2pt"><tr><th>용매(Cu(I))</th><th>톨루엔</th><th>THF</th><th>CH<sub>3</sub>CN</th></tr><tr><td><b>P</b>의 ee(%)</td><td>24</td><td>48</td><td>72</td></tr>'
+       '<tr><th>용매</th><th>CHCl<sub>3</sub></th><th>CH<sub>2</sub>Cl<sub>2</sub></th><th>헥세인</th></tr><tr><td><b>P</b>의 ee(%)</td><td>30</td><td>46</td><td>51</td></tr></table>',
+       
+       scheme(svgbox(chrom([(8, .8, ''), (12, .8, '')], 'P의 라세믹 표준 시료', W=130, H=60)),
+              svgbox(chrom([(8, .16, '㉠'), (12, .95, '㉡')], 'Cu(I), 용매 X 생성물', W=130, H=60))),
+       '<div class="chem" style="text-align:center">면적비 — 표준 시료 1 : 1, 생성물 ㉠ : ㉡ = 7 : 43</div>', title='[자료]')}
 <p class="ask">피크 ㉠에 해당하는 화합물의 <i>R</i>, <i>S</i> 배열을 쓰고, 용매 <i>X</i>를 쓰시오. [[PTS]]</p>''',
     answer=f'''<div class="ansbox">{M(MICHAEL_R, '㉠: (R)-거울상이성질체', 14)}</div>
 ㉠ = <b><i>R</i></b> (P는 <i>S</i>) · ee = (43 − 7)/(43 + 7) × 100 = 72 % → 용매 <i>X</i> = <b>CH<sub>3</sub>CN</b>''',
@@ -268,14 +263,14 @@ dict(
     paper=dict(cite='Tetrahedron Lett. 2010, 51, 6948–6950', book='Klein 8.90',
                what='cholic acid형 스테로이드의 12α-OTs(축)를 NaOAc로 E2 제거할 때, C11의 축 방향(11β) 수소만 제거되므로 적도 방향에 D를 표지한 기질만 생성물에 D가 남음'),
     nobel='1969 노벨 화학상(D. H. R. Barton — 스테로이드의 축·적도 형태와 반응성의 상관관계)',
-    body=f'''다음은 E2 제거 반응을 거쳐 최종 생성물이 형성되는 반응이다. <b class="lbltxt">A′</b>은 <b class="lbltxt">A</b>의 C6 수소 하나가 중수소(D)로 치환된 화합물이다. (단, <b class="lbltxt">A</b>, <b class="lbltxt">A′</b>, <b class="lbltxt">C</b>는 카이랄 화합물이고, 각 반응에서 적절한 분리·정제 과정을 수행하였다.)
-{frame(scheme(M(A_TRANS, 'A', 16), arrow('NaOEt', 'EtOH, 가열'), L('B')),
-       scheme(M(C_CIS, 'C', 16), arrow('NaOEt', 'EtOH, 가열'), L('D'), '<span class="chem">(주생성물)</span>'), title='[반응 1]')}
-{frame(scheme(M(A_D, 'A′', 16), arrow('NaOEt', 'EtOH, 가열'), L('E'), '<span class="chem">(C<sub>7</sub>H<sub>11</sub>D)</span>'), title='[반응 2]')}
+    body=f'''다음은 E2 제거 반응을 거쳐 최종 생성물이 형성되는 반응이다. <b class="lbltxt">A′</b>은 <b class="lbltxt">A</b>의 C6 수소 하나가 중수소(D)로 치환된 화합물이다(C1: Br 결합 탄소, C2: CH<sub>3</sub> 결합 탄소). (단, <b class="lbltxt">A</b>, <b class="lbltxt">A′</b>, <b class="lbltxt">C</b>는 카이랄 화합물이고, 각 반응에서 적절한 분리·정제 과정을 수행하였다.)
+{frame(scheme(M(A_TRANS, 'A', 14), arrow('NaOEt', 'EtOH, 가열'), L('B')),
+       scheme(M(C_CIS, 'C', 14), arrow('NaOEt', 'EtOH, 가열'), L('D'), '<span class="chem">(주생성물)</span>'), title='[반응 1]')}
+{frame(scheme(M(A_D, 'A′', 14), arrow('NaOEt', 'EtOH, 가열'), L('E'), '<span class="chem">(C<sub>7</sub>H<sub>11</sub>D)</span>'), title='[반응 2]')}
 <p class="ask">[반응 1]에서 주생성물 <b class="lbltxt">B</b>와 <b class="lbltxt">D</b>의 입체구조를 각각 그리시오. 또한 동일 반응 조건에서 <b class="lbltxt">A</b>와 <b class="lbltxt">C</b> 중 반응 속도가 큰 것의 구조를 가장 안정한 의자 형태로 그리시오. 그리고 [반응 2]에서 <b class="lbltxt">E</b>의 입체구조를 그리고, <b class="lbltxt">E</b>가 생성되는 과정을 <b class="lbltxt">A′</b>의 C1–C6 결합에 대한 뉴먼 투영도(Newman projection)를 그려서 설명하시오. [[PTS]]</p>''',
     answer=f'''<div class="ansbox">{M(B_PROD, 'B: (R)-3-methylcyclohexene', 15)}{M(D_PROD, 'D: 1-methylcyclohexene', 15)}</div>
 반응 속도: <b class="lbltxt">C</b> &gt; <b class="lbltxt">A</b>. <b class="lbltxt">C</b>의 가장 안정한 의자 형태(Br 축, CH<sub>3</sub> 적도):
-<div class="ansbox">{chair({(0, 'ax'): 'Br', (0, 'eq'): 'H', (1, 'eq'): 'CH3', (1, 'ax'): 'H'}, 'C (Br 축 · CH₃ 적도)', ring_lbl={0: '1', 1: '2'})}</div>
+<div class="ansbox">{chair({(1, 'ax'): 'Br', (1, 'eq'): 'H', (0, 'eq'): 'CH3', (0, 'ax'): 'H'}, 'C (Br 축 · CH₃ 적도)', ring_lbl={1: '1', 0: '2'})}</div>
 <div class="ansbox">{M(E_PROD, 'E: (R)-1-deuterio-3-methylcyclohexene', 15)}{newman([(270, 'Br'), (30, 'C2'), (150, 'H')], [(90, 'H'), (330, 'C5'), (210, 'D')], 'A′ 반응성 형태 (C1 앞, C6 뒤)')}</div>''',
     explain='''<p><b>핵심 반응:</b> E2 제거 — 이탈기와 β-H가 anti-periplanar(고리에서는 <b>trans-이축</b>)여야 한다. 그 결과 위치선택성(Zaitsev 여부)과 속도가 형태로 결정된다.</p>
 <p>① <b class="lbltxt">A</b> = (1<i>R</i>,2<i>R</i>)-<i>trans</i>-1-bromo-2-methylcyclohexane. 안정한 형태는 Br·CH<sub>3</sub>가 모두 적도인 형태인데, 이때 Br과 anti인 β-H가 없다. 고리가 뒤집혀 Br·CH<sub>3</sub>가 모두 축이 되어야 E2가 가능하다. 그 형태에서 C2의 축 자리는 CH<sub>3</sub>가 차지하므로 C2–H는 적도이고 제거될 수 없다. 남은 것은 C6의 축 H뿐이다. 그래서 Zaitsev 규칙에 어긋나는 <b class="lbltxt">B</b> = 3-methylcyclohexene만 생긴다. C2는 반응에 참여하지 않으므로 배열이 유지된다 → (<i>R</i>)-3-methylcyclohexene.</p>
@@ -300,7 +295,7 @@ dict(
        scheme(arrow('1) BH<sub>3</sub>·THF', '2) H<sub>2</sub>O<sub>2</sub>, NaOH'), L('C'), '<span class="chem">(C<sub>4</sub>H<sub>10</sub>O, 라세미)</span>'), title='[반응 1]')}
 {frame(scheme(L('D'), '<span class="chem">(C<sub>4</sub>H<sub>6</sub>)</span>', arrow('H<sub>2</sub>', 'Lindlar 촉매'), L('E'),
               arrow('1) Ipc<sub>2</sub>BH', '2) H<sub>2</sub>O<sub>2</sub>, NaOH'), L('F'), '<span class="chem">(C<sub>4</sub>H<sub>10</sub>O, 광학 활성)</span>'),
-       scheme(M(PINENE, '(+)-α-pinene', 14), arrow('BH<sub>3</sub>·THF', '(0.5 당량)'), L('Ipc<sub>2</sub>BH'), '<span class="chem">(단일 입체이성질체)</span>'), title='[반응 2]')}
+       scheme(M(PINENE, '(+)-α-pinene', 14), arrow('BH<sub>3</sub>·THF', '(0.5 당량)'), '<span class="chem"><b>Ipc<sub>2</sub>BH</b><br>(단일 입체이성질체)</span>'), title='[반응 2]')}
 <p class="ask"><b class="lbltxt">A</b>와 <b class="lbltxt">D</b>의 구조를 각각 그리시오. 또한 [반응 2]의 <b class="lbltxt">F</b>는 광학 활성인 반면 [반응 1]의 <b class="lbltxt">C</b>는 라세미 혼합물로 얻어지는 이유를 서술하시오. [[PTS]]</p>''',
     answer=f'''<div class="ansbox">{M('CCC(C)Br', 'A: 2-bromobutane', 16)}{M('CC#CC', 'D: 2-butyne', 16)}</div>
 <b class="lbltxt">B</b>·<b class="lbltxt">E</b>의 두 면(re/si)은 거울상 관계(enantiotopic)이다. 비카이랄 BH<sub>3</sub>는 두 면에 같은 속도로 첨가되므로(거울상 전이 상태, 에너지 같음) C는 1 : 1 라세미가 된다. 카이랄 Ipc<sub>2</sub>BH는 두 면에서 부분입체이성질체 관계의 전이 상태를 만들고 그 에너지가 서로 달라 한 면으로 우선 첨가된다. 그래서 F는 한 거울상이성질체가 과량인 광학 활성 2-butanol이 된다.''',
@@ -351,8 +346,8 @@ dict(
                what='trans-decalin에 접합된 부분입체이성질 γ-락톤 두 개의 연소열 차이 17.2 kJ/mol — 락톤 고리 결합이 trans-이축이어야 하는 이성질체는 꼬인보트를 취해 덜 안정'),
     nobel='1969 노벨 화학상(D. H. R. Barton·O. Hassel — 형태 분석)',
     body=f'''다음은 일치환 사이클로헥세인의 두 의자 형태 <b class="lbltxt">P</b>와 <b class="lbltxt">Q</b>의 [평형식], 이와 관련된 [반응]과 [자료]이다.
-{frame(scheme(chair({(0, 'ax'): 'R', (0, 'eq'): 'H'}, 'P', w=120, h=80, R=34, hz=10), '<div class="plus">⇌</div>',
-              chair({(3, 'eq'): 'R', (3, 'ax'): 'H'}, 'Q', w=120, h=80, R=34, hz=10)),
+{frame(scheme(chair({(3, 'ax'): 'R', (3, 'eq'): 'H'}, 'P', sc=0.95), '<div class="plus">⇌</div>',
+              chair({(0, 'eq'): 'R', (0, 'ax'): 'H'}, 'Q', sc=0.95)),
        '<div class="chem" style="text-align:center">R = –OH, –CH(CH<sub>3</sub>)<sub>2</sub>, –C<sub>6</sub>H<sub>5</sub></div>', title='[평형식]')}
 {frame(scheme(M('O=C1CCC(CC1)C(C)(C)C', '', 14), arrow('1) L-Selectride, THF, −78 ℃', '2) H<sub>3</sub>O<sup>+</sup>'), L('C'), '<span class="chem">(C<sub>10</sub>H<sub>20</sub>O)</span>'),
        '<div class="chem" style="text-align:center">L-Selectride = Li<sup>+</sup>[HB(<i>sec</i>-Bu)<sub>3</sub>]<sup>−</sup></div>', title='[반응]')}
@@ -360,7 +355,7 @@ dict(
        '<div class="chem">◦ <b class="lbltxt">1</b>과 <b class="lbltxt">2</b>는 <i>trans</i>-decalin에 γ-락톤이 <i>trans</i>로 접합된 부분입체이성질체이며, 연소열의 차이는 17.2 kJ/mol이다.</div>', title='[자료]')}
 <p class="ask">[평형식]에서 R가 각각 –OH, –CH(CH<sub>3</sub>)<sub>2</sub>, –C<sub>6</sub>H<sub>5</sub>일 때 25 ℃에서 [<b class="lbltxt">Q</b>]/[<b class="lbltxt">P</b>]가 큰 것부터 순서대로 나열하시오. [반응]의 주생성물 <b class="lbltxt">C</b>의 구조를 안정한 의자 형태로 그리고, <b class="lbltxt">C</b>가 주생성물로 생성된 이유를 서술하시오. 또한 [자료]에서 연소열이 더 큰 것을 쓰시오. [[PTS]]</p>''',
     answer=f'''[Q]/[P]: –C<sub>6</sub>H<sub>5</sub> &gt; –CH(CH<sub>3</sub>)<sub>2</sub> &gt; –OH<br>
-<div class="ansbox">{chair({(0, 'ax'): 'OH', (0, 'eq'): 'H', (3, 'eq'): 'C(CH3)3', (3, 'ax'): 'H'}, 'C: cis-4-tert-butylcyclohexanol (OH 축)')}</div>
+<div class="ansbox">{chair({(3, 'ax'): 'OH', (3, 'eq'): 'H', (0, 'eq'): 'C(CH3)3', (0, 'ax'): 'H'}, 'C: cis-4-tert-butylcyclohexanol (OH 축)')}</div>
 이유: t-Bu가 적도에 고정된 의자 형태에서, 부피가 큰 L-Selectride는 C3·C5의 축 방향 H와 1,3-이축 반발을 일으키는 축 방향 접근을 하지 못한다. 그래서 덜 막힌 <b>적도 방향</b>에서 하이드라이드를 전달하고, 그 결과 O는 축으로 밀려나 열역학적으로 덜 안정한 <i>cis</i>(OH 축) 알코올이 생긴다(입체 접근 조절, 속도론적 생성물).<br>
 연소열이 더 큰 것: <b class="lbltxt">2</b>''',
     explain='''<p><b>핵심 개념:</b> A값(ΔG°<sub>축→적도</sub>)과 K = e<sup>ΔG°/RT</sup>, t-Bu에 의한 형태 고정, 하이드라이드 환원의 축/적도 공격(작은 NaBH<sub>4</sub> vs 부피 큰 L-Selectride), 고리 고정과 꼬인보트 변형.</p>
@@ -381,10 +376,10 @@ dict(
                what='zaragozic acid A 합성(Nicolaou)에서 OsO<sub>4</sub>(촉매)/NMO syn 다이하이드록시화가 알켄의 한쪽 면에서만 일어남 — 이 문항은 그 syn 다이하이드록시화 단계를 단순 알켄으로 모델화'),
     nobel='2001 노벨 화학상(K. B. Sharpless — OsO<sub>4</sub> 비대칭 다이하이드록시화; 해설 ⑥ 참고)',
     body=f'''다음은 [시약] 중 일부를 사용하여 3-hexyne으로부터 <b class="lbltxt">A</b>(C<sub>6</sub>H<sub>12</sub>)를 거쳐 서로 부분입체이성질체 관계인 <b class="lbltxt">B</b>와 <b class="lbltxt">C</b>(C<sub>6</sub>H<sub>14</sub>O<sub>2</sub>)를 합성하는 [반응 과정]을 나타낸 것이다. <b class="lbltxt">B</b>는 라셈 혼합물이며 한 거울상이성질체만 나타내었다. {DEF}
-{frame('<div class="chem">H<sub>2</sub>/Lindlar 촉매,　Na/NH<sub>3</sub>(<i>l</i>),　CH<sub>3</sub>CO<sub>3</sub>H,　OsO<sub>4</sub>,　NaHSO<sub>3</sub>/H<sub>2</sub>O,　H<sub>3</sub>O<sup>+</sup>,　O<sub>3</sub></div>', title='[시약]')}
-{frame(scheme(M('CCC#CCC', '3-hexyne', 14), arrow('(가)'), L('A')),
-       scheme(L('A'), arrow('', ''), M(HEXD_RR, 'B (라셈)', 14)),
-       scheme(L('A'), arrow('', ''), M(HEXD_MESO, 'C', 14)), title='[반응 과정]')}
+{frame('<div class="chem" style="font-size:8.6pt">H<sub>2</sub>/Lindlar 촉매,　Na/NH<sub>3</sub>(<i>l</i>),　CH<sub>3</sub>CO<sub>3</sub>H,　OsO<sub>4</sub>,　NaHSO<sub>3</sub>/H<sub>2</sub>O,　H<sub>3</sub>O<sup>+</sup>,　O<sub>3</sub></div>', title='[시약]')}
+{frame(scheme(M('CCC#CCC', '3-hexyne', 12), arrow('(가)'), L('A')),
+       scheme(M(HEXD_RR, 'B (라셈)', 11), '<div class="arr" style="width:36px"><svg width="36" height="10" viewBox="0 0 36 10"><line x1="10" y1="5" x2="34" y2="5" stroke="#000" stroke-width="1.1"/><path d="M10,1 L2,5 L10,9 z" fill="#000"/></svg></div>',
+              L('A'), arrow('', '', 36), M(HEXD_MESO, 'C', 11)), title='[반응 과정]')}
 <p class="ask">(가)에 해당하는 시약과 <b class="lbltxt">A</b>의 구조를 쓰시오. [시약]에서 <b class="lbltxt">A</b> → <b class="lbltxt">B</b>와 <b class="lbltxt">A</b> → <b class="lbltxt">C</b> 반응 과정에 적절한 시약을 각각 선택하여 쓰고, 두 과정의 중간체를 입체구조로 그리시오. 또한 <b class="lbltxt">B</b>가 라셈 혼합물로, <b class="lbltxt">C</b>가 메조 화합물로 얻어지는 이유를 각각 서술하시오. [[PTS]]</p>''',
     answer=f'''(가) Na/NH<sub>3</sub>(<i>l</i>) · <b class="lbltxt">A</b> = (<i>E</i>)-3-hexene
 <div class="ansbox">{M('CC/C=C/CC', 'A', 14)}</div>
