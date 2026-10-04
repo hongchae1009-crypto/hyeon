@@ -46,10 +46,9 @@ dict(
                     '바이닐기를 만드는 단계(본 문항은 이 완전 메틸화–탈리를 β-아미노 케톤(Mannich 염기)에 적용)'),
     nobel='1965 노벨 화학상(R. B. Woodward — 유기 합성 기술; 퀴닌 합성)',
     body=f'''다음은 cyclohexanone으로부터 중간 주생성물 <b class="lbltxt">A</b>(C<sub>9</sub>H<sub>17</sub>NO)와 <b class="lbltxt">B</b>, 중간체 <b class="lbltxt">C</b>(C<sub>7</sub>H<sub>10</sub>O)를 거쳐 최종 주생성물 <b class="lbltxt">D</b>(C<sub>14</sub>H<sub>22</sub>O<sub>5</sub>)를 합성하는 반응식이다. <b class="lbltxt">C</b>는 분리하지 않고 반응 혼합물 안에서 바로 다음 반응에 사용하였다. (단, 각 단계에서는 적절한 분리·정제 과정을 수행하였다.)
-{frame(rows(scheme(M('O=C1CCCCC1', scale=15), arrow('HCHO, (CH<sub>3</sub>)<sub>2</sub>NH·HCl', 'EtOH, 가열; NaHCO<sub>3</sub>'), L('A'),
-                   arrow('CH<sub>3</sub>I (과량)', ''), L('B')),
-            scheme(arrow('NaOEt, EtOH, 가열', ''), '<div class="cmpd letter">[<b>C</b>]</div>',
-                   arrow('CH<sub>2</sub>(CO<sub>2</sub>Et)<sub>2</sub>', 'NaOEt'), L('D'))))}
+{frame(rows(scheme(M('O=C1CCCCC1', scale=15), arrow('HCHO, (CH<sub>3</sub>)<sub>2</sub>NH·HCl', 'EtOH, 가열; NaHCO<sub>3</sub>'), L('A')),
+            scheme(arrow('CH<sub>3</sub>I (과량)', ''), L('B'), arrow('NaOEt, EtOH', '가열'), L('[C]')),
+            scheme(arrow('CH<sub>2</sub>(CO<sub>2</sub>Et)<sub>2</sub>', 'NaOEt'), L('D'))))}
 <p class="ask"><b class="lbltxt">A</b>, <b class="lbltxt">C</b>, <b class="lbltxt">D</b>의 구조를 각각 그리시오. 또한, 굽은 화살표를 사용하여 <b class="lbltxt">A</b>가 생성될 때 C–C 결합이 형성되는 단계의 메커니즘을 (친전자체가 만들어지는 과정을 포함하여) 제시하고, <b class="lbltxt">B</b>가 <b class="lbltxt">C</b>로 될 때 탈리가 쉽게 일어나는 이유를 서술하시오. [[PTS]]</p>''',
     answer=f'''<div class="ansbox">{M('CN(C)CC1CCCCC1=O', 'A: 2-[(dimethylamino)methyl]cyclohexanone', 15)}{M('C=C1CCCCC1=O', 'C: 2-methylenecyclohexanone', 15)}{M('CCOC(=O)C(CC1CCCCC1=O)C(=O)OCC', 'D: diethyl 2-[(2-oxocyclohexyl)methyl]malonate', 14)}</div>
 (B = 2-oxocyclohexylmethyl-trimethylammonium iodide)<br>
