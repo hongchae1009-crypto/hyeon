@@ -26,7 +26,7 @@ dict(
 B의 방향족성: 피라졸 고리는 평면이고 순환 콘쥬게이트되어 있으며, C=C(2) + C=N(2) + N–H 질소의 비공유 전자쌍(2) = 6π 전자(4<i>n</i>+2, <i>n</i>=1)이므로 Hückel 규칙을 만족한다(피리딘형 N의 비공유 전자쌍은 고리 평면의 sp<sup>2</sup> 궤도함수에 있어 π계에 포함되지 않는다).''',
     explain='''<p>핵심 반응: <b>교차 Claisen 축합</b>(α-H가 없는 에스터를 친전자체로 사용) → 1,3-다이카보닐의 <b>케토–엔올 토토머</b> → hydrazine과의 <b>고리 축합(Knorr형 피라졸 합성)</b>.</p>
 <p>① 교차 Claisen의 설계: ethyl formate는 α-H가 없어 엔올레이트를 만들 수 없으므로 친전자체로만 작용하고, 포밀기(H–C=O)는 매우 친전자성이 커서 케톤 엔올레이트가 우선적으로 공격한다. 케톤끼리의 자기 알돌은 가역적이며, 반응은 생성물 쪽으로 끌려간다.</p>
-<p>② 메커니즘(굽은 화살표): (i) EtO<sup>−</sup> 비공유 전자쌍 → α-H, C–H 결합 전자 → C=C(엔올레이트, 음전하는 산소에 비편재화). (ii) 엔올레이트 C=C π 전자 → HCO<sub>2</sub>Et의 카보닐 탄소, C=O π 전자 → 산소(사면체 중간체). (iii) O<sup>−</sup> 전자쌍이 C=O를 다시 만들면서 C–OEt 결합 전자가 EtO<sup>−</sup>로 이탈(친핵성 아실 치환). (iv) 생성된 1,3-다이카보닐의 C–H(p<i>K</i><sub>a</sub> ≈ 9–11)를 EtO<sup>−</sup>(EtOH p<i>K</i><sub>a</sub> ≈ 16)가 제거 — 이 비가역적 탈양성자화가 전체 평형의 구동력이므로 염기는 <b>1당량</b> 이상 필요하다.</p>
+<p>② 메커니즘(굽은 화살표): (i) EtO<sup>−</sup> 비공유 전자쌍 → α-H, C–H 결합 전자 → C=C(엔올레이트, 음전하는 산소에 비편재화). (ii) 엔올레이트 C=C π 전자 → HCO<sub>2</sub>Et의 카보닐 탄소, C=O π 전자 → 산소(사면체 중간체). (iii) O<sup>−</sup> 전자쌍이 C=O를 다시 만들면서 C–OEt 결합 전자가 EtO<sup>−</sup>로 이탈(친핵성 아실 치환). (iv) 생성된 1,3-다이카보닐의 C–H(p<i>K</i><sub>a</sub> ≈ 6–9)를 EtO<sup>−</sup>(EtOH p<i>K</i><sub>a</sub> ≈ 16)가 제거 — 이 비가역적 탈양성자화가 전체 평형의 구동력이므로 염기는 <b>1당량</b> 이상 필요하다.</p>
 <p>③ <b>A</b>의 토토머: 다이카보닐형(케토–알데하이드)보다 하이드록시메틸렌형 엔올이 압도적이다. 이유: (a) C=C가 C=O와 콘쥬게이트(비닐로가스 카복실산 구조), (b) OH와 C=O가 <i>cis</i>(<i>Z</i>)로 놓여 6원 고리형 분자 내 수소 결합(O–H···O=C) 형성. 이 수소 결합 때문에 엔올 OH가 δ ≈ 14로 매우 낮은 장으로 이동하고, =CH–O 비닐 수소가 δ ≈ 8.6에 나타나며 알데하이드 CHO(δ 9.5–10, d) 신호는 거의 없다. 다른 엔올(고리 안 C=C, 알데하이드 보존형)은 콘쥬게이션·수소 결합이 덜 유리하다. FeCl<sub>3</sub> 양성도 엔올 OH의 증거.</p>
 <p>④ <b>B</b>: hydrazine의 NH<sub>2</sub>가 더 친전자성인 알데하이드(엔올형에서는 비닐로가스 위치)에 먼저 축합하여 하이드라존을 만들고, 남은 NH<sub>2</sub>가 고리 케톤 C=O를 분자 내 공격 → 카비놀아민 → 탈수 → 방향족 피라졸 4,5,6,7-tetrahydro-1<i>H</i>-indazole(C<sub>7</sub>H<sub>10</sub>N<sub>2</sub> = C<sub>7</sub>H<sub>10</sub>O<sub>2</sub> + N<sub>2</sub>H<sub>4</sub> − 2H<sub>2</sub>O). 두 번의 탈수가 모두 일어나는 구동력이 방향족성 획득이다.</p>
 <p>⑤ 고리 토토머: N–H 수소는 N1과 N2 사이를 빠르게 이동(1<i>H</i>-/2<i>H</i>-indazole형 고리 토토머)하며, 두 형태 모두 6π 방향족이므로 어느 것으로 그려도 정답이다. 피롤형 N(N–H)의 비공유 전자쌍은 p 궤도함수에 있어 방향족 6π에 기여하고, 피리딘형 N(=N–)의 비공유 전자쌍은 sp<sup>2</sup> 궤도함수에 있어 염기성을 띤다.</p>
@@ -45,7 +45,7 @@ dict(
                what='Woodward–Doering 퀴닌 형식 합성: 1차 아민을 과량 CH<sub>3</sub>I로 완전 메틸화한 뒤 염기·가열로 Hofmann 탈리하여 '
                     '바이닐기를 만드는 단계(본 문항은 이 완전 메틸화–탈리를 β-아미노 케톤(Mannich 염기)에 적용)'),
     nobel='1965 노벨 화학상(R. B. Woodward — 유기 합성 기술; 퀴닌 합성)',
-    body=f'''다음은 cyclohexanone으로부터 중간 주생성물 <b class="lbltxt">A</b>(C<sub>9</sub>H<sub>17</sub>NO)와 <b class="lbltxt">B</b>, 중간체 <b class="lbltxt">C</b>(C<sub>7</sub>H<sub>10</sub>O)를 거쳐 최종 주생성물 <b class="lbltxt">D</b>(C<sub>14</sub>H<sub>22</sub>O<sub>5</sub>)를 합성하는 반응식이다. <b class="lbltxt">C</b>는 분리하지 않고 반응 혼합물 안에서 바로 다음 반응에 사용하였다. (단, 각 단계에서는 적절한 분리·정제 과정을 수행하였다.)
+    body=f'''다음은 cyclohexanone으로부터 중간 주생성물 <b class="lbltxt">A</b>(C<sub>9</sub>H<sub>17</sub>NO)와 <b class="lbltxt">B</b>, 중간체 <b class="lbltxt">C</b>(C<sub>7</sub>H<sub>10</sub>O)를 거쳐 최종 주생성물 <b class="lbltxt">D</b>(C<sub>14</sub>H<sub>22</sub>O<sub>5</sub>)를 합성하는 반응식이다. <b class="lbltxt">C</b>는 분리하지 않고 반응 혼합물 안에서 바로 다음 반응에 사용하였다. (단, <b class="lbltxt">C</b>를 제외한 각 단계에서는 적절한 분리·정제 과정을 수행하였다.)
 {frame(rows(scheme(M('O=C1CCCCC1', scale=15), arrow('HCHO, (CH<sub>3</sub>)<sub>2</sub>NH·HCl', 'EtOH, 가열; NaHCO<sub>3</sub>'), L('A')),
             scheme(arrow('CH<sub>3</sub>I (과량)', ''), L('B'), arrow('NaOEt, EtOH', '가열'), L('[C]')),
             scheme(arrow('CH<sub>2</sub>(CO<sub>2</sub>Et)<sub>2</sub>', 'NaOEt'), L('D'))))}
@@ -126,8 +126,8 @@ dict(
                what='4-methylanisole의 Birch 생성물에 과량 HCl을 가해 1,4-dichloro-1-methoxy-4-methylcyclohexane을 얻고, '
                     '두 단계를 거쳐 사비넨류 향 성분의 bicyclo[3.1.0]hexane 골격을 구축'),
     nobel='',
-    body=f'''다음은 4-methylanisole로부터 중간 주생성물 <b class="lbltxt">B</b>(C<sub>8</sub>H<sub>12</sub>O), <b class="lbltxt">C</b>(C<sub>8</sub>H<sub>14</sub>Cl<sub>2</sub>O), <b class="lbltxt">D</b>(C<sub>7</sub>H<sub>11</sub>ClO)를 거쳐 최종 주생성물 <b class="lbltxt">E</b>(C<sub>7</sub>H<sub>10</sub>O)를 합성하는 과정을 나타낸 것이다. (단, 각 단계에서는 적절한 분리·정제 과정을 수행하였다.)
-{frame(rows(scheme(M('COc1ccc(C)cc1', scale=15), arrow('Li, NH<sub>3</sub>(<i>l</i>)', 'EtOH, −78 ℃'), L('B'), arrow('HCl (과량)', ''), L('C')),
+    body=f'''다음은 4-methylanisole(<b class="lbltxt">A</b>)로부터 중간 주생성물 <b class="lbltxt">B</b>(C<sub>8</sub>H<sub>12</sub>O), <b class="lbltxt">C</b>(C<sub>8</sub>H<sub>14</sub>Cl<sub>2</sub>O), <b class="lbltxt">D</b>(C<sub>7</sub>H<sub>11</sub>ClO)를 거쳐 최종 주생성물 <b class="lbltxt">E</b>(C<sub>7</sub>H<sub>10</sub>O)를 합성하는 과정을 나타낸 것이다. (단, 각 단계에서는 적절한 분리·정제 과정을 수행하였다.)
+{frame(rows(scheme(M('COc1ccc(C)cc1', 'A', 15), arrow('Li, NH<sub>3</sub>(<i>l</i>)', 'EtOH, −78 ℃'), L('B'), arrow('HCl (과량)', ''), L('C')),
             scheme(arrow('H<sub>2</sub>O', ''), L('D'), arrow('<i>t</i>-BuOK', '<i>t</i>-BuOH'), L('E'))),
        '<div class="chem" style="text-align:left">· 첫 단계에서 Li을 넣으면 용액이 푸른색을 띠었고, <b>B</b>는 콘쥬게이트되지 않은 다이엔이다.<br>· <b>D</b>는 IR 1715 cm<sup>−1</sup>에서 강한 흡수를 보이고, <b>E</b>의 ¹H NMR에는 δ 0.3–1.0 부근(고리 긴장이 큰 3원 고리 CH<sub>2</sub>) 신호가 나타난다.</div>')}
 <p class="ask"><b class="lbltxt">B</b>와 <b class="lbltxt">E</b>의 구조를 각각 그리시오. [[PTS]]</p>''',

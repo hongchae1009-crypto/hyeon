@@ -41,7 +41,7 @@ C의 존재 형태: 수소붕소화–산화로 생긴 4-hydroxy-4-(furan-3-yl)b
 <p>① CH<sub>3</sub>C≡C–MgBr의 탄소 음이온성 말단이 알데하이드 C=O에 첨가하여 알콕사이드를 만들고 H<sub>3</sub>O<sup>+</sup> 처리로 2차 프로파질 알코올 A(C<sub>8</sub>H<sub>8</sub>O<sub>2</sub>)가 된다.</p>
 <p>② A → B: NaNH<sub>2</sub>(짝산 NH<sub>3</sub>, pK<sub>a</sub> ≈ 38)는 프로파질 C–H(pK<sub>a</sub> ≈ 35 내외)를 뗄 수 있을 만큼 강하다. 탈양성자화–재양성자화가 반복되며 삼중 결합이 C2≡C3 → (알렌 C2=C3=C4) → C3≡C4로 이동한다. 각 단계는 가역이지만, 말단 알카인이 생기는 순간 ≡C–H(pK<sub>a</sub> ≈ 25)가 NH<sub>2</sub><sup>−</sup>에 의해 비가역적으로 탈양성자화되어 아세틸라이드로 빠져나가므로(르샤틀리에) 열역학적으로 불리한 말단 알카인 쪽으로 평형이 완전히 끌려간다. 그래서 NaNH<sub>2</sub>는 과량(알코올 O–H, 이성질화, 아세틸라이드 형성에 모두 소모)이 필요하다. B의 IR 3300 cm<sup>−1</sup>(≡C–H 신축, 날카로움)과 2120 cm<sup>−1</sup>(C≡C)는 말단 알카인의 증거이다.</p>
 <p>③ 흔한 오답: NaNH<sub>2</sub>를 단순 염기로만 보고 “A의 O–H만 떼어지고 변화 없음”이라 답하거나, 알렌(C<sub>8</sub>H<sub>8</sub>O<sub>2</sub>, 같은 분자식)을 B로 고르는 경우. 알렌은 IR에 ≡C–H 3300 cm<sup>−1</sup> 흡수가 없고 약 1950 cm<sup>−1</sup>의 C=C=C 흡수를 보이므로 단서와 맞지 않는다.</p>
-<p>④ B → C: 부피 큰 (Sia)<sub>2</sub>BH는 말단 알카인에 한 번만 syn 첨가하고 붕소는 덜 치환된 말단 탄소에 붙는다(anti-Markovnikov). H<sub>2</sub>O<sub>2</sub>/NaOH 산화로 B가 OH로 바뀌어 엔올이 되고, 토토머화하여 알데하이드가 된다(cf. HgSO<sub>4</sub>/H<sub>2</sub>SO<sub>4</sub> 수화라면 Markovnikov 방향의 메틸 케톤). (Sia)<sub>2</sub>BH를 과량 쓰는 것은 O–H가 붕소화제 일부를 소모하기 때문이다.</p>
+<p>④ B → C: 부피 큰 (Sia)<sub>2</sub>BH는 말단 알카인에 한 번만 syn 첨가하고 붕소는 덜 치환된 말단 탄소에 붙는다(anti-Markovnikov). H<sub>2</sub>O<sub>2</sub>/NaOH 산화로 C–B 결합이 C–OH로 바뀌어(배열 유지) 엔올이 되고, 토토머화하여 알데하이드가 된다(cf. HgSO<sub>4</sub>/H<sub>2</sub>SO<sub>4</sub> 수화라면 Markovnikov 방향의 메틸 케톤). (Sia)<sub>2</sub>BH를 과량 쓰는 것은 O–H가 붕소화제 일부를 소모하기 때문이다.</p>
 <p>⑤ 생성된 4-hydroxy-4-(furan-3-yl)butanal은 OH와 CHO가 1,4-관계(γ)여서 분자 내 첨가로 5원 고리 헤미아세탈(oxolan-2-ol)을 만든다. 5·6원 고리는 고리 무리가 작고 분자 내 반응이라 유효 농도가 높아, γ-·δ-하이드록시 알데하이드는 대부분 고리형으로 존재한다(당의 푸라노스·피라노스와 같은 원리). 따라서 C는 1720 cm<sup>−1</sup> 부근 C=O 흡수가 거의 없고 O–H 흡수만 강하다. 새로 생긴 아노머 탄소(C2) 때문에 두 부분입체이성질체(아노머)의 혼합물로 존재한다.</p>''',
 ),
 # ---------------------------------------------------------------- 2021B-9
@@ -85,7 +85,7 @@ dict(
                what='Ph–C≡C–R + HCl → PhC(Cl)=CHR; R = Me, Et, i-Pr, t-Bu에서 E:Z = 70:30, 80:20, 95:5, 100:0'),
     nobel='',
     body=f'''다음은 3,3-dimethyl-1-phenylbut-1-yne(<b class="lbltxt">X</b>)에 반응 조건 (가)와 (나)를 각각 적용하여 주생성물 <b class="lbltxt">A</b>(C<sub>12</sub>H<sub>15</sub>Cl)와 <b class="lbltxt">B</b>(C<sub>12</sub>H<sub>16</sub>O)를 얻는 반응을 나타낸 것이다. (단, 각 반응에서는 적절한 분리·정제 과정을 수행하였다.)
-{frame(scheme(L('A'), arrow('(가) HCl (1 당량)', 'CH<sub>3</sub>COOH, 25 ℃'), M('CC(C)(C)C#Cc1ccccc1', 'X', 15),
+{frame(scheme(L('A'), larrow('(가) HCl (1 당량)', 'CH<sub>3</sub>COOH, 25 ℃'), M('CC(C)(C)C#Cc1ccccc1', 'X', 15),
               arrow('(나) HgSO<sub>4</sub>', 'H<sub>2</sub>SO<sub>4</sub>, H<sub>2</sub>O'), L('B')))}
 <p>◦ (가)에서는 두 기하 이성질체 중 하나만 얻어진다.</p>
 <p class="ask"><b class="lbltxt">A</b>의 입체구조를 그리고 이중 결합의 배열을 <i>E</i>/<i>Z</i>로 쓰시오. 또한 <b class="lbltxt">B</b>의 구조를 그리시오. [[PTS]]</p>''',

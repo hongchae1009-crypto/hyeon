@@ -45,7 +45,7 @@ dict(
     paper=dict(cite='Org. Lett. 1999, 1, 985–988', book='Klein 19.88',
                what='7-hydroxynitidine 합성: 아릴 브로마이드 + NaNH₂(2 당량) → 벤자인 생성 후 분자 내 탄소 친핵체 첨가(아라인 고리화). '
                     '메톡시기에 인접한 벤자인에서 친핵체가 OMe에서 먼 탄소에 첨가하는 위치 선택성을 단순 모델(2-bromoanisole)로 변환'),
-    nobel='2010 노벨 화학상(R. F. Heck·E. Negishi·A. Suzuki — Pd 촉매 교차 짝지음), 1950 노벨 화학상(O. Diels·K. Alder — 벤자인 포획 근거)',
+    nobel='2010 노벨 화학상(R. F. Heck·E. Negishi·A. Suzuki — Pd 촉매 교차 짝지음)',
     body=f'''다음은 2-bromoanisole로부터 중간 주생성물 {A_}(C<sub>7</sub>H<sub>9</sub>NO)와 {B_}를 거쳐 최종 주생성물 {C_}(C<sub>13</sub>H<sub>12</sub>O)를 합성하는 반응을 나타낸 것이다. 2-Bromoanisole이 {A_}로 전환될 때 중간체(C<sub>7</sub>H<sub>6</sub>O)를 거친다. {NOTE}
 {frame(scheme(M('COc1ccccc1Br', scale=16), arrow('NaNH<sub>2</sub>', 'NH<sub>3</sub>(<i>l</i>), −33 ℃'), L('A')),
        scheme(L('A'), arrow('NaNO<sub>2</sub>, HBF<sub>4</sub>', 'H<sub>2</sub>O, 0 ℃'), L('B'),
@@ -110,7 +110,7 @@ dict(
     explain='''<p><b>핵심 반응: 친핵성 방향족 치환(SNAr, 첨가–제거)과 Meisenheimer 착물</b></p>
 <p>① SNAr의 3조건: 강한 전자 끄는 기(NO<sub>2</sub>), 이탈기, 그리고 EWG가 이탈기의 오쏘/파라에 위치. 이 기질은 F와 Cl이 <b>모두</b> NO<sub>2</sub>의 오쏘 자리에 있으므로 활성화 정도(공명)는 같고, 차이는 할로젠 자체의 효과뿐이다.</p>
 <p>② 메커니즘: 아세틸라이드 탄소가 C–F 탄소(ipso)를 공격 → sp<sup>3</sup> 탄소를 가진 사이클로헥사다이엔일 음이온(Meisenheimer 착물). 음전하는 NO<sub>2</sub>가 붙은 탄소(오쏘)와 파라 탄소로 비편재화되고, NO<sub>2</sub>의 공명(−M)으로 산소까지 퍼진다(문제에서 요구한 구조: C=N<sup>+</sup>(O<sup>−</sup>)O<sup>−</sup>). 이어 F<sup>−</sup>가 떨어지며 방향족성이 회복된다.</p>
-<p>③ 속도 결정 단계는 방향족성이 깨지는 ①의 첨가 단계(흡열적)이다. 이 단계의 전이 상태에서는 C–X 결합이 아직 끊어지지 않으므로, 이탈기 능력(I > Br > Cl > F)이 아니라 ipso 탄소의 친전자성과 음전하 안정화가 속도를 좌우한다. 따라서 SNAr의 할로젠 반응성은 <b>F ≫ Cl ≈ Br > I</b>로 S<sub>N</sub>2와 반대이다. 만약 C–X 절단이 속도 결정 단계라면 Cl이 치환된 생성물(C<sub>15</sub>H<sub>10</sub>FNO<sub>3</sub>)이 얻어졌을 것이다 — 이 생성물의 부재가 메커니즘의 증거이다.</p>
+<p>③ 속도 결정 단계는 방향족성이 깨지는 ②의 첨가 단계(흡열적)이다. 이 단계의 전이 상태에서는 C–X 결합이 아직 끊어지지 않으므로, 이탈기 능력(I > Br > Cl > F)이 아니라 ipso 탄소의 친전자성과 음전하 안정화가 속도를 좌우한다. 따라서 SNAr의 할로젠 반응성은 <b>F ≫ Cl ≈ Br > I</b>로 S<sub>N</sub>2와 반대이다. 만약 C–X 절단이 속도 결정 단계라면 Cl이 치환된 생성물(C<sub>15</sub>H<sub>10</sub>FNO<sub>3</sub>)이 얻어졌을 것이다 — 이 생성물의 부재가 메커니즘의 증거이다.</p>
 <p>④ <b>A</b> = 1-chloro-3-[(4-methoxyphenyl)ethynyl]-2-nitrobenzene(C<sub>15</sub>H<sub>10</sub>ClNO<sub>3</sub>). 남은 Cl은 이후 다른 변환(예: Pd 짝지음)에 쓸 수 있는 손잡이가 된다. 이 반응은 Pd/Cu를 쓰는 Sonogashira 짝지음 없이 아릴알카인을 만드는 대안이다.</p>
 <p>⑤ 흔한 오답: Cl이 치환된 구조, 또는 NO<sub>2</sub>가 치환된 구조. 또 중간체의 음전하를 NO<sub>2</sub>와 메타 관계인 탄소에 두는 것(불가능한 공명)도 틀린다.</p>''',
 ),
@@ -135,7 +135,7 @@ B = 2,6-dimethylphenol, C = 2-[(<i>E</i>)-but-2-enyloxy]-1,3-dimethylbenzene, �
 <p>① 2,6-dimethylaniline → ArN<sub>2</sub><sup>+</sup> → 가열 수용액에서 N<sub>2</sub>가 떨어진 아릴 양이온을 물이 포착 → <b>B</b> = 2,6-dimethylphenol(O–H, 3400 cm<sup>−1</sup>).</p>
 <p>② K<sub>2</sub>CO<sub>3</sub>가 페놀(p<i>K</i><sub>a</sub> ≈ 10)을 페녹사이드로 만들고 1차 알릴 브로마이드에 S<sub>N</sub>2 → <b>C</b> = 크로틸 아릴 에터(O–H 없음). C=C 기하는 유지(<i>E</i>).</p>
 <p>③ 200 ℃: 의자형 6원 고리 전이 상태의 협동 [3,3] 시그마 결합 자리옮김. O–CH<sub>2</sub> 결합이 끊어지고 크로틸의 CH(CH<sub>3</sub>) 말단(γ 탄소)이 오쏘 탄소와 결합 → 알릴기가 <b>뒤집혀</b> 1-methylallyl(but-3-en-2-yl)로 붙은 cyclohexa-2,4-dienone(중간체, C<sub>12</sub>H<sub>16</sub>O, 방향족 아님, C=O). 오쏘 탄소에 이미 CH<sub>3</sub>가 있어 H가 없으므로 토토머화할 수 없다.</p>
-<p>④ 이 다이엔온에서 C6(사차 탄소)–C(H)(CH<sub>3</sub>) 결합, 고리 C=C, 곁사슬 C=C가 1,5-다이엔을 이루므로 두 번째 [3,3](Cope) 자리옮김이 일어나 곁사슬 말단 CH<sub>2</sub>가 파라 탄소(C4)와 결합하고 사슬은 다시 뒤집혀 –CH<sub>2</sub>CH=CHCH<sub>3</sub>가 된다. 의자형 전이 상태에서 CH<sub>3</sub>가 평면형(equatorial) 자리를 차지하므로 (<i>E</i>)-알켄이 주로 생긴다. 파라 C–H가 토토머화되며 방향족 페놀 <b>D</b>로 회복 — 이것이 반응의 열역학적 구동력이다.</p>
+<p>④ 이 다이엔온에서 C6(사차 탄소)–C(H)(CH<sub>3</sub>) 결합, 고리 C=C, 곁사슬 C=C가 1,5-다이엔을 이루므로 두 번째 [3,3](Cope) 자리옮김이 일어나 곁사슬 말단 CH<sub>2</sub>가 파라 탄소(C4)와 결합하고 사슬은 다시 뒤집혀 –CH<sub>2</sub>CH=CHCH<sub>3</sub>가 된다. 의자형 전이 상태에서 CH<sub>3</sub>가 적도 방향(equatorial) 자리를 차지하므로 (<i>E</i>)-알켄이 주로 생긴다. 파라 C–H가 토토머화되며 방향족 페놀 <b>D</b>로 회복 — 이것이 반응의 열역학적 구동력이다.</p>
 <p>⑤ NMR 단서: 방향족 H 1종(2H, s) → 3,5-H가 동등한 2,4,6-삼치환 페놀(파라 생성물). 1.0~1.5 ppm 이중선 없음 → –CH(CH<sub>3</sub>)CH=CH<sub>2</sub>(가지 사슬)가 아니라 CH<sub>3</sub>CH= (≈1.7 ppm, d이지만 알릴 위치) 형태의 가지 없는 사슬. 흔한 오답: 오쏘 생성물(오쏘가 막혀 불가), 또는 파라에 1-methylallyl이 붙은 구조(한 번만 뒤집힌 것으로 착각).</p>''',
 ),
 # ---------------------------------------------------------------- 2023A-2
@@ -304,7 +304,7 @@ dict(
 <p class="ask">X가 각각 –OCH<sub>3</sub>, –CH<sub>3</sub>, –Cl, –CO<sub>2</sub>CH<sub>3</sub>일 때, 동일 조건에서 [반응 1]의 반응 속도가 큰 것부터 작은 것 순서대로 나열하시오. 또한 X가 –Cl일 때 주생성물 {B_}의 구조를 그리고, –Cl이 반응 속도를 감소시키면서도 {B_}를 주생성물로 주는 이유를 서술하시오. 그리고 [반응 2]에서 주생성물 {C_}(C<sub>11</sub>H<sub>15</sub>NO<sub>2</sub>)의 구조를 그리시오. [[PTS]]</p>''',
     answer=f'''속도: –OCH<sub>3</sub> &gt; –CH<sub>3</sub> &gt; –Cl &gt; –CO<sub>2</sub>CH<sub>3</sub>
 <div class="ansbox">{M('O=[N+]([O-])c1ccc(Cl)cc1', 'B: 1-chloro-4-nitrobenzene', 15)}{M('COc1cc2c(cc1OC)CNCC2', 'C: 6,7-dimethoxy-1,2,3,4-tetrahydroisoquinoline', 15)}</div>
-이유: Cl은 전기음성도가 커 유발 효과(−I)로 고리 전체의 전자 밀도를 낮추므로 속도는 감소한다. 그러나 오쏘/파라 공격으로 생긴 σ-착물에서는 양전하가 Cl이 붙은 탄소에 놓이는 공명 구조가 있어 Cl의 비공유 전자쌍이 공여(+M)하여 클로로늄(C=Cl<sup>+</sup>) 공명 구조로 안정화하므로 o,p 공격이 메타 공격보다 유리하다. 오쏘는 입체 장애가 있어 파라 생성물이 주생성물이다.''',
+이유: Cl은 전기음성도가 커 유발 효과(−I)로 고리 전체의 전자 밀도를 낮추므로 속도는 감소한다. 그러나 오쏘/파라 공격으로 생긴 σ-착물에서는 양전하가 Cl이 붙은 탄소에 놓이는 공명 구조가 있어 Cl의 비공유 전자쌍이 공여(+M)하여 C=Cl<sup>+</sup> 공명 구조로 안정화하므로 o,p 공격이 메타 공격보다 유리하다. 오쏘는 입체 장애가 있어 파라 생성물이 주생성물이다.''',
     explain='''<p><b>핵심 반응: 치환기 효과(활성화/불활성화, 배향)와 Pictet–Spengler 반응(이미늄 이온에 대한 분자 내 S<sub>E</sub>Ar)</b></p>
 <p>① 속도 결정 단계는 σ-착물(아레늄 이온) 형성. –OCH<sub>3</sub>: O 비공유 전자쌍의 강한 공명 공여(+M ≫ −I) → 강한 활성화. –CH<sub>3</sub>: 유발·초공액 공여 → 약한 활성화. –Cl: −I &gt; +M → 약한 불활성화(o,p 지향). –CO<sub>2</sub>CH<sub>3</sub>: 카보닐의 공명·유발 끌기 → 중간 정도 불활성화(메타 지향). 상대 속도(벤젠 = 1) 대략 anisole ≫ 톨루엔(~25) &gt; 1 &gt; 클로로벤젠(~0.03) &gt; 벤조산 메틸(~0.004).</p>
 <p>② X = Cl: 메타 공격 σ-착물은 Cl의 공명 공여를 받을 수 없고 −I만 작용한다. 오쏘/파라 공격 σ-착물은 Cl의 3p 비공유 전자쌍이 C=Cl<sup>+</sup> 형태로 양전하를 나누는 네 번째 공명 구조를 가지므로 상대적으로 안정 → o,p 지향. 파라 : 오쏘 ≈ 2 : 1 정도로 파라가 주생성물(<b>B</b> = 1-chloro-4-nitrobenzene).</p>
