@@ -497,16 +497,16 @@ ITEMS.append(dict(
     paper=dict(cite='Angew. Chem. Int. Ed. 2011, 50, 8387–8390', book='Klein 16.66',
                what='C₆H₁₀O₄의 IR(1747), ¹H(5.1 q, 3.75 s, 2.1 s, 1.5 d), ¹³C(≈171, 170, 69, 52, 21, 17)로 methyl 2-acetoxypropanoate(O-acetyl methyl lactate) 결정'),
     nobel='',
-    body=f'''다음은 분자식이 C<sub>6</sub>H<sub>10</sub>O<sub>4</sub>인 어떤 화합물의 IR, <sup>1</sup>H NMR(300 MHz), <sup>13</sup>C NMR(75 MHz) 스펙트럼이다. (단, <sup>1</sup>H NMR 스펙트럼의 여백에 있는 그림은 피크 ㉡과 ㉥을 확대한 것이며, <sup>13</sup>C NMR에서 용매 피크는 생략하였다.)
+    body=f'''다음은 분자식이 C<sub>6</sub>H<sub>10</sub>O<sub>4</sub>인 어떤 화합물의 IR, <sup>1</sup>H NMR(300 MHz), <sup>13</sup>C NMR(75 MHz) 스펙트럼이다. (단, <sup>1</sup>H NMR 스펙트럼의 여백에 있는 그림은 피크 ㉡과 ㉤을 확대한 것이며, <sup>13</sup>C NMR에서 용매 피크는 생략하였다.)
 {spec(IRS([(2995, .18, 25), (2955, .15, 20), (1747, .88, 16, '1747'), (1455, .3, 12), (1375, .35, 10), (1240, .75, 22, '1240'), (1210, .5, 15), (1100, .5, 14), (1050, .45, 12)]))}
-{spec(H1([(5.09, [(7.1, 3)], 1, '㉡'), (3.75, [], 3, '㉢'), (2.13, [], 3, '㉣'), (1.48, [(7.1, 1)], 3, '㉥')], insets=[[0], [3]]))}
+{spec(H1([(5.09, [(7.1, 3)], 1, '㉡'), (3.75, [], 3, '㉢'), (2.13, [], 3, '㉣'), (1.48, [(7.1, 1)], 3, '㉤')], insets=[[0], [3]]))}
 {spec(C13([(171.0, .5, ''), (170.4, .5, ''), (68.6, .9, '㉠'), (52.3, .95, ''), (20.6, 1.0, ''), (16.9, .95, '')], x0=200, x1=0))}
-<div class="chem" style="font-size:9pt">◦ <sup>13</sup>C NMR: δ 171.0, 170.4, 68.6(㉠), 52.3, 20.6, 16.9 &nbsp; ◦ <sup>1</sup>H NMR: ㉡ 5.09(q, <i>J</i> = 7.1 Hz, 1H), ㉢ 3.75(s, 3H), ㉣ 2.13(s, 3H), ㉥ 1.48(d, <i>J</i> = 7.1 Hz, 3H)</div>
+<div class="chem" style="font-size:9pt">◦ <sup>13</sup>C NMR: δ 171.0, 170.4, 68.6(㉠), 52.3, 20.6, 16.9 &nbsp; ◦ <sup>1</sup>H NMR: ㉡ 5.09(q, <i>J</i> = 7.1 Hz, 1H), ㉢ 3.75(s, 3H), ㉣ 2.13(s, 3H), ㉤ 1.48(d, <i>J</i> = 7.1 Hz, 3H)</div>
 <p class="ask">이 화합물의 구조를 그리고, <sup>13</sup>C NMR 피크 ㉠에 해당하는 탄소에 *를, <sup>1</sup>H NMR 피크 ㉣에 해당하는 수소에 동그라미를 표시하시오. [[PTS]]</p>''',
     answer=f'''<div class="ansbox">{M('CC(=O)OC(C)C(=O)OC', 'methyl 2-acetoxypropanoate', 17)}</div>
 ㉠(δ<sub>C</sub> 68.6) = O에 결합한 메타인 탄소 CH<sub>3</sub>–<u>C</u>H(OAc)–CO<sub>2</sub>CH<sub>3</sub>에 *. ㉣(δ<sub>H</sub> 2.13, s) = 아세틸기 CH<sub>3</sub>–C(=O)–O의 CH<sub>3</sub> 수소에 동그라미.''',
     explain='''<p>① 불포화도 = (14−10)/2 = 2. IR 1747 cm<sup>−1</sup>(매우 강함, 폭이 약간 넓음) + 1240·1210 cm<sup>−1</sup>(C–O), O–H 없음 → 에스터. ¹³C에서 C=O가 171.0·170.4로 <b>두 개</b> → 에스터기 2개가 불포화도 2를 모두 차지한다(C=C·고리 없음).</p>
-<p>② ¹H: ㉢ 3.75(s, 3H) = 에스터 O–CH<sub>3</sub>(δ<sub>C</sub> 52.3), ㉣ 2.13(s, 3H) = CH<sub>3</sub>–C(=O)O 아세틸(δ<sub>C</sub> 20.6). ㉡ 5.09(q, 1H)와 ㉥ 1.48(d, 3H)는 <i>J</i>가 같은 CH–CH<sub>3</sub> 조각(δ<sub>C</sub> 68.6, 16.9).</p>
+<p>② ¹H: ㉢ 3.75(s, 3H) = 에스터 O–CH<sub>3</sub>(δ<sub>C</sub> 52.3), ㉣ 2.13(s, 3H) = CH<sub>3</sub>–C(=O)O 아세틸(δ<sub>C</sub> 20.6). ㉡ 5.09(q, 1H)와 ㉤ 1.48(d, 3H)는 <i>J</i>가 같은 CH–CH<sub>3</sub> 조각(δ<sub>C</sub> 68.6, 16.9).</p>
 <p>③ 메타인 수소가 5.09 ppm까지 낮은 장에 나타나는 것은 (i) 아실옥시 산소(–O–C(=O)R, 약 +3 ppm)와 (ii) 카보닐(CO<sub>2</sub>Me, +1 ppm)에 동시에 결합해 있기 때문이다. ⇒ CH<sub>3</sub>CH(OC(=O)CH<sub>3</sub>)CO<sub>2</sub>CH<sub>3</sub> — 젖산 메틸의 O-아세틸 유도체.</p>
 <p>④ 귀속: ㉠ 68.6 = sp<sup>3</sup> 탄소 중 산소 결합 + 카보닐 α 위치라 가장 탈가림된 C2(CH). 2018 기출의 OCH<sub>2</sub>(≈60)보다 더 높은 δ인 이유도 같다(α-카보닐 + 2차 탄소).</p>
 <p>⑤ 같은 분자식의 함정: dimethyl methylmalonate CH<sub>3</sub>CH(CO<sub>2</sub>Me)<sub>2</sub>는 3.74(s, <b>6H</b>)·3.46(q)·1.42(d)이고 C=O 신호 1개, CH δ<sub>C</sub> ≈ 46이다. dimethyl succinate(3.69 s 6H, 2.63 s 4H)와 ethylene glycol diacetate(4.28 s 4H, 2.08 s 6H)는 신호가 2개뿐이다. 5.09(q)와 68.6은 O–CH(CH<sub>3</sub>)–C=O만 설명한다.</p>''',
