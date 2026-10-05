@@ -7,6 +7,13 @@ from expl_v3 import EXPL
 
 HERE = pathlib.Path(__file__).parent
 CAPDIR = HERE / "캡처"
+FIT_JS = """<script>
+// 화면 렌더 폭을 인쇄 폭(182mm)에 맞춘 뒤, 한 페이지(약 248mm)를 넘는 해설 페이지의 캡처 이미지를 줄인다.
+window.addEventListener("load",function(){const mm=96/25.4, lim=248*mm;
+document.querySelectorAll('.ansp').forEach(pg=>{let ims=pg.querySelectorAll('.caps img'), h=ims.length>1?95:140; ims.forEach(im=>im.style.maxHeight=h+'mm');
+ while(pg.scrollHeight>lim && h>25){h-=3; pg.querySelectorAll('.caps img').forEach(im=>im.style.maxHeight=h+'mm');}});
+document.querySelectorAll('.pg:not(.ansp)').forEach(pg=>{let f=10.2; while(pg.scrollHeight>lim && f>8.4){f-=0.3; pg.style.fontSize=f+"pt";}});});
+</script>"""
 SMALL = {}  # 문항 번호 -> 글자 크기(pt), 한 페이지 넘칠 때 조정
 
 def caps_for(i):
@@ -48,22 +55,23 @@ def main():
 <div class='h3'>■ 해설</div>{ex}<p class='ex'><b>[출제 포인트]</b> {esc(it['point'])}</p></section>""")
     css = (HERE / "variant_style.css").read_text(encoding="utf-8") + """
 .cur{font-weight:bold;color:#1a3d6d}
+body{width:182mm;margin:0}
 .q{page-break-before:auto}
 .pg{page-break-after:always;break-inside:avoid}
 .pg:last-of-type{page-break-after:auto}
 .fig{text-align:center;margin:6px 0 4px}.fig svg{max-width:100%;height:auto;max-height:62mm}
 .fc{text-align:center;font-size:8.6pt;color:#555;margin:0 0 6px}
 .h3{font-weight:bold;margin:8px 0 4px;border-left:4px solid #1a3d6d;padding-left:6px}
-.caps{display:flex;gap:6px;justify-content:center;align-items:flex-start}
-.caps figure{margin:0;flex:1;text-align:center}
-.caps img{max-width:100%;max-height:112mm;border:1px solid #888}
-.caps.n1 img{max-height:130mm}
+.caps{display:flex;flex-direction:column;gap:4px;align-items:center}
+.caps figure{margin:0;text-align:center}
+.caps img{max-width:100%;max-height:60mm;border:1px solid #888}
+.caps.n1 img{max-height:100mm}
 .caps figcaption{font-size:8.4pt;color:#444;margin-top:2px}
 .al{margin:2px 0;padding-left:18px}.al li{margin:3px 0}
 .ex{margin:2px 0;text-align:justify}
 """
     doc = f"""<!doctype html><html lang='ko'><head><meta charset='utf-8'><title>화교론 기출변형 15제 v3</title><style>{css}</style></head><body>
-{''.join(pages)}</body></html>"""
+{''.join(pages)}{FIT_JS}</body></html>"""
     out = HERE / "화교론_기출변형15제_중1-2_v3_그림포함.html"
     out.write_text(doc, encoding="utf-8")
     print(out, len(Q))
