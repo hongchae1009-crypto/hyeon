@@ -1,0 +1,23 @@
+
+    @page { size: A4; margin: 14mm 14mm 16mm; }
+    body { font-family: 'NanumGothic', sans-serif; font-size: 10.2pt; line-height: 1.55; color:#111; }
+    h1 { font-size: 17pt; margin: 0 0 4px; } .sub { color:#444; margin-bottom: 10px; }
+    .legend { border:1px solid #999; padding:8px 10px; font-size:9.4pt; margin-bottom: 8px; }
+    .q { page-break-before: always; } .q:first-of-type { page-break-before: auto; }
+    .meta { display:flex; justify-content:space-between; gap:8px; border-top:2px solid #111; border-bottom:1px solid #111; padding:4px 2px; font-size:9.2pt; }
+    .src { font-weight:bold; } .star { color:#b8860b; white-space:nowrap; font-weight:bold; }
+    .tb { font-size:9pt; color:#333; background:#f2f2f2; padding:3px 6px; margin:4px 0 8px; }
+    .stem { margin: 6px 0; }
+    .box { border:1px solid #333; padding:10px 10px 6px; margin:10px 0; position:relative; }
+    .box .lab { position:absolute; top:-9px; left:50%; transform:translateX(-50%); background:#fff; padding:0 6px; font-size:9.5pt; }
+    .box p { margin: 3px 0; }
+    .how ul { margin:2px 0; padding-left: 16px; } .how li { list-style: '◦ '; margin: 3px 0; }
+    table { border-collapse: collapse; width:100%; margin:4px 0; font-size:9.6pt; }
+    td, th { border:1px solid #555; padding:3px 5px; vertical-align: top; } th { background:#eee; }
+    u { text-underline-offset: 2px; }
+    .ansh { page-break-before: always; font-size:15pt; border-bottom:2px solid #111; padding-bottom:4px; }
+    .ans { margin: 10px 0 12px; page-break-inside: avoid; } .ah { border-bottom:1px solid #999; padding-bottom:2px; font-size:9.6pt; }
+    .ans ul { margin:4px 0; padding-left:18px; } .ans li { margin:2px 0; }
+    .pt { font-size:9pt; background:#f6f3e8; padding:4px 6px; margin:4px 0 0; }
+    
+.idx td:nth-child(2){white-space:nowrap}

@@ -273,72 +273,77 @@ q(src="2025 화학 B5 (측정 신뢰도·실험 타당도) · 2026 물리 B4 (�
   point="교과서 활동 도우미(물방울 맨 아래 기준), 좋은 수업을 위한 제안(그래프를 공유하는 까닭), 오개념 지도(압력 일정 조건 누락, 충돌 횟수)를 측정 신뢰도·실험 조건 문항으로.")
 
 # ───────────────────────── HTML 생성 ─────────────────────────
-def stars(n):
-    return "★" * n + "☆" * (5 - n)
+def main():
+    def stars(n):
+        return "★" * n + "☆" * (5 - n)
 
-def esc(s):
-    return html.escape(s, quote=False)
+    def esc(s):
+        return html.escape(s, quote=False)
 
-parts = []
-for i, it in enumerate(Q, 1):
-    data_html = "".join(
-        f"<div class='box'><div class='lab'>&lt;{esc(t)}&gt;</div>{body}</div>" for t, body in it["data"])
-    how_html = "".join(f"<li>{esc(h)}</li>" for h in it["how"])
-    parts.append(f"""
-<section class='q'>
-  <div class='meta'><span class='src'>[{esc(it['src'])}]</span>
-    <span class='star'>중요도/출제가능성 {stars(it['star'])}</span></div>
-  <div class='tb'>교과서 탐구: {esc(it['tb'])}</div>
-  <p class='stem'><b>{i}.</b> {esc(it['stem'])}</p>
-  {data_html}
-  <div class='box how'><div class='lab'>&lt;작성 방법&gt;</div><ul>{how_html}</ul></div>
-</section>""")
+    parts = []
+    for i, it in enumerate(Q, 1):
+        data_html = "".join(
+            f"<div class='box'><div class='lab'>&lt;{esc(t)}&gt;</div>{body}</div>" for t, body in it["data"])
+        how_html = "".join(f"<li>{esc(h)}</li>" for h in it["how"])
+        parts.append(f"""
+    <section class='q'>
+      <div class='meta'><span class='src'>[{esc(it['src'])}]</span>
+        <span class='star'>중요도/출제가능성 {stars(it['star'])}</span></div>
+      <div class='tb'>교과서 탐구: {esc(it['tb'])}</div>
+      <p class='stem'><b>{i}.</b> {esc(it['stem'])}</p>
+      {data_html}
+      <div class='box how'><div class='lab'>&lt;작성 방법&gt;</div><ul>{how_html}</ul></div>
+    </section>""")
 
-ans_parts = []
-for i, it in enumerate(Q, 1):
-    a = "".join(f"<li>{esc(x)}</li>" for x in it["ans"])
-    ans_parts.append(f"""
-<div class='ans'><div class='ah'><b>{i}번</b> <span class='src'>[{esc(it['src'])}]</span> <span class='star'>{stars(it['star'])}</span></div>
-<ul>{a}</ul><p class='pt'><b>출제 포인트</b> {esc(it['point'])}</p></div>""")
+    ans_parts = []
+    for i, it in enumerate(Q, 1):
+        a = "".join(f"<li>{esc(x)}</li>" for x in it["ans"])
+        ans_parts.append(f"""
+    <div class='ans'><div class='ah'><b>{i}번</b> <span class='src'>[{esc(it['src'])}]</span> <span class='star'>{stars(it['star'])}</span></div>
+    <ul>{a}</ul><p class='pt'><b>출제 포인트</b> {esc(it['point'])}</p></div>""")
 
-css = """
-@page { size: A4; margin: 14mm 14mm 16mm; }
-body { font-family: 'NanumGothic', sans-serif; font-size: 10.2pt; line-height: 1.55; color:#111; }
-h1 { font-size: 17pt; margin: 0 0 4px; } .sub { color:#444; margin-bottom: 10px; }
-.legend { border:1px solid #999; padding:8px 10px; font-size:9.4pt; margin-bottom: 8px; }
-.q { page-break-before: always; } .q:first-of-type { page-break-before: auto; }
-.meta { display:flex; justify-content:space-between; gap:8px; border-top:2px solid #111; border-bottom:1px solid #111; padding:4px 2px; font-size:9.2pt; }
-.src { font-weight:bold; } .star { color:#b8860b; white-space:nowrap; font-weight:bold; }
-.tb { font-size:9pt; color:#333; background:#f2f2f2; padding:3px 6px; margin:4px 0 8px; }
-.stem { margin: 6px 0; }
-.box { border:1px solid #333; padding:10px 10px 6px; margin:10px 0; position:relative; }
-.box .lab { position:absolute; top:-9px; left:50%; transform:translateX(-50%); background:#fff; padding:0 6px; font-size:9.5pt; }
-.box p { margin: 3px 0; }
-.how ul { margin:2px 0; padding-left: 16px; } .how li { list-style: '◦ '; margin: 3px 0; }
-table { border-collapse: collapse; width:100%; margin:4px 0; font-size:9.6pt; }
-td, th { border:1px solid #555; padding:3px 5px; vertical-align: top; } th { background:#eee; }
-u { text-underline-offset: 2px; }
-.ansh { page-break-before: always; font-size:15pt; border-bottom:2px solid #111; padding-bottom:4px; }
-.ans { margin: 10px 0 12px; page-break-inside: avoid; } .ah { border-bottom:1px solid #999; padding-bottom:2px; font-size:9.6pt; }
-.ans ul { margin:4px 0; padding-left:18px; } .ans li { margin:2px 0; }
-.pt { font-size:9pt; background:#f6f3e8; padding:4px 6px; margin:4px 0 0; }
-"""
+    css = """
+    @page { size: A4; margin: 14mm 14mm 16mm; }
+    body { font-family: 'NanumGothic', sans-serif; font-size: 10.2pt; line-height: 1.55; color:#111; }
+    h1 { font-size: 17pt; margin: 0 0 4px; } .sub { color:#444; margin-bottom: 10px; }
+    .legend { border:1px solid #999; padding:8px 10px; font-size:9.4pt; margin-bottom: 8px; }
+    .q { page-break-before: always; } .q:first-of-type { page-break-before: auto; }
+    .meta { display:flex; justify-content:space-between; gap:8px; border-top:2px solid #111; border-bottom:1px solid #111; padding:4px 2px; font-size:9.2pt; }
+    .src { font-weight:bold; } .star { color:#b8860b; white-space:nowrap; font-weight:bold; }
+    .tb { font-size:9pt; color:#333; background:#f2f2f2; padding:3px 6px; margin:4px 0 8px; }
+    .stem { margin: 6px 0; }
+    .box { border:1px solid #333; padding:10px 10px 6px; margin:10px 0; position:relative; }
+    .box .lab { position:absolute; top:-9px; left:50%; transform:translateX(-50%); background:#fff; padding:0 6px; font-size:9.5pt; }
+    .box p { margin: 3px 0; }
+    .how ul { margin:2px 0; padding-left: 16px; } .how li { list-style: '◦ '; margin: 3px 0; }
+    table { border-collapse: collapse; width:100%; margin:4px 0; font-size:9.6pt; }
+    td, th { border:1px solid #555; padding:3px 5px; vertical-align: top; } th { background:#eee; }
+    u { text-underline-offset: 2px; }
+    .ansh { page-break-before: always; font-size:15pt; border-bottom:2px solid #111; padding-bottom:4px; }
+    .ans { margin: 10px 0 12px; page-break-inside: avoid; } .ah { border-bottom:1px solid #999; padding-bottom:2px; font-size:9.6pt; }
+    .ans ul { margin:4px 0; padding-left:18px; } .ans li { margin:2px 0; }
+    .pt { font-size:9pt; background:#f6f3e8; padding:4px 6px; margin:4px 0 0; }
+    """
 
-summary_rows = "".join(
-    f"<tr><td>{i}</td><td>{esc(it['tb'].split(' ')[0])}</td><td>{esc(it['src'])}</td><td class='star'>{stars(it['star'])}</td></tr>"
-    for i, it in enumerate(Q, 1))
+    summary_rows = "".join(
+        f"<tr><td>{i}</td><td>{esc(it['tb'].split(' ')[0])}</td><td>{esc(it['src'])}</td><td class='star'>{stars(it['star'])}</td></tr>"
+        for i, it in enumerate(Q, 1))
 
-doc = f"""<!doctype html><html lang='ko'><head><meta charset='utf-8'><title>중1 과교론 기출변형</title><style>{css}</style></head><body>
-<h1>과교론 기출 변형문제 ① — 중학교 1학년 과학</h1>
-<div class='sub'>{esc(UNIT)}<br>소재: 업로드된 교사용 지도서(2022 개정)의 탐구 활동·탐구 지도 유의점·오개념 지도·차시 지도상의 유의점</div>
-<div class='legend'>◦ [ ] 안은 변형한 원 기출(연도 과목 A/B 번호)입니다. ◦ 별점은 2024–2026 물화생지 과교론 출제 경향(<i>출제경향_및_예상주제.md</i>) 기준 중요도·출제 가능성입니다.<br>
-◦ 모든 문항은 실제 시험과 같이 4점 서술형, &lt;자료&gt; + &lt;작성 방법&gt; 형식입니다. 예시 답안과 출제 포인트는 맨 뒤에 있습니다.</div>
-<table><tr><th>번호</th><th>단원</th><th>원 기출</th><th>별점</th></tr>{summary_rows}</table>
-{''.join(parts)}
-<h2 class='ansh'>예시 답안 및 출제 포인트</h2>
-{''.join(ans_parts)}
-</body></html>"""
+    doc = f"""<!doctype html><html lang='ko'><head><meta charset='utf-8'><title>중1 과교론 기출변형</title><style>{css}</style></head><body>
+    <h1>과교론 기출 변형문제 ① — 중학교 1학년 과학</h1>
+    <div class='sub'>{esc(UNIT)}<br>소재: 업로드된 교사용 지도서(2022 개정)의 탐구 활동·탐구 지도 유의점·오개념 지도·차시 지도상의 유의점</div>
+    <div class='legend'>◦ [ ] 안은 변형한 원 기출(연도 과목 A/B 번호)입니다. ◦ 별점은 2024–2026 물화생지 과교론 출제 경향(<i>출제경향_및_예상주제.md</i>) 기준 중요도·출제 가능성입니다.<br>
+    ◦ 모든 문항은 실제 시험과 같이 4점 서술형, &lt;자료&gt; + &lt;작성 방법&gt; 형식입니다. 예시 답안과 출제 포인트는 맨 뒤에 있습니다.</div>
+    <table><tr><th>번호</th><th>단원</th><th>원 기출</th><th>별점</th></tr>{summary_rows}</table>
+    {''.join(parts)}
+    <h2 class='ansh'>예시 답안 및 출제 포인트</h2>
+    {''.join(ans_parts)}
+    </body></html>"""
 
-out = pathlib.Path(__file__).with_name("과교론_기출변형_중1_물질의상태변화_기체의성질.html")
-out.write_text(doc, encoding="utf-8")
-print(out, len(Q), "문항")
+    out = pathlib.Path(__file__).with_name("과교론_기출변형_중1_물질의상태변화_기체의성질.html")
+    out.write_text(doc, encoding="utf-8")
+    print(out, len(Q), "문항")
+
+
+if __name__ == "__main__":
+    main()
