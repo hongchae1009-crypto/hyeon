@@ -1,7 +1,7 @@
 # v3: 문항별 탐구 그림·모형 포함, 표지 없이 1문항 1페이지, 문항별 모범 답안·해설(교과서 탐구 캡처 포함) 1페이지
 import html, json, pathlib, re, sys
 sys.dont_write_bytecode = True
-from build_v2 import Q, stars, esc
+from build_v2 import Q, stars, esc, unit_of, CUR
 from figs import FIG
 from expl_v3 import EXPL
 
@@ -26,8 +26,21 @@ def caps_for(i):
         out.append((p.name, meta.get(p.name, "교과서 탐구 활동")))
     return out
 
+def cover():
+    rows = []
+    for i, it in enumerate(Q, 1):
+        theme = re.sub(r"\s*변형$", "", it["src"])
+        rows.append(f"<tr><td>{i}</td><td>{esc(unit_of(it['tb']))}</td><td>{esc(theme)}</td><td class='star'>{stars(it['star'])}</td><td>{i+1}</td><td>{i+16}</td></tr>")
+    return f"""<section class='pg cover'><h1>중등 화학 임용 대비 과교론 기출 변형 15제 <small>(탐구 그림·교과서 캡처 포함판)</small></h1>
+<div class='sub'>2022 개정 중학교 과학 1·2학년 화학 단원 — (4) 물질의 상태 변화 · (6) 기체의 성질 · (8) 물질의 특성 · (11) 물질의 구성<br>
+소재: 비상교육·미래엔 교과서의 탐구 활동 + {CUR} 원문(성취기준·성취기준 해설·적용 시 고려 사항·탐구 활동·내용 체계·교수·학습 및 평가)</div>
+<div class='legend'>◦ 파란 굵은 글씨로 표시한 &lt;자료&gt;는 교육과정 원문을 그대로 옮긴 것이며, 빈칸은 원문의 해당 용어입니다. ◦ [ ] 안은 변형한 원 기출(화교론 우선, 물·생·지는 경향 참고)입니다.<br>
+◦ 별점은 2024–2026 물화생지 과교론 출제 경향 기준 중요도·출제 가능성입니다. ◦ 모든 문항은 4점 서술형이며, 한 문항이 한 쪽입니다.<br>
+◦ 모범 답안 및 해설(17–31쪽)은 문항별 1쪽으로, 관련 교과서 탐구 캡처 · 모범 답안 · 해설(핵심 이론, 교육과정 근거, 채점 포인트, 출제 포인트) 순으로 실었습니다.</div>
+<table class='idx'><tr><th>번호</th><th>교과서·단원</th><th>원 기출 / 핵심 이론</th><th>별점</th><th>문제 쪽</th><th>해설 쪽</th></tr>{''.join(rows)}</table></section>"""
+
 def main():
-    pages = []
+    pages = [cover()]
     for i, it in enumerate(Q, 1):
         fs = SMALL.get(i)
         style = f" style='font-size:{fs}pt'" if fs else ""
@@ -55,6 +68,7 @@ def main():
 <div class='h3'>■ 해설</div>{ex}<p class='ex'><b>[출제 포인트]</b> {esc(it['point'])}</p></section>""")
     css = (HERE / "variant_style.css").read_text(encoding="utf-8") + """
 .cur{font-weight:bold;color:#1a3d6d}
+.cover h1{margin-top:0}.idx th{white-space:nowrap}.idx td:nth-child(1),.idx td:nth-child(5),.idx td:nth-child(6){text-align:center;white-space:nowrap}
 body{width:182mm;margin:0}
 .q{page-break-before:auto}
 .pg{page-break-after:always;break-inside:avoid}
