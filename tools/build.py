@@ -13,6 +13,7 @@ import sys
 C = "#dc2626"  # 유기화학 색
 
 EXTRA_CSS = """
+@page{@bottom-center{content:none}}
 body{font-family:'Malgun Gothic','Apple SD Gothic Neo','Noto Sans KR','Noto Sans CJK KR',sans-serif}
 .ut{font-size:21px;margin:0 0 10px;padding:9px 14px;border-radius:10px;color:#fff;background:var(--c)}
 .ut small{font-weight:400;opacity:.85;font-size:14px;margin-left:8px}
@@ -186,7 +187,7 @@ def build(units, arts, css, title, sub):
             f'<div id="unitview">{"".join(body_units)}</div><div id="yearview"></div></main></div>{SCRIPT}</body></html>')
 
 
-def to_pdf(html_path, pdf_path, view="unit"):
+def to_pdf(html_path, pdf_path, view="unit", footer=None, margin=None):
     from playwright.sync_api import sync_playwright
     with sync_playwright() as p:
         b = p.chromium.launch(executable_path="/opt/pw-browsers/chromium-1194/chrome-linux/chrome")
@@ -197,8 +198,8 @@ def to_pdf(html_path, pdf_path, view="unit"):
         pg.emulate_media(media="print")
         pg.pdf(path=str(pdf_path), format="A4", print_background=True, prefer_css_page_size=True,
                display_header_footer=True, header_template="<span></span>",
-               footer_template='<div style="font-size:8pt;color:#888;width:100%;text-align:center"><span class="pageNumber"></span> / <span class="totalPages"></span></div>',
-               margin={"top": "14mm", "bottom": "16mm", "left": "12mm", "right": "12mm"})
+               footer_template=footer or '<div style="font-size:8pt;color:#888;width:100%;text-align:center"><span class="pageNumber"></span> / <span class="totalPages"></span></div>',
+               margin=margin or {"top": "14mm", "bottom": "16mm", "left": "12mm", "right": "12mm"})
         b.close()
 
 

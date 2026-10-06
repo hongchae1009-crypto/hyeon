@@ -24,14 +24,27 @@ UNIT_NAMES = {
     20: "유기화학실험", 21: "유기 분광",
 }
 
+FOOT = '<div style="font-size:9pt;color:#000;width:100%;text-align:center;font-family:serif">- <span class="pageNumber"></span> -</div>'
+
 CSS = """
 article.q .pimg{display:block;margin:6px auto 0;max-width:100%;height:auto}
 article.q.new .ask{margin:8px 0 2px;font-weight:600}
 .recon{font-size:12px;color:#7c5c00;background:#fff8e6;border:1px solid #f0c36d;border-radius:6px;padding:1px 8px;margin-left:4px}
 .badge.new{background:#7c3aed}
 .notes li{margin:3px 0}
-.work{display:none}
-@media print{ .pimg{width:var(--pw);height:auto;margin:4px 0 0 0} .work{display:block;margin-top:14px;padding-top:4px;border-top:1px dashed #9aa3ad;color:#9aa3ad;font-size:9pt} article.q{break-inside:avoid;page-break-inside:avoid;break-before:page;page-break-before:always;border-bottom:none} }
+.ph{display:none}
+@media print{
+  body{background:#fff}
+  .cover,.q-head,.ut,.yt,.work{display:none!important}
+  article.q{break-inside:avoid;page-break-inside:avoid;break-before:page;page-break-before:always;border:none;padding:0;margin:0;background:none}
+  .unit-sec:first-child article.q:first-child,.year-sec:first-child article.q:first-child{break-before:auto;page-break-before:auto}
+  .unit-sec,.year-sec{break-before:auto;page-break-before:auto;margin:0}
+  .ph{display:flex;width:264pt;border:.8pt solid #000;font-family:'Noto Sans CJK KR','Malgun Gothic',sans-serif;font-size:11.5pt;line-height:1.25;color:#000;margin:0 0 8pt}
+  .ph .y{flex:none;width:58pt;text-align:center;border-right:.8pt solid #000;padding:0 4pt}
+  .ph .u{padding:0 8pt}
+  article.q .pimg{width:var(--pw);height:auto;margin:0}
+}
+@page{@bottom-center{content:none}}
 """
 
 
@@ -75,7 +88,7 @@ def render_item(n, k, it):
     ulab = f"{n}. {UNIT_NAMES[n]}"
     if it["kind"] == "exam":
         src = "data:image/png;base64," + base64.b64encode(it["png"]).decode()
-        body = f'<img class="pimg" src="{src}" width="{round(it["w"] * 0.9)}" style="--pw:{round(it["w"] * 0.64)}px" alt="{it["year"]} {esc(it["exam"])}"><div class="work">풀이</div>'
+        body = f'<img class="pimg" src="{src}" width="{round(it["w"] * 0.9)}" style="--pw:{round(it["w"] * 0.64)}px" alt="{it["year"]} {esc(it["exam"])}">'
         badges = (f'<span class="badge new">{it["year"]}</span><span class="badge b2">{esc(it["exam"])}</span>'
                   f'<span class="badge b3">{esc(ulab)}</span><span class="pts">[{it["pts"]}점] · 시험지 원본</span>')
         search = f'{it["year"]} {it["exam"]} {ulab} {it["stem"]}'
@@ -83,7 +96,7 @@ def render_item(n, k, it):
     elif it["kind"] == "book":
         src = "data:image/png;base64," + base64.b64encode(it["png"]).decode()
         w = round(it["w"] * 0.9)
-        body = f'<img class="pimg" src="{src}" width="{w}" style="--pw:{round(it["w"] * 0.64)}px" alt="{esc(it["year"])} 기출 문항"><div class="work">풀이</div>'
+        body = f'<img class="pimg" src="{src}" width="{w}" style="--pw:{round(it["w"] * 0.64)}px" alt="{esc(it["year"])} 기출 문항">'
         badges = (f'<span class="badge">{esc(str(it["year"]))}</span><span class="badge b3">{esc(ulab)}</span>'
                   f'<span class="pts">교재 {it["page"]}쪽</span>')
         search = f'{it["year"]} {ulab}'
@@ -95,8 +108,10 @@ def render_item(n, k, it):
                   f'<span class="badge b3">{esc(ulab)}</span><span class="recon">재구성 문항</span>')
         search = f'{it["year"]} {it["exam"]} {ulab} {it["stem"]} {it["ask"]}'
         cls = "q new"
+    ylab = str(it["year"]) if it["kind"] == "book" else f'{it["year"]} {it["src"][0]}'
+    ph = f'<div class="ph"><span class="y">{esc(ylab)}</span><span class="u">{esc(ulab)}</span></div>'
     return (f'<article class="{cls}" id="{uid}" data-subject="유기화학" data-year="{year_num(it["year"])}" data-unit="{n}" '
-            f'data-search="{esc(search)}"><div class="keep"><div class="q-head" style="--c:{C}">{badges}</div>{body}</div></article>'), uid
+            f'data-search="{esc(search)}"><div class="keep">{ph}<div class="q-head" style="--c:{C}">{badges}</div>{body}</div></article>'), uid
 
 
 def build_html(units, css):
@@ -141,7 +156,7 @@ def build_html(units, css):
              '<li><b>2025·2026학년도 10문항</b>: 2025·2026학년도 1차 시험지(전공A·B) 원본에서 문항을 잘라 수록. 배지 <span class="badge new">2025</span> 로 표시.</li>'
              '<li>15단원: 교재 90–91쪽은 원본 파일이 빈 쪽이라 해당 쪽 문항이 빠져 있을 수 있음.</li>'
              '<li>모범답안은 같은 폴더의 「유기화학 단원별 기출 모범답안」 파일 참고.</li>'
-             '<li>PDF·인쇄: <b>한 문항당 한 페이지</b> (단원·연도 제목은 그 단원의 첫 문항 페이지 맨 위).</li><li class="noprint">왼쪽에서 단원별 / 연도별 보기를 바꾸거나 검색할 수 있습니다.</li></ul>'
+             '<li>PDF·인쇄: <b>한 문항당 한 페이지</b>, 왼쪽 위 머리글 상자(연도 | 단원), 문항 아래는 풀이 공간, 아래 가운데 쪽 번호.</li><li class="noprint">왼쪽에서 단원별 / 연도별 보기를 바꾸거나 검색할 수 있습니다.</li></ul>'
              f'{idx}</div>')
     return ('<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
             f'<title>{title}</title><style>{css}{build.EXTRA_CSS}{CSS}</style></head><body><div class="layout">{nav}<main>{cover}'
@@ -159,6 +174,6 @@ if __name__ == "__main__":
     outdir.mkdir(parents=True, exist_ok=True)
     hp = outdir / "유기화학_단원별_기출문제.html"
     hp.write_text(h, encoding="utf-8")
-    build.to_pdf(hp, outdir / "유기화학_단원별_기출문제(단원순).pdf")
-    build.to_pdf(hp, outdir / "유기화학_단원별_기출문제(연도순).pdf", view="year")
+    build.to_pdf(hp, outdir / "유기화학_단원별_기출문제(단원순).pdf", footer=FOOT, margin={"top": "14mm", "bottom": "18mm", "left": "14mm", "right": "14mm"})
+    build.to_pdf(hp, outdir / "유기화학_단원별_기출문제(연도순).pdf", view="year", footer=FOOT, margin={"top": "14mm", "bottom": "18mm", "left": "14mm", "right": "14mm"})
     print(total, "문항", round(len(h) / 1e6, 1), "MB")
