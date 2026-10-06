@@ -95,3 +95,34 @@ if __name__ == "__main__":
     from collections import Counter
     print(len(blocks), "blocks", round(tot / 1e6, 1), "MB")
     print(sorted(Counter(b["unit"] for b in blocks).items()))
+
+
+# ---------------------------------------------------------------- 2025·2026 원본 시험지 (2단 편집)
+COLS = {"L": (52, 416), "R": (426, 792)}
+
+
+def extract_exam_question(path, page_no, qnum, dpi=150):
+    """시험지 PDF의 page_no(1부터)쪽에서 qnum번 문항이 있는 단을 잘라 PNG로 반환."""
+    doc = fitz.open(path)
+    page = doc[page_no - 1]
+    hit = None
+    for b in page.get_text("dict")["blocks"]:
+        if b["type"] != 0:
+            continue
+        for l in b["lines"]:
+            t = "".join(s["text"] for s in l["spans"]).strip()
+            if re.match(rf"^{qnum}\.(\s|$)", t):
+                hit = l["bbox"]
+                break
+        if hit:
+            break
+    if hit is None:
+        raise ValueError(f"{path} {page_no}쪽에서 {qnum}번을 찾지 못함")
+    col = "L" if hit[0] < 421 else "R"
+    x0, x1 = COLS[col]
+    clip = fitz.Rect(x0, hit[1] - 8, x1, 1078)
+    pm = page.get_pixmap(dpi=dpi, clip=clip)
+    im = _autocrop(Image.open(io.BytesIO(pm.tobytes("png"))).convert("RGB"))
+    buf = io.BytesIO()
+    im.convert("L").quantize(16).save(buf, "PNG", optimize=True)
+    return {"png": buf.getvalue(), "w": im.width, "h": im.height}

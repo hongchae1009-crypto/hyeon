@@ -17,5 +17,6 @@ python3 tools/build.py <기존 모범답안.html> 유기화학_단원별_모범�
 ## 단원별 기출문제집 (문제만)
 `유기화학_단원별_기출문제/` — 1997–2026학년도 144문항, HTML(단원별/연도별 보기·검색) + PDF(단원순·연도순)
 - 2024년까지: 교재 PDF에서 문항 영역을 잘라 원본 이미지로 수록 (`tools/extract_pages.py`)
-- 2025·2026년 10문항: 모범답안 파일의 문제 요지를 바탕으로 재구성 (`tools/problems_2526.py`)
-- 다시 만들기: `python3 tools/build_problems.py <모범답안.html> 유기화학_단원별_기출문제 <교재 PDF 3개>` (`tools/` 안에서 실행)
+- 2025·2026년 10문항: 1차 시험지(전공A·B) 원본에서 잘라 수록 (`extract_pages.extract_exam_question`; 시험지가 없으면 `tools/problems_2526.py`의 재구성 문항 사용)
+- PDF는 한 문항당 한 페이지
+- 다시 만들기: `python3 tools/build_problems.py <모범답안.html> 유기화학_단원별_기출문제 <교재 PDF 3개> <2025·2026 시험지 PDF 4개>` (`tools/` 안에서 실행)

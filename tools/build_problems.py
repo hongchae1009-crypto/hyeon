@@ -5,6 +5,7 @@
   - 2025·2026 문항: problems_2526.ITEMS (재구성, 정답 미포함)
 """
 import base64
+import re
 import html
 import pathlib
 import sys
@@ -29,7 +30,7 @@ article.q.new .ask{margin:8px 0 2px;font-weight:600}
 .recon{font-size:12px;color:#7c5c00;background:#fff8e6;border:1px solid #f0c36d;border-radius:6px;padding:1px 8px;margin-left:4px}
 .badge.new{background:#7c3aed}
 .notes li{margin:3px 0}
-@media print{ article.q{break-inside:avoid;page-break-inside:avoid} }
+@media print{ .pimg{width:94%;height:auto;max-height:238mm;object-fit:contain;object-position:top} article.q{break-inside:avoid;page-break-inside:avoid;break-before:page;page-break-before:always;border-bottom:none} }
 """
 
 
@@ -41,14 +42,29 @@ def year_num(y):
     return int(str(y)[:4])
 
 
-def collect(pdfs):
+def exam_map(paths):
+    """'2025 … A.pdf' → {(2025, 'A'): path}"""
+    out = {}
+    for p in paths:
+        m = re.search(r"(2025|2026).*?([AB])\.pdf$", p)
+        if m:
+            out[(int(m.group(1)), m.group(2))] = p
+    return out
+
+
+def collect(pdfs, exams):
     units = {n: [] for n in UNIT_NAMES}
     for it in problems_2526.ITEMS:  # 최근 문항이 단원 맨 앞
-        units[it["unit"]].append({"kind": "new", **it})
+        ab, page, q = it["src"]
+        path = exams.get((it["year"], ab))
+        if path:  # 원본 시험지에서 잘라 넣기
+            units[it["unit"]].append({"kind": "exam", **it, **extract_pages.extract_exam_question(path, page, q)})
+        else:
+            units[it["unit"]].append({"kind": "new", **it})
     for b in extract_pages.extract(pdfs):
         units[b["unit"]].append({"kind": "book", **b})
     for n in units:  # 2025·2026 문항끼리는 연도 내림차순
-        new = sorted([x for x in units[n] if x["kind"] == "new"], key=lambda x: -x["year"])
+        new = sorted([x for x in units[n] if x["kind"] != "book"], key=lambda x: -x["year"])
         units[n] = new + [x for x in units[n] if x["kind"] == "book"]
     return units
 
@@ -56,7 +72,14 @@ def collect(pdfs):
 def render_item(n, k, it):
     uid = f"p{n:02d}-{k:02d}"
     ulab = f"{n}. {UNIT_NAMES[n]}"
-    if it["kind"] == "book":
+    if it["kind"] == "exam":
+        src = "data:image/png;base64," + base64.b64encode(it["png"]).decode()
+        body = f'<img class="pimg" src="{src}" width="{round(it["w"] * 0.9)}" alt="{it["year"]} {esc(it["exam"])}">'
+        badges = (f'<span class="badge new">{it["year"]}</span><span class="badge b2">{esc(it["exam"])}</span>'
+                  f'<span class="badge b3">{esc(ulab)}</span><span class="pts">[{it["pts"]}점] · 시험지 원본</span>')
+        search = f'{it["year"]} {it["exam"]} {ulab} {it["stem"]}'
+        cls = "q"
+    elif it["kind"] == "book":
         src = "data:image/png;base64," + base64.b64encode(it["png"]).decode()
         w = round(it["w"] * 0.9)
         body = f'<img class="pimg" src="{src}" width="{w}" alt="{esc(it["year"])} 기출 문항">'
@@ -87,7 +110,7 @@ def build_html(units, css):
             if k == 0:
                 h = h.replace('<div class="keep">', f'<div class="keep"><h2 class="ut">{esc(f"{n}. {UNIT_NAMES[n]}")}<small>{len(items)}문항</small></h2>', 1)
             parts.append(h)
-            label = f'{it["year"]}' + (f' · {it["exam"]}' if it["kind"] == "new" else f' · 교재 {it["page"]}쪽')
+            label = f'{it["year"]}' + (f' · 교재 {it["page"]}쪽' if it["kind"] == "book" else f' · {it["exam"]}')
             rows.append((n, it, uid, label))
             nav_years.setdefault(year_num(it["year"]), []).append((n, uid, label))
         total += len(items)
@@ -114,10 +137,10 @@ def build_html(units, css):
     cover = (f'<div class="cover"><h1>{title}</h1><p>{sub} · {total}문항 · 단원 → 문항(최근 연도 순) · <b>정답·풀이 미포함</b></p>'
              '<ul class="notes">'
              '<li>2024학년도까지: 교재(유기화학 기출문제, 단원별)의 문항을 원본 그대로 수록. 교재에 같은 쪽이 중복된 경우 한 번만 수록.</li>'
-             '<li><b>2025·2026학년도 10문항</b>: 원본 시험지 대신 모범답안 파일의 문제 요지를 바탕으로 <b>재구성</b>한 문항(문장·도식은 원문과 다를 수 있음). 배지 <span class="badge new">2025</span> 로 표시.</li>'
+             '<li><b>2025·2026학년도 10문항</b>: 2025·2026학년도 1차 시험지(전공A·B) 원본에서 문항을 잘라 수록. 배지 <span class="badge new">2025</span> 로 표시.</li>'
              '<li>15단원: 교재 90–91쪽은 원본 파일이 빈 쪽이라 해당 쪽 문항이 빠져 있을 수 있음.</li>'
              '<li>모범답안은 같은 폴더의 「유기화학 단원별 기출 모범답안」 파일 참고.</li>'
-             '<li class="noprint">왼쪽에서 단원별 / 연도별 보기를 바꾸거나 검색할 수 있습니다. 인쇄 시 단원(또는 연도)마다 새 페이지에서 시작합니다.</li></ul>'
+             '<li>PDF·인쇄: <b>한 문항당 한 페이지</b> (단원·연도 제목은 그 단원의 첫 문항 페이지 맨 위).</li><li class="noprint">왼쪽에서 단원별 / 연도별 보기를 바꾸거나 검색할 수 있습니다.</li></ul>'
              f'{idx}</div>')
     return ('<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
             f'<title>{title}</title><style>{css}{build.EXTRA_CSS}{CSS}</style></head><body><div class="layout">{nav}<main>{cover}'
@@ -125,9 +148,12 @@ def build_html(units, css):
 
 
 if __name__ == "__main__":
-    model, outdir, pdfs = sys.argv[1], pathlib.Path(sys.argv[2]), sys.argv[3:]
+    model, outdir, rest = sys.argv[1], pathlib.Path(sys.argv[2]), sys.argv[3:]
+    exams = exam_map(rest)
+    pdfs = [p for p in rest if p not in exams.values()]
     css, _ = build.load_model(model)
-    units = collect(pdfs)
+    units = collect(pdfs, exams)
+    print("시험지 원본:", sorted(exams))
     h, total = build_html(units, css)
     outdir.mkdir(parents=True, exist_ok=True)
     hp = outdir / "유기화학_단원별_기출문제.html"
