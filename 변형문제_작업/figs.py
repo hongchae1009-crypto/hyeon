@@ -185,3 +185,82 @@ FIG[15] = svg(620, 185,
     + "".join(f"<rect x='{390+(i%3)*72}' y='{30+(i//3)*60}' width='62' height='48' rx='5' fill='#fffbe8' stroke='#aa9'/>" + t(421 + (i % 3) * 72, 59 + (i // 3) * 60, s, 12, weight='bold')
               for i, s in enumerate(["헬륨", "칼륨", "아르곤", "나트륨", "리튬", "네온"]))
     + t(497, 160, "원소 카드(뒷면에 성질)", 11))
+
+# ═════════════ 중3 Ⅰ. 화학 반응의 규칙성 ═════════════
+def ball(cx, cy, s, fill, r=13):
+    return f"<circle cx='{cx}' cy='{cy}' r='{r}' fill='{fill}' stroke='#234' stroke-width='1'/>" + t(cx, cy + 4, s, 10, weight='bold')
+NC, HC, OC, CC = "#8fb2e8", "#f4f4f4", "#f08c8c", "#888"
+
+# 16. 원형 자석 모형 → 활동지 그림 → 화학 반응식
+def n2(x, y): return ball(x, y, "N", NC) + ball(x + 24, y, "N", NC)
+def h2(x, y): return ball(x, y, "H", HC, 10) + ball(x + 18, y, "H", HC, 10)
+def nh3(x, y): return ball(x, y, "N", NC) + ball(x - 20, y + 16, "H", HC, 10) + ball(x + 20, y + 16, "H", HC, 10) + ball(x, y - 22, "H", HC, 10)
+FIG[16] = svg(620, 200,
+    t(310, 16, "(가) 자석 칠판 위 원형 자석 모형", 11) + f"<rect x='20' y='24' width='580' height='96' rx='6' fill='#f7f7f2' stroke='#999'/>"
+    + n2(50, 72) + t(100, 77, "+", 16) + h2(120, 50) + h2(120, 75) + h2(120, 100) + f"<path d='M175 75 L235 75 M228 70 L235 75 L228 80' {S}/>"
+    + nh3(285, 72) + nh3(350, 72)
+    + f"<rect x='410' y='34' width='180' height='78' fill='white' stroke='#aaa' stroke-dasharray='4 3'/>" + t(500, 58, "자석 하나 = 원자 하나", 11)
+    + t(500, 78, "반응물 자석만 다시 써서", 11) + t(500, 96, "생성물을 만든다", 11)
+    + t(160, 142, "(나) 활동지 그림·입자 수", 11) + f"<rect x='40' y='150' width='240' height='40' fill='white' stroke='#555'/>"
+    + t(160, 175, "질소 ( )개 + 수소 ( )개 → 암모니아 ( )개", 11)
+    + t(450, 142, "(다) 화학 반응식", 11) + f"<rect x='330' y='150' width='240' height='40' fill='white' stroke='#555'/>" + t(450, 176, "N₂ + 3H₂ → 2NH₃", 15, weight='bold'))
+
+# 17. 질량 보존 – 유리병 2개 / 플라스틱 병(뚜껑 닫음·열음)
+def scale(x, y, w, val):
+    return (f"<rect x='{x}' y='{y}' width='{w}' height='18' fill='#ddd' stroke='#555'/><rect x='{x+w/2-30}' y='{y+20}' width='60' height='16' fill='#223'/>"
+            + f"<text x='{x+w/2}' y='{y+32}' font-size='11' text-anchor='middle' fill='#6f6'>{val}</text>")
+FIG[17] = svg(620, 190,
+    t(100, 16, "탐구 ① 앙금 생성", 11)
+    + f"<rect x='45' y='70' width='40' height='60' fill='none' stroke='#555'/><rect x='47' y='96' width='36' height='32' fill='#eef'/><rect x='45' y='60' width='40' height='10' fill='#222'/>"
+    + f"<rect x='115' y='70' width='40' height='60' fill='none' stroke='#555'/><rect x='117' y='96' width='36' height='32' fill='#eef'/><rect x='115' y='60' width='40' height='10' fill='#222'/>"
+    + t(65, 52, "KI 수용액", 10) + t(135, 52, "AgNO₃ 수용액", 10) + scale(30, 130, 140, "52.40 g")
+    + t(320, 16, "탐구 ② 모둠 1 (뚜껑 닫음)", 11)
+    + f"<path d='M270 40 L270 130 L370 130 L370 40 Z' fill='#f5fbff' stroke='#555'/><rect x='265' y='30' width='110' height='10' fill='#2a63b8'/>"
+    + f"<rect x='295' y='80' width='26' height='48' fill='none' stroke='#555'/><rect x='297' y='100' width='22' height='26' fill='#e6f2e6'/>" + t(308, 74, "묽은 염산", 9)
+    + "".join(f"<path d='M{335+i*9} 126 l6 -6 l5 6 z' fill='#eee6d6' stroke='#a98'/>" for i in range(3)) + t(345, 112, "달걀 껍데기", 9)
+    + scale(255, 130, 130, "85.62 g")
+    + t(510, 16, "탐구 ② 모둠 2 (뚜껑 열고 반응)", 11)
+    + f"<path d='M460 40 L460 130 L560 130 L560 40' fill='#f5fbff' stroke='#555'/>"
+    + f"<rect x='485' y='80' width='26' height='48' fill='none' stroke='#555'/>" + "".join(f"<circle cx='{505+i*8}' cy='{60-i*9}' r='3' fill='none' stroke='#777'/>" for i in range(3))
+    + t(538, 36, "CO₂", 10) + scale(445, 130, 130, "85.62 g"))
+
+# 18. 공유 플랫폼에 올린 모둠별 구리 가열 자료
+pts = [(1.2, 1.5), (2.0, 2.5), (2.8, 3.5), (3.6, 4.2), (4.4, 5.5)]
+def gx(v): return 330 + v * 55
+def gy(v): return 170 - v * 26
+FIG[18] = svg(620, 200,
+    f"<path d='M20 100 Q65 135 110 100 Z' fill='#f6f6f6' stroke='#333' stroke-width='1.4'/><path d='M40 106 Q65 118 90 106' stroke='#b8742a' stroke-width='5' fill='none'/>" + t(65, 92, "구리 가루", 10)
+    + f"<path d='M65 125 Q55 140 65 160 Q75 140 65 125 Z' fill='#f96' stroke='#d42'/><rect x='55' y='160' width='20' height='22' fill='#555'/>" + t(65, 196, "증발 접시 가열", 10)
+    + f"<rect x='130' y='30' width='160' height='150' rx='8' fill='#f3f7ff' stroke='#7895c8'/>" + t(210, 48, "공유 플랫폼", 11, weight='bold')
+    + "".join(t(210, 70 + i * 22, f"모둠 {i+1}: {a} g → {b} g", 10) for i, (a, b) in enumerate(pts))
+    + axes(330, 30, 270, 140, "구리의 질량(g)", "산화 구리(Ⅱ)의 질량(g)")
+    + "".join(f"<circle cx='{gx(a)}' cy='{gy(b)}' r='4' fill='{'#e33' if i == 3 else '#245'}'/>" for i, (a, b) in enumerate(pts))
+    + t(gx(3.6) + 6, gy(4.2) + 16, "모둠 4", 10, "start"))
+
+# 19. 같은 부피 상자 – 돌턴의 원자 vs 아보가드로의 분자
+def box(x, y, lab, inner):
+    return f"<rect x='{x}' y='{y}' width='70' height='60' fill='white' stroke='#555'/>" + inner + t(x + 35, y + 76, lab, 10)
+FIG[19] = svg(620, 215,
+    t(60, 20, "(가) 돌턴의 방식", 11, "start")
+    + box(20, 30, "수소 1부피", ball(55, 60, "H", HC, 11)) + box(100, 30, "수소 1부피", ball(135, 60, "H", HC, 11)) + t(185, 64, "+", 15)
+    + box(200, 30, "산소 1부피", ball(235, 60, "O", OC, 11)) + f"<path d='M280 60 L310 60 M304 55 L310 60 L304 65' {S}/>"
+    + box(320, 30, "수증기 1부피", ball(343, 60, "H", HC, 9) + f"<path d='M362 50 A10 10 0 0 1 362 70 Z' fill='{OC}' stroke='#234'/>")
+    + box(400, 30, "수증기 1부피", ball(423, 60, "H", HC, 9) + f"<path d='M442 50 A10 10 0 0 1 442 70 Z' fill='{OC}' stroke='#234'/>")
+    + t(480, 56, "물 입자(HO)마다 산소 원자", 10, "start") + t(480, 72, "반 개 → 원자가 쪼개져야 함", 10, "start")
+    + t(60, 130, "(나) 아보가드로의 방식", 11, "start")
+    + box(20, 140, "수소 1부피", ball(45, 170, "H", HC, 9) + ball(65, 170, "H", HC, 9)) + box(100, 140, "수소 1부피", ball(125, 170, "H", HC, 9) + ball(145, 170, "H", HC, 9)) + t(185, 174, "+", 15)
+    + box(200, 140, "산소 1부피", ball(225, 170, "O", OC, 9) + ball(245, 170, "O", OC, 9)) + f"<path d='M280 170 L310 170 M304 165 L310 170 L304 175' {S}/>"
+    + box(320, 140, "수증기 1부피", ball(343, 168, "O", OC, 9) + ball(330, 182, "H", HC, 7) + ball(356, 182, "H", HC, 7))
+    + box(400, 140, "수증기 1부피", ball(423, 168, "O", OC, 9) + ball(410, 182, "H", HC, 7) + ball(436, 182, "H", HC, 7))
+    + t(480, 174, "같은 부피 = 같은 수의 분자", 10, "start"))
+
+# 20. 열 변색 붙임딱지 실험 + 요소 냉각 장치
+def flask(x, y, lab, sticker):
+    return (f"<path d='M{x+20} {y} L{x+20} {y+30} L{x} {y+80} L{x+60} {y+80} L{x+40} {y+30} L{x+40} {y}' fill='#f2f8ff' stroke='#555'/>"
+            + f"<rect x='{x+18}' y='{y+50}' width='24' height='14' fill='{sticker}' stroke='#333'/>" + t(x + 30, y + 100, lab, 10))
+FIG[20] = svg(620, 175,
+    flask(30, 30, "염화 칼슘 + 물", "#9c6") + flask(140, 30, "수산화 바륨 + 염화 암모늄", "#69c") + t(115, 18, "열 변색 붙임딱지 관찰", 11)
+    + f"<path d='M300 20 L300 165' stroke='#bbb' stroke-dasharray='4 3'/>"
+    + f"<rect x='330' y='40' width='150' height='100' rx='10' fill='#f7fbff' stroke='#555'/>" + "".join(f"<circle cx='{350+(i%7)*18}' cy='{110+(i//7)*14}' r='3' fill='#ddd' stroke='#999'/>" for i in range(14))
+    + f"<rect x='360' y='55' width='90' height='40' rx='5' fill='#cfe5f7' stroke='#468'/>" + t(405, 80, "물(지퍼 백)", 10) + t(405, 156, "요소가 든 봉지(열 봉합)", 10)
+    + f"<path d='M500 90 L540 90 M534 85 L540 90 L534 95' {S}/>" + t(570, 80, "눌러서", 10) + t(570, 96, "섞기", 10) + t(470, 22, "간단한 냉각 장치", 11))

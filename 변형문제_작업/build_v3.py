@@ -2,6 +2,7 @@
 import html, json, pathlib, re, sys
 sys.dont_write_bytecode = True
 from build_v2 import Q, stars, esc, unit_of, CUR
+import items_m3  # noqa: F401  중3 16~20번을 Q에 추가
 from figs import FIG
 from expl_v3 import EXPL
 
@@ -10,7 +11,7 @@ CAPDIR = HERE / "캡처"
 FIT_JS = """<script>
 // 화면 렌더 폭을 인쇄 폭(182mm)에 맞춘 뒤, 한 페이지(약 248mm)를 넘는 해설 페이지의 캡처 이미지를 줄인다.
 window.addEventListener("load",function(){const mm=96/25.4, lim=248*mm;
-document.querySelectorAll('.ansp').forEach(pg=>{let ims=pg.querySelectorAll('.caps img'), h=ims.length>1?95:140; ims.forEach(im=>im.style.maxHeight=h+'mm');
+document.querySelectorAll('.ansp').forEach(pg=>{let ims=pg.querySelectorAll('.caps img'); const tall=[...ims].every(im=>im.naturalHeight>im.naturalWidth*0.9); if(ims.length==2&&tall){const c=pg.querySelector('.caps'); c.style.flexDirection='row'; c.style.alignItems='flex-start'; c.querySelectorAll('figure').forEach(f=>f.style.flex='1');} let h=(ims.length>1&&!tall)?95:140; ims.forEach(im=>im.style.maxHeight=h+'mm');
  while(pg.scrollHeight>lim && h>25){h-=3; pg.querySelectorAll('.caps img').forEach(im=>im.style.maxHeight=h+'mm');}});
 document.querySelectorAll('.pg:not(.ansp)').forEach(pg=>{let f=10.2; while(pg.scrollHeight>lim && f>8.4){f-=0.3; pg.style.fontSize=f+"pt";}});});
 </script>"""
@@ -27,16 +28,16 @@ def caps_for(i):
     return out
 
 def cover():
-    rows = []
+    rows, N = [], len(Q)
     for i, it in enumerate(Q, 1):
         theme = re.sub(r"\s*변형$", "", it["src"])
-        rows.append(f"<tr><td>{i}</td><td>{esc(unit_of(it['tb']))}</td><td>{esc(theme)}</td><td class='star'>{stars(it['star'])}</td><td>{i+1}</td><td>{i+16}</td></tr>")
-    return f"""<section class='pg cover'><h1>중등 화학 임용 대비 과교론 기출 변형 15제 <small>(탐구 그림·교과서 캡처 포함판)</small></h1>
-<div class='sub'>2022 개정 중학교 과학 1·2학년 화학 단원 — (4) 물질의 상태 변화 · (6) 기체의 성질 · (8) 물질의 특성 · (11) 물질의 구성<br>
+        rows.append(f"<tr><td>{i}</td><td>{esc(unit_of(it['tb']))}</td><td>{esc(theme)}</td><td class='star'>{stars(it['star'])}</td><td>{i+1}</td><td>{i+1+N}</td></tr>")
+    return f"""<section class='pg cover'><h1>중등 화학 임용 대비 과교론 기출 변형 {N}제 <small>(탐구 그림·교과서 캡처 포함판)</small></h1>
+<div class='sub'>2022 개정 중학교 과학 1~3학년 화학 단원 — (4) 물질의 상태 변화 · (6) 기체의 성질 · (8) 물질의 특성 · (11) 물질의 구성 · (16) 화학 반응의 규칙성<br>
 소재: 비상교육·미래엔 교과서의 탐구 활동 + {CUR} 원문(성취기준·성취기준 해설·적용 시 고려 사항·탐구 활동·내용 체계·교수·학습 및 평가)</div>
 <div class='legend'>◦ 파란 굵은 글씨로 표시한 &lt;자료&gt;는 교육과정 원문을 그대로 옮긴 것이며, 빈칸은 원문의 해당 용어입니다. ◦ [ ] 안은 변형한 원 기출(화교론 우선, 물·생·지는 경향 참고)입니다.<br>
 ◦ 별점은 2024–2026 물화생지 과교론 출제 경향 기준 중요도·출제 가능성입니다. ◦ 모든 문항은 4점 서술형이며, 한 문항이 한 쪽입니다.<br>
-◦ 모범 답안 및 해설(17–31쪽)은 문항별 1쪽으로, 관련 교과서 탐구 캡처 · 모범 답안 · 해설(핵심 이론, 교육과정 근거, 채점 포인트, 출제 포인트) 순으로 실었습니다.</div>
+◦ 모범 답안 및 해설({N+2}–{2*N+1}쪽)은 문항별 1쪽으로, 관련 교과서 탐구 캡처 · 모범 답안 · 해설(핵심 이론, 교육과정 근거, 채점 포인트, 출제 포인트) 순으로 실었습니다.</div>
 <table class='idx'><tr><th>번호</th><th>교과서·단원</th><th>원 기출 / 핵심 이론</th><th>별점</th><th>문제 쪽</th><th>해설 쪽</th></tr>{''.join(rows)}</table></section>"""
 
 def main():
@@ -68,7 +69,7 @@ def main():
 <div class='h3'>■ 해설</div>{ex}<p class='ex'><b>[출제 포인트]</b> {esc(it['point'])}</p></section>""")
     css = (HERE / "variant_style.css").read_text(encoding="utf-8") + """
 .cur{font-weight:bold;color:#1a3d6d}
-.cover h1{margin-top:0}.idx th{white-space:nowrap}.idx td:nth-child(1),.idx td:nth-child(5),.idx td:nth-child(6){text-align:center;white-space:nowrap}
+.cover h1{margin-top:0;font-size:15pt}.cover .sub,.cover .legend{font-size:8.8pt}.cover .idx{font-size:8.4pt}.cover .idx td{padding:2px 4px;line-height:1.35}.idx th{white-space:nowrap}.idx td:nth-child(1),.idx td:nth-child(5),.idx td:nth-child(6){text-align:center;white-space:nowrap}
 body{width:182mm;margin:0}
 .q{page-break-before:auto}
 .pg{page-break-after:always;break-inside:avoid}
@@ -84,9 +85,9 @@ body{width:182mm;margin:0}
 .al{margin:2px 0;padding-left:18px}.al li{margin:3px 0}
 .ex{margin:2px 0;text-align:justify}
 """
-    doc = f"""<!doctype html><html lang='ko'><head><meta charset='utf-8'><title>화교론 기출변형 15제 v3</title><style>{css}</style></head><body>
+    doc = f"""<!doctype html><html lang='ko'><head><meta charset='utf-8'><title>화교론 기출변형 {len(Q)}제</title><style>{css}</style></head><body>
 {''.join(pages)}{FIT_JS}</body></html>"""
-    out = HERE / "화교론_기출변형15제_중1-2_v3_그림포함.html"
+    out = HERE / f"화교론_기출변형{len(Q)}제_중1-3_그림포함.html"
     out.write_text(doc, encoding="utf-8")
     print(out, len(Q))
 
