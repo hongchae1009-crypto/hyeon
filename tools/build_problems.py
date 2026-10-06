@@ -163,6 +163,67 @@ def build_html(units, css):
             f'<div id="unitview">{"".join(secs)}</div><div id="yearview"></div></main></div>{build.SCRIPT}</body></html>'), total
 
 
+TOC_CSS = """
+@page{size:A4;margin:18mm 20mm}
+body{font-family:'Noto Sans CJK KR','Malgun Gothic',sans-serif;color:#000;margin:0}
+h1{font-size:19pt;margin:6mm 0 1mm;letter-spacing:.5pt}
+.sub{font-size:9.5pt;color:#444;margin:0 0 7mm}
+h2{font-size:11pt;margin:0 0 2mm;padding-bottom:1.5mm;border-bottom:.8pt solid #000}
+.toc{columns:2;column-gap:12mm;font-size:9.5pt;line-height:1.75}
+.row{display:flex;break-inside:avoid}
+.row .t{white-space:nowrap}
+.row .dots{flex:1;border-bottom:.6pt dotted #888;margin:0 2mm 1.2mm}
+.row .p{white-space:nowrap}
+.note{font-size:8.5pt;color:#555;margin-top:7mm;line-height:1.6}
+"""
+
+
+def toc_pdf(path, title, sub, heading, rows, note):
+    """rows: [(제목, 첫쪽, 끝쪽)] → 쪽 번호 없는 1쪽짜리 목차 PDF"""
+    from playwright.sync_api import sync_playwright
+    items = "".join(f'<div class="row"><span class="t">{esc(t)}</span><span class="dots"></span>'
+                    f'<span class="p">{a}{"" if a == z else f"–{z}"}</span></div>' for t, a, z in rows)
+    h = (f'<!doctype html><html lang="ko"><head><meta charset="utf-8"><style>{TOC_CSS}</style></head><body>'
+         f'<h1>{esc(title)}</h1><p class="sub">{esc(sub)}</p><h2>{esc(heading)}</h2><div class="toc">{items}</div>'
+         f'<p class="note">{note}</p></body></html>')
+    with sync_playwright() as p:
+        br = p.chromium.launch(executable_path="/opt/pw-browsers/chromium-1194/chrome-linux/chrome")
+        pg = br.new_page()
+        pg.set_content(h)
+        pg.pdf(path=str(path), format="A4", prefer_css_page_size=True, print_background=True)
+        br.close()
+
+
+def prepend(toc_path, body_path):
+    import pymupdf as fitz
+    toc, body = fitz.open(toc_path), fitz.open(body_path)
+    toc.insert_pdf(body)
+    toc.save(str(body_path) + ".tmp")
+    toc.close(); body.close()
+    pathlib.Path(str(body_path) + ".tmp").replace(body_path)
+    pathlib.Path(toc_path).unlink()
+
+
+def page_ranges(units):
+    """단원순·연도순 PDF에서 각 묶음의 쪽 범위 (한 문항 = 한 쪽)"""
+    seq = [(n, it) for n, items in units.items() for it in items]
+    by_unit, p = [], 1
+    for n, items in units.items():
+        if items:
+            by_unit.append((f"{n}. {UNIT_NAMES[n]}", p, p + len(items) - 1))
+            p += len(items)
+    order = sorted(range(len(seq)), key=lambda i: (-year_num(seq[i][1]["year"]), i))
+    by_year, cur = [], None
+    for page, i in enumerate(order, 1):
+        y = year_num(seq[i][1]["year"])
+        if y != cur:
+            by_year.append([f"{y}학년도", page, page])
+            cur = y
+        else:
+            by_year[-1][2] = page
+    return by_unit, [tuple(r) for r in by_year]
+
+
 if __name__ == "__main__":
     model, outdir, rest = sys.argv[1], pathlib.Path(sys.argv[2]), sys.argv[3:]
     exams = exam_map(rest)
@@ -176,4 +237,35 @@ if __name__ == "__main__":
     hp.write_text(h, encoding="utf-8")
     build.to_pdf(hp, outdir / "유기화학_단원별_기출문제(단원순).pdf", footer=FOOT, margin={"top": "14mm", "bottom": "18mm", "left": "14mm", "right": "14mm"})
     build.to_pdf(hp, outdir / "유기화학_단원별_기출문제(연도순).pdf", view="year", footer=FOOT, margin={"top": "14mm", "bottom": "18mm", "left": "14mm", "right": "14mm"})
+    by_unit, by_year = page_ranges(units)
+    sub = f"중등 화학 교사 임용시험 1차 · 1997–2026학년도 · {total}문항"
+    note = ("· 2024학년도까지는 단원별 기출 교재의 문항, 2025·2026학년도는 시험지 원본에서 수록했습니다.<br>"
+            "· 한 문항당 한 페이지이며, 문항 아래 빈 공간은 풀이 공간입니다.<br>"
+            "· 15단원은 교재 90–91쪽이 원본 파일에서 빈 쪽이라 해당 문항이 빠져 있을 수 있습니다.")
+    for kind, rows, heading in (("단원순", by_unit, "목차 (단원별)"), ("연도순", by_year, "목차 (연도별)")):
+        pdf = outdir / f"유기화학_단원별_기출문제({kind}).pdf"
+        tp = outdir / f"_toc_{kind}.pdf"
+        toc_pdf(tp, "유기화학 단원별 기출문제", sub, heading, rows, note)
+        prepend(tp, pdf)
+    # 단원별 파일
+    ud = outdir / "단원별"
+    ud.mkdir(exist_ok=True)
+    for n, items in units.items():
+        if not items:
+            continue
+        one = {k: (v if k == n else []) for k, v in units.items()}
+        uh, _ = build_html(one, css)
+        name = f"유기화학_기출_{n:02d}_{UNIT_NAMES[n].replace(' ', '').replace('–', '-')}"
+        hp1 = ud / f"{name}.html"
+        hp1.write_text(uh, encoding="utf-8")
+        pdf = ud / f"{name}.pdf"
+        build.to_pdf(hp1, pdf, footer=FOOT, margin={"top": "14mm", "bottom": "18mm", "left": "14mm", "right": "14mm"})
+        rows = []
+        for i, it in enumerate(items, 1):
+            lab = f'{it["year"]} · 교재 {it["page"]}쪽' if it["kind"] == "book" else f'{it["year"]} {it["exam"]} (시험지 원본)'
+            rows.append((lab, i, i))
+        tp = ud / "_toc.pdf"
+        toc_pdf(tp, f"유기화학 기출문제 — {n}. {UNIT_NAMES[n]}", f"중등 화학 교사 임용시험 1차 · {len(items)}문항", "문항 목록", rows,
+                note if n == 15 else note.rsplit("<br>", 1)[0])
+        prepend(tp, pdf)
     print(total, "문항", round(len(h) / 1e6, 1), "MB")
