@@ -30,7 +30,8 @@ article.q.new .ask{margin:8px 0 2px;font-weight:600}
 .recon{font-size:12px;color:#7c5c00;background:#fff8e6;border:1px solid #f0c36d;border-radius:6px;padding:1px 8px;margin-left:4px}
 .badge.new{background:#7c3aed}
 .notes li{margin:3px 0}
-@media print{ .pimg{width:94%;height:auto;max-height:238mm;object-fit:contain;object-position:top} article.q{break-inside:avoid;page-break-inside:avoid;break-before:page;page-break-before:always;border-bottom:none} }
+.work{display:none}
+@media print{ .pimg{width:var(--pw);height:auto;margin:4px 0 0 0} .work{display:block;margin-top:14px;padding-top:4px;border-top:1px dashed #9aa3ad;color:#9aa3ad;font-size:9pt} article.q{break-inside:avoid;page-break-inside:avoid;break-before:page;page-break-before:always;border-bottom:none} }
 """
 
 
@@ -74,7 +75,7 @@ def render_item(n, k, it):
     ulab = f"{n}. {UNIT_NAMES[n]}"
     if it["kind"] == "exam":
         src = "data:image/png;base64," + base64.b64encode(it["png"]).decode()
-        body = f'<img class="pimg" src="{src}" width="{round(it["w"] * 0.9)}" alt="{it["year"]} {esc(it["exam"])}">'
+        body = f'<img class="pimg" src="{src}" width="{round(it["w"] * 0.9)}" style="--pw:{round(it["w"] * 0.64)}px" alt="{it["year"]} {esc(it["exam"])}"><div class="work">풀이</div>'
         badges = (f'<span class="badge new">{it["year"]}</span><span class="badge b2">{esc(it["exam"])}</span>'
                   f'<span class="badge b3">{esc(ulab)}</span><span class="pts">[{it["pts"]}점] · 시험지 원본</span>')
         search = f'{it["year"]} {it["exam"]} {ulab} {it["stem"]}'
@@ -82,7 +83,7 @@ def render_item(n, k, it):
     elif it["kind"] == "book":
         src = "data:image/png;base64," + base64.b64encode(it["png"]).decode()
         w = round(it["w"] * 0.9)
-        body = f'<img class="pimg" src="{src}" width="{w}" alt="{esc(it["year"])} 기출 문항">'
+        body = f'<img class="pimg" src="{src}" width="{w}" style="--pw:{round(it["w"] * 0.64)}px" alt="{esc(it["year"])} 기출 문항"><div class="work">풀이</div>'
         badges = (f'<span class="badge">{esc(str(it["year"]))}</span><span class="badge b3">{esc(ulab)}</span>'
                   f'<span class="pts">교재 {it["page"]}쪽</span>')
         search = f'{it["year"]} {ulab}'
