@@ -1,6 +1,6 @@
 """17 아민 · 유기화학실험 문항 그림"""
 import math
-from chemsvg import Mol, Fig, benzene, L, RED, BLUE, INK
+from chemsvg import Mol, Fig, benzene, phenyl_at, L, RED, BLUE, INK
 
 
 def nme2(m, p, attach, ang=0, l1=150, l2=-150):
@@ -218,8 +218,274 @@ def f2009_25():
     return f.render()
 
 
+def _at(m, name, ox, oy, scale=1.0):
+    x, y = m.pos(name)
+    return ox + x * scale, oy + y * scale
+
+
+def _mid(p, q, t=0.5):
+    return p[0] + (q[0] - p[0]) * t, p[1] + (q[1] - p[1]) * t
+
+
+# ------------------------------------------------------------------ 2011 #36 메커니즘
+def f2011_36_mech():
+    """아조 짝지음의 SEAr 메커니즘: B의 para 탄소 → A의 말단 N (rds), σ 착물, −H⁺"""
+    f = Fig(800, 360)
+    # ---- 1행: B + A (굽은 화살표) ----
+    ox, oy = 150, 95
+    m = Mol()
+    benzene(m, "b", 0, 0, start=0)
+    nme2(m, "b", "b3", ang=180)
+    f.mol(m, ox, oy)
+    P = lambda n: _at(m, n, ox, oy)
+    N, b0, b1, b2, b3 = P("bN"), P("b0"), P("b1"), P("b2"), P("b3")
+    f.cap(ox, oy + 58, "B (친핵체)")
+    # N 비공유쌍 (위쪽)
+    f.lp(N[0], N[1] - 11, 90)
+    f.curly(N[0] + 3, N[1] - 14, *_mid(N, b3, 0.6), bend=-0.8)
+    f.curly(*_mid(b3, b2, 0.45), *_mid(b2, b1, 0.5), bend=0.9)
+    # A (말단 N이 왼쪽)
+    ax, ay = 235, 95
+    a = Mol()
+    a.atom("nt", 0, 0, "N")
+    a.sub("np", "nt", 0, "N^+", kind=3)
+    phenyl_at(a, "p", "np", 0)
+    f.mol(a, ax, ay)
+    nt, npl = _at(a, "nt", ax, ay), _at(a, "np", ax, ay)
+    f.text(npl[0] + 2, ay + 26, "Cl^−", size=11)
+    f.cap(ax + 90, ay + 58, "A (약한 친전자체)")
+    f.curly(*_mid(b1, b0, 0.5), nt[0] - 9, nt[1] + 4, bend=0.55)
+    f.curly(nt[0] + 15, nt[1] - 6, npl[0] - 1, npl[1] - 10, bend=-0.9)
+    f.arrow(430, 95, 520, 95, "첨가 (rds)", "흡열 · 느림")
+    f.text(660, 70, "① para 탄소의 π 전자가 말단 N을 공격", size=11.5, anchor="middle")
+    f.text(660, 90, "(N 비공유쌍이 고리를 통해 밀어 줌)", size=11.5, anchor="middle")
+    f.text(660, 112, "② N≡N의 π 전자 한 쌍 → N⁺ 위로", size=11.5, anchor="middle")
+    f.text(660, 132, "→ 방향족성이 깨진 σ 착물 (rds)", size=11.5, anchor="middle", color=RED)
+    # ---- 2행: σ 착물 → −H⁺ → C ----
+    ox, oy = 150, 255
+    m = Mol()
+    m.ring("s", 0, 0, 6, L, 0, bonds=False)
+    for u, v, k in [("s0", "s1", 1), ("s1", "s2", "in"), ("s2", "s3", 1), ("s3", "s4", 1), ("s4", "s5", "in"), ("s5", "s0", 1)]:
+        m.bond(u, v, k, (0, 0) if k == "in" else None)
+    n = m.sub("sN", "s3", 180, "N^+", kind="2")
+    m.sub("m1", n, 120)
+    m.sub("m2", n, 240)
+    m.sub("h", "s0", 90, "H", length=24)
+    m.sub("na", "s0", -30, "N")
+    m.sub("nb", "na", 30, "N", kind="2")
+    phenyl_at(m, "q", "nb", -30)
+    f.mol(m, ox, oy)
+    P = lambda n: _at(m, n, ox, oy)
+    s0, s1, s2, s3, H, sN, na = P("s0"), P("s1"), P("s2"), P("s3"), P("h"), P("sN"), P("na")
+    f.cap(ox + 40, oy + 85, "σ 착물 (이미늄형, sp³ 탄소)")
+    f.lp(na[0] + 1, na[1] + 11, -90)
+    # 염기가 H⁺ 제거
+    f.text(H[0] + 48, H[1] - 14, "H₂O", size=12)
+    f.lp(H[0] + 33, H[1] - 14, 0)
+    f.curly(H[0] + 30, H[1] - 10, H[0] + 8, H[1] - 2, bend=0.3)
+    f.curly(*_mid(s0, H, 0.45), *_mid(s0, s1, 0.5), bend=0.9)
+    f.curly(*_mid(s1, s2, 0.5), *_mid(s2, s3, 0.5), bend=0.9)
+    f.curly(*_mid(s3, sN, 0.45), sN[0] + 2, sN[1] + 12, bend=0.9)
+    f.arrow(345, 255, 420, 255, "−H⁺", "빠름 · 방향족성 회복")
+    # C
+    m = Mol()
+    benzene(m, "c", 0, 0, start=0)
+    x = m.sub("x1", "c0", 0, "N")
+    y = m.sub("x2", x, 0, "N", kind="2")
+    m.ring("d", m.pos(y)[0] + 60, 0, 6, L, 180, arom=[0, 2, 4])
+    m.bond(y, "d0")
+    nme2(m, "d", "d3")
+    f.mol(m, 470, 255, scale=0.85)
+    f.cap(600, 300, "C (para 아조 화합물)")
+    f.box(20, 318, 760, 34, fill="#fff5f3", stroke="#e8b4ab")
+    f.text(400, 335, "D: N(CH₃)₂가 고리 평면에서 비틀려 첫 번째 화살표(N 비공유쌍 → 고리)가 불가능 → σ 착물 형성(rds)이 매우 느림 → 반응 ✗",
+           size=11.5, color=RED)
+    return f.render()
+
+
+# ------------------------------------------------------------------ 2010 #39 메커니즘
+def f2010_39_mech():
+    """RCOOH + 2 CH3Li: 산–염기 → 친핵성 첨가 → 이음이온 → H3O+ → gem-diol ⇌ 케톤"""
+    f = Fig(800, 330)
+    sc = 0.9
+    # 벤조산 + CH3–Li
+    ox, oy = 45, 105
+    m = Mol()
+    benzene(m, "r", 0, 0, start=90)
+    c = m.sub("c", "r1", 30)
+    m.sub("o1", c, 90, "O", kind="2")
+    m.sub("o2", c, -30, "O")
+    m.sub("h", "o2", 30, "H", length=26)
+    f.mol(m, ox, oy, scale=sc)
+    o2, h = _at(m, "o2", ox, oy, sc), _at(m, "h", ox, oy, sc)
+    li = Mol()
+    li.atom("c", 0, 0, "H_3C")
+    li.sub("li", "c", 0, "Li", length=34)
+    lx, ly = 175, 45
+    f.mol(li, lx, ly)
+    f.curly(lx + 21, ly + 3, h[0] + 5, h[1] - 9, bend=0.35)
+    f.curly(*_mid(o2, h, 0.55), o2[0] + 2, o2[1] + 11, bend=0.9)
+    f.text(130, 165, "① 산–염기 (빠름)", size=11.5, color=RED)
+    f.arrow(230, 105, 285, 105, "", "−CH₄↑")
+    # 카복실레이트 + CH3–Li
+    ox, oy = 315, 105
+    m = Mol()
+    benzene(m, "r", 0, 0, start=90)
+    c = m.sub("c", "r1", 30)
+    m.sub("o1", c, 90, "O", kind="2")
+    m.sub("o2", c, -30, "O^−")
+    m.label("o2", "OLi")
+    m.a["o2"][3] = "start"
+    f.mol(m, ox, oy, scale=sc)
+    cc, o1 = _at(m, "c", ox, oy, sc), _at(m, "o1", ox, oy, sc)
+    lx, ly = 425, 40
+    f.mol(li, lx, ly)
+    f.curly(lx + 22, ly + 4, cc[0] + 5, cc[1] - 3, bend=0.4)
+    f.curly(*_mid(cc, o1, 0.5), o1[0] - 9, o1[1] + 2, bend=0.9)
+    f.text(395, 165, "② 친핵성 첨가 (CH₃⁻ → C=O)", size=11.5, color=RED)
+    f.arrow(470, 105, 525, 105)
+    # 이음이온 사면체
+    ox, oy = 555, 115
+    m = Mol()
+    benzene(m, "r", 0, 0, start=90)
+    c = m.sub("c", "r1", 30)
+    m.sub("o1", c, 90, "OLi")
+    m.sub("o2", c, -30, "OLi", anchor="start")
+    m.sub("me", c, 30)
+    f.mol(m, ox, oy, scale=sc)
+    f.text(640, 165, "이음이온 사면체 (붕괴 ✗ → 3차 알코올 ✗)", size=11.5)
+    # 2행: H3O+ → gem-diol ⇌ acetophenone
+    f.arrow(250, 255, 330, 255, "H₃O^+", "(4) 1 M HCl")
+    ox, oy = 370, 265
+    m = Mol()
+    benzene(m, "r", 0, 0, start=90)
+    c = m.sub("c", "r1", 30)
+    m.sub("o1", c, 90, "OH")
+    m.sub("o2", c, -30, "OH", anchor="start")
+    m.sub("me", c, 30)
+    f.mol(m, ox, oy, scale=sc)
+    f.cap(420, 318, "gem-diol (수화물)")
+    f.eqarrow(505, 570, 255, "−H₂O", "")
+    ox, oy = 605, 265
+    m = Mol()
+    benzene(m, "r", 0, 0, start=90)
+    c = m.sub("c", "r1", 30)
+    m.sub("o1", c, 90, "O", kind="2")
+    m.sub("me", c, -30)
+    f.mol(m, ox, oy, scale=sc)
+    f.cap(650, 318, "A: acetophenone")
+    f.text(130, 240, "케톤은 산 처리(물 존재) 후에야", size=11.5)
+    f.text(130, 258, "생기므로 남은 CH₃Li와", size=11.5)
+    f.text(130, 276, "만나지 않는다", size=11.5)
+    return f.render()
+
+
+# ------------------------------------------------------------------ 2009 #25 메커니즘
+def f2009_25_mech():
+    """Claisen–Schmidt: 엔올레이트 → 알돌 첨가 → 양성자 이동 → E1cB 탈수"""
+    f = Fig(800, 380)
+    # (1) acetone + OH−
+    ox, oy = 70, 110
+    m = Mol()
+    c = m.atom("c", 0, 0)
+    m.sub("o", c, 90, "O", kind="2")
+    m.sub("me", c, 210)
+    a = m.sub("a", c, -30)
+    m.sub("h", a, 30, "H", length=24)
+    f.mol(m, ox, oy)
+    C, O, A, H = (_at(m, k, ox, oy) for k in ("c", "o", "a", "h"))
+    f.text(H[0] + 40, H[1] - 6, "HO^−", size=12)
+    f.lp(H[0] + 27, H[1] - 6, 0)
+    f.curly(H[0] + 25, H[1] - 1, H[0] + 8, H[1] + 1, bend=-0.4)
+    f.curly(*_mid(A, H, 0.5), *_mid(C, A, 0.5), bend=0.8)
+    f.curly(*_mid(C, O, 0.5), O[0] - 9, O[1] + 3, bend=-0.9)
+    f.arrow(170, 110, 220, 110, "", "−H₂O")
+    # (2) 엔올레이트 (탄소 음이온 형태) + PhCHO
+    ox, oy = 250, 110
+    m = Mol()
+    c = m.atom("c", 0, 0)
+    m.sub("o", c, 90, "O", kind="2")
+    m.sub("me", c, 210)
+    a = m.sub("a", c, -30)
+    f.mol(m, ox, oy)
+    A = _at(m, "a", ox, oy)
+    f.charge(A[0] + 2, A[1] + 13, "−")
+    f.lp(A[0] + 9, A[1] - 3, 30)
+    b = Mol()
+    k = b.atom("k", 0, 0)
+    b.sub("o", k, 120, "O", kind="2")
+    b.sub("h", k, 240, "H", length=22)
+    phenyl_at(b, "p", k, 0)
+    bx, by = 345, 105
+    f.mol(b, bx, by)
+    K, KO = _at(b, "k", bx, by), _at(b, "o", bx, by)
+    f.curly(A[0] + 12, A[1] - 6, K[0] - 6, K[1] + 1, bend=-0.5)
+    f.curly(*_mid(K, KO, 0.5), KO[0] + 10, KO[1] + 2, bend=0.9)
+    f.text(285, 172, "엔올레이트(탄소 음이온형)", size=11)
+    f.arrow(455, 110, 505, 110, "알돌 첨가", "")
+    # (3) 알콕사이드 → H2O → β-하이드록시 케톤
+    ox, oy = 530, 120
+    m = Mol()
+    c = m.atom("c", 0, 0)
+    m.sub("o", c, 90, "O", kind="2")
+    m.sub("me", c, 210)
+    a = m.sub("a", c, -30)
+    b2 = m.sub("b", a, 30)
+    m.sub("oh", b2, 90, "OH")
+    phenyl_at(m, "p", b2, -30)
+    f.mol(m, ox, oy)
+    f.text(650, 75, "(O^− + H₂O → OH)", size=11)
+    f.cap(610, 205, "β-하이드록시 케톤 (알돌)")
+    # 2행: E1cB
+    f.text(20, 235, "E1cB 탈수", size=12.5, anchor="start", weight="bold", color=RED)
+    ox, oy = 90, 300
+    m = Mol()
+    c = m.atom("c", 0, 0)
+    m.sub("o", c, 90, "O", kind="2")
+    m.sub("me", c, 210)
+    a = m.sub("a", c, -30)
+    m.sub("h", a, -90, "H", length=24)
+    b2 = m.sub("b", a, 30)
+    m.sub("oh", b2, 90, "OH")
+    phenyl_at(m, "p", b2, -30)
+    f.mol(m, ox, oy)
+    A, H = _at(m, "a", ox, oy), _at(m, "h", ox, oy)
+    f.text(H[0] - 42, H[1] + 4, "HO^−", size=12)
+    f.lp(H[0] - 28, H[1] + 4, 0)
+    f.curly(H[0] - 26, H[1] + 9, H[0] - 8, H[1] + 4, bend=-0.5)
+    f.curly(*_mid(A, H, 0.5), A[0] + 8, A[1] - 2, bend=-0.9)
+    f.arrow(260, 300, 315, 300, "α-H 제거", "")
+    ox, oy = 345, 300
+    m = Mol()
+    c = m.atom("c", 0, 0)
+    m.sub("o", c, 90, "O", kind="2")
+    m.sub("me", c, 210)
+    a = m.sub("a", c, -30)
+    b2 = m.sub("b", a, 30)
+    m.sub("oh", b2, 90, "OH")
+    phenyl_at(m, "p", b2, -30)
+    f.mol(m, ox, oy)
+    A, B2, OH = _at(m, "a", ox, oy), _at(m, "b", ox, oy), _at(m, "oh", ox, oy)
+    f.charge(A[0], A[1] + 13, "−")
+    f.curly(A[0] - 4, A[1] + 22, *_mid(A, B2, 0.5), bend=-0.9)
+    f.curly(*_mid(B2, OH, 0.5), OH[0] + 20, OH[1] - 4, bend=-0.9)
+    f.arrow(510, 300, 565, 300, "−OH^−", "(느림)")
+    ox, oy = 590, 300
+    m = Mol()
+    c = m.atom("c", 0, 0)
+    m.sub("o", c, 90, "O", kind="2")
+    m.sub("me", c, 210)
+    a = m.sub("a", c, -30)
+    b2 = m.sub("b", a, 30, kind="2")
+    phenyl_at(m, "p", b2, -30)
+    f.mol(m, ox, oy, scale=0.95)
+    f.cap(680, 362, "benzalacetone (E, 공액)")
+    f.text(160, 235, "→ 남은 CH₃에서 같은 과정을 한 번 더 반복 → (E,E)-dibenzalacetone", size=11.5, anchor="start")
+    return f.render()
+
+
 if __name__ == "__main__":
     import sys
     sys.path.insert(0, ".")
     from preview import shot
-    shot([f2011_36_scheme(), f2011_36_resonance(), f2010_39(), f2009_25()], sys.argv[1])
+    shot([f2011_36_scheme(), f2011_36_resonance(), f2011_36_mech(), f2010_39(), f2010_39_mech(), f2009_25(), f2009_25_mech()], sys.argv[1])

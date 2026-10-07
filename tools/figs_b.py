@@ -338,6 +338,7 @@ def f2011_4_grignard():
     m.sub("n", c, 0, "N", kind=3)
     f.mol(m, 170, 80)
     f.text(193, 60, "δ+", size=11, color=BLUE)
+    f.curly(214, 75, 231, 70, bend=-1.0)
     f.arrow(260, 80, 320, 80, "", "")
     # 이민 음이온 염
     m = Mol()
