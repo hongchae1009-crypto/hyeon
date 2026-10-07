@@ -74,7 +74,7 @@ def fused_iq(m, p, cx, cy, aromatic=True):
 
 # ------------------------------------------------------------------ 2013 #40 ethyl cyanoacetate
 def f2013_40():
-    f = Fig(800, 250)
+    f = Fig(800, 245)
     f.text(20, 20, "정답 ②  ethyl cyanoacetate  NC–CH₂–CO₂CH₂CH₃  (C₅H₇NO₂, M = 113)", size=13, anchor="start", weight="bold")
     legend(f, 560, 20, (("¹H NMR", RED), ("IR", BLUE), ("MS", PURPLE)))
     m = Mol()
@@ -96,14 +96,29 @@ def f2013_40():
     # MS
     f.box(360, 55, 425, 175)
     f.text(372, 75, "질량 스펙트럼: α-절단(아실 C–O 결합 끊어짐)", size=12, anchor="start", color=PURPLE, weight="bold")
-    f.text(470, 112, "[NC–CH_2–CO–OCH_2CH_3]^{+•}", size=12.5)
-    f.text(470, 132, "m/z 113 (M^{+•})", size=12, color=PURPLE)
-    f.arrow(588, 112, 648, 112, "− •OC_2H_5", "(45)", color=PURPLE)
-    f.text(715, 112, "NC–CH_2–C≡O^+", size=12.5)
-    f.text(715, 132, "m/z 68 (아실륨)", size=12, color=PURPLE)
-    f.text(372, 170, "113 − 45 = 68 : 에톡시 라디칼이 떨어진 아실륨 이온", size=11.5, anchor="start")
-    f.text(372, 192, "공명 안정화: NC–CH_2–C^+=O ↔ NC–CH_2–C≡O^+", size=11.5, anchor="start")
-    f.text(372, 214, "(①의 C₂H₅CO⁺ = 57, ④의 CH₃CO⁺ = 43이 주로 나와야 함)", size=11, anchor="start", color=GRAY)
+    m = Mol()
+    m.atom("n", 0, 0, "N")
+    m.sub("c1", "n", 0, kind=3)
+    m.sub("c2", "c1", 0)
+    m.sub("c3", "c2", -30)
+    m.sub("o2", "c3", -90, "O", kind="2")
+    m.sub("o1", "c3", 30, "O")
+    m.sub("c4", "o1", -30)
+    m.sub("c5", "c4", 30)
+    mx, my = 385, 112
+    f.mol(m, mx, my, scale=0.8)
+    f.raw(f'<path d="M378,88 L373,88 L373,150 L378,150 M523,88 L528,88 L528,150 L523,150" fill="none" stroke="{INK}" stroke-width="1.2"/>')
+    f.text(532, 88, "+•", size=11, anchor="start")
+    x3, y3 = A(m, "c3", 0, 0); x1, y1 = A(m, "o1", 0, 0)
+    bx, by = mx + 0.8 * (x3 + x1) / 2, my + 0.8 * (y3 + y1) / 2
+    f.curly(bx + 2, by - 4, bx + 20, by - 26, bend=-0.5, half=True)
+    f.text(450, 162, "m/z 113 (M^{+•})", size=11.5, color=PURPLE)
+    f.arrow(580, 118, 640, 118, "− •OC_2H_5", "(45)", color=PURPLE)
+    f.text(712, 112, "NC–CH_2–C≡O^+", size=12.5)
+    f.text(712, 132, "m/z 68 (아실륨)", size=12, color=PURPLE)
+    f.text(372, 182, "α-절단: 반쪽 화살표(전자 1개)로 C(O)–OEt 결합 균일 분해 → 113 − 45 = 68", size=11, anchor="start")
+    f.text(372, 200, "공명 안정화: NC–CH_2–C^+=O ↔ NC–CH_2–C≡O^+", size=11, anchor="start")
+    f.text(372, 218, "(①의 C₂H₅CO⁺ = 57, ④의 CH₃CO⁺ = 43이 주로 나와야 함)", size=11, anchor="start", color=GRAY)
     return f.render()
 
 
@@ -522,9 +537,44 @@ def f2004_6():
 
 # ------------------------------------------------------------------ 2004 #7
 def f2004_7():
-    f = Fig(800, 320)
+    f = Fig(800, 345)
     f.text(20, 20, "C₆H₁₀Br₂ (M = 240, 불포화도 1): C·CH₂·CH₃ 탄소가 각각 한 종류씩(2개씩 동등)", size=13, anchor="start", weight="bold")
-    # (1) 2,3-bis(bromomethyl)-2-butene
+    # (1) 1,3-dibromo-1,3-dimethylcyclobutane
+    m = Mol()
+    m.ring("q", 0, 0, 4, L / math.sqrt(2), 180)
+    m.sub("br1", "q0", 135, "Br")
+    m.sub("m1", "q0", 225)
+    m.sub("br2", "q2", 45, "Br")
+    m.sub("m2", "q2", -45)
+    f.mol(m, 100, 105)
+    f.cap(100, 170, "① 1,3-dibromo-1,3-")
+    f.cap(100, 188, "dimethylcyclobutane")
+    f.text(100, 206, "(cis / trans)", size=11, color=GRAY)
+    # (2) 1,2-dibromo-1,2-dimethylcyclobutane
+    m = Mol()
+    m.ring("q", 0, 0, 4, L / math.sqrt(2), 135)
+    m.sub("br1", "q0", 115, "Br")
+    m.sub("m1", "q0", 190)
+    m.sub("br2", "q1", 65, "Br")
+    m.sub("m2", "q1", -10)
+    f.mol(m, 295, 110)
+    f.cap(295, 170, "② 1,2-dibromo-1,2-")
+    f.cap(295, 188, "dimethylcyclobutane")
+    f.text(295, 206, "(cis(메조) / trans(라셈))", size=11, color=GRAY)
+    # (3) 3,4-dibromo-3-hexene (참고 해설 ③)
+    m = Mol()
+    m.atom("c3", 0, 0)
+    m.sub("c4", "c3", 0, kind="2")
+    m.sub("br1", "c3", 120, "Br")
+    m.sub("c2", "c3", 240)
+    m.sub("c1", "c2", 180)
+    m.sub("br2", "c4", 60, "Br")
+    m.sub("c5", "c4", -60)
+    m.sub("c6", "c5", 0)
+    f.mol(m, 470, 105)
+    f.cap(485, 170, "③ 3,4-dibromo-3-hexene")
+    f.text(485, 188, "(E / Z)", size=11, color=GRAY)
+    # (4) 1,4-dibromo-2,3-dimethyl-2-butene
     m = Mol()
     m.atom("c2", 0, 0)
     m.sub("c3", "c2", 0, kind="2")
@@ -534,39 +584,16 @@ def f2004_7():
     m.sub("b2", "c3", -60)
     m.sub("br2", "b2", 0, "Br")
     m.sub("m2", "c3", 60)
-    f.mol(m, 100, 110)
-    f.cap(115, 175, "① 1,4-dibromo-2,3-")
-    f.cap(115, 193, "dimethyl-2-butene (E/Z)")
-    # (2) 1,2-dibromo-1,2-dimethylcyclobutane
-    m = Mol()
-    m.ring("q", 0, 0, 4, L / math.sqrt(2), 135)
-    m.sub("br1", "q0", 115, "Br")
-    m.sub("m1", "q0", 190)
-    m.sub("br2", "q1", 65, "Br")
-    m.sub("m2", "q1", -10)
-    f.mol(m, 330, 110)
-    f.cap(330, 175, "② 1,2-dibromo-1,2-")
-    f.cap(330, 193, "dimethylcyclobutane")
-    # (3) 1,3-dibromo-1,3-dimethylcyclobutane
-    m = Mol()
-    m.ring("q", 0, 0, 4, L / math.sqrt(2), 180)
-    m.sub("br1", "q0", 135, "Br")
-    m.sub("m1", "q0", 225)
-    m.sub("br2", "q2", 45, "Br")
-    m.sub("m2", "q2", -45)
-    f.mol(m, 540, 110)
-    f.cap(540, 175, "③ 1,3-dibromo-1,3-")
-    f.cap(540, 193, "dimethylcyclobutane")
-    f.text(700, 90, "각 구조:", size=11.5, weight="bold")
-    f.text(700, 110, "C–Br 사차 C ×2", size=11, color=RED)
-    f.text(700, 128, "CH₂ ×2 (DEPT-135 ↓)", size=11, color=BLUE)
-    f.text(700, 146, "CH₃ ×2 (DEPT-135 ↑)", size=11, color=GREEN)
-    f.text(700, 164, "CH 없음 (DEPT-90 빈칸)", size=11, color=GRAY)
+    f.mol(m, 660, 105)
+    f.cap(675, 170, "④ 1,4-dibromo-2,3-")
+    f.cap(675, 188, "dimethyl-2-butene (E/Z)")
+    f.text(400, 232, "공통: 사차 C ×2 (DEPT 모두 없음) · CH₂ ×2 (DEPT-135 ↓) · CH₃ ×2 (DEPT-135 ↑) · CH 없음 (DEPT-90 빈칸)",
+           size=11.3, color=INK)
     # MS
-    bars(f, 70, 295, 200, 70, 238, 246, [(240, 51, "240"), (242, 100, "242"), (244, 49, "244")], ticks=())
-    f.text(310, 238, "M : M+2 : M+4 ≈ 1 : 2 : 1 → Br 2개", size=12, anchor="start", color=PURPLE, weight="bold")
-    f.text(310, 260, "(1 + 0.98)² = 1 : 1.96 : 0.96  (⁷⁹Br : ⁸¹Br = 100 : 98)", size=11.5, anchor="start")
-    f.text(310, 282, "240 − 2×79 = 82 → C₆H₁₀ → C₆H₁₀Br₂, 불포화도 = (14 − 12)/2 = 1", size=11.5, anchor="start")
+    bars(f, 70, 325, 200, 65, 238, 246, [(240, 51, "240"), (242, 100, "242"), (244, 49, "244")], ticks=())
+    f.text(310, 268, "M : M+2 : M+4 ≈ 1 : 2 : 1 → Br 2개", size=12, anchor="start", color=PURPLE, weight="bold")
+    f.text(310, 290, "(1 + 0.98)² = 1 : 1.96 : 0.96  (⁷⁹Br : ⁸¹Br = 100 : 98)", size=11.5, anchor="start")
+    f.text(310, 312, "13-규칙: 240 − 2×79 = 82 = 13×6 + 4 → C₆H₁₀ → C₆H₁₀Br₂, 불포화도 1", size=11.5, anchor="start")
     return f.render()
 
 
@@ -694,4 +721,320 @@ def f2002_15():
     tag(f, m, "e2", ox, oy, 40, 15, "δ 0.89 (t, 3H) / 9.2", anchor="start")
     tag(f, m, "q", ox, oy, -50, -55, "사차 C 42.5", color=GREEN, anchor="end")
     f.cap(590, 245, "C (C₆H₁₂O₂)")
+    return f.render()
+
+
+# ================================================================== 참고 해설 반영 — 메커니즘 그림
+def bicyc(m, p, cx, cy, arom=(0, 2, 4)):
+    """벤젠(왼쪽) + 오른쪽 6원 고리 원자 자리(결합 없음).
+    반환 dict: 1(위 왼쪽, 8a에 붙음), 2, 3, 4(4a에 붙음), 4a, 8a, 5–8.  결합은 호출한 쪽에서 직접 잇는다."""
+    m.ring(p + "L", cx, cy, 6, L, 90, arom=list(arom))
+    rx = cx + 2 * L * math.cos(math.radians(30))
+    m.ring(p + "R", rx, cy, 6, L, 90, bonds=False)
+    return {"1": p + "R0", "2": p + "R1", "3": p + "R2", "4": p + "R3", "4a": p + "L2", "8a": p + "L1",
+            "5": p + "L3", "6": p + "L4", "7": p + "L5", "8": p + "L0", "c": (rx, cy)}
+
+
+def mid(f_or_none, m, a1, a2, ox, oy, t=0.5):
+    x1, y1 = A(m, a1, ox, oy)
+    x2, y2 = A(m, a2, ox, oy)
+    return x1 + (x2 - x1) * t, y1 + (y2 - y1) * t
+
+
+# ------------------------------------------------------------------ 2003 #17-3 친핵성 아실 치환
+def f2003_17c():
+    f = Fig(800, 250)
+    f.text(20, 20, "17-3  페놀 + CH₃COCl / 염기: 친핵성 아실 치환(첨가–제거) 메커니즘", size=13, anchor="start", weight="bold")
+    # (1) PhOH + CH3COCl
+    m = Mol()
+    benzene(m, "r", 0, 0, 90)
+    m.sub("o", "r0", 90, "O")
+    m.sub("h", "o", 150, "H")
+    ox, oy = 70, 150
+    f.mol(m, ox, oy)
+    xo, yo = A(m, "o", ox, oy)
+    f.lp(xo + 9, yo, 0)
+    m2 = Mol()
+    m2.atom("c", 0, 0)
+    m2.sub("o", "c", 90, "O", kind="2")
+    m2.sub("me", "c", 210, "H_3C", anchor="end")
+    m2.sub("cl", "c", -30, "Cl")
+    ox2, oy2 = 175, 115
+    f.mol(m2, ox2, oy2)
+    xc, yc = A(m2, "c", ox2, oy2)
+    f.curly(xo + 12, yo - 4, xc - 4, yc + 2, bend=-0.45)
+    xm, ym = mid(None, m2, "c", "o", ox2, oy2)
+    f.curly(xm + 4, ym, xm + 22, ym - 22, bend=-0.6)
+    f.text(130, 222, "① O 비공유쌍이 C=O 탄소 공격(첨가)", size=11, color=RED)
+    f.arrow(240, 115, 290, 115)
+    # (2) 사면체 중간체
+    m3 = Mol()
+    m3.atom("c", 0, 0)
+    m3.sub("o", "c", 90, "O^−")
+    m3.sub("me", "c", 180, "H_3C", anchor="end")
+    m3.sub("cl", "c", 0, "Cl")
+    m3.sub("op", "c", -90, "O^+")
+    m3.sub("h", "op", 0, "H")
+    m3.sub("ph", "op", -150, "Ph", anchor="end")
+    ox3, oy3 = 345, 115
+    f.mol(m3, ox3, oy3)
+    xo3, yo3 = A(m3, "o", ox3, oy3)
+    xc3, yc3 = A(m3, "c", ox3, oy3)
+    f.curly(xo3 + 7, yo3 + 2, xc3 + 5, yc3 - 12, bend=-0.6)
+    xm, ym = mid(None, m3, "c", "cl", ox3, oy3)
+    f.curly(xm, ym + 3, xm + 22, ym + 18, bend=0.5)
+    f.text(345, 222, "② C=O 재형성, Cl⁻ 이탈(제거)", size=11, color=RED)
+    f.text(345, 200, "사면체 중간체", size=11, color=GRAY)
+    f.arrow(410, 115, 460, 115, "−Cl^−")
+    # (3) 옥소늄 + 염기
+    m4 = Mol()
+    m4.atom("c", 0, 0)
+    m4.sub("o", "c", 90, "O", kind="2")
+    m4.sub("me", "c", 210, "H_3C", anchor="end")
+    m4.sub("op", "c", -30, "O^+")
+    m4.sub("h", "op", -90, "H")
+    m4.sub("ph", "op", 30, "Ph", anchor="start")
+    ox4, oy4 = 520, 105
+    f.mol(m4, ox4, oy4)
+    xh, yh = A(m4, "h", ox4, oy4)
+    f.text(xh + 10, yh + 40, "Base", size=11.5, anchor="start")
+    f.curly(xh + 14, yh + 32, xh + 4, yh + 8, bend=-0.5)
+    xm, ym = mid(None, m4, "op", "h", ox4, oy4)
+    f.curly(xm - 3, ym, xm - 18, ym - 18, bend=0.6)
+    f.text(540, 222, "③ 염기가 O–H 탈양성자화", size=11, color=RED)
+    f.arrow(610, 115, 655, 115)
+    m5 = Mol()
+    m5.atom("c", 0, 0)
+    m5.sub("o", "c", 90, "O", kind="2")
+    m5.sub("me", "c", 210, "H_3C", anchor="end")
+    m5.sub("op", "c", -30, "O")
+    m5.sub("ph", "op", 30, "Ph", anchor="start")
+    f.mol(m5, 700, 115)
+    f.cap(725, 170, "C: phenyl acetate", color=RED)
+    f.text(725, 190, "(AlCl₃ 없음 → 고리 C-아실화 ✗)", size=10.5, color=GRAY)
+    return f.render()
+
+
+# ------------------------------------------------------------------ 2007 #12 Bischler–Napieralski 메커니즘
+def _bn(m, stage):
+    """stage: amide | imidoyl | nitrilium | sigma | B"""
+    n = bicyc(m, "q", 0, 0, arom=(2, 4) if stage == "sigma" else (0, 2, 4))
+    m.label(n["2"], {"amide": "NH", "imidoyl": "N", "nitrilium": "N^+", "sigma": "N", "B": "N"}[stage])
+    m.bond(n["2"], n["3"])
+    m.bond(n["3"], n["4"])
+    m.bond(n["4"], n["4a"])
+    m.sub("me", n["1"], 90)
+    if stage == "amide":
+        m.sub("o", n["1"], 30, "O", kind="2")
+        m.bond(n["1"], n["2"])
+    elif stage == "imidoyl":
+        m.sub("o", n["1"], 30, "OPO_2^−", anchor="start")
+        m.bond(n["1"], n["2"], "2")
+    elif stage == "nitrilium":
+        m.bond(n["1"], n["2"], 3)
+    elif stage == "sigma":
+        m.bond(n["8a"], n["1"])
+        m.bond(n["1"], n["2"], "in", n["c"])
+        m.sub("h8a", n["8a"], 90, "H", length=22)
+    else:
+        m.bond(n["8a"], n["1"])
+        m.bond(n["1"], n["2"], "in", n["c"])
+    return n
+
+
+def f2007_12_mech():
+    f = Fig(800, 440)
+    f.text(20, 20, "Bischler–Napieralski 고리화 (P₂O₅): 아마이드 활성화 → 나이트릴륨 이온 → 분자 내 친전자성 방향족 치환", size=13, anchor="start", weight="bold")
+    # 1행: 아마이드 → 이미도일 인산 에스터 → 나이트릴륨
+    m = Mol(); n = _bn(m, "amide"); ox, oy = 70, 130; f.mol(m, ox, oy)
+    f.cap(115, 200, "N-phenethylacetamide")
+    xo, yo = A(m, "o", ox, oy)
+    f.lp(xo + 9, yo - 3, 0)
+    f.text(xo + 30, yo - 30, "P_2O_5", size=11.5, anchor="start", color=BLUE)
+    f.curly(xo + 9, yo - 10, xo + 28, yo - 26, bend=-0.6, color=BLUE)
+    f.arrow(215, 125, 285, 125, "O가 P 공격", "(활성화)")
+    m = Mol(); n = _bn(m, "imidoyl"); ox, oy = 320, 130; f.mol(m, ox, oy)
+    f.cap(370, 200, "이미도일 인산 에스터")
+    xn, yn = A(m, n["2"], ox, oy)
+    f.lp(xn + 9, yn + 4, -30)
+    x1, y1 = mid(None, m, n["1"], n["2"], ox, oy)
+    f.curly(xn + 10, yn + 10, x1 + 6, y1 + 6, bend=0.9)
+    x2, y2 = mid(None, m, n["1"], "o", ox, oy, 0.55)
+    f.curly(x2, y2 - 3, x2 + 18, y2 - 24, bend=-0.5)
+    f.arrow(475, 125, 545, 125, "−PO_3^−·OH⁻", "(이탈기 제거)")
+    m = Mol(); n = _bn(m, "nitrilium"); ox, oy = 585, 130; f.mol(m, ox, oy)
+    f.cap(635, 200, "나이트릴륨 이온  R–C≡N⁺–R′", color=RED)
+    f.text(635, 218, "(강한 친전자체)", size=11, color=GRAY)
+    # 2행: 나이트릴륨 EAS → σ 착물 → B
+    m = Mol(); n = _bn(m, "nitrilium"); ox, oy = 70, 330; f.mol(m, ox, oy)
+    x1, y1 = mid(None, m, n["8"], n["8a"], ox, oy)
+    x2, y2 = A(m, n["1"], ox, oy)
+    f.curly(x1 + 3, y1 - 4, x2 - 3, y2 - 2, bend=-0.6)
+    x3, y3 = mid(None, m, n["1"], n["2"], ox, oy)
+    f.curly(x3 + 4, y3 - 2, x3 + 20, y3 + 14, bend=-0.6)
+    f.text(115, 400, "고리 π 전자(오쏘 C)가 C≡N⁺ 탄소 공격", size=11, color=RED)
+    f.text(115, 418, "→ 6원 고리 (rds)", size=11, color=RED)
+    f.arrow(215, 325, 285, 325)
+    m = Mol(); n = _bn(m, "sigma"); ox, oy = 320, 330; f.mol(m, ox, oy)
+    x8, y8 = A(m, n["8"], ox, oy)
+    f.charge(x8, y8 - 14)
+    xh, yh = A(m, "h8a", ox, oy)
+    x4, y4 = mid(None, m, n["8a"], "h8a", ox, oy)
+    x5, y5 = mid(None, m, n["8"], n["8a"], ox, oy)
+    f.curly(x4 - 3, y4, x5 + 1, y5 - 3, bend=0.8)
+    f.text(xh + 8, yh - 6, "(−H⁺)", size=11, color=RED, anchor="start")
+    f.text(370, 400, "σ 착물(아레늄 이온)", size=11, color=GRAY)
+    f.text(370, 418, "C–H 전자쌍이 고리로 → 방향족성 회복", size=11, color=RED)
+    f.arrow(475, 325, 545, 325, "−H^+")
+    m = Mol(); n = _bn(m, "B"); ox, oy = 585, 330; f.mol(m, ox, oy)
+    f.cap(635, 400, "B: 1-methyl-3,4-dihydroisoquinoline", color=RED)
+    f.text(635, 418, "C₁₀H₁₃NO − H₂O = C₁₀H₁₁N", size=11, color=GRAY)
+    return f.render()
+
+
+# ------------------------------------------------------------------ 2008 #13 NaH / CH3I 메커니즘
+def f2008_13_mech():
+    f = Fig(800, 200)
+    f.text(20, 20, "B의 생성: ① NaH(H⁻)가 더 산성인 O–H 탈양성자화 → ② 알콕사이드의 CH₃I S_N2 (Williamson)", size=13, anchor="start", weight="bold")
+    m = Mol(); butynol(m, "O"); m.sub("ho", "o", -30, "H")
+    ox, oy = 30, 105; f.mol(m, ox, oy)
+    xh, yh = A(m, "ho", ox, oy)
+    f.text(xh + 28, yh + 22, "H^−  Na^+", size=12, anchor="start")
+    f.curly(xh + 28, yh + 14, xh + 7, yh + 4, bend=0.5)
+    x1, y1 = mid(None, m, "o", "ho", ox, oy)
+    xo0, yo0 = A(m, "o", ox, oy)
+    f.curly(x1 + 2, y1 + 5, xo0 + 1, yo0 + 13, bend=0.7)
+    f.text(140, 175, "pKₐ: O–H ≈ 16 < ≡C–H ≈ 25 → H₂↑ + RO⁻Na⁺", size=11, color=GRAY)
+    f.arrow(275, 105, 330, 105, "−H_2")
+    m = Mol(); butynol(m, "O^−")
+    ox, oy = 340, 105; f.mol(m, ox, oy)
+    xo, yo = A(m, "o", ox, oy)
+    f.lp(xo + 3, yo - 11, 90)
+    m2 = Mol(); m2.atom("c", 0, 0, "H_3C", "start"); m2.atom("i", 50, 0, "I")
+    m2.bond("c", "i")
+    ox2, oy2 = xo + 52, yo - 30
+    f.mol(m2, ox2, oy2)
+    f.curly(xo + 8, yo - 8, ox2 + 2, oy2 + 10, bend=-0.4)
+    f.curly(ox2 + 36, oy2 - 4, ox2 + 52, oy2 - 14, bend=-0.6)
+    f.text(470, 175, "후면 공격, I⁻ 이탈 (S_N2)", size=11, color=GRAY)
+    f.arrow(590, 105, 630, 105)
+    m = Mol(); butynol(m, "OCH_3")
+    f.mol(m, 655, 105, scale=0.8)
+    f.cap(715, 150, "B (C₅H₈O)", color=GREEN)
+    return f.render()
+
+
+# ------------------------------------------------------------------ 2015 #10 (재사용) 2-bromoanisole MS 조각화
+def r2015_10_ms():
+    f = Fig(800, 230)
+    f.text(20, 20, "2-bromoanisole의 질량 분석 조각화: m/z 186 → 171 (−•CH₃) → 143 (−CO, 고리 축소)", size=13, anchor="start", weight="bold")
+    m = Mol(); benzene(m, "r", 0, 0, 90)
+    m.sub("o", "r0", 90, "O")
+    m.sub("me", "o", 30, "CH_3", anchor="start")
+    m.sub("br", "r5", 150, "Br")
+    ox, oy = 100, 135; f.mol(m, ox, oy)
+    f.raw(f'<path d="M40,60 L33,60 L33,200 L40,200 M175,60 L182,60 L182,200 L175,200" fill="none" stroke="{INK}" stroke-width="1.3"/>')
+    f.text(190, 62, "+•", size=12, anchor="start")
+    x1, y1 = mid(None, m, "o", "me", ox, oy)
+    f.curly(x1 + 2, y1 - 4, x1 + 26, y1 - 22, bend=-0.5, half=True)
+    f.text(108, 218, "M⁺• m/z 186 (⁸¹Br: 188)", size=11.5, color=PURPLE)
+    f.arrow(210, 130, 275, 130, "−•CH_3", "(15)", color=PURPLE)
+    m = Mol(); m.ring("r", 0, 0, 6, L, 90, arom=[2, 4])
+    m.sub("o", "r0", 90, "O", kind="2")
+    m.sub("br", "r5", 150, "Br")
+    ox, oy = 340, 140; f.mol(m, ox, oy)
+    x, y = A(m, "r1", ox, oy)
+    f.charge(x + 10, y - 2)
+    f.text(345, 218, "m/z 171 (C₆H₄BrO⁺)", size=11.5, color=PURPLE)
+    f.arrow(420, 130, 510, 130, "−CO (28)", "고리 축소", color=PURPLE)
+    m = Mol(); m.ring("p", 0, 0, 5, L / (2 * math.sin(math.radians(36))), 90, arom=[1, 3])
+    m.sub("br", "p0", 90, "Br")
+    ox, oy = 580, 150; f.mol(m, ox, oy)
+    xp, yp = A(m, "p0", ox, oy)
+    f.charge(xp + 14, yp + 4)
+    f.text(585, 218, "m/z 143 (C₅H₄Br⁺)", size=11.5, color=PURPLE)
+    f.text(650, 80, "두 조각 모두 Br 포함", size=11, anchor="start", color=GRAY)
+    f.text(650, 98, "→ 171/173, 143/145 쌍", size=11, anchor="start", color=GRAY)
+    return f.render()
+
+
+# ------------------------------------------------------------------ 2017 #6 (재사용) 고리 C₉H₈O₂ 후보 비교
+def _cand(m, kind):
+    n = bicyc(m, "q", 0, 0)
+    for a, b in (("1", "2"), ("2", "3"), ("3", "4")):
+        m.bond(n[a], n[b])
+    m.bond(n["8a"], n["1"]); m.bond(n["4"], n["4a"])
+    if kind == "lactone":
+        m.sub("o", n["1"], 90, "O", kind="2"); m.label(n["2"], "O")
+    elif kind == "iso4":
+        m.sub("o", n["4"], -90, "O", kind="2"); m.label(n["2"], "O")
+    else:
+        m.sub("o", n["4"], -90, "O", kind="2"); m.label(n["1"], "O")
+    return n
+
+
+def r2017_6_cand():
+    f = Fig(800, 270)
+    f.text(20, 20, "C₉H₈O₂(불포화도 6 = 벤젠 4 + C=O 1 + 고리 1)의 이환 후보 비교", size=13, anchor="start", weight="bold")
+    data = [("lactone", "isochroman-1-one (락톤)", ["CH₂ 2개: t, t", "NaBH₄ → 반응 ✗ (에스터)"], GRAY),
+            ("iso4", "isochroman-4-one", ["CH₂ 2개: s, s (이웃 H 없음)", "NaBH₄ → 2차 알코올"], GRAY),
+            ("chroman", "chroman-4-one ✔", ["O–CH₂ 4.52 t, CH₂C=O 2.80 t", "NaBH₄ → 2차 알코올"], RED)]
+    for i, (k, name, rows, c) in enumerate(data):
+        m = Mol(); n = _cand(m, k)
+        ox, oy = 70 + i * 260, 105
+        f.mol(m, ox, oy)
+        f.cap(ox + 40, 205, name, color=c)
+        for j, t in enumerate(rows):
+            f.text(ox + 40, 226 + j * 18, t, size=11, color=c)
+    return f.render()
+
+
+# ------------------------------------------------------------------ 2022 서술형 9 (재사용) C(2-tetralone) 생성 메커니즘
+def _tet(m, stage):
+    """stage: acyl | cation | sigma | C"""
+    n = bicyc(m, "t", 0, 0, arom=(0, 4) if stage == "sigma" else (0, 2, 4))
+    m.bond(n["8a"], n["1"])
+    m.bond(n["1"], n["2"])
+    if stage == "acyl":
+        m.sub("o", n["2"], 30, "O^+", kind=3)
+        m.bond(n["3"], n["4"], "2")
+    else:
+        m.sub("o", n["2"], 30, "O", kind="2")
+        m.bond(n["2"], n["3"])
+        m.bond(n["3"], n["4"])
+        if stage != "cation":
+            m.bond(n["4"], n["4a"])
+    if stage == "sigma":
+        m.sub("h", n["4a"], -60, "H", length=24)
+    return n
+
+
+def r2022_9_mech():
+    f = Fig(800, 250)
+    f.text(20, 20, "C(2-tetralone)의 생성: 아실륨 이온 + 에틸렌 → 1차 탄소 양이온 → 분자 내 Friedel–Crafts 알킬화(EAS)", size=13, anchor="start", weight="bold")
+    m = Mol(); n = _tet(m, "acyl"); ox, oy = 60, 120; f.mol(m, ox, oy)
+    x1, y1 = mid(None, m, n["3"], n["4"], ox, oy)
+    x2, y2 = A(m, n["2"], ox, oy)
+    f.curly(x1 + 6, y1, x2 + 6, y2 + 4, bend=0.7)
+    f.text(110, 195, "PhCH₂C≡O⁺ (AlCl₃) + CH₂=CH₂", size=11, color=RED)
+    f.text(110, 213, "π 전자가 아실륨 C 공격", size=11, color=RED)
+    f.arrow(195, 120, 245, 120)
+    m = Mol(); n = _tet(m, "cation"); ox, oy = 270, 120; f.mol(m, ox, oy)
+    x4, y4 = A(m, n["4"], ox, oy)
+    f.charge(x4 + 4, y4 + 13)
+    x1, y1 = mid(None, m, n["4a"], n["5"], ox, oy)
+    f.curly(x1 + 5, y1, x4 - 4, y4 + 2, bend=-0.7)
+    f.text(320, 195, "1차 C⁺ ← 고리 π 전자(오쏘)", size=11, color=RED)
+    f.text(320, 213, "분자 내 첨가 (6원 고리)", size=11, color=RED)
+    f.arrow(405, 120, 455, 120, "첨가")
+    m = Mol(); n = _tet(m, "sigma"); ox, oy = 480, 120; f.mol(m, ox, oy)
+    x5, y5 = A(m, n["5"], ox, oy)
+    f.charge(x5 - 14, y5 + 4)
+    xh, yh = A(m, "h", ox, oy)
+    f.text(xh + 18, yh + 4, "−H⁺", size=11.5, color=RED, anchor="start")
+    f.text(525, 195, "σ 착물 → H⁺ 제거", size=11, color=RED)
+    f.text(525, 213, "방향족성 회복", size=11, color=RED)
+    f.arrow(612, 120, 648, 120, "제거")
+    m = Mol(); n = _tet(m, "C"); ox, oy = 680, 120; f.mol(m, ox, oy, scale=0.85)
+    f.cap(720, 195, "C (C₁₀H₁₀O)", color=GREEN)
     return f.render()

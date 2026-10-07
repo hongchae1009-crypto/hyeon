@@ -533,9 +533,9 @@ def f2007_10():
 def f2006_9():
     f = Fig(800, 290)
     specs = [("aniline", False, False, "4.6", INK),
-             ("N,N-dimethylaniline", False, True, "5.1 (최대)", GREEN),
-             ("2,4,6-trinitroaniline", True, False, "≈ −9.4 (최소)", RED),
-             ("2,4,6-trinitro-N,N-dimethylaniline", True, True, "≈ −4.8", INK)]
+             ("N,N-dimethylaniline", False, True, "5.15 (최대)", GREEN),
+             ("2,4,6-trinitroaniline", True, False, "≈ −10 (최소)", RED),
+             ("2,4,6-trinitro-N,N-dimethylaniline", True, True, "≈ −5", INK)]
     xs = [90, 280, 480, 680]
     for (name, nitro, me2, pk, col), x in zip(specs, xs):
         m = Mol()
@@ -543,8 +543,8 @@ def f2006_9():
         f.mol(m, x, 110, scale=0.82)
         f.text(x, 186, name, size=11 if len(name) < 25 else 10, color=col, weight="bold")
         f.text(x, 204, "pKₐH " + pk, size=11.5, color=col)
-    f.text(20, 236, "• NMe₂: 메틸의 +I로 N 전자 밀도 ↑ → aniline보다 강한 염기.  • 2,4,6-NO₂: ortho/para에서 N 비공유쌍을 −M으로 끌어감 → 극도로 약한 염기", size=11, anchor="start")
-    f.text(20, 258, "• trinitro-NMe₂: o-NO₂와 N-CH₃의 입체 반발로 NMe₂가 고리 면에서 비틀림 → 공명 억제 → trinitroaniline보다 약 10⁴배 강한 염기", size=11, anchor="start")
+    f.text(20, 236, "• NMe₂: 메틸의 +I와 o-H와의 입체 반발(공명 약간 감소)로 N 전자 밀도 ↑.  • 2,4,6-NO₂: ortho/para에서 N 비공유쌍을 −M으로 끌어감 → 극도로 약한 염기", size=11, anchor="start")
+    f.text(20, 258, "• trinitro-NMe₂: o-NO₂와 N-CH₃의 입체 반발로 NMe₂가 고리 면에서 비틀림 → 공명 억제 → trinitroaniline보다 약 10⁵배 강한 염기", size=11, anchor="start")
     f.text(20, 280, "  (단, NO₂ 3개의 강한 −I 효과는 남으므로 N,N-dimethylaniline보다는 훨씬 약하다)", size=11, anchor="start", color=GRAY)
     return f.render()
 
@@ -736,8 +736,313 @@ def f2010_34():
     f.text(20, 276, "⑤ ✗ 누적(cumulated) 이중 결합: 두 π가 직교하므로 공액이 아니다", size=12, anchor="start")
     return f.render()
 
+# ================================================================== 참고 해설 반영 메커니즘 그림
+def _push_pna(f, ox, oy, amine="H", show_ortho=False):
+    """p-니트로아닐린형 push–pull 공명: 중성 구조(굽은 화살표) ↔ 퀴노이드 전하 분리 구조.
+    amine: 'H'(NH₂) 또는 'Me'(NMe₂). 반환: 두 번째 구조의 x 오프셋."""
+    sub_lab = "H" if amine == "H" else None
+    # (1) 중성 구조
+    m = Mol()
+    benzene(m, "p", 0, 0, 90)
+    n = m.sub("n", "p0", 90, "N")
+    m.sub("h1", n, 150, sub_lab)
+    m.sub("h2", n, 30, sub_lab)
+    nn = m.sub("nn", "p3", -90, "N^+")
+    m.sub("o1", nn, -30, "O", kind="2")
+    m.sub("o2", nn, -150, "O^−")
+    if show_ortho:
+        m.sub("q1", "p1", 30, "NO_2", anchor="start")
+        m.sub("q5", "p5", 150, "O_2N", anchor="end")
+    f.mol(m, ox, oy)
+    f.lp(ox, oy - 71, 0)
+    f.curly(ox + 5, oy - 73, ox + 3, oy - 46, bend=-0.9)
+    f.curly(ox + 15, oy - 19, ox + 28, oy + 1, bend=-0.6)
+    f.curly(ox + 15, oy + 18, ox + 4, oy + 44, bend=0.6)
+    f.curly(ox + 12, oy + 66, ox + 31, oy + 78, bend=0.7)
+    f.resarrow(ox + 62, ox + 102, oy)
+    # (2) 퀴노이드 구조
+    x2 = ox + 165
+    m = Mol()
+    m.ring("p", 0, 0, 6, L, 90, arom=[1, 4])
+    n = m.sub("n", "p0", 90, "N^+", kind="2")
+    m.sub("h1", n, 150, sub_lab)
+    m.sub("h2", n, 30, sub_lab)
+    nn = m.sub("nn", "p3", -90, "N^+", kind="2")
+    m.sub("o1", nn, -30, "O^−")
+    m.sub("o2", nn, -150, "O^−")
+    if show_ortho:
+        m.sub("q1", "p1", 30, "NO_2", anchor="start")
+        m.sub("q5", "p5", 150, "O_2N", anchor="end")
+    f.mol(m, x2, oy)
+    return x2
 
-ALL = [f2012_35, f2009_21, f2013_35, f2012_38, f2010_35, f2007_10, f2006_9, f2004_9, f2009_22, f2013_34, f2011_34, f2010_34]
+
+def _orb_pair(f, x, y, twisted=False, lab="N"):
+    """고리 p 궤도(세로) 3개 + N 비공유쌍 궤도: 평면이면 세로(평행), 비틀리면 가로(직교)."""
+    line(f, x, y, x + 120, y, w=2)
+    for k in range(4):
+        f.raw(f'<circle cx="{x + 40 * k}" cy="{y}" r="3.2" fill="{INK}"/>')
+    for k in range(1, 4):
+        f.porb(x + 40 * k, y, 1, rx=7, ry=14)
+    if twisted:
+        f.raw(f'<ellipse cx="{x - 15}" cy="{y}" rx="15" ry="6" fill="{ORANGE}" fill-opacity="0.85" stroke="{INK}"/>')
+        f.raw(f'<ellipse cx="{x + 15}" cy="{y}" rx="15" ry="6" fill="#fff" stroke="{INK}"/>')
+    else:
+        f.raw(f'<ellipse cx="{x}" cy="{y - 14}" rx="7" ry="14" fill="{ORANGE}" fill-opacity="0.85" stroke="{INK}"/>')
+        f.raw(f'<ellipse cx="{x}" cy="{y + 14}" rx="7" ry="14" fill="#fff" stroke="{INK}"/>')
+    f.text(x + 60, y + 38, lab, size=11.5, weight="bold")
+
+
+def f2006_9_mech():
+    f = Fig(800, 330)
+    f.text(20, 18, "① 2,4,6-trinitroaniline: N 비공유쌍이 고리를 거쳐 NO₂까지 비편재화(−M) — 굽은 화살표", size=12.5, anchor="start", weight="bold")
+    x2 = _push_pna(f, 95, 150, "H", show_ortho=True)
+    f.text(95, 262, "중성 구조", size=11)
+    f.text(x2, 262, "전하 분리(퀴노이드) 구조: 기여 큼", size=11, color=RED)
+    f.text(20, 290, "양성자화하면 이 공명 안정화를 모두 잃음 → 짝산 pKₐ ≈ −10 (최약 염기)", size=11.5, color=RED, anchor="start")
+    f.text(20, 310, "(ortho-NO₂ 두 개도 같은 방식으로 N 비공유쌍을 끌어간다)", size=11, color=GRAY, anchor="start")
+    # 오른쪽: 궤도 정렬
+    f.box(445, 34, 345, 286, fill="#f7f9fc")
+    f.text(460, 54, "② N 비공유쌍 궤도와 고리 p 궤도의 정렬", size=12, anchor="start", weight="bold")
+    _orb_pair(f, 520, 110, False, "평면 NH₂ / NMe₂(오쏘 H만)")
+    f.text(690, 104, "평행 → 겹침 최대", size=11, anchor="start", color=BLUE)
+    f.text(690, 120, "→ 공명(+M) 작동", size=11, anchor="start", color=BLUE)
+    _orb_pair(f, 520, 215, True, "o-NO₂ 사이에 낀 NMe₂ (비틀림)")
+    f.text(690, 209, "직교 → 겹침 0", size=11, anchor="start", color=RED)
+    f.text(690, 225, "→ 공명 차단", size=11, anchor="start", color=RED)
+    f.text(460, 278, "N-CH₃ ↔ o-NO₂ 입체 반발 → C–N 회전 → N이 sp³에 가까워지고", size=11, anchor="start")
+    f.text(460, 296, "비공유쌍 국재화 → 염기도 trinitro-NMe₂(−5) > trinitroaniline(−10)", size=11, anchor="start", color=GREEN)
+    return f.render()
+
+
+def f2012_38_mech():
+    f = Fig(800, 470)
+    # ㄴ 아미딘
+    f.text(20, 18, "ㄴ 아세트아미딘: NH₂의 비공유쌍이 C=N으로 밀려 =NH 쪽 N의 전자 밀도 ↑ (굽은 화살표)", size=12.5, anchor="start", weight="bold")
+    y = 95
+    m = Mol()
+    c = m.atom("c", 0, 0)
+    m.sub("me", c, 270)
+    m.sub("n1", c, 150, "H_2N", anchor="end")
+    m.sub("n2", c, 30, "NH", kind="2", anchor="start")
+    f.mol(m, 80, y)
+    f.lp(80 - 26 - 10, y - 15 - 11, 90)
+    f.curly(80 - 40, y - 28, 80 - 12, y - 10, bend=-0.6)
+    f.curly(80 + 12, y - 11, 80 + 32, y - 26, bend=-0.6)
+    f.resarrow(150, 190, y)
+    m = Mol()
+    c = m.atom("c", 0, 0)
+    m.sub("me", c, 270)
+    m.sub("n1", c, 150, "H_2N^+", kind="2", anchor="end")
+    m.sub("n2", c, 30, "NH^−", anchor="start")
+    f.mol(m, 255, y)
+    f.arrow(320, y, 380, y, "+H^+", "")
+    m = Mol()
+    c = m.atom("c", 0, 0)
+    m.sub("me", c, 270)
+    m.sub("n1", c, 150, "H_2N", anchor="end")
+    m.sub("n2", c, 30, "NH_2^+", kind="2", anchor="start")
+    f.mol(m, 445, y)
+    f.resarrow(510, 550, y)
+    m = Mol()
+    c = m.atom("c", 0, 0)
+    m.sub("me", c, 270)
+    m.sub("n1", c, 150, "H_2N^+", kind="2", anchor="end")
+    m.sub("n2", c, 30, "NH_2", anchor="start")
+    f.mol(m, 615, y)
+    f.text(165, y + 52, "중성 아미딘의 공명: =N에 음전하 성격 → 강한 염기", size=11, color=BLUE)
+    f.text(530, y + 52, "아미디늄: 동등한 두 구조, 양전하 대칭 분산 (pKₐ 12.4)", size=11, color=GREEN)
+    f.text(400, y + 74, "i-PrNH₂(10.6)의 짝산에는 이런 비편재화가 없다 → 산 1몰은 아미딘을 양성자화 → 보기 ✗", size=11.5, color=RED)
+    # ㄷ p-니트로아닐린
+    f.text(20, 205, "ㄷ p-nitroaniline: 비공유쌍이 para-NO₂까지 비편재화 (m-NO₂는 공명 경로 없음, −I만)", size=12.5, anchor="start", weight="bold")
+    x2 = _push_pna(f, 95, 320, "H")
+    f.text(x2 + 0, 432, "N이 전자를 이미 내어 준 상태 → pKₐH 1.0", size=11, color=RED)
+    f.box(450, 230, 340, 225, fill="#f7f9fc")
+    f.text(465, 250, "ㄱ N,N,2,6-tetramethylaniline", size=12, anchor="start", weight="bold")
+    _orb_pair(f, 515, 290, False, "N,N-dimethylaniline: 평행")
+    _orb_pair(f, 515, 372, True, "2,6-CH₃와 충돌 → 비틀림: 직교")
+    f.text(680, 284, "공명 → N 전자", size=11, anchor="start", color=BLUE)
+    f.text(680, 300, "밀도 ↓ (약염기)", size=11, anchor="start", color=BLUE)
+    f.text(680, 366, "공명 차단 → N", size=11, anchor="start", color=GREEN)
+    f.text(680, 382, "전자 밀도 ↑ (강염기)", size=11, anchor="start", color=GREEN)
+    f.text(465, 444, "→ tetramethylaniline이 양성자화 (보기 ○)", size=11.5, anchor="start", color=GREEN, weight="bold")
+    return f.render()
+
+
+def _azole(m, x, y, het="N"):
+    """5원 고리: r4=N1(H)/O, r0=C2, r1=N3, r2=C4, r3=C5"""
+    pyrrole_like(m, "r", x, y, 90)
+    return m
+
+
+def f2013_35_mech():
+    f = Fig(800, 425)
+    f.text(20, 18, "⑤ 짝염기(이미다졸 vs 옥사졸)의 공명: 1번 위치 원자의 비공유쌍이 고리로 밀려 N3에 음전하", size=12.5, anchor="start", weight="bold")
+    rows = [("N", "N^+", 60, "N⁺: 전기음성도가 작은 N은 양전하를 잘 견딘다 → 기여 큼",
+             "→ N3 전자 밀도 ↑ → 강한 염기 → 이미다졸륨 pKₐ 7.0 (약한 산)", GREEN),
+            ("O", "O^+", 160, "O⁺: 전기음성도가 큰 O에 양전하 → 기여 작음",
+             "→ N3 전자 밀도 ↓ → 약한 염기 → 옥사졸륨 pKₐ 0.8 (강한 산)", RED)]
+    for het, het_p, y, t1, t2, col in rows:
+        y = y + 20
+        for k, x in enumerate((75, 215)):
+            m = Mol()
+            pyrrole_like(m, "r", 0, 0, 90, r=33)
+            if k == 0:
+                ring_bonds(m, "r", 5, [0, 2], (0, 0))
+                m.label("r4", het)
+                m.label("r1", "N")
+            else:
+                ring_bonds(m, "r", 5, [4, 2], (0, 0))
+                m.label("r4", het_p)
+                m.label("r1", "N^−")
+            if het == "N":
+                m.sub("h", "r4", 162, "H", length=22)
+            f.mol(m, x, y)
+            if k == 0:
+                x4, y4 = m.pos("r4")
+                f.lp(x + x4 + 3, y + y4 + 13, 30)
+                f.curly(x + x4 + 8, y + y4 + 14, x - 17, y - 21, bend=0.7)
+                f.curly(x + 16, y - 22, x + 42, y - 18, bend=-0.7)
+        f.resarrow(130, 170, y)
+        f.text(285, y - 10, t1, size=11.5, anchor="start")
+        f.text(285, y + 10, t2, size=11.5, anchor="start", color=col)
+    # ④
+    f.text(20, 262, "④ NO₂의 공명(−M)이 만드는 δ+ 위치 (NO₂ 기준 ortho·para)", size=12.5, anchor="start", weight="bold")
+    for i, (pos, title, col, note) in enumerate(((2, "m-nitrobenzoate", INK, "C1(COO⁻ 자리)에 δ+ 없음"),
+                                               (1, "o-nitrobenzoate", GREEN, "C1에 δ+ → 가까운 COO⁻ 안정화"))):
+        x, y = 110 + i * 240, 330
+        m = Mol()
+        benzene(m, "p", 0, 0, 90)
+        m.sub("c", "p0", 90, "CO_2^−")
+        if pos == 1:
+            m.sub("n", "p1", 30, "NO_2", anchor="start")
+        else:
+            m.sub("n", "p2", -30, "NO_2", anchor="start")
+        f.mol(m, x, y, scale=0.85)
+        dpos = [0, 2, 4] if pos == 1 else [1, 3, 5]
+        for k in dpos:
+            px, py = m.pos(f"p{k}")
+            if k == 0:
+                f.text(x - 22, y - 34, "δ+", size=11, color=RED)
+            else:
+                f.text(x + px * 0.85 * 1.6, y + py * 0.85 * 1.6, "δ+", size=11, color=RED)
+        f.text(x + 5, y + 66, title, size=11, color=col, weight="bold")
+        f.text(x + 5, y + 84, note, size=11, color=col)
+    f.text(545, 300, "o-NO₂: δ+(C1)의 정전기·유발 안정화", size=11.5, anchor="start")
+    f.text(545, 320, "+ ortho 효과(COO 비틀림)", size=11.5, anchor="start")
+    f.text(545, 340, "→ o-nitrobenzoic acid(2.17)가", size=11.5, anchor="start")
+    f.text(545, 360, "m-이성질체(3.45)보다 강한 산 ○", size=11.5, anchor="start", color=GREEN)
+    return f.render()
+
+
+def f2010_35_mech():
+    f = Fig(800, 300)
+    f.text(20, 18, "④ p-Cl의 +M: 비공유쌍이 고리로 밀려 COO⁻가 붙은 C1에 음전하 → 짝염기 불안정", size=12.5, anchor="start", weight="bold")
+    ox, oy = 90, 140
+    m = Mol()
+    benzene(m, "p", 0, 0, 90)
+    m.sub("c", "p0", 90, "CO_2^−")
+    m.sub("cl", "p3", -90, "Cl")
+    f.mol(m, ox, oy)
+    f.lp(ox - 12, oy + 62, 90)
+    f.curly(ox - 12, oy + 58, ox - 3, oy + 45, bend=0.8)
+    f.curly(ox + 15, oy + 18, ox + 29, oy - 1, bend=0.6)
+    f.curly(ox + 15, oy - 20, ox + 2, oy - 33, bend=-0.7)
+    f.resarrow(ox + 55, ox + 95, oy)
+    x2 = ox + 160
+    m = Mol()
+    m.ring("p", 0, 0, 6, L, 90, arom=[1, 4])
+    m.sub("c", "p0", 90, "CO_2^−")
+    m.sub("cl", "p3", -90, "Cl^+", kind="2")
+    f.mol(m, x2, oy)
+    f.charge(x2 - 17, oy - 38, "−")
+    f.text(20, 236, "+M이 −I를 일부 상쇄 → p-Cl은 약한 산(3.98)", size=11, color=RED, anchor="start")
+    f.text(20, 254, "m-Cl: 공명 경로가 C1에 닿지 않음. Cl→O⁻ σ 결합 5개(para 6개)", size=11, anchor="start")
+    f.text(20, 272, "→ −I가 더 크게 전달 → m-Cl이 강한 산(3.83) ○", size=11, color=GREEN, anchor="start")
+    # ⑤
+    f.box(420, 34, 370, 256, fill="#f7f9fc")
+    f.text(435, 54, "⑤ ortho 효과 (o-t-Bu vs p-t-Bu)", size=12, anchor="start", weight="bold")
+    m = Mol()
+    benzene(m, "q", 0, 0, 90)
+    c = m.sub("c", "q0", 90)
+    m.sub("o1", c, 150, "O", kind="2", anchor="end")
+    m.sub("o2", c, 30, "O^−")
+    m.sub("tb", "q3", -90, "t-Bu")
+    f.mol(m, 490, 140, scale=0.85)
+    f.text(490, 210, "p-t-Bu: COO⁻ 평면", size=11)
+    f.text(490, 226, "고리와 공액", size=11)
+    m = Mol()
+    benzene(m, "s", 0, 0, 90)
+    c = m.sub("c", "s0", 90)
+    m.sub("o1", c, 90, "O", kind="2")
+    m.sub("o2", c, 0, "O^−", anchor="start")
+    m.sub("tb", "s1", 30, "t-Bu", anchor="start")
+    f.mol(m, 650, 150, scale=0.85)
+    f.text(650, 210, "o-t-Bu: COO⁻가 고리 면에서", size=11, color=GREEN)
+    f.text(650, 226, "수직으로 비틀림", size=11, color=GREEN)
+    f.text(435, 252, "고리–카복실 공액이 끊기면 COO⁻의 두 O 사이 공명이 온전해지고,", size=10.8, anchor="start")
+    f.text(435, 270, "산(COOH)의 고리 공액 안정화도 사라짐 → o-t-Bu 3.5 < p-t-Bu 4.4 (pKₐ) ○", size=10.8, anchor="start", color=GREEN)
+    return f.render()
+
+
+def f2016_13_mech():
+    """2016 전공A 13 (재사용 문항 보강): 옥시수은화 메커니즘과 수소화물 접근 방향"""
+    f = Fig(800, 300)
+    f.text(20, 18, "옥시수은화–탈수은화: 머큐리늄 이온 → 3차 C1에 물의 anti 공격(유사 S_N2) → NaBH₄로 C–Hg → C–H", size=12.5, anchor="start", weight="bold")
+    oy = 135
+
+    def ring(m, dbl=False):
+        m.ring("p", 0, 0, 6, L, 90, arom=[0] if dbl else None)
+        m.sub("tb", "p3", -90, "t-Bu", kind="w")
+        return m
+
+    # (1) 알켄
+    m = ring(Mol(), True)
+    m.sub("me", "p0", 150)
+    f.mol(m, 80, oy)
+    f.text(132, oy - 72, "^+HgOAc", size=12, color=BLUE)
+    f.curly(80 + 16, oy - 26, 80 + 46, oy - 64, bend=-0.5)
+    f.text(80, oy + 82, "4-t-Bu-1-methylcyclohexene", size=10.5)
+    f.arrow(160, oy, 205, oy)
+    # (2) 머큐리늄
+    x = 290
+    m = ring(Mol())
+    m.sub("me", "p0", 150)
+    hg = m.atom("hg", 33, -60, "Hg^+")
+    m.bond("p0", "hg", "h")
+    m.bond("p1", "hg", "h")
+    m.sub("oac", "hg", 0, "OAc", anchor="start", length=30)
+    f.mol(m, x, oy)
+    f.text(x - 66, oy + 4, "H_2O", size=12, color=BLUE)
+    f.lp(x - 66, oy - 7, 0)
+    f.curly(x - 58, oy - 8, x - 5, oy - 28, bend=-0.4, color=BLUE)
+    f.curly(x + 12, oy - 44, x + 24, oy - 58, bend=0.9)
+    f.text(x, oy + 82, "머큐리늄 이온 (C1이 δ+ 더 큼)", size=10.5)
+    f.arrow(375, oy, 425, oy, "−H^+", "")
+    # (3) 유기수은 중간체 (trans)
+    x = 500
+    m = ring(Mol())
+    m.sub("me", "p0", 150, kind="h")
+    m.sub("oh", "p0", 90, "OH", kind="w")
+    m.sub("hg", "p1", 30, "HgOAc", kind="h", anchor="start")
+    f.mol(m, x, oy)
+    f.text(x + 10, oy + 82, "OH와 HgOAc는 anti(trans)", size=10.5)
+    f.arrow(595, oy, 645, oy, "NaBH_4", "")
+    # (4) C
+    x = 715
+    m = ring(Mol())
+    m.sub("me", "p0", 150, kind="h")
+    m.sub("oh", "p0", 90, "OH", kind="w")
+    f.mol(m, x, oy)
+    f.text(x, oy + 82, "C (Markovnikov 3차 알코올)", size=10.5, color=GREEN, weight="bold")
+    f.text(20, 252, "• 의자형으로 보면 물은 고정된 고리의 C1에 축 방향으로 들어와(trans-이축 개환) OH 축 · CH₃ 적도 · t-Bu 적도가 된다.", size=11, anchor="start")
+    f.text(20, 274, "• 환원(D): 작은 LiAlH₄는 1,2-비틀림을 피해 축 방향 접근 → 적도 OH / 큰 L-Selectride는 C3·C5 축 H와 1,3-반발 → 적도 방향 접근 → 축 OH", size=11, anchor="start")
+    return f.render()
+
+
+
+ALL = [f2012_35, f2009_21, f2013_35, f2012_38, f2010_35, f2007_10, f2006_9, f2004_9, f2009_22, f2013_34, f2011_34, f2010_34,
+       f2006_9_mech, f2012_38_mech, f2013_35_mech, f2010_35_mech, f2016_13_mech]
 
 if __name__ == "__main__":
     import sys

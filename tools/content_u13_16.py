@@ -25,21 +25,29 @@ UNITS = [
                     "ㄴ. 1-cyclohexylethan-1-one(cyclohexyl methyl ketone) —C₆H₅CO₃H, CHCl₃→ methyl cyclohexanecarboxylate<br>"
                     "ㄷ. 2-(2-methylphenyl)acetyl chloride —1. NaN₃ 2. H₂O, 가열→ (2-methylphenyl)methanamine(2-methylbenzylamine)<br>"
                     "① ㄱ ② ㄴ ③ ㄱ, ㄷ ④ ㄴ, ㄷ ⑤ ㄱ, ㄴ, ㄷ",
-            "answer": "<b>③ ㄱ, ㄷ</b><br>ㄱ ○: 벤질형으로 안정한 Ph₂C⁺가 생기고, 고리 C–C 결합이 이동해 5원 고리가 6원 고리로 확장 → 2,2-diphenylcyclohexanone.<br>"
-                      "ㄴ ✗: Baeyer–Villiger에서 2차 알킬(cyclohexyl)이 CH₃보다 훨씬 잘 이동하므로 O는 cyclohexyl–C=O 사이에 삽입 → <b>cyclohexyl acetate</b>(보기의 메틸 에스터 아님).<br>"
-                      "ㄷ ○: RCOCl + N₃⁻ → 아실 아자이드 → 가열(Curtius, –N₂) → R–N=C=O → 물 첨가·탈카복실(–CO₂) → R–NH₂ (R = 2-methylbenzyl).",
+            "answer": "<b>③ ㄱ, ㄷ</b><br>ㄱ ○: 두 OH 중 곁사슬 OH가 양성자화·이탈하는 경로가 빠르다(두 페닐로 공명 안정화된 Ph₂C⁺; 고리 OH가 떠나면 3° 양이온 → 느림). 이어 고리 C–CH₂ 결합이 1,2-이동해 5원 고리가 6원 고리로 확장되고, 옥소카베늄 이온의 H⁺가 빠져 2,2-diphenylcyclohexanone.<br>"
+                      "ㄴ ✗: Baeyer–Villiger(Criegee 중간체)에서 차수가 높은 2차 알킬(cyclohexyl)이 CH₃보다 훨씬 잘 이동하므로 O는 cyclohexyl–C=O 사이에 삽입 → <b>cyclohexyl acetate</b>(보기의 메틸 에스터 아님).<br>"
+                      "ㄷ ○: N₃⁻의 친핵성 아실 치환 → 아실 아자이드 → 가열(Curtius: R 이동과 N₂ 이탈이 협동) → R–N=C=O → 물 첨가 → 카밤산 → 탈카복실(–CO₂) → R–NH₂ (R = 2-methylbenzyl).",
             "concepts": [
                 "pinacol 자리옮김: 1,2-다이올 + 산 → 더 안정한 탄소 양이온을 주는 OH가 이탈 → 인접 기 1,2-이동 → 옥소카베늄(C=O⁺H) → 케톤",
-                "이동 경향(pinacol·Baeyer–Villiger 공통 경향): H ≈ 아릴 &gt; 3° &gt; 2° &gt; 1° &gt; CH₃ — 양전하를 잘 안정화하는 기가 잘 이동. 고리 결합의 이동은 고리 확장(긴장 해소)을 동반",
+                "이동 경향(pinacol·Baeyer–Villiger 공통 경향): H &gt; 3° &gt; 2° ≈ 아릴 &gt; 1° &gt; CH₃ — 양전하를 잘 안정화하는 기가 잘 이동(Ph의 상대 순위는 교재마다 3° 앞·2° 뒤 등으로 조금씩 다르게 제시됨). 고리 결합의 이동은 고리 확장(긴장 해소)을 동반",
                 "Baeyer–Villiger: 과산(RCO₃H)이 C=O에 첨가(Criegee 중간체) → 이동기가 O로 이동하며 RCO₂⁻ 이탈 → 에스터(고리 케톤은 락톤). 이동기의 입체 배치 유지",
                 "Curtius 자리옮김: RCON₃ —Δ→ R–N=C=O + N₂ (R 이동, 배치 유지) → H₂O → R–NH–COOH(카밤산) → R–NH₂ + CO₂ : 탄소 수가 1 줄어든 1차 아민 (Hofmann 자리옮김과 같은 결과)",
             ],
             "sol": """<p><b>ㄱ (pinacol 자리옮김, 고리 확장)</b></p>
-<ol><li>두 OH 중 어느 쪽이 양성자화·이탈하는가: 고리 탄소의 OH가 떠나면 3° 알킬 양이온, 곁사슬의 OH가 떠나면 두 페닐로 공명 안정화된 <b>Ph₂C⁺</b>(다이페닐메틸 양이온) → 후자가 생긴다.</li>
+<ol><li>두 OH 중 어느 쪽이 양성자화·이탈하는가: H₂SO₄는 두 OH를 모두 가역적으로 양성자화할 수 있지만, 고리 탄소의 OH₂⁺가 떠나면 3° 알킬 양이온(느린 경로), 곁사슬의 OH₂⁺가 떠나면 두 페닐로 공명 안정화된 <b>Ph₂C⁺</b>(다이페닐메틸 양이온, 빠른 경로)가 생긴다 → 더 안정한 양이온을 주는 경로(Hammond 가설: 전이 상태도 더 낮음)로 반응이 진행된다.</li>
 <li>Ph₂C⁺에 인접한 고리 탄소(OH를 가진 C1)의 치환기 중 <b>고리 C–C 결합</b>이 1,2-이동 → 5원 고리가 6원 고리로 확장(고리 긴장·비틀림 긴장 감소) → 양전하는 OH를 가진 탄소로 옮겨가 옥소카베늄 이온(C=O⁺H)으로 안정화.</li>
 <li>H⁺ 이탈 → 카보닐 탄소 옆에 CPh₂가 들어간 <b>2,2-diphenylcyclohexan-1-one</b>. 보기와 일치(○).</li></ol>
-<p><b>ㄴ (Baeyer–Villiger 산화)</b>: 과산이 C=O에 첨가해 Criegee 중간체를 만든 뒤, C–O–O 결합의 반대편(anti)에 놓인 기가 산소로 이동하면서 벤조에이트가 떨어진다. 이동하는 기는 전이 상태에서 부분 양전하를 받으므로 2차 알킬(cyclohexyl)이 CH₃보다 훨씬 잘 이동한다 → O는 고리 쪽에 삽입 → <b>cyclohexyl acetate</b>(CH₃CO–O–C₆H₁₁). 보기의 methyl cyclohexanecarboxylate(C₆H₁₁CO–OCH₃)는 CH₃가 이동한 생성물이므로 ✗.</p>
-<p><b>ㄷ (Curtius 자리옮김)</b>: ArCH₂COCl + NaN₃ → ArCH₂CON₃(친핵성 아실 치환). 가열하면 N₂가 빠지면서 ArCH₂가 C에서 N으로 이동(협동적) → 아이소사이아네이트 ArCH₂N=C=O. 물이 첨가되어 카밤산 ArCH₂NHCOOH → 자발적 탈카복실화 → <b>ArCH₂NH₂</b>(Ar = 2-methylphenyl). 보기의 (2-methylphenyl)methanamine과 일치(○).</p>
+<p><b>ㄴ (Baeyer–Villiger 산화)</b></p>
+<ol><li>과산(PhCO₃H)의 OH 산소가 카보닐 탄소에 첨가하고 양성자가 이동 → <b>Criegee 중간체</b> C₆H₁₁–C(OH)(CH₃)–O–O–COPh.</li>
+<li>(협동 단계, 속도 결정) OH 산소의 비공유쌍이 C=O를 다시 만들고, 동시에 O–O 결합의 반대편(anti)에 놓인 기가 탄소에서 가까운 O로 1,2-이동하며 O–O 결합 전자쌍이 PhCO₂⁻(이탈기)로 떨어진다.</li>
+<li>이동하는 기는 전이 상태에서 부분 양전하를 받으므로 차수가 높은 R이 잘 이동한다: 2차 알킬(cyclohexyl) ≫ CH₃ → O는 고리 쪽에 삽입 → <b>cyclohexyl acetate</b>(CH₃CO–O–C₆H₁₁) + PhCO₂H.</li></ol>
+<p>보기의 methyl cyclohexanecarboxylate(C₆H₁₁CO–OCH₃)는 CH₃가 이동한 생성물이므로 ✗.</p>
+<p><b>ㄷ (Curtius 자리옮김)</b></p>
+<ol><li>N₃⁻가 아실 클로라이드의 카보닐 탄소에 첨가 → 사면체 중간체 → Cl⁻ 이탈(첨가–제거) → 아실 아자이드 ArCH₂CO–N=N⁺=N⁻.</li>
+<li>가열: ArCH₂–C 결합 전자쌍이 이웃 N으로 옮겨 가며(R 이동) 동시에 N–N 결합이 끊어져 N₂가 떨어진다(협동, 나이트렌을 거치지 않음) → 아이소사이아네이트 ArCH₂–N=C=O. 이동하는 R의 배치는 유지된다.</li>
+<li>물이 N=C=O의 중심 탄소를 공격 → 양성자 이동 → 카밤산 ArCH₂NH–COOH → 가열하면 CO₂가 빠지며(탈카복실화) <b>ArCH₂NH₂</b>(Ar = 2-methylphenyl).</li></ol>
+<p>탄소 수가 하나 줄어든 1차 아민이 생기며, 보기의 (2-methylphenyl)methanamine과 일치(○).</p>
 <table class="tb"><tr><th>보기</th><th>반응</th><th>핵심</th><th>판정</th></tr>
 <tr><td>ㄱ</td><td>pinacol 자리옮김</td><td>Ph₂C⁺ 생성 → 고리 결합 이동(5→6)</td><td>○</td></tr>
 <tr><td>ㄴ</td><td>Baeyer–Villiger</td><td>2° 알킬 &gt; CH₃ 이동 → cyclohexyl acetate</td><td>✗</td></tr>
