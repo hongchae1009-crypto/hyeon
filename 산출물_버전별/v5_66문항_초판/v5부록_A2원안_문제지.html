@@ -1,0 +1,801 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>유기화학 기출변형 모의고사</title><style>@page { size: A4; margin: 0; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: #fff; color: #000; }
+body { font-family: "NanumMyeongjo", "Noto Serif CJK KR", serif; font-size: 10.3pt; line-height: 1.72; }
+.page { width: 210mm; height: 297mm; padding: 14mm 15mm 12mm; position: relative; page-break-after: always; overflow: hidden; }
+.page:last-child { page-break-after: auto; }
+/* 표지 머리 */
+.title1 { text-align: center; font-size: 13.5pt; font-weight: 700; margin-top: 2mm; white-space: nowrap; }
+.title2 { text-align: center; font-size: 30pt; font-weight: 800; letter-spacing: 38px; margin: 1mm 0 2mm 38px; line-height: 1.3; }
+.blank { display: inline-block; } .blank.w1 { width: 48mm; } .blank.w2 { width: 32mm; }
+.idrow { display: flex; justify-content: space-around; font-family: "NanumGothic", sans-serif; font-weight: 700; font-size: 13pt; margin-bottom: 4mm; }
+table.info { width: 100%; border-collapse: collapse; margin-bottom: 4mm; font-size: 11pt; }
+table.info td { border: 1px solid #000; text-align: center; padding: 1.8mm 0; }
+.notice { font-size: 9.2pt; line-height: 1.6; }
+.topline { border-top: 1px solid #000; margin-top: 8mm; }
+/* 2단 */
+.cols { display: grid; grid-template-columns: 1fr 1fr; column-gap: 0; position: absolute; left: 15mm; right: 15mm; bottom: 18mm; }
+.cols.first { top: 80mm; } .cols.rest { top: 22mm; }
+.cols > .col { padding: 3mm 5mm 0 0; overflow: hidden; height: 100%; }
+.cols > .col + .col { border-left: 1px solid #000; padding: 3mm 0 0 5mm; }
+.q { margin-bottom: 6mm; text-align: justify; word-break: normal; }
+.qn { font-family: "NanumGothic", sans-serif; font-weight: 800; font-size: 12.5pt; margin-right: 1.5mm; }
+.q p { margin: 0 0 1.5mm; text-indent: 0; }
+.q .ask { text-indent: 1em; }
+.pts { white-space: nowrap; }
+.frame { border: 1px solid #000; padding: 2.5mm 3mm; margin: 2.5mm 0 3mm; font-size: 9.6pt; line-height: 1.6; }
+.frame .ft { font-family: "NanumGothic", sans-serif; font-weight: 700; }
+.frame ul { margin: 1mm 0; padding-left: 4mm; }
+.howto { margin-top: 2mm; }
+.howto .ht { text-align: center; font-family: "NanumGothic", sans-serif; font-weight: 700; margin-bottom: 1mm; }
+.howto ul { list-style: none; padding: 0 0 0 1mm; margin: 0; }
+.howto li { padding-left: 3.4mm; text-indent: -3.4mm; margin-bottom: .8mm; }
+.howto li::before { content: "◦ "; }
+/* 반응식 */
+.scheme { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 1mm 1.5mm; margin: 1mm 0; }
+.scheme.left { justify-content: flex-start; }
+.cmpd { display: flex; flex-direction: column; align-items: center; }
+.cmpd svg { display: block; }
+.cmpd .lbl { font-family: "Arial", "NanumGothic", sans-serif; font-weight: 700; font-size: 10pt; margin-top: -1mm; }
+.cmpd.letter { font-family: Arial, sans-serif; font-weight: 700; font-size: 13pt; padding: 0 1mm; }
+.arr { display: flex; flex-direction: column; align-items: center; font-family: Arial, "NanumGothic", sans-serif; font-size: 7.8pt; line-height: 1.25; }
+.arr .rt, .arr .rb { min-height: 10px; text-align: center; white-space: nowrap; }
+.arr .rt { margin-bottom: 1px; } .arr .rb { margin-top: 1px; }
+.plus { font-family: Arial, sans-serif; font-size: 12pt; }
+.chem { font-family: Arial, "NanumGothic", sans-serif; font-size: 9.4pt; }
+/* 표 */
+table.data { border-collapse: collapse; margin: 1.5mm auto; font-size: 9pt; }
+table.data td, table.data th { border: 1px solid #000; padding: .6mm 2.2mm; text-align: center; }
+table.data th { font-family: "NanumGothic", sans-serif; font-weight: 700; background: #f2f2f2; }
+.foot { position: absolute; bottom: 7mm; left: 15mm; right: 15mm; border-top: 1px solid #000; padding-top: 1.5mm; text-align: center; font-size: 9.5pt; }
+.foot b { font-size: 14pt; }
+.foot .tag { position: absolute; left: 0; top: 2mm; font-family: "NanumGothic", sans-serif; font-size: 8pt; color: #444; }
+.end { text-align: center; font-family: "NanumGothic", sans-serif; font-weight: 800; font-size: 14pt; margin-top: 10mm; }
+/* 변형 출처 꼬리표 */
+.src { font-family: "NanumGothic", sans-serif; font-size: 7.6pt; color: #333; border-top: 1px dashed #888; margin-top: 1.5mm; padding-top: .8mm; line-height: 1.45; }
+.rows { display: flex; flex-direction: column; align-items: center; gap: 1mm; }
+.varr { display: flex; align-items: center; gap: 1mm; font-family: Arial, "NanumGothic", sans-serif; font-size: 7.8pt; line-height: 1.25; }
+.varr .vl { text-align: right; min-width: 0; } .varr .vr { text-align: left; }
+.spec { display: flex; justify-content: center; margin: 1mm 0; }
+.lbltxt { font-family: Arial, sans-serif; font-weight: 700; }
+.ansbox { display: flex; flex-wrap: wrap; gap: 2mm 5mm; align-items: flex-end; margin: 1mm 0; }
+.q.overflow { outline: 2px solid red; }
+
+@media screen { body { background:#888; } .page { margin: 8mm auto; background:#fff; box-shadow:0 1px 6px rgba(0,0,0,.4); } }
+</style></head><body><template id="cover-3">
+<div class="title1">중등학교교사 임용 대비 유기화학 기출변형 모의고사 [3회]</div>
+<div class="title2">화 학</div>
+<div class="idrow"><span>수험 번호 : (<span class="blank w1"></span>)</span><span>성 명 : (<span class="blank w2"></span>)</span></div>
+<table class="info"><tr><td>제1차 시험 대비</td><td>전공 A</td><td>3문항 12점</td><td>시험 시간 90분</td></tr></table>
+<div class="notice">◦ 문제지 전체 면수가 맞는지 확인하시오.<br>◦ 모든 문항에는 배점이 표시되어 있습니다.　◦ 각 문항 아래에 변형 기출·소스 논문이 표시되어 있습니다.</div>
+</template><template id="cover-4">
+<div class="title1">중등학교교사 임용 대비 유기화학 기출변형 모의고사 [4회]</div>
+<div class="title2">화 학</div>
+<div class="idrow"><span>수험 번호 : (<span class="blank w1"></span>)</span><span>성 명 : (<span class="blank w2"></span>)</span></div>
+<table class="info"><tr><td>제1차 시험 대비</td><td>전공 B</td><td>2문항 4점</td><td>시험 시간 90분</td></tr></table>
+<div class="notice">◦ 문제지 전체 면수가 맞는지 확인하시오.<br>◦ 모든 문항에는 배점이 표시되어 있습니다.　◦ 각 문항 아래에 변형 기출·소스 논문이 표시되어 있습니다.</div>
+</template><template id="cover-5">
+<div class="title1">중등학교교사 임용 대비 유기화학 기출변형 모의고사 [5회]</div>
+<div class="title2">화 학</div>
+<div class="idrow"><span>수험 번호 : (<span class="blank w1"></span>)</span><span>성 명 : (<span class="blank w2"></span>)</span></div>
+<table class="info"><tr><td>제1차 시험 대비</td><td>전공 A</td><td>2문항 6점</td><td>시험 시간 90분</td></tr></table>
+<div class="notice">◦ 문제지 전체 면수가 맞는지 확인하시오.<br>◦ 모든 문항에는 배점이 표시되어 있습니다.　◦ 각 문항 아래에 변형 기출·소스 논문이 표시되어 있습니다.</div>
+</template><div id="book"></div>
+<div id="pool" data-sets='[{&quot;id&quot;: 3, &quot;label&quot;: &quot;전공 A&quot;, &quot;time&quot;: 90, &quot;count&quot;: 3, &quot;points&quot;: 12, &quot;tag&quot;: &quot;유기화학 변형 3회&quot;}, {&quot;id&quot;: 4, &quot;label&quot;: &quot;전공 B&quot;, &quot;time&quot;: 90, &quot;count&quot;: 2, &quot;points&quot;: 4, &quot;tag&quot;: &quot;유기화학 변형 4회&quot;}, {&quot;id&quot;: 5, &quot;label&quot;: &quot;전공 A&quot;, &quot;time&quot;: 90, &quot;count&quot;: 2, &quot;points&quot;: 6, &quot;tag&quot;: &quot;유기화학 변형 5회&quot;}]' style="position:absolute;left:-9999px;width:85mm"><div class="q" data-set="3"><span class="qn">9.</span>다음은 sarcosine methyl ester로부터 중간 주생성물 <b class="lbltxt">A</b>(C<sub>8</sub>H<sub>13</sub>NO<sub>4</sub>)를 거쳐 최종 주생성물 <b class="lbltxt">B</b>(C<sub>7</sub>H<sub>9</sub>NO<sub>3</sub>)를 합성하는 반응식이다. <b class="lbltxt">B</b>는 곰팡이 천연물 fusarisetin A, equisetin 등에 들어 있는 3-아실테트람산(3-acyltetramic acid) 골격을 가진다. (단, 각 단계에서는 적절한 분리·정제 과정을 수행하였다.)
+<div class="frame"><div class="scheme "><div class="cmpd"><svg version='1.1' baseProfile='full'
+              xmlns='http://www.w3.org/2000/svg'
+                      xmlns:rdkit='http://www.rdkit.org/xml'
+                      xmlns:xlink='http://www.w3.org/1999/xlink'
+                  xml:space='preserve'
+width='110px' height='59px' viewBox='0 0 110 59'>
+
+<path class='bond-0 atom-0 atom-1' d='M 20.0,41.0 L 29.6,35.5' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-1 atom-1 atom-2' d='M 38.0,35.5 L 47.7,41.0' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-2 atom-2 atom-3' d='M 47.7,41.0 L 61.5,33.0' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-3 atom-3 atom-4' d='M 62.7,33.7 L 62.7,22.1' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-3 atom-3 atom-4' d='M 60.3,33.7 L 60.3,22.1' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-4 atom-3 atom-5' d='M 61.5,33.0 L 70.7,38.3' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-5 atom-5 atom-6' d='M 80.1,38.2 L 89.2,33.0' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path d='M 47.2,40.7 L 47.7,41.0 L 48.4,40.6' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 60.8,33.4 L 61.5,33.0 L 62.0,33.3' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path class='atom-1' d='M 32.4 29.8
+L 34.5 33.2
+Q 34.7 33.5, 35.0 34.1
+Q 35.4 34.7, 35.4 34.8
+L 35.4 29.8
+L 36.2 29.8
+L 36.2 36.2
+L 35.4 36.2
+L 33.1 32.5
+Q 32.9 32.1, 32.6 31.6
+Q 32.3 31.1, 32.2 30.9
+L 32.2 36.2
+L 31.4 36.2
+L 31.4 29.8
+L 32.4 29.8
+' fill='#000000'/>
+<path class='atom-1' d='M 31.3 22.8
+L 32.2 22.8
+L 32.2 25.5
+L 35.4 25.5
+L 35.4 22.8
+L 36.3 22.8
+L 36.3 29.2
+L 35.4 29.2
+L 35.4 26.3
+L 32.2 26.3
+L 32.2 29.2
+L 31.3 29.2
+L 31.3 22.8
+' fill='#000000'/>
+<path class='atom-4' d='M 58.6 17.0
+Q 58.6 15.5, 59.3 14.6
+Q 60.1 13.8, 61.5 13.8
+Q 62.9 13.8, 63.7 14.6
+Q 64.4 15.5, 64.4 17.0
+Q 64.4 18.6, 63.7 19.4
+Q 62.9 20.3, 61.5 20.3
+Q 60.1 20.3, 59.3 19.4
+Q 58.6 18.6, 58.6 17.0
+M 61.5 19.6
+Q 62.5 19.6, 63.0 18.9
+Q 63.5 18.3, 63.5 17.0
+Q 63.5 15.8, 63.0 15.1
+Q 62.5 14.5, 61.5 14.5
+Q 60.5 14.5, 60.0 15.1
+Q 59.5 15.8, 59.5 17.0
+Q 59.5 18.3, 60.0 18.9
+Q 60.5 19.6, 61.5 19.6
+' fill='#000000'/>
+<path class='atom-5' d='M 72.5 41.0
+Q 72.5 39.5, 73.2 38.6
+Q 74.0 37.8, 75.4 37.8
+Q 76.8 37.8, 77.6 38.6
+Q 78.3 39.5, 78.3 41.0
+Q 78.3 42.6, 77.5 43.4
+Q 76.8 44.3, 75.4 44.3
+Q 74.0 44.3, 73.2 43.4
+Q 72.5 42.6, 72.5 41.0
+M 75.4 43.6
+Q 76.4 43.6, 76.9 42.9
+Q 77.4 42.3, 77.4 41.0
+Q 77.4 39.8, 76.9 39.1
+Q 76.4 38.5, 75.4 38.5
+Q 74.4 38.5, 73.9 39.1
+Q 73.4 39.7, 73.4 41.0
+Q 73.4 42.3, 73.9 42.9
+Q 74.4 43.6, 75.4 43.6
+' fill='#000000'/>
+</svg>
+</div><div class="arr" style="width:71px"><div class="rt">diketene</div><svg width="71" height="10" viewBox="0 0 71 10"><line x1="2" y1="5" x2="67" y2="5" stroke="#000" stroke-width="1.1"/><path d="M61,1 L69,5 L61,9 z" fill="#000"/></svg><div class="rb">CH<sub>2</sub>Cl<sub>2</sub>, 0 ℃</div></div><div class="cmpd letter">A</div><div class="arr" style="width:156px"><div class="rt">1) NaOCH<sub>3</sub> (1.1 당량), CH<sub>3</sub>OH</div><svg width="156" height="10" viewBox="0 0 156 10"><line x1="2" y1="5" x2="152" y2="5" stroke="#000" stroke-width="1.1"/><path d="M146,1 L154,5 L146,9 z" fill="#000"/></svg><div class="rb">2) H<sub>3</sub>O<sup>+</sup></div></div><div class="cmpd letter">B</div></div><div class="scheme "><div class="chem">diketene :</div><div class="cmpd"><svg version='1.1' baseProfile='full'
+              xmlns='http://www.w3.org/2000/svg'
+                      xmlns:rdkit='http://www.rdkit.org/xml'
+                      xmlns:xlink='http://www.w3.org/1999/xlink'
+                  xml:space='preserve'
+width='88px' height='53px' viewBox='0 0 88 53'>
+
+<path class='bond-0 atom-0 atom-1' d='M 17.5,33.4 L 33.0,29.2' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-0 atom-0 atom-1' d='M 18.0,35.6 L 33.6,31.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-1 atom-1 atom-2' d='M 32.2,30.6 L 45.2,38.0' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-2 atom-2 atom-3' d='M 45.2,38.0 L 52.7,25.0' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-3 atom-3 atom-4' d='M 51.9,26.4 L 62.9,23.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-3 atom-3 atom-4' d='M 51.3,24.2 L 62.3,21.3' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-4 atom-3 atom-5' d='M 52.7,25.0 L 44.3,20.2' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-5 atom-5 atom-1' d='M 36.8,22.6 L 32.2,30.6' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path d='M 32.9,30.9 L 32.2,30.6 L 32.5,30.2' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 44.6,37.7 L 45.2,38.0 L 45.6,37.4' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 52.3,25.7 L 52.7,25.0 L 52.3,24.8' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path class='atom-4' d='M 64.3 21.1
+Q 64.3 19.6, 65.0 18.7
+Q 65.8 17.9, 67.2 17.9
+Q 68.6 17.9, 69.4 18.7
+Q 70.1 19.6, 70.1 21.1
+Q 70.1 22.7, 69.3 23.5
+Q 68.6 24.4, 67.2 24.4
+Q 65.8 24.4, 65.0 23.5
+Q 64.3 22.7, 64.3 21.1
+M 67.2 23.7
+Q 68.2 23.7, 68.7 23.0
+Q 69.2 22.4, 69.2 21.1
+Q 69.2 19.9, 68.7 19.2
+Q 68.2 18.6, 67.2 18.6
+Q 66.2 18.6, 65.7 19.2
+Q 65.2 19.9, 65.2 21.1
+Q 65.2 22.4, 65.7 23.0
+Q 66.2 23.7, 67.2 23.7
+' fill='#000000'/>
+<path class='atom-5' d='M 36.8 17.6
+Q 36.8 16.0, 37.5 15.2
+Q 38.3 14.3, 39.7 14.3
+Q 41.1 14.3, 41.9 15.2
+Q 42.6 16.0, 42.6 17.6
+Q 42.6 19.1, 41.8 20.0
+Q 41.1 20.9, 39.7 20.9
+Q 38.3 20.9, 37.5 20.0
+Q 36.8 19.1, 36.8 17.6
+M 39.7 20.2
+Q 40.7 20.2, 41.2 19.5
+Q 41.7 18.9, 41.7 17.6
+Q 41.7 16.3, 41.2 15.7
+Q 40.7 15.1, 39.7 15.1
+Q 38.7 15.1, 38.2 15.7
+Q 37.7 16.3, 37.7 17.6
+Q 37.7 18.9, 38.2 19.5
+Q 38.7 20.2, 39.7 20.2
+' fill='#000000'/>
+</svg>
+</div></div><div class="chem" style="text-align:center">(diketene은 아민을 아세토아세틸화한다: R<sub>2</sub>NH → R<sub>2</sub>N–COCH<sub>2</sub>COCH<sub>3</sub>)</div></div>
+<p class="ask"><b class="lbltxt">A</b>와 <b class="lbltxt">B</b>의 구조를 각각 그리시오(<b class="lbltxt">B</b>는 모든 카보닐이 C=O인 형태로). 또한, 굽은 화살표를 사용하여 <b class="lbltxt">A</b>로부터 고리가 형성되는 단계의 메커니즘을 제시하고, <b class="lbltxt">B</b>에서 고리의 C3–H가 매우 산성(p<i>K</i><sub>a</sub> ≈ 3)인 이유를 짝염기의 공명 구조를 이용하여 서술하시오. <span class="pts">[4점]</span></p><div class="src">◆ 변형 기출: 2021학년도 A형 9번 · 출처: J. Am. Chem. Soc. 2012, 134, 920–923 (Klein 22.118)</div></div><div class="q" data-set="3"><span class="qn">10.</span>다음은 2-methylcyclohexane-1,3-dione으로부터 중간 주생성물 <b class="lbltxt">A</b>(C<sub>11</sub>H<sub>16</sub>O<sub>3</sub>)를 거쳐 최종 주생성물 <b class="lbltxt">B</b>(C<sub>11</sub>H<sub>14</sub>O<sub>2</sub>, Wieland–Miescher 케톤)를 합성하는 반응식이다. 2단계에서는 소량의 L-proline이 촉매로 작용하여 <b class="lbltxt">B</b>가 한쪽 거울상 이성질체 과량으로 얻어진다. (단, 각 단계에서는 적절한 분리·정제 과정을 수행하였다.)
+<div class="frame"><div class="scheme "><div class="cmpd"><svg version='1.1' baseProfile='full'
+              xmlns='http://www.w3.org/2000/svg'
+                      xmlns:rdkit='http://www.rdkit.org/xml'
+                      xmlns:xlink='http://www.w3.org/1999/xlink'
+                  xml:space='preserve'
+width='83px' height='83px' viewBox='0 0 83 83'>
+
+<path class='bond-0 atom-0 atom-1' d='M 22.1,33.4 L 36.0,41.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-1 atom-1 atom-2' d='M 36.0,41.4 L 36.0,57.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-2 atom-2 atom-3' d='M 36.0,56.0 L 26.3,61.7' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-2 atom-2 atom-3' d='M 37.2,58.1 L 27.5,63.7' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-3 atom-2 atom-4' d='M 36.0,57.4 L 49.9,65.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-4 atom-4 atom-5' d='M 49.9,65.4 L 63.7,57.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-5 atom-5 atom-6' d='M 63.7,57.4 L 63.7,41.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-6 atom-6 atom-7' d='M 63.7,41.4 L 49.8,33.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-7 atom-7 atom-8' d='M 51.0,34.1 L 51.0,22.5' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-7 atom-7 atom-8' d='M 48.6,34.1 L 48.6,22.5' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-8 atom-7 atom-1' d='M 49.8,33.4 L 36.0,41.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path d='M 36.0,56.6 L 36.0,57.4 L 36.7,57.8' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 49.2,65.0 L 49.9,65.4 L 50.6,65.0' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 63.0,57.8 L 63.7,57.4 L 63.7,56.6' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 63.7,42.2 L 63.7,41.4 L 63.0,41.0' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 50.5,33.8 L 49.8,33.4 L 49.2,33.8' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path class='atom-3' d='M 19.2 65.5
+Q 19.2 63.9, 20.0 63.1
+Q 20.7 62.2, 22.2 62.2
+Q 23.6 62.2, 24.3 63.1
+Q 25.1 63.9, 25.1 65.5
+Q 25.1 67.0, 24.3 67.9
+Q 23.6 68.8, 22.2 68.8
+Q 20.8 68.8, 20.0 67.9
+Q 19.2 67.0, 19.2 65.5
+M 22.2 68.0
+Q 23.1 68.0, 23.7 67.4
+Q 24.2 66.7, 24.2 65.5
+Q 24.2 64.2, 23.7 63.6
+Q 23.1 62.9, 22.2 62.9
+Q 21.2 62.9, 20.7 63.6
+Q 20.1 64.2, 20.1 65.5
+Q 20.1 66.7, 20.7 67.4
+Q 21.2 68.0, 22.2 68.0
+' fill='#000000'/>
+<path class='atom-8' d='M 46.9 17.4
+Q 46.9 15.9, 47.7 15.1
+Q 48.4 14.2, 49.8 14.2
+Q 51.2 14.2, 52.0 15.1
+Q 52.8 15.9, 52.8 17.4
+Q 52.8 19.0, 52.0 19.9
+Q 51.2 20.7, 49.8 20.7
+Q 48.4 20.7, 47.7 19.9
+Q 46.9 19.0, 46.9 17.4
+M 49.8 20.0
+Q 50.8 20.0, 51.3 19.4
+Q 51.9 18.7, 51.9 17.4
+Q 51.9 16.2, 51.3 15.6
+Q 50.8 14.9, 49.8 14.9
+Q 48.9 14.9, 48.3 15.5
+Q 47.8 16.2, 47.8 17.4
+Q 47.8 18.7, 48.3 19.4
+Q 48.9 20.0, 49.8 20.0
+' fill='#000000'/>
+</svg>
+</div><div class="arr" style="width:97px"><div class="rt">CH<sub>2</sub>=CHCOCH<sub>3</sub></div><svg width="97" height="10" viewBox="0 0 97 10"><line x1="2" y1="5" x2="93" y2="5" stroke="#000" stroke-width="1.1"/><path d="M87,1 L95,5 L87,9 z" fill="#000"/></svg><div class="rb">Et<sub>3</sub>N (촉매), H<sub>2</sub>O</div></div><div class="cmpd letter">A</div><div class="arr" style="width:109px"><div class="rt">L-proline (3 mol%)</div><svg width="109" height="10" viewBox="0 0 109 10"><line x1="2" y1="5" x2="105" y2="5" stroke="#000" stroke-width="1.1"/><path d="M99,1 L107,5 L99,9 z" fill="#000"/></svg><div class="rb">DMSO, 가열</div></div><div class="cmpd letter">B</div></div><div class="scheme "><div class="chem">L-proline :</div><div class="cmpd"><svg version='1.1' baseProfile='full'
+              xmlns='http://www.w3.org/2000/svg'
+                      xmlns:rdkit='http://www.rdkit.org/xml'
+                      xmlns:xlink='http://www.w3.org/1999/xlink'
+                  xml:space='preserve'
+width='88px' height='71px' viewBox='0 0 88 71'>
+
+<path class='bond-0 atom-0 atom-1' d='M 59.7,37.5 L 51.7,32.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-1 atom-1 atom-2' d='M 52.8,33.1 L 53.3,22.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-1 atom-1 atom-2' d='M 50.5,32.9 L 51.1,22.3' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-2 atom-3 atom-1' d='M 41.1,38.1 L 40.9,37.6' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.7px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-2 atom-3 atom-1' d='M 43.9,37.0 L 43.4,36.0' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.7px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-2 atom-3 atom-1' d='M 46.7,35.8 L 46.0,34.3' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.7px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-2 atom-3 atom-1' d='M 49.5,34.7 L 48.5,32.7' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.7px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-3 atom-3 atom-4' d='M 38.3,39.2 L 36.0,54.0' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-4 atom-4 atom-5' d='M 36.0,54.0 L 21.2,56.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-5 atom-5 atom-6' d='M 21.2,56.4 L 14.4,43.0' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-6 atom-6 atom-7' d='M 14.4,43.0 L 20.9,36.5' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-7 atom-7 atom-3' d='M 29.1,34.5 L 38.3,39.2' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path d='M 38.2,39.9 L 38.3,39.2 L 37.9,38.9' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 36.1,53.3 L 36.0,54.0 L 35.3,54.1' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 21.9,56.2 L 21.2,56.4 L 20.9,55.7' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 14.7,43.7 L 14.4,43.0 L 14.7,42.7' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path class='atom-0' d='M 61.4 40.5
+Q 61.4 39.0, 62.1 38.1
+Q 62.9 37.3, 64.3 37.3
+Q 65.7 37.3, 66.5 38.1
+Q 67.2 39.0, 67.2 40.5
+Q 67.2 42.1, 66.4 43.0
+Q 65.7 43.8, 64.3 43.8
+Q 62.9 43.8, 62.1 43.0
+Q 61.4 42.1, 61.4 40.5
+M 64.3 43.1
+Q 65.3 43.1, 65.8 42.5
+Q 66.3 41.8, 66.3 40.5
+Q 66.3 39.3, 65.8 38.6
+Q 65.3 38.0, 64.3 38.0
+Q 63.3 38.0, 62.8 38.6
+Q 62.3 39.3, 62.3 40.5
+Q 62.3 41.8, 62.8 42.5
+Q 63.3 43.1, 64.3 43.1
+' fill='#000000'/>
+<path class='atom-0' d='M 68.2 37.4
+L 69.1 37.4
+L 69.1 40.1
+L 72.3 40.1
+L 72.3 37.4
+L 73.2 37.4
+L 73.2 43.7
+L 72.3 43.7
+L 72.3 40.8
+L 69.1 40.8
+L 69.1 43.7
+L 68.2 43.7
+L 68.2 37.4
+' fill='#000000'/>
+<path class='atom-2' d='M 49.5 17.4
+Q 49.5 15.9, 50.3 15.0
+Q 51.1 14.2, 52.5 14.2
+Q 53.9 14.2, 54.6 15.0
+Q 55.4 15.9, 55.4 17.4
+Q 55.4 18.9, 54.6 19.8
+Q 53.9 20.7, 52.5 20.7
+Q 51.1 20.7, 50.3 19.8
+Q 49.5 19.0, 49.5 17.4
+M 52.5 20.0
+Q 53.4 20.0, 54.0 19.3
+Q 54.5 18.7, 54.5 17.4
+Q 54.5 16.1, 54.0 15.5
+Q 53.4 14.9, 52.5 14.9
+Q 51.5 14.9, 51.0 15.5
+Q 50.4 16.1, 50.4 17.4
+Q 50.4 18.7, 51.0 19.3
+Q 51.5 20.0, 52.5 20.0
+' fill='#000000'/>
+<path class='atom-7' d='M 23.6 29.2
+L 25.6 32.6
+Q 25.9 32.9, 26.2 33.5
+Q 26.5 34.1, 26.5 34.2
+L 26.5 29.2
+L 27.4 29.2
+L 27.4 35.6
+L 26.5 35.6
+L 24.3 31.9
+Q 24.0 31.5, 23.7 31.0
+Q 23.5 30.5, 23.4 30.3
+L 23.4 35.6
+L 22.5 35.6
+L 22.5 29.2
+L 23.6 29.2
+' fill='#000000'/>
+<path class='atom-7' d='M 22.5 22.2
+L 23.3 22.2
+L 23.3 24.9
+L 26.6 24.9
+L 26.6 22.2
+L 27.5 22.2
+L 27.5 28.6
+L 26.6 28.6
+L 26.6 25.6
+L 23.3 25.6
+L 23.3 28.6
+L 22.5 28.6
+L 22.5 22.2
+' fill='#000000'/>
+</svg>
+</div></div></div>
+<p class="ask"><b class="lbltxt">A</b>의 구조를 그리고, <b class="lbltxt">B</b>의 주 거울상 이성질체의 입체구조를 그린 후 카이랄 중심의 절대 배열(<i>R</i>/<i>S</i>)을 쓰시오. 또한, 굽은 화살표를 사용하여 <b class="lbltxt">A</b>로부터 프롤린 엔아민을 거쳐 새 고리의 C–C 결합이 형성되는 단계의 메커니즘을 제시하고, 카이랄 중심이 없는 <b class="lbltxt">A</b>로부터 광학 활성인 <b class="lbltxt">B</b>가 생기는 이유를 서술하시오. <span class="pts">[4점]</span></p><div class="src">◆ 변형 기출: 2020학년도 A형 9번 · 출처: Tetrahedron Lett. 1969, 10, 4233–4236 (Klein 22.116 · 22장 반응의 복습(Robinson 고리 형성)) · 노벨상: 2021 노벨 화학상(B. List·D. W. C. MacMillan — 비대칭 유기 촉매; List의 프롤린 촉매 알돌은 Hajos–Parrish 반응에서 출발)</div></div><div class="q" data-set="3"><span class="qn">11.</span>다음은 diethyl 2-methylhexanedioate로부터 중간 주생성물 <b class="lbltxt">A</b>(C<sub>9</sub>H<sub>14</sub>O<sub>3</sub>), <b class="lbltxt">B</b>(C<sub>12</sub>H<sub>18</sub>O<sub>3</sub>)와 중간체 <b class="lbltxt">C</b>(C<sub>10</sub>H<sub>14</sub>O<sub>3</sub>)를 거쳐 최종 주생성물 <b class="lbltxt">D</b>(C<sub>9</sub>H<sub>14</sub>O)를 합성하는 반응식이다. (단, 각 단계에서는 적절한 분리·정제 과정을 수행하였고, 입체 이성질체는 구별하지 않는다.)
+<div class="frame"><div class="rows"><div class="scheme "><div class="cmpd"><svg version='1.1' baseProfile='full'
+              xmlns='http://www.w3.org/2000/svg'
+                      xmlns:rdkit='http://www.rdkit.org/xml'
+                      xmlns:xlink='http://www.w3.org/1999/xlink'
+                  xml:space='preserve'
+width='181px' height='70px' viewBox='0 0 181 70'>
+
+<path class='bond-0 atom-0 atom-1' d='M 161.8,38.3 L 148.8,30.9' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-1 atom-1 atom-2' d='M 148.8,30.9 L 140.4,35.7' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-2 atom-2 atom-3' d='M 131.2,35.7 L 122.8,30.9' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-3 atom-3 atom-4' d='M 124.0,31.5 L 123.9,20.9' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-3 atom-3 atom-4' d='M 121.7,31.5 L 121.7,20.9' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-4 atom-3 atom-5' d='M 122.8,30.9 L 109.8,38.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-5 atom-5 atom-6' d='M 109.8,38.4 L 109.9,53.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-6 atom-5 atom-7' d='M 109.8,38.4 L 96.9,30.9' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-7 atom-7 atom-8' d='M 96.9,30.9 L 83.9,38.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-8 atom-8 atom-9' d='M 83.9,38.4 L 70.9,30.9' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-9 atom-9 atom-10' d='M 70.9,30.9 L 57.9,38.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-10 atom-10 atom-11' d='M 56.8,37.8 L 56.8,48.5' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-10 atom-10 atom-11' d='M 59.0,37.8 L 59.0,48.5' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-11 atom-10 atom-12' d='M 57.9,38.4 L 49.5,33.6' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-12 atom-12 atom-13' d='M 40.3,33.6 L 31.9,38.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-13 atom-13 atom-14' d='M 31.9,38.4 L 18.9,31.0' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path d='M 149.5,31.2 L 148.8,30.9 L 148.4,31.1' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 123.3,31.1 L 122.8,30.9 L 122.2,31.3' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 97.5,31.3 L 96.9,30.9 L 96.2,31.3' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 84.5,38.0 L 83.9,38.4 L 83.2,38.0' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 71.5,31.3 L 70.9,30.9 L 70.2,31.3' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 58.5,38.1 L 57.9,38.4 L 57.5,38.2' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 32.3,38.2 L 31.9,38.4 L 31.3,38.1' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path class='atom-2' d='M 132.9 38.4
+Q 132.9 36.9, 133.7 36.0
+Q 134.4 35.1, 135.8 35.1
+Q 137.2 35.1, 138.0 36.0
+Q 138.8 36.9, 138.8 38.4
+Q 138.8 39.9, 138.0 40.8
+Q 137.2 41.7, 135.8 41.7
+Q 134.4 41.7, 133.7 40.8
+Q 132.9 39.9, 132.9 38.4
+M 135.8 41.0
+Q 136.8 41.0, 137.3 40.3
+Q 137.9 39.7, 137.9 38.4
+Q 137.9 37.1, 137.3 36.5
+Q 136.8 35.9, 135.8 35.9
+Q 134.9 35.9, 134.3 36.5
+Q 133.8 37.1, 133.8 38.4
+Q 133.8 39.7, 134.3 40.3
+Q 134.9 41.0, 135.8 41.0
+' fill='#000000'/>
+<path class='atom-4' d='M 119.9 15.9
+Q 119.9 14.4, 120.7 13.5
+Q 121.4 12.7, 122.8 12.7
+Q 124.2 12.7, 125.0 13.5
+Q 125.7 14.4, 125.7 15.9
+Q 125.7 17.4, 125.0 18.3
+Q 124.2 19.2, 122.8 19.2
+Q 121.4 19.2, 120.7 18.3
+Q 119.9 17.4, 119.9 15.9
+M 122.8 18.5
+Q 123.8 18.5, 124.3 17.8
+Q 124.8 17.2, 124.8 15.9
+Q 124.8 14.6, 124.3 14.0
+Q 123.8 13.4, 122.8 13.4
+Q 121.8 13.4, 121.3 14.0
+Q 120.8 14.6, 120.8 15.9
+Q 120.8 17.2, 121.3 17.8
+Q 121.8 18.5, 122.8 18.5
+' fill='#000000'/>
+<path class='atom-11' d='M 55.0 53.4
+Q 55.0 51.9, 55.7 51.1
+Q 56.5 50.2, 57.9 50.2
+Q 59.3 50.2, 60.1 51.1
+Q 60.8 51.9, 60.8 53.4
+Q 60.8 55.0, 60.1 55.9
+Q 59.3 56.7, 57.9 56.7
+Q 56.5 56.7, 55.7 55.9
+Q 55.0 55.0, 55.0 53.4
+M 57.9 56.0
+Q 58.9 56.0, 59.4 55.4
+Q 59.9 54.7, 59.9 53.4
+Q 59.9 52.2, 59.4 51.6
+Q 58.9 50.9, 57.9 50.9
+Q 56.9 50.9, 56.4 51.6
+Q 55.9 52.2, 55.9 53.4
+Q 55.9 54.7, 56.4 55.4
+Q 56.9 56.0, 57.9 56.0
+' fill='#000000'/>
+<path class='atom-12' d='M 42.0 31.0
+Q 42.0 29.4, 42.7 28.6
+Q 43.5 27.7, 44.9 27.7
+Q 46.3 27.7, 47.1 28.6
+Q 47.8 29.4, 47.8 31.0
+Q 47.8 32.5, 47.1 33.4
+Q 46.3 34.3, 44.9 34.3
+Q 43.5 34.3, 42.7 33.4
+Q 42.0 32.5, 42.0 31.0
+M 44.9 33.5
+Q 45.9 33.5, 46.4 32.9
+Q 46.9 32.2, 46.9 31.0
+Q 46.9 29.7, 46.4 29.1
+Q 45.9 28.4, 44.9 28.4
+Q 43.9 28.4, 43.4 29.1
+Q 42.9 29.7, 42.9 31.0
+Q 42.9 32.2, 43.4 32.9
+Q 43.9 33.5, 44.9 33.5
+' fill='#000000'/>
+</svg>
+</div></div><div class="varr"><div class="vl"></div><svg width="10" height="40" viewBox="0 0 10 40"><line x1="5" y1="1" x2="5" y2="34" stroke="#000" stroke-width="1.1"/><path d="M1,30 L5,39 L9,30 z" fill="#000"/></svg><div class="vr">1) NaOEt, EtOH<br>2) H<sub>3</sub>O<sup>+</sup></div></div><div class="scheme "><div class="cmpd letter">A</div><div class="arr" style="width:87px"><div class="rt">1) NaOEt</div><svg width="87" height="10" viewBox="0 0 87 10"><line x1="2" y1="5" x2="83" y2="5" stroke="#000" stroke-width="1.1"/><path d="M77,1 L85,5 L77,9 z" fill="#000"/></svg><div class="rb">2) CH<sub>2</sub>=CHCH<sub>2</sub>Br</div></div><div class="cmpd letter">B</div></div><div class="scheme "><div class="arr" style="width:44px"><div class="rt">H<sub>3</sub>O<sup>+</sup></div><svg width="44" height="10" viewBox="0 0 44 10"><line x1="2" y1="5" x2="40" y2="5" stroke="#000" stroke-width="1.1"/><path d="M34,1 L42,5 L34,9 z" fill="#000"/></svg><div class="rb">가열</div></div><div class="cmpd letter">[C]</div><div class="arr" style="width:44px"><div class="rt">가열</div><svg width="44" height="10" viewBox="0 0 44 10"><line x1="2" y1="5" x2="40" y2="5" stroke="#000" stroke-width="1.1"/><path d="M34,1 L42,5 L34,9 z" fill="#000"/></svg><div class="rb">−CO<sub>2</sub></div></div><div class="cmpd letter">D</div></div></div></div>
+<p class="ask"><b class="lbltxt">A</b>와 <b class="lbltxt">D</b>의 구조를 각각 그리고, <b class="lbltxt">A</b>의 구조 이성질체인 다른 Dieckmann 생성물이 주생성물로 얻어지지 않는 이유를 서술하시오. 또한, 굽은 화살표를 사용하여 <b class="lbltxt">C</b>로부터 <b class="lbltxt">D</b>가 생성되는 반응 메커니즘을 제시하시오. <span class="pts">[4점]</span></p><div class="src">◆ 변형 기출: 2019학년도 A형 12번 · 출처: Klein 22장 반응의 복습(Dieckmann 축합: diethyl adipate → 2-carbethoxycyclopentanone; β-케토산 탈카복실화) (Klein 22 Key reactions)</div></div><div class="q" data-set="4"><span class="qn">6.</span>다음은 1-phenylpentane-1,4-dione으로부터 중간 주생성물 <b class="lbltxt">A</b>(C<sub>11</sub>H<sub>10</sub>O)와 <b class="lbltxt">B</b>를 거쳐 최종 주생성물 <b class="lbltxt">C</b>(C<sub>17</sub>H<sub>14</sub>)를 합성하는 반응식이다. (단, 각 단계에서는 적절한 분리·정제 과정을 수행하였다.)
+<div class="frame"><div class="rows"><div class="scheme "><div class="cmpd"><svg version='1.1' baseProfile='full'
+              xmlns='http://www.w3.org/2000/svg'
+                      xmlns:rdkit='http://www.rdkit.org/xml'
+                      xmlns:xlink='http://www.w3.org/1999/xlink'
+                  xml:space='preserve'
+width='129px' height='78px' viewBox='0 0 129 78'>
+
+<path class='bond-0 atom-0 atom-1' d='M 18.8,32.6 L 31.8,40.1' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-1 atom-1 atom-2' d='M 30.6,39.5 L 30.6,50.2' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-1 atom-1 atom-2' d='M 32.9,39.5 L 32.8,50.2' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-2 atom-1 atom-3' d='M 31.8,40.1 L 44.8,32.7' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-3 atom-3 atom-4' d='M 44.8,32.7 L 57.7,40.2' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-4 atom-4 atom-5' d='M 57.7,40.2 L 70.8,32.7' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-5 atom-5 atom-6' d='M 71.9,33.4 L 71.9,22.8' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-5 atom-5 atom-6' d='M 69.6,33.4 L 69.7,22.8' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-6 atom-5 atom-7' d='M 70.8,32.7 L 83.7,40.3' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-7 atom-7 atom-8' d='M 83.7,40.3 L 96.7,32.8' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-7 atom-7 atom-8' d='M 86.0,41.6 L 96.7,35.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-8 atom-8 atom-9' d='M 96.7,32.8 L 109.7,40.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-9 atom-9 atom-10' d='M 109.7,40.4 L 109.6,55.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-9 atom-9 atom-10' d='M 107.4,41.7 L 107.4,54.1' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-10 atom-10 atom-11' d='M 109.6,55.4 L 96.6,62.8' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-11 atom-11 atom-12' d='M 96.6,62.8 L 83.7,55.3' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-11 atom-11 atom-12' d='M 96.6,60.2 L 85.9,54.0' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-12 atom-12 atom-7' d='M 83.7,55.3 L 83.7,40.3' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path d='M 31.1,39.7 L 31.8,40.1 L 32.4,39.7' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 44.1,33.0 L 44.8,32.7 L 45.4,33.0' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 57.1,39.8 L 57.7,40.2 L 58.4,39.8' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 70.1,33.1 L 70.8,32.7 L 71.4,33.1' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 96.1,33.2 L 96.7,32.8 L 97.4,33.2' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 109.0,40.0 L 109.7,40.4 L 109.7,41.1' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 109.6,54.6 L 109.6,55.4 L 109.0,55.8' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 97.3,62.5 L 96.6,62.8 L 96.0,62.5' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 84.3,55.7 L 83.7,55.3 L 83.7,54.5' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path class='atom-2' d='M 28.8 55.1
+Q 28.8 53.6, 29.5 52.7
+Q 30.3 51.9, 31.7 51.9
+Q 33.1 51.9, 33.9 52.7
+Q 34.6 53.6, 34.6 55.1
+Q 34.6 56.7, 33.9 57.6
+Q 33.1 58.4, 31.7 58.4
+Q 30.3 58.4, 29.5 57.6
+Q 28.8 56.7, 28.8 55.1
+M 31.7 57.7
+Q 32.7 57.7, 33.2 57.1
+Q 33.7 56.4, 33.7 55.1
+Q 33.7 53.9, 33.2 53.2
+Q 32.7 52.6, 31.7 52.6
+Q 30.7 52.6, 30.2 53.2
+Q 29.7 53.9, 29.7 55.1
+Q 29.7 56.4, 30.2 57.1
+Q 30.7 57.7, 31.7 57.7
+' fill='#000000'/>
+<path class='atom-6' d='M 67.9 17.8
+Q 67.9 16.2, 68.6 15.4
+Q 69.4 14.5, 70.8 14.5
+Q 72.2 14.5, 73.0 15.4
+Q 73.7 16.2, 73.7 17.8
+Q 73.7 19.3, 73.0 20.2
+Q 72.2 21.1, 70.8 21.1
+Q 69.4 21.1, 68.6 20.2
+Q 67.9 19.3, 67.9 17.8
+M 70.8 20.3
+Q 71.8 20.3, 72.3 19.7
+Q 72.8 19.0, 72.8 17.8
+Q 72.8 16.5, 72.3 15.9
+Q 71.8 15.2, 70.8 15.2
+Q 69.8 15.2, 69.3 15.9
+Q 68.8 16.5, 68.8 17.8
+Q 68.8 19.0, 69.3 19.7
+Q 69.8 20.3, 70.8 20.3
+' fill='#000000'/>
+</svg>
+</div><div class="arr" style="width:60px"><div class="rt">NaOH, H<sub>2</sub>O</div><svg width="60" height="10" viewBox="0 0 60 10"><line x1="2" y1="5" x2="56" y2="5" stroke="#000" stroke-width="1.1"/><path d="M50,1 L58,5 L50,9 z" fill="#000"/></svg><div class="rb">가열</div></div><div class="cmpd letter">A</div></div><div class="scheme "><div class="arr" style="width:87px"><div class="rt">1) PhMgCl, THF</div><svg width="87" height="10" viewBox="0 0 87 10"><line x1="2" y1="5" x2="83" y2="5" stroke="#000" stroke-width="1.1"/><path d="M77,1 L85,5 L77,9 z" fill="#000"/></svg><div class="rb">2) H<sub>2</sub>O</div></div><div class="cmpd letter">B</div><div class="arr" style="width:64px"><div class="rt">진한 H<sub>2</sub>SO<sub>4</sub></div><svg width="64" height="10" viewBox="0 0 64 10"><line x1="2" y1="5" x2="60" y2="5" stroke="#000" stroke-width="1.1"/><path d="M54,1 L62,5 L54,9 z" fill="#000"/></svg><div class="rb"></div></div><div class="cmpd letter">C</div></div></div></div>
+<p class="ask"><b class="lbltxt">A</b>와 <b class="lbltxt">C</b>의 구조를 각각 그리시오. <span class="pts">[2점]</span></p><div class="src">◆ 변형 기출: 2016학년도 A형 4번 · 출처: J. Org. Chem. 2012, 77, 6371–6376 (Klein 22.112) · 노벨상: 1912 노벨 화학상(V. Grignard — Grignard 시약)</div></div><div class="q" data-set="4"><span class="qn">7.</span>다음은 4-methylanisole로부터 중간 주생성물 <b class="lbltxt">B</b>(C<sub>8</sub>H<sub>12</sub>O), <b class="lbltxt">C</b>(C<sub>8</sub>H<sub>14</sub>Cl<sub>2</sub>O), <b class="lbltxt">D</b>(C<sub>7</sub>H<sub>11</sub>ClO)를 거쳐 최종 주생성물 <b class="lbltxt">E</b>(C<sub>7</sub>H<sub>10</sub>O)를 합성하는 과정을 나타낸 것이다. (단, 각 단계에서는 적절한 분리·정제 과정을 수행하였다.)
+<div class="frame"><div class="rows"><div class="scheme "><div class="cmpd"><svg version='1.1' baseProfile='full'
+              xmlns='http://www.w3.org/2000/svg'
+                      xmlns:rdkit='http://www.rdkit.org/xml'
+                      xmlns:xlink='http://www.w3.org/1999/xlink'
+                  xml:space='preserve'
+width='65px' height='100px' viewBox='0 0 65 100'>
+
+<path class='bond-0 atom-0 atom-1' d='M 45.4,83.7 L 37.0,78.9' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-1 atom-1 atom-2' d='M 32.4,71.3 L 32.4,61.3' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-2 atom-2 atom-3' d='M 32.4,61.3 L 19.4,53.8' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-3 atom-3 atom-4' d='M 19.4,53.8 L 19.4,38.8' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-3 atom-3 atom-4' d='M 21.6,52.5 L 21.6,40.1' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-4 atom-4 atom-5' d='M 19.4,38.8 L 32.3,31.3' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-5 atom-5 atom-6' d='M 32.3,31.3 L 32.3,16.3' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-6 atom-5 atom-7' d='M 32.3,31.3 L 45.3,38.7' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-6 atom-5 atom-7' d='M 32.3,33.9 L 43.1,40.0' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-7 atom-7 atom-8' d='M 45.3,38.7 L 45.4,53.7' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-8 atom-8 atom-2' d='M 45.4,53.7 L 32.4,61.3' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-8 atom-8 atom-2' d='M 43.1,52.4 L 32.4,58.7' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path d='M 20.0,54.2 L 19.4,53.8 L 19.4,53.0' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 19.4,39.5 L 19.4,38.8 L 20.0,38.4' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 44.7,38.4 L 45.3,38.7 L 45.3,39.5' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 45.4,53.0 L 45.4,53.7 L 44.7,54.1' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path class='atom-1' d='M 29.5 76.3
+Q 29.5 74.8, 30.3 73.9
+Q 31.0 73.0, 32.4 73.0
+Q 33.8 73.0, 34.6 73.9
+Q 35.4 74.8, 35.4 76.3
+Q 35.4 77.8, 34.6 78.7
+Q 33.8 79.6, 32.4 79.6
+Q 31.0 79.6, 30.3 78.7
+Q 29.5 77.8, 29.5 76.3
+M 32.4 78.9
+Q 33.4 78.9, 33.9 78.2
+Q 34.5 77.6, 34.5 76.3
+Q 34.5 75.0, 33.9 74.4
+Q 33.4 73.8, 32.4 73.8
+Q 31.5 73.8, 30.9 74.4
+Q 30.4 75.0, 30.4 76.3
+Q 30.4 77.6, 30.9 78.2
+Q 31.5 78.9, 32.4 78.9
+' fill='#000000'/>
+</svg>
+</div><div class="arr" style="width:71px"><div class="rt">Li, NH<sub>3</sub>(<i>l</i>)</div><svg width="71" height="10" viewBox="0 0 71 10"><line x1="2" y1="5" x2="67" y2="5" stroke="#000" stroke-width="1.1"/><path d="M61,1 L69,5 L61,9 z" fill="#000"/></svg><div class="rb">EtOH, −78 ℃</div></div><div class="cmpd letter">B</div><div class="arr" style="width:64px"><div class="rt">HCl (과량)</div><svg width="64" height="10" viewBox="0 0 64 10"><line x1="2" y1="5" x2="60" y2="5" stroke="#000" stroke-width="1.1"/><path d="M54,1 L62,5 L54,9 z" fill="#000"/></svg><div class="rb"></div></div><div class="cmpd letter">C</div></div><div class="scheme "><div class="arr" style="width:44px"><div class="rt">H<sub>2</sub>O</div><svg width="44" height="10" viewBox="0 0 44 10"><line x1="2" y1="5" x2="40" y2="5" stroke="#000" stroke-width="1.1"/><path d="M34,1 L42,5 L34,9 z" fill="#000"/></svg><div class="rb"></div></div><div class="cmpd letter">D</div><div class="arr" style="width:44px"><div class="rt"><i>t</i>-BuOK</div><svg width="44" height="10" viewBox="0 0 44 10"><line x1="2" y1="5" x2="40" y2="5" stroke="#000" stroke-width="1.1"/><path d="M34,1 L42,5 L34,9 z" fill="#000"/></svg><div class="rb"><i>t</i>-BuOH</div></div><div class="cmpd letter">E</div></div></div><div class="chem" style="text-align:left">· 첫 단계에서 Li을 넣으면 용액이 푸른색을 띠었고, <b>B</b>는 콘쥬게이트되지 않은 다이엔이다.<br>· <b>D</b>는 IR 1715 cm<sup>−1</sup>에서 강한 흡수를 보이고, <b>E</b>의 ¹H NMR에는 δ 0.3–1.0 부근(고리 긴장이 큰 3원 고리 CH<sub>2</sub>) 신호가 나타난다.</div></div>
+<p class="ask"><b class="lbltxt">B</b>와 <b class="lbltxt">E</b>의 구조를 각각 그리시오. <span class="pts">[2점]</span></p><div class="src">◆ 변형 기출: 2016학년도 A형 5번 · 출처: Aust. J. Chem. 1987, 40, 1321–1325 (Klein 9.68)</div></div><div class="q" data-set="5"><span class="qn">4.</span>다음은 2-methylcyclohexanone으로부터 중간 주생성물 <b class="lbltxt">A</b>(C<sub>11</sub>H<sub>19</sub>N)를 거쳐 최종 주생성물 <b class="lbltxt">B</b>(C<sub>11</sub>H<sub>18</sub>O<sub>3</sub>)를 합성하는 반응식이다. (단, 각 단계에서는 적절한 분리·정제 과정을 수행하였고, 입체 이성질체는 구별하지 않는다.)
+<div class="frame"><div class="scheme "><div class="cmpd"><svg version='1.1' baseProfile='full'
+              xmlns='http://www.w3.org/2000/svg'
+                      xmlns:rdkit='http://www.rdkit.org/xml'
+                      xmlns:xlink='http://www.w3.org/1999/xlink'
+                  xml:space='preserve'
+width='83px' height='67px' viewBox='0 0 83 67'>
+
+<path class='bond-0 atom-0 atom-1' d='M 22.1,50.6 L 36.0,42.6' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-1 atom-1 atom-2' d='M 36.0,42.6 L 49.8,50.6' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-2 atom-2 atom-3' d='M 49.8,50.6 L 63.7,42.7' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-3 atom-3 atom-4' d='M 63.7,42.7 L 63.7,26.7' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-4 atom-4 atom-5' d='M 63.7,26.7 L 49.9,18.6' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-5 atom-5 atom-6' d='M 49.9,18.6 L 36.0,26.6' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-6 atom-6 atom-7' d='M 37.2,25.9 L 27.5,20.3' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-6 atom-6 atom-7' d='M 36.0,28.0 L 26.3,22.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-7 atom-6 atom-1' d='M 36.0,26.6 L 36.0,42.6' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path d='M 49.2,50.2 L 49.8,50.6 L 50.5,50.2' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 63.0,43.1 L 63.7,42.7 L 63.7,41.9' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 63.7,27.5 L 63.7,26.7 L 63.0,26.3' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 50.6,19.0 L 49.9,18.6 L 49.2,19.0' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 36.7,26.2 L 36.0,26.6 L 36.0,27.4' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path class='atom-7' d='M 19.2 18.6
+Q 19.2 17.1, 20.0 16.3
+Q 20.7 15.4, 22.2 15.4
+Q 23.6 15.4, 24.3 16.3
+Q 25.1 17.1, 25.1 18.6
+Q 25.1 20.2, 24.3 21.1
+Q 23.6 21.9, 22.2 21.9
+Q 20.8 21.9, 20.0 21.1
+Q 19.2 20.2, 19.2 18.6
+M 22.2 21.2
+Q 23.1 21.2, 23.7 20.6
+Q 24.2 19.9, 24.2 18.6
+Q 24.2 17.4, 23.7 16.8
+Q 23.1 16.1, 22.2 16.1
+Q 21.2 16.1, 20.7 16.7
+Q 20.1 17.4, 20.1 18.6
+Q 20.1 19.9, 20.7 20.6
+Q 21.2 21.2, 22.2 21.2
+' fill='#000000'/>
+</svg>
+</div><div class="arr" style="width:102px"><div class="rt">pyrrolidine</div><svg width="102" height="10" viewBox="0 0 102 10"><line x1="2" y1="5" x2="98" y2="5" stroke="#000" stroke-width="1.1"/><path d="M92,1 L100,5 L92,9 z" fill="#000"/></svg><div class="rb">TsOH (촉매), −H<sub>2</sub>O</div></div><div class="cmpd letter">A</div><div class="arr" style="width:93px"><div class="rt">1) CH<sub>2</sub>=CHCO<sub>2</sub>CH<sub>3</sub></div><svg width="93" height="10" viewBox="0 0 93 10"><line x1="2" y1="5" x2="89" y2="5" stroke="#000" stroke-width="1.1"/><path d="M83,1 L91,5 L83,9 z" fill="#000"/></svg><div class="rb">2) H<sub>3</sub>O<sup>+</sup></div></div><div class="cmpd letter">B</div></div></div>
+<p class="ask"><b class="lbltxt">A</b>와 <b class="lbltxt">B</b>의 구조를 각각 그리시오. <span class="pts">[2점]</span></p><div class="src">◆ 변형 기출: 2015학년도 A형 기입형 9번 · 출처: J. Am. Chem. Soc. 1954, 76, 2029–2030 (Klein 22.110 (cf. 22.111, J. Org. Chem. 1977, 42, 1663–1664)) · 노벨상: 2021 노벨 화학상(B. List·D. W. C. MacMillan — 엔아민/이미늄 활성화에 기반한 비대칭 유기 촉매)</div></div><div class="q" data-set="5"><span class="qn">11.</span>다음은 cyclohexanone으로부터 두 가지 경로로 같은 주생성물 <b class="lbltxt">B</b>(C<sub>7</sub>H<sub>12</sub>O)를 합성하는 반응식이다. <b class="lbltxt">A</b>(C<sub>8</sub>H<sub>14</sub>O)는 중간 주생성물이고, <b class="lbltxt">C</b>(C<sub>10</sub>H<sub>16</sub>O<sub>3</sub>)는 IR 1745 cm<sup>−1</sup>에서 강한 흡수를 보이며 O–H 흡수가 없다. (단, 각 단계에서는 적절한 분리·정제 과정을 수행하였다.)
+<div class="frame"><div class="rows"><div class="scheme "><div class="cmpd"><svg version='1.1' baseProfile='full'
+              xmlns='http://www.w3.org/2000/svg'
+                      xmlns:rdkit='http://www.rdkit.org/xml'
+                      xmlns:xlink='http://www.w3.org/1999/xlink'
+                  xml:space='preserve'
+width='77px' height='63px' viewBox='0 0 77 63'>
+
+<path class='bond-0 atom-0 atom-1' d='M 25.3,19.6 L 34.2,24.7' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-0 atom-0 atom-1' d='M 24.1,21.5 L 33.1,26.7' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-1 atom-1 atom-2' d='M 33.1,25.4 L 33.1,40.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-2 atom-2 atom-3' d='M 33.1,40.4 L 46.1,47.9' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-3 atom-3 atom-4' d='M 46.1,47.9 L 59.1,40.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-4 atom-4 atom-5' d='M 59.1,40.4 L 59.1,25.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-5 atom-5 atom-6' d='M 59.1,25.4 L 46.1,17.9' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-6 atom-6 atom-1' d='M 46.1,17.9 L 33.1,25.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path d='M 33.1,26.1 L 33.1,25.4 L 33.7,25.0' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 33.1,39.6 L 33.1,40.4 L 33.7,40.8' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 45.4,47.5 L 46.1,47.9 L 46.7,47.5' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 58.4,40.7 L 59.1,40.4 L 59.1,39.6' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 59.1,26.1 L 59.1,25.4 L 58.4,25.0' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 46.7,18.3 L 46.1,17.9 L 45.4,18.3' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path class='atom-0' d='M 17.2 17.9
+Q 17.2 16.4, 17.9 15.5
+Q 18.7 14.7, 20.1 14.7
+Q 21.5 14.7, 22.3 15.5
+Q 23.0 16.4, 23.0 17.9
+Q 23.0 19.5, 22.2 20.3
+Q 21.5 21.2, 20.1 21.2
+Q 18.7 21.2, 17.9 20.3
+Q 17.2 19.5, 17.2 17.9
+M 20.1 20.5
+Q 21.1 20.5, 21.6 19.9
+Q 22.1 19.2, 22.1 17.9
+Q 22.1 16.7, 21.6 16.0
+Q 21.1 15.4, 20.1 15.4
+Q 19.1 15.4, 18.6 16.0
+Q 18.1 16.7, 18.1 17.9
+Q 18.1 19.2, 18.6 19.9
+Q 19.1 20.5, 20.1 20.5
+' fill='#000000'/>
+</svg>
+</div><div class="arr" style="width:71px"><div class="rt">Ph<sub>3</sub>P=CHOCH<sub>3</sub></div><svg width="71" height="10" viewBox="0 0 71 10"><line x1="2" y1="5" x2="67" y2="5" stroke="#000" stroke-width="1.1"/><path d="M61,1 L69,5 L61,9 z" fill="#000"/></svg><div class="rb">THF</div></div><div class="cmpd letter">A</div><div class="arr" style="width:44px"><div class="rt">H<sub>3</sub>O<sup>+</sup></div><svg width="44" height="10" viewBox="0 0 44 10"><line x1="2" y1="5" x2="40" y2="5" stroke="#000" stroke-width="1.1"/><path d="M34,1 L42,5 L34,9 z" fill="#000"/></svg><div class="rb"></div></div><div class="cmpd letter">B</div></div><div class="scheme "><div class="cmpd"><svg version='1.1' baseProfile='full'
+              xmlns='http://www.w3.org/2000/svg'
+                      xmlns:rdkit='http://www.rdkit.org/xml'
+                      xmlns:xlink='http://www.w3.org/1999/xlink'
+                  xml:space='preserve'
+width='77px' height='63px' viewBox='0 0 77 63'>
+
+<path class='bond-0 atom-0 atom-1' d='M 25.3,19.6 L 34.2,24.7' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-0 atom-0 atom-1' d='M 24.1,21.5 L 33.1,26.7' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-1 atom-1 atom-2' d='M 33.1,25.4 L 33.1,40.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-2 atom-2 atom-3' d='M 33.1,40.4 L 46.1,47.9' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-3 atom-3 atom-4' d='M 46.1,47.9 L 59.1,40.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-4 atom-4 atom-5' d='M 59.1,40.4 L 59.1,25.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-5 atom-5 atom-6' d='M 59.1,25.4 L 46.1,17.9' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path class='bond-6 atom-6 atom-1' d='M 46.1,17.9 L 33.1,25.4' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<path d='M 33.1,26.1 L 33.1,25.4 L 33.7,25.0' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 33.1,39.6 L 33.1,40.4 L 33.7,40.8' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 45.4,47.5 L 46.1,47.9 L 46.7,47.5' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 58.4,40.7 L 59.1,40.4 L 59.1,39.6' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 59.1,26.1 L 59.1,25.4 L 58.4,25.0' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path d='M 46.7,18.3 L 46.1,17.9 L 45.4,18.3' style='fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;' />
+<path class='atom-0' d='M 17.2 17.9
+Q 17.2 16.4, 17.9 15.5
+Q 18.7 14.7, 20.1 14.7
+Q 21.5 14.7, 22.3 15.5
+Q 23.0 16.4, 23.0 17.9
+Q 23.0 19.5, 22.2 20.3
+Q 21.5 21.2, 20.1 21.2
+Q 18.7 21.2, 17.9 20.3
+Q 17.2 19.5, 17.2 17.9
+M 20.1 20.5
+Q 21.1 20.5, 21.6 19.9
+Q 22.1 19.2, 22.1 17.9
+Q 22.1 16.7, 21.6 16.0
+Q 21.1 15.4, 20.1 15.4
+Q 19.1 15.4, 18.6 16.0
+Q 18.1 16.7, 18.1 17.9
+Q 18.1 19.2, 18.6 19.9
+Q 19.1 20.5, 20.1 20.5
+' fill='#000000'/>
+</svg>
+</div><div class="arr" style="width:66px"><div class="rt">ClCH<sub>2</sub>CO<sub>2</sub>Et</div><svg width="66" height="10" viewBox="0 0 66 10"><line x1="2" y1="5" x2="62" y2="5" stroke="#000" stroke-width="1.1"/><path d="M56,1 L64,5 L56,9 z" fill="#000"/></svg><div class="rb">NaOEt</div></div><div class="cmpd letter">C</div><div class="arr" style="width:81px"><div class="rt">1) NaOH, H<sub>2</sub>O</div><svg width="81" height="10" viewBox="0 0 81 10"><line x1="2" y1="5" x2="77" y2="5" stroke="#000" stroke-width="1.1"/><path d="M71,1 L79,5 L71,9 z" fill="#000"/></svg><div class="rb">2) H<sub>3</sub>O<sup>+</sup>, 가열</div></div><div class="cmpd letter">B</div></div></div></div>
+<p class="ask"><b class="lbltxt">A</b>, <b class="lbltxt">B</b>, <b class="lbltxt">C</b>의 구조를 각각 그리고, 굽은 화살표를 사용하여 <b class="lbltxt">A</b>로부터 <b class="lbltxt">B</b>가 생성되는 반응 메커니즘을 제시하시오. <span class="pts">[4점]</span></p><div class="src">◆ 변형 기출: 2014학년도 A형 서술형 4번 · 출처: Chem. Ber. 1962, 95, 2514–2525 (Klein 20.90) · 노벨상: 1979 노벨 화학상(G. Wittig — 인 일라이드를 이용한 알켄 합성)</div></div></div>
+<script>// 브라우저에서 실행: #pool 안의 .q 블록을 2단 A4 페이지에 순서대로 배치한다.
+(function () {
+  const pool = document.getElementById('pool');
+  if (!pool) return;
+  const sets = JSON.parse(pool.dataset.sets);           // [{id,title,subtitle,count,points,time}]
+  const out = document.getElementById('book');
+  const mm = v => v * 96 / 25.4;
+  sets.forEach(set => {
+    const qs = Array.from(pool.querySelectorAll(`.q[data-set="${set.id}"]`));
+    let pages = [], page, cols, ci;
+    const newPage = first => {
+      page = document.createElement('div'); page.className = 'page';
+      if (first) page.innerHTML = document.getElementById('cover-' + set.id).innerHTML;
+      const c = document.createElement('div'); c.className = 'cols ' + (first ? 'first' : 'rest');
+      c.innerHTML = '<div class="col"></div><div class="col"></div>';
+      page.appendChild(c);
+      const f = document.createElement('div'); f.className = 'foot'; page.appendChild(f);
+      out.appendChild(page); pages.push(page);
+      cols = c.querySelectorAll('.col'); ci = 0;
+    };
+    newPage(true);
+    qs.forEach(q => {
+      for (;;) {
+        const col = cols[ci];
+        col.appendChild(q);
+        if (col.scrollHeight <= col.clientHeight + 1 || col.children.length === 1) {
+          if (col.scrollHeight > col.clientHeight + 1) q.classList.add('overflow');
+          break;
+        }
+        col.removeChild(q);
+        if (ci === 0) ci = 1; else newPage(false);
+      }
+    });
+    const last = cols[ci];
+    const end = document.createElement('div'); end.className = 'end'; end.textContent = '<수고하셨습니다.>';
+    last.appendChild(end);
+    if (last.scrollHeight > last.clientHeight + 1) { last.removeChild(end); }
+    pages.forEach((p, i) => {
+      p.querySelector('.foot').innerHTML =
+        `<span class="tag">${set.tag}</span>화 학 [${set.label}] (${pages.length}면 중 <b>${i + 1}</b> 면)`;
+    });
+  });
+  pool.remove();
+  document.body.dataset.ready = '1';
+})();
+</script></body></html>
