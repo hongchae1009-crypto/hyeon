@@ -28,6 +28,9 @@ body.yv .toc-unit{display:none} .toc-year{display:none} body.yv .toc-year{displa
 .idx2 caption{font-weight:700;text-align:left;margin:14px 0 4px}
 .fig-note{font-size:12px;color:var(--muted)}
 figure svg{background:#fff}
+.refcmp{border:1.5px solid #86b7a4;background:#f3faf6;border-radius:8px;padding:6px 12px;margin-top:12px}
+.refcmp h5{color:#2f7d5b}
+.refsrc{font-size:12px;color:#5b6270;text-align:right;margin:6px 0 0}
 @media print{
   .unit-sec,.year-sec{break-before:page;page-break-before:always;margin-top:0}
   .ut,.yt{break-after:avoid;page-break-after:avoid}
@@ -114,7 +117,8 @@ def render_new(it, u):
         f'<div class="answer"><span class="lbl">모범답안</span>{it["answer"]}</div></div>'
         f'<section class="blk"><h5>핵심 개념 · 공식</h5><ul class="concepts">{concepts}</ul></section>'
         f'<section class="blk"><h5>풀이 과정 · 메커니즘</h5><div class="sol">{it["sol"]}</div></section>'
-        f'{figs}<section class="blk"><h5>예상 의문점 Q&amp;A</h5>{faq}</section></article>')
+        f'{figs}<section class="blk"><h5>예상 의문점 Q&amp;A</h5>{faq}</section>'
+        + (f'<p class="refsrc">{esc(it["ref_src"])}</p>' if it.get("ref_src") else "") + '</article>')
 
 
 def render_reuse(it, u, arts):
@@ -125,6 +129,11 @@ def render_reuse(it, u, arts):
     # 기존 파일의 title(h4)을 목차용으로 추출
     it.setdefault("title", re.search(r"<h4>(.*?)</h4>", a).group(1))
     it.setdefault("sub_orig", re.search(r'<h3 class="unit-h">(.*?)</h3>', a).group(1))
+    if it.get("ref"):  # 참고 해설과의 비교·보강
+        figs = "".join(f"<figure>{fn()}<figcaption>{esc(cap)}</figcaption></figure>" for fn, cap in it.get("ref_figs", []))
+        src = f'<p class="refsrc">{esc(it["ref_src"])}</p>' if it.get("ref_src") else ""
+        a = a[:a.rindex("</article>")] + (f'<section class="blk refcmp"><h5>참고 해설 비교 · 보강</h5>'
+                                          f'<div class="sol">{it["ref"]}</div>{figs}{src}</section></article>')
     return a
 
 
