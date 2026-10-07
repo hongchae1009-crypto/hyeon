@@ -16,6 +16,13 @@ document.querySelectorAll('.ansp').forEach(pg=>{let ims=pg.querySelectorAll('.ca
 document.querySelectorAll('.pg:not(.ansp)').forEach(pg=>{let f=10.2; while(pg.scrollHeight>lim && f>8.4){f-=0.3; pg.style.fontSize=f+"pt";}});});
 </script>"""
 SMALL = {}  # 문항 번호 -> 글자 크기(pt), 한 페이지 넘칠 때 조정
+# 다른 문항 세트(예: 통합과학)에서 바꿔 쓰는 설정값
+CAP_PREFIX = "q"
+COVER_TITLE = "중등 화학 임용 대비 과교론 기출 변형 {N}제 <small>(탐구 그림·교과서 캡처 포함판)</small>"
+COVER_SUB = ("2022 개정 중학교 과학 1~3학년 화학 단원 — (4) 물질의 상태 변화 · (6) 기체의 성질 · (8) 물질의 특성 · (11) 물질의 구성 · (16) 화학 반응의 규칙성<br>"
+             "소재: 비상교육·미래엔 교과서의 탐구 활동 + {CUR} 원문(성취기준·성취기준 해설·적용 시 고려 사항·탐구 활동·내용 체계·교수·학습 및 평가)")
+COVER_LEGEND = "◦ 파란 굵은 글씨로 표시한 &lt;자료&gt;는 교육과정 원문을 그대로 옮긴 것이며, 빈칸은 원문의 해당 용어입니다. ◦ [ ] 안은 변형한 원 기출(화교론 우선, 물·생·지는 경향 참고)입니다.<br>"
+OUT_STEM = "화교론_기출변형{N}제_중1-3_그림포함"
 
 def caps_for(i):
     meta = {}
@@ -23,7 +30,7 @@ def caps_for(i):
     if mf.exists():
         meta = json.loads(mf.read_text(encoding="utf-8"))
     out = []
-    for p in sorted(CAPDIR.glob(f"q{i}_*.png")):
+    for p in sorted(CAPDIR.glob(f"{CAP_PREFIX}{i}_*.png")):
         out.append((p.name, meta.get(p.name, "교과서 탐구 활동")))
     return out
 
@@ -32,10 +39,9 @@ def cover():
     for i, it in enumerate(Q, 1):
         theme = re.sub(r"\s*변형$", "", it["src"])
         rows.append(f"<tr><td>{i}</td><td>{esc(unit_of(it['tb']))}</td><td>{esc(theme)}</td><td class='star'>{stars(it['star'])}</td><td>{i+1}</td><td>{i+1+N}</td></tr>")
-    return f"""<section class='pg cover'><h1>중등 화학 임용 대비 과교론 기출 변형 {N}제 <small>(탐구 그림·교과서 캡처 포함판)</small></h1>
-<div class='sub'>2022 개정 중학교 과학 1~3학년 화학 단원 — (4) 물질의 상태 변화 · (6) 기체의 성질 · (8) 물질의 특성 · (11) 물질의 구성 · (16) 화학 반응의 규칙성<br>
-소재: 비상교육·미래엔 교과서의 탐구 활동 + {CUR} 원문(성취기준·성취기준 해설·적용 시 고려 사항·탐구 활동·내용 체계·교수·학습 및 평가)</div>
-<div class='legend'>◦ 파란 굵은 글씨로 표시한 &lt;자료&gt;는 교육과정 원문을 그대로 옮긴 것이며, 빈칸은 원문의 해당 용어입니다. ◦ [ ] 안은 변형한 원 기출(화교론 우선, 물·생·지는 경향 참고)입니다.<br>
+    return f"""<section class='pg cover'><h1>{COVER_TITLE.format(N=N)}</h1>
+<div class='sub'>{COVER_SUB.format(CUR=CUR)}</div>
+<div class='legend'>{COVER_LEGEND}
 ◦ 별점은 2024–2026 물화생지 과교론 출제 경향 기준 중요도·출제 가능성입니다. ◦ 모든 문항은 4점 서술형이며, 한 문항이 한 쪽입니다.<br>
 ◦ 모범 답안 및 해설({N+2}–{2*N+1}쪽)은 문항별 1쪽으로, 관련 교과서 탐구 캡처 · 모범 답안 · 해설(핵심 이론, 교육과정 근거, 채점 포인트, 출제 포인트) 순으로 실었습니다.</div>
 <table class='idx'><tr><th>번호</th><th>교과서·단원</th><th>원 기출 / 핵심 이론</th><th>별점</th><th>문제 쪽</th><th>해설 쪽</th></tr>{''.join(rows)}</table></section>"""
@@ -56,7 +62,7 @@ def main():
     for i, it in enumerate(Q, 1):
         caps = caps_for(i)
         if caps:
-            imgs = "".join(f"<figure><img src='캡처/{n}'><figcaption>{esc(c)}</figcaption></figure>" for n, c in caps)
+            imgs = "".join(f"<figure><img src='{CAPDIR.name}/{n}'><figcaption>{esc(c)}</figcaption></figure>" for n, c in caps)
             capbox = f"<div class='caps n{min(len(caps),2)}'>{imgs}</div>"
         else:
             capbox = f"<div class='fig'>{FIG[i]}</div><p class='fc'>교과서 탐구 장면을 그림으로 나타낸 것</p>"
@@ -87,7 +93,7 @@ body{width:182mm;margin:0}
 """
     doc = f"""<!doctype html><html lang='ko'><head><meta charset='utf-8'><title>화교론 기출변형 {len(Q)}제</title><style>{css}</style></head><body>
 {''.join(pages)}{FIT_JS}</body></html>"""
-    out = HERE / f"화교론_기출변형{len(Q)}제_중1-3_그림포함.html"
+    out = HERE / (OUT_STEM.format(N=len(Q)) + ".html")
     out.write_text(doc, encoding="utf-8")
     print(out, len(Q))
 
