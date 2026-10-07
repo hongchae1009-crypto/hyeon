@@ -138,7 +138,7 @@ def f2012_40():
     f.mol(m, ox, oy)
     tag(f, m, "a", ox, oy, -40, 45, "δ 2.0 (s, 3H)")
     tag(f, m, "nm", ox, oy, 0, 42, "δ 2.8 (d, J ≈ 5 Hz, 3H)")
-    tag(f, m, "h", ox, oy, 60, -20, "δ ≈ 7.3 (넓은 봉우리, 1H)", anchor="start")
+    tag(f, m, "h", ox, oy, 60, -20, "δ ≈ 7.4 (br s, 1H)", anchor="start")
     tag(f, m, "o", ox, oy, 45, -12, "1654 C=O (amide I)", color=BLUE, anchor="start")
     tag(f, m, "h", ox, oy, 60, 20, "3300 N–H 신축", color=BLUE, anchor="start")
     # 공명
@@ -176,8 +176,8 @@ def f2011_40():
     ox, oy = 170, 175
     f.mol(m, ox, oy)
     tag(f, m, "h", ox, oy, -55, -40, "δ 10.8 (s, 1H, OH…O=C)", anchor="end")
-    tag(f, m, "r2", ox, oy, 30, 50, "H6 δ 7.85 (dd, 1H)", anchor="start")
-    tag(f, m, "r4", ox, oy, -35, 30, "H4 δ 7.45 (td, 1H)", anchor="end")
+    tag(f, m, "r2", ox, oy, 30, 50, "H6 δ 7.85 (d, 1H)", anchor="start")
+    tag(f, m, "r4", ox, oy, -35, 30, "H4 δ 7.45 (t, 1H)", anchor="end")
     tag(f, m, "r5", ox, oy, -40, -18, "H3 δ 6.97 (d, 1H)", anchor="end")
     tag(f, m, "r3", ox, oy, 0, 60, "H5 δ 6.87 (t, 1H)")
     tag(f, m, "e1", ox, oy, 45, -35, "δ 4.40 (q, 2H)", anchor="start")
@@ -254,8 +254,8 @@ def f2009_27():
     f.text((x1 + x4) / 2, y1 - 52, "⁵J ≈ 2 Hz (H–C1–C2≡C3–C4–H)", size=11.5, color=RED, weight="bold")
     tag(f, m, "c1", ox, oy, -20, 50, "δ 4.25 (t, ⁵J, 2H)")
     tag(f, m, "c4", ox, oy, 5, 50, "δ 2.23 (qt, 2H)")
-    tag(f, m, "c5", ox, oy, 55, -15, "δ 1.13 (t, 3H)", anchor="start")
-    tag(f, m, "oh", ox, oy, -30, -35, "δ ≈ 1.6 (s, 1H, OH)", anchor="end")
+    tag(f, m, "c5", ox, oy, 55, -15, "δ 1.15 (t, 3H)", anchor="start")
+    tag(f, m, "oh", ox, oy, -30, -35, "δ ≈ 1.5 (s, 1H, OH)", anchor="end")
     f.text(30, 215, "IR: 3332 O–H(넓음) · 2229 C≡C(약, 내부 알카인) · 1014 C–O   /  ≡C–H(3300 날카로움) 없음 → 내부 알카인",
            size=11.5, anchor="start", color=BLUE)
     f.box(450, 55, 335, 135)
