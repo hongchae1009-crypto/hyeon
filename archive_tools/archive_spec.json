@@ -1,0 +1,193 @@
+{
+ "out": "/home/user/hyeon/산출물_버전별",
+ "versions": [
+  {
+   "dir": "v0_색인",
+   "docs": [
+    {
+     "type": "md",
+     "name": "v0_버전목록_색인",
+     "title": "버전 목록 색인",
+     "files": [
+      "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/v0_index.md"
+     ]
+    }
+   ]
+  },
+  {
+   "dir": "v1_교재인용논문_추출본",
+   "docs": [
+    {
+     "type": "md",
+     "name": "v1_교재인용논문_추출본_영문원본",
+     "title": "교재 인용 논문 추출본",
+     "text": "# v1 교재(Klein 유기화학 1~23장) 인용 논문·반응 추출본 (영문 원본)\n\n> 대응 질문 ①·② · 스캔 PDF를 판독한 원자료. 각 장 「참고문헌」과 각주 문제를 대응시켰다. SMILES는 RDKit으로 검증. [H]/[M]/[L]·[high]/[med]/[low]는 신뢰도.\n",
+     "files": [
+      "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/extract_1-6.md",
+      "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/extract_7-11a.md",
+      "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/extract_7-11b.md",
+      "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/extract_12-14.md",
+      "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/extract_15-19.md",
+      "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/extract_20-23.md"
+     ]
+    },
+    {
+     "type": "md",
+     "name": "v1_교재인용논문_추출본_한국어판",
+     "title": "교재 인용 논문 추출본 (한국어판)",
+     "text": "# v1 교재(Klein 유기화학 1~23장) 인용 논문·반응 추출본 — 한국어판\n\n> 대응 질문 ①·② · 영문 원본(당시 산출물)을 질문 ⑬ 시점에 빠짐없이 한국어로 옮긴 판. SMILES·문헌·수치는 원본과 동일.\n",
+     "files": [
+      "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/ko/extract_1-6.ko.md",
+      "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/ko/extract_7-11a.ko.md",
+      "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/ko/extract_7-11b.ko.md",
+      "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/ko/extract_12-14.ko.md",
+      "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/ko/extract_15-19.ko.md",
+      "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/ko/extract_20-23.ko.md"
+     ]
+    }
+   ]
+  },
+  {
+   "dir": "v2_기출유기문항_카탈로그",
+   "docs": [
+    {
+     "type": "md",
+     "name": "v2_기출유기문항_카탈로그",
+     "title": "기출 유기 문항 카탈로그",
+     "text": "# v2 중등교사 임용 화학 기출 유기 문항 카탈로그 (2014~2026학년도, 66문항)\n\n> 대응 질문 ②~⑦ · 정답은 직접 푼 것(공식 정답 아님) · 2014–2017 / 2018–2021 / 2022–2026 순서.\n",
+     "files": [
+      "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/exam_organic_catalog_2014-2017.md",
+      "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/exam_organic_catalog_2018-2021.md",
+      "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/exam_organic_catalog.md"
+     ]
+    }
+   ]
+  },
+  {
+   "dir": "v3_A4출력_견본",
+   "docs": [
+    {
+     "type": "html",
+     "name": "v3_견본_문제지",
+     "title": "v3 A4 출력 견본 — 문제지",
+     "kind": "exam",
+     "html": "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/wt/db72f7c/exam_build/out/변형모의고사_문제지.html",
+     "pdf": "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/wt/db72f7c/exam_build/out/변형모의고사_문제지.pdf"
+    },
+    {
+     "type": "html",
+     "name": "v3_견본_정답해설",
+     "title": "v3 A4 출력 견본 — 정답·해설",
+     "html": "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/wt/db72f7c/exam_build/out/변형모의고사_정답해설.html",
+     "pdf": "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/wt/db72f7c/exam_build/out/변형모의고사_정답해설.pdf"
+    }
+   ]
+  },
+  {
+   "dir": "v4_출제방향_계획서",
+   "docs": [
+    {
+     "type": "md",
+     "name": "v4_출제방향_계획서",
+     "title": "출제 방향 계획서",
+     "files": [
+      "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/v4_plan.md"
+     ]
+    }
+   ]
+  },
+  {
+   "dir": "v5_66문항_초판",
+   "docs": [
+    {
+     "type": "md",
+     "name": "v5_66문항_배정표",
+     "title": "66문항 초판 배정표",
+     "files": [
+      "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/v5_alloc.md"
+     ]
+    },
+    {
+     "type": "html",
+     "name": "v5_문제지_초판",
+     "title": "v5 유기화학 기출변형 모의고사 1~6회 — 문제지 (초판, 검수 전)",
+     "kind": "exam",
+     "html": "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/wt/e612400/exam_build/out/변형모의고사_문제지.html",
+     "pdf": "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/wt/e612400/exam_build/out/변형모의고사_문제지.pdf"
+    },
+    {
+     "type": "html",
+     "name": "v5_정답해설_초판",
+     "title": "v5 정답 및 해설 (초판, 검수 전)",
+     "html": "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/wt/e612400/exam_build/out/변형모의고사_정답해설.html",
+     "pdf": "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/wt/e612400/exam_build/out/변형모의고사_정답해설.pdf"
+    },
+    {
+     "type": "html",
+     "name": "v5_논문반응_정리집",
+     "title": "v5 논문·반응 정리집",
+     "html": "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/wt/e612400/exam_build/out/논문반응_정리집.html",
+     "pdf": "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/wt/e612400/exam_build/out/논문반응_정리집.pdf"
+    },
+    {
+     "type": "html",
+     "name": "v5부록_A2원안_문제지",
+     "title": "v5 부록 — A2 영역 원안(중복 교체 전) 문제지",
+     "kind": "exam",
+     "html": "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/wt/a314515/exam_build/out/preview_area_A2_문제지.html",
+     "pdf": "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/wt/a314515/exam_build/out/preview_area_A2_문제지.pdf"
+    },
+    {
+     "type": "html",
+     "name": "v5부록_A2원안_정답해설",
+     "title": "v5 부록 — A2 영역 원안 정답·해설",
+     "html": "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/wt/a314515/exam_build/out/preview_area_A2_정답해설.html",
+     "pdf": "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/wt/a314515/exam_build/out/preview_area_A2_정답해설.pdf"
+    }
+   ]
+  },
+  {
+   "dir": "v6_최종본",
+   "docs": [
+    {
+     "type": "md",
+     "name": "v6_66문항_배정표",
+     "title": "66문항 최종 배정표",
+     "files": [
+      "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/v6_alloc.md"
+     ]
+    },
+    {
+     "type": "md",
+     "name": "v6_검수수정내역",
+     "title": "검수 수정 내역",
+     "files": [
+      "/tmp/claude-0/-home-user-hyeon/e196aa5e-9821-56b2-b877-2f07b790959e/scratchpad/v6_changelog.md"
+     ]
+    },
+    {
+     "type": "html",
+     "name": "v6_문제지_최종",
+     "title": "v6 유기화학 기출변형 모의고사 1~6회 — 문제지 (최종)",
+     "kind": "exam",
+     "html": "/home/user/hyeon/exam_build/out/변형모의고사_문제지.html",
+     "pdf": "/home/user/hyeon/exam_build/out/변형모의고사_문제지.pdf"
+    },
+    {
+     "type": "html",
+     "name": "v6_정답해설_최종",
+     "title": "v6 정답 및 해설 (최종)",
+     "html": "/home/user/hyeon/exam_build/out/변형모의고사_정답해설.html",
+     "pdf": "/home/user/hyeon/exam_build/out/변형모의고사_정답해설.pdf"
+    },
+    {
+     "type": "html",
+     "name": "v6_논문반응_정리집",
+     "title": "v6 논문·반응 정리집",
+     "html": "/home/user/hyeon/exam_build/out/논문반응_정리집.html",
+     "pdf": "/home/user/hyeon/exam_build/out/논문반응_정리집.pdf"
+    }
+   ]
+  }
+ ]
+}
