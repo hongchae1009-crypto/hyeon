@@ -13,7 +13,7 @@ FIT_JS = """<script>
 window.addEventListener("load",function(){const mm=96/25.4, lim=248*mm;
 document.querySelectorAll('.ansp').forEach(pg=>{let ims=pg.querySelectorAll('.caps img'); const tall=[...ims].every(im=>im.naturalHeight>im.naturalWidth*0.9); if(ims.length==2&&tall){const c=pg.querySelector('.caps'); c.style.flexDirection='row'; c.style.alignItems='flex-start'; c.querySelectorAll('figure').forEach(f=>f.style.flex='1');} let h=(ims.length>1&&!tall)?95:140; ims.forEach(im=>im.style.maxHeight=h+'mm');
  while(pg.scrollHeight>lim && h>25){h-=3; pg.querySelectorAll('.caps img').forEach(im=>im.style.maxHeight=h+'mm');}});
-document.querySelectorAll('.pg:not(.ansp)').forEach(pg=>{let f=10.2; while(pg.scrollHeight>lim && f>8.4){f-=0.3; pg.style.fontSize=f+"pt";}});});
+document.querySelectorAll('.pg:not(.ansp)').forEach(pg=>{let f=10.2, fh=62; while(pg.scrollHeight>lim && (f>7.8||fh>36)){if(f>8.4||fh<=36){f-=0.3; pg.style.fontSize=f+"pt";} else {fh-=4; pg.querySelectorAll('.fig svg').forEach(v=>v.style.maxHeight=fh+'mm');}}});});
 </script>"""
 SMALL = {}  # 문항 번호 -> 글자 크기(pt), 한 페이지 넘칠 때 조정
 # 다른 문항 세트(예: 통합과학)에서 바꿔 쓰는 설정값
