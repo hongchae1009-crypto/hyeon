@@ -11,6 +11,8 @@ import sys
 import build
 import build_book as BB
 import build_problems as BP
+import pdflinks
+import pymupdf as fitz
 
 C = "#dc2626"
 
@@ -20,6 +22,7 @@ article.q.land{display:grid;grid-template-columns:minmax(0,43fr) minmax(0,57fr);
 article.q.land .lp{min-width:0}
 article.q.land .rp{min-width:0}
 .lt{font-size:17px;font-weight:800;margin:0 0 8px;line-height:1.35}
+.toidx{float:right;font-size:11px;font-weight:600;color:#6b7280;text-decoration:none;margin-top:3px}
 .lt .sj{font-size:13px;font-weight:600;color:var(--c);margin-left:8px}
 .card{border:1px solid #cfd4db;border-radius:8px;padding:10px 12px;background:#fff}
 .og{display:inline-block;font-size:11.5px;font-weight:700;color:#fff;background:#4b5563;border-radius:5px;padding:0 7px;margin-right:6px}
@@ -81,7 +84,7 @@ def restructure(h, units):
             src = "data:image/png;base64," + base64.b64encode(img["png"]).decode()
             title = exam_title(it)
             pg = f' · 교재 {img["page"]}쪽' if img.get("page") else ""
-            left = (f'<div class="lp" style="--c:{C}"><div class="lt">{esc(title)}<span class="sj">유기화학 · {esc(build.unit_label(u))}</span></div>'
+            left = (f'<div class="lp" style="--c:{C}"><div class="lt"><a class="toidx" href="#">▲ 색인</a>{esc(title)}<span class="sj">유기화학 · {esc(build.unit_label(u))}</span></div>'
                     f'<div class="card"><span class="og">기출 원문</span><span class="ogl">{esc(img.get("year") or it["year"])}'
                     f'{pg}</span>'
                     f'<img class="qimg" src="{src}" width="{round(img["w"] * 0.9)}" style="--pw:{round(img["w"] * 0.64)}px" alt="기출 원문">'
@@ -152,7 +155,19 @@ def make(units, arts, css, out_html, out_pdf, title, sub, views=("unit", "year")
                          "pts": build.pts_num(it["pts"]), "title": it.get("title", ""), "page": starts[pos]})
         ip = pdf.with_name("_index.pdf")
         index_pdf(ip, title, sub + (" · 연도순" if view == "year" else ""), rows)
+        k = fitz.open(ip).page_count
         BP.prepend(ip, pdf)
+        # 하이퍼링크: 색인 행 → 문항 쪽, 문항 쪽 '▲ 색인' → 첫 쪽, 책갈피
+        targets = [k + p - 1 for p in starts]
+        outline, cur = [[1, "색인", 1]], None
+        for pos, i in enumerate(order):
+            u, it = seq[i]
+            grp = build.unit_label(u) if view == "unit" else f'{it["year"]}학년도'
+            if grp != cur:
+                outline.append([1, grp, targets[pos] + 1])
+                cur = grp
+            outline.append([2, f'{it["year"]} {it["exam"]} · {pdflinks.plain(it.get("title", ""))}'[:120], targets[pos] + 1])
+        pdflinks.finalize(pdf, k, index_targets=targets, outline=outline)
 
 
 if __name__ == "__main__":

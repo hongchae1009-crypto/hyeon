@@ -11,6 +11,8 @@ import pathlib
 import sys
 
 import build
+import pdflinks
+import pymupdf as fitz
 import extract_pages
 import problems_2526
 
@@ -33,12 +35,15 @@ article.q.new .ask{margin:8px 0 2px;font-weight:600}
 .badge.new{background:#7c3aed}
 .notes li{margin:3px 0}
 .ph{display:none}
+.phw .toidx{display:none}
 @media print{
   body{background:#fff}
   .cover,.q-head,.ut,.yt,.work{display:none!important}
   article.q{break-inside:avoid;page-break-inside:avoid;break-before:page;page-break-before:always;border:none;padding:0;margin:0;background:none}
   .unit-sec:first-child article.q:first-child,.year-sec:first-child article.q:first-child{break-before:auto;page-break-before:auto}
   .unit-sec,.year-sec{break-before:auto;page-break-before:auto;margin:0}
+  .phw{display:flex;justify-content:space-between;align-items:flex-start}
+  .phw .toidx{display:inline;font-size:8.5pt;color:#666;text-decoration:none;font-family:'Noto Sans CJK KR',sans-serif}
   .ph{display:flex;width:264pt;border:.8pt solid #000;font-family:'Noto Sans CJK KR','Malgun Gothic',sans-serif;font-size:11.5pt;line-height:1.25;color:#000;margin:0 0 8pt}
   .ph .y{flex:none;width:58pt;text-align:center;border-right:.8pt solid #000;padding:0 4pt}
   .ph .u{padding:0 8pt}
@@ -109,7 +114,8 @@ def render_item(n, k, it):
         search = f'{it["year"]} {it["exam"]} {ulab} {it["stem"]} {it["ask"]}'
         cls = "q new"
     ylab = str(it["year"]) if it["kind"] == "book" else f'{it["year"]} {it["src"][0]}'
-    ph = f'<div class="ph"><span class="y">{esc(ylab)}</span><span class="u">{esc(ulab)}</span></div>'
+    ph = (f'<div class="phw"><div class="ph"><span class="y">{esc(ylab)}</span><span class="u">{esc(ulab)}</span></div>'
+          f'<a class="toidx" href="#">▲ 색인</a></div>')
     return (f'<article class="{cls}" id="{uid}" data-subject="유기화학" data-year="{year_num(it["year"])}" data-unit="{n}" '
             f'data-search="{esc(search)}"><div class="keep">{ph}<div class="q-head" style="--c:{C}">{badges}</div>{body}</div></article>'), uid
 
@@ -246,7 +252,20 @@ if __name__ == "__main__":
         pdf = outdir / f"유기화학_단원별_기출문제({kind}).pdf"
         tp = outdir / f"_toc_{kind}.pdf"
         toc_pdf(tp, "유기화학 단원별 기출문제", sub, heading, rows, note)
+        k = fitz.open(tp).page_count
         prepend(tp, pdf)
+        seq = [(n, it) for n, its in units.items() for it in its]
+        order = list(range(len(seq))) if kind == "단원순" else sorted(range(len(seq)), key=lambda i: (-year_num(seq[i][1]["year"]), i))
+        outline, cur = [[1, "목차", 1]], None
+        for pos, i in enumerate(order):
+            n, it = seq[i]
+            grp = f"{n}. {UNIT_NAMES[n]}" if kind == "단원순" else f'{year_num(it["year"])}학년도'
+            if grp != cur:
+                outline.append([1, grp, k + pos + 1])
+                cur = grp
+            lab = f'{it["year"]} · 교재 {it["page"]}쪽' if it["kind"] == "book" else f'{it["year"]} {it["exam"]}'
+            outline.append([2, lab if kind == "단원순" else f"{lab} · {n}. {UNIT_NAMES[n]}", k + pos + 1])
+        pdflinks.finalize(pdf, k, toc_rows=[(t, k + a - 1) for t, a, z in rows], outline=outline)
     # 단원별 파일
     ud = outdir / "단원별"
     ud.mkdir(exist_ok=True)
@@ -267,5 +286,8 @@ if __name__ == "__main__":
         tp = ud / "_toc.pdf"
         toc_pdf(tp, f"유기화학 기출문제 — {n}. {UNIT_NAMES[n]}", f"중등 화학 교사 임용시험 1차 · {len(items)}문항", "문항 목록", rows,
                 note if n == 15 else note.rsplit("<br>", 1)[0])
+        k = fitz.open(tp).page_count
         prepend(tp, pdf)
+        pdflinks.finalize(pdf, k, toc_rows=[(t, k + a - 1) for t, a, z in rows],
+                          outline=[[1, "문항 목록", 1]] + [[1, t, k + a] for t, a, z in rows])
     print(total, "문항", round(len(h) / 1e6, 1), "MB")
