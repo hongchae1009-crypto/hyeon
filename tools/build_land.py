@@ -187,8 +187,14 @@ if __name__ == "__main__":
             if its:
                 sel.append({**u, "items": its})
         n = sum(len(u["items"]) for u in sel)
-        make(sel, arts, css, outdir / f"유기화학_모범답안_{y0}-{y1}.html", outdir / f"유기화학_모범답안_{y0}-{y1}(단원순).pdf",
-             f"유기화학 기출 모범답안 ({y0}–{y1}학년도)", f"중등 화학 교사 임용시험 · {y0}–{y1}학년도 · {n}문항 · 단원 → 문항(최근 연도 순)")
+        if y0 == y1:  # 한 해: 단원순 하나만
+            make(sel, arts, css, outdir / f"유기화학_모범답안_{y0}.html", outdir / f"유기화학_모범답안_{y0}(단원순).pdf",
+                 f"유기화학 기출 모범답안 ({y0}학년도)", f"중등 화학 교사 임용시험 · {y0}학년도 · {n}문항 · 단원순", views=("unit",))
+            p = outdir / f"유기화학_모범답안_{y0}(단원순).pdf"
+            p.replace(outdir / f"유기화학_모범답안_{y0}.pdf")
+        else:
+            make(sel, arts, css, outdir / f"유기화학_모범답안_{y0}-{y1}.html", outdir / f"유기화학_모범답안_{y0}-{y1}(단원순).pdf",
+                 f"유기화학 기출 모범답안 ({y0}–{y1}학년도)", f"중등 화학 교사 임용시험 · {y0}–{y1}학년도 · {n}문항 · 단원 → 문항(최근 연도 순)")
         print(n, "문항")
         sys.exit(0)
     n = sum(len(u["items"]) for u in units)
