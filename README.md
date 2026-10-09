@@ -22,3 +22,6 @@ python3 tools/build.py <기존 모범답안.html> 유기화학_단원별_모범�
 - 다시 만들기: `python3 tools/build_problems.py <모범답안.html> 유기화학_단원별_기출문제 <교재 PDF 3개> <2025·2026 시험지 PDF 4개>` (`tools/` 안에서 실행)
 
 - 가로형 모범답안 다시 만들기: `python3 tools/build_land.py <모범답안.html> 유기화학_단원별_모범답안 <교재 PDF 3개> <2025·2026 시험지 PDF 4개>` (`tools/` 안에서 실행)
+
+## 2009–2013학년도 문제만
+`유기화학_기출문제_2009-2013/` — 40문항, HTML + PDF(단원순·연도순). 다시 만들기: `python3 tools/build_problems.py <모범답안.html> 유기화학_기출문제_2009-2013 <교재·시험지 PDF> --years=2009-2013`

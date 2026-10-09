@@ -61,6 +61,10 @@ def year_num(y):
     return int(str(y)[:4])
 
 
+# 교재 머리글 연도 오기 바로잡기 (단원, 교재 쪽) → 실제 연도 (모범답안과 같은 판단)
+YEAR_FIX = {(3, 14): "2015 A", (9, 47): "2013"}
+
+
 def exam_map(paths):
     """'2025 … A.pdf' → {(2025, 'A'): path}"""
     out = {}
@@ -81,6 +85,7 @@ def collect(pdfs, exams):
         else:
             units[it["unit"]].append({"kind": "new", **it})
     for b in extract_pages.extract(pdfs):
+        b["year"] = YEAR_FIX.get((b["unit"], b["page"]), b["year"])
         units[b["unit"]].append({"kind": "book", **b})
     for n in units:  # 2025·2026 문항끼리는 연도 내림차순
         new = sorted([x for x in units[n] if x["kind"] != "book"], key=lambda x: -x["year"])
@@ -120,7 +125,7 @@ def render_item(n, k, it):
             f'data-search="{esc(search)}"><div class="keep">{ph}<div class="q-head" style="--c:{C}">{badges}</div>{body}</div></article>'), uid
 
 
-def build_html(units, css):
+def build_html(units, css, title="유기화학 단원별 기출문제", sub="중등 화학 임용 · 1997–2026학년도"):
     secs, toc_u, rows, nav_years = [], [], [], {}
     total = 0
     for n, items in units.items():
@@ -150,8 +155,6 @@ def build_html(units, css):
     idx = f'<table class="tb idx idx2"><caption>단원별 문항 수</caption><tr><th>단원</th><th>단원명</th><th>문항</th><th>출제 연도</th></tr>{cnt}</table>'
     chips_u = '<span class="chip on" data-u="전체">전체</span>' + "".join(
         f'<span class="chip" data-u="{n}">{n}</span>' for n in units if units[n])
-    title = "유기화학 단원별 기출문제"
-    sub = "중등 화학 임용 · 1997–2026학년도"
     nav = (f'<nav class="side"><h1>{title}</h1><div class="sub">{sub} · {total}문항</div>'
            '<div class="view-chips"><span class="chip on" data-v="unit">단원별 보기</span><span class="chip" data-v="year">연도별 보기</span></div>'
            f'<input id="q" placeholder="검색 (예: 2025, 아민)"><div class="chips">{chips_u}</div>'
@@ -230,28 +233,19 @@ def page_ranges(units):
     return by_unit, [tuple(r) for r in by_year]
 
 
-if __name__ == "__main__":
-    model, outdir, rest = sys.argv[1], pathlib.Path(sys.argv[2]), sys.argv[3:]
-    exams = exam_map(rest)
-    pdfs = [p for p in rest if p not in exams.values()]
-    css, _ = build.load_model(model)
-    units = collect(pdfs, exams)
-    print("시험지 원본:", sorted(exams))
-    h, total = build_html(units, css)
+def make_combined(units, css, outdir, base, title, sub, note):
+    """단원순·연도순 합본 HTML/PDF (목차·하이퍼링크·책갈피 포함)"""
+    h, total = build_html(units, css, title, sub.split(" · ")[0] + " · " + sub.split(" · ")[1] if " · " in sub else sub)
     outdir.mkdir(parents=True, exist_ok=True)
-    hp = outdir / "유기화학_단원별_기출문제.html"
+    hp = outdir / f"{base}.html"
     hp.write_text(h, encoding="utf-8")
-    build.to_pdf(hp, outdir / "유기화학_단원별_기출문제(단원순).pdf", footer=FOOT, margin={"top": "14mm", "bottom": "18mm", "left": "14mm", "right": "14mm"})
-    build.to_pdf(hp, outdir / "유기화학_단원별_기출문제(연도순).pdf", view="year", footer=FOOT, margin={"top": "14mm", "bottom": "18mm", "left": "14mm", "right": "14mm"})
+    build.to_pdf(hp, outdir / f"{base}(단원순).pdf", footer=FOOT, margin={"top": "14mm", "bottom": "18mm", "left": "14mm", "right": "14mm"})
+    build.to_pdf(hp, outdir / f"{base}(연도순).pdf", view="year", footer=FOOT, margin={"top": "14mm", "bottom": "18mm", "left": "14mm", "right": "14mm"})
     by_unit, by_year = page_ranges(units)
-    sub = f"중등 화학 교사 임용시험 1차 · 1997–2026학년도 · {total}문항"
-    note = ("· 2024학년도까지는 단원별 기출 교재의 문항, 2025·2026학년도는 시험지 원본에서 수록했습니다.<br>"
-            "· 한 문항당 한 페이지이며, 문항 아래 빈 공간은 풀이 공간입니다.<br>"
-            "· 15단원은 교재 90–91쪽이 원본 파일에서 빈 쪽이라 해당 문항이 빠져 있을 수 있습니다.")
     for kind, rows, heading in (("단원순", by_unit, "목차 (단원별)"), ("연도순", by_year, "목차 (연도별)")):
-        pdf = outdir / f"유기화학_단원별_기출문제({kind}).pdf"
+        pdf = outdir / f"{base}({kind}).pdf"
         tp = outdir / f"_toc_{kind}.pdf"
-        toc_pdf(tp, "유기화학 단원별 기출문제", sub, heading, rows, note)
+        toc_pdf(tp, title, sub, heading, rows, note)
         k = fitz.open(tp).page_count
         prepend(tp, pdf)
         seq = [(n, it) for n, its in units.items() for it in its]
@@ -266,6 +260,33 @@ if __name__ == "__main__":
             lab = f'{it["year"]} · 교재 {it["page"]}쪽' if it["kind"] == "book" else f'{it["year"]} {it["exam"]}'
             outline.append([2, lab if kind == "단원순" else f"{lab} · {n}. {UNIT_NAMES[n]}", k + pos + 1])
         pdflinks.finalize(pdf, k, toc_rows=[(t, k + a - 1) for t, a, z in rows], outline=outline)
+    return h, total
+
+
+if __name__ == "__main__":
+    model, outdir, rest = sys.argv[1], pathlib.Path(sys.argv[2]), [a for a in sys.argv[3:] if not a.startswith('--')]
+    exams = exam_map(rest)
+    pdfs = [p for p in rest if p not in exams.values()]
+    css, _ = build.load_model(model)
+    units = collect(pdfs, exams)
+    print("시험지 원본:", sorted(exams))
+    note = ("· 2024학년도까지는 단원별 기출 교재의 문항, 2025·2026학년도는 시험지 원본에서 수록했습니다.<br>"
+            "· 한 문항당 한 페이지이며, 문항 아래 빈 공간은 풀이 공간입니다.<br>"
+            "· 15단원은 교재 90–91쪽이 원본 파일에서 빈 쪽이라 해당 문항이 빠져 있을 수 있습니다.")
+    yr = [a for a in sys.argv if a.startswith("--years=")]
+    if yr:  # 연도 범위만 모은 합본 (예: --years=2009-2013)
+        y0, y1 = map(int, yr[0].split("=")[1].split("-"))
+        sel = {n: [it for it in its if y0 <= year_num(it["year"]) <= y1] for n, its in units.items()}
+        total = sum(len(v) for v in sel.values())
+        outdir.mkdir(parents=True, exist_ok=True)
+        make_combined(sel, css, outdir, f"유기화학_기출문제_{y0}-{y1}", f"유기화학 기출문제 ({y0}–{y1}학년도)",
+                      f"중등 화학 교사 임용시험 · {y0}–{y1}학년도 · {total}문항",
+                      "· 단원별 기출 교재의 문항을 원본 그대로 수록했습니다.<br>· 한 문항당 한 페이지이며, 문항 아래 빈 공간은 풀이 공간입니다.")
+        print(total, "문항")
+        sys.exit(0)
+    sub = f"중등 화학 교사 임용시험 1차 · 1997–2026학년도 · {sum(len(v) for v in units.values())}문항"
+    outdir.mkdir(parents=True, exist_ok=True)
+    h, total = make_combined(units, css, outdir, "유기화학_단원별_기출문제", "유기화학 단원별 기출문제", sub, note)
     # 단원별 파일
     ud = outdir / "단원별"
     ud.mkdir(exist_ok=True)
