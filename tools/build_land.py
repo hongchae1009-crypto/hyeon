@@ -171,13 +171,26 @@ def make(units, arts, css, out_html, out_pdf, title, sub, views=("unit", "year")
 
 
 if __name__ == "__main__":
-    model, outdir, rest = sys.argv[1], pathlib.Path(sys.argv[2]), sys.argv[3:]
+    model, outdir, rest = sys.argv[1], pathlib.Path(sys.argv[2]), [a for a in sys.argv[3:] if not a.startswith("--")]
     exams = BP.exam_map(rest)
     book = [p for p in rest if p not in exams.values()]
     css, arts = build.load_model(model)
     units = BB.load_units(arts)
     BB.attach_images(units, book, exams)
     outdir.mkdir(parents=True, exist_ok=True)
+    yr = [a for a in sys.argv if a.startswith("--years=")]
+    if yr:  # 연도 범위만 모은 모범답안 (예: --years=2009-2013)
+        y0, y1 = map(int, yr[0].split("=")[1].split("-"))
+        sel = []
+        for u in units:
+            its = [it for it in u["items"] if y0 <= it["year"] <= y1]
+            if its:
+                sel.append({**u, "items": its})
+        n = sum(len(u["items"]) for u in sel)
+        make(sel, arts, css, outdir / f"유기화학_모범답안_{y0}-{y1}.html", outdir / f"유기화학_모범답안_{y0}-{y1}(단원순).pdf",
+             f"유기화학 기출 모범답안 ({y0}–{y1}학년도)", f"중등 화학 교사 임용시험 · {y0}–{y1}학년도 · {n}문항 · 단원 → 문항(최근 연도 순)")
+        print(n, "문항")
+        sys.exit(0)
     n = sum(len(u["items"]) for u in units)
     sub = f"중등 화학 교사 임용시험 1차 · 1997–2026학년도 · {n}문항 · 단원 → 문항(최근 연도 순)"
     make(units, arts, css, outdir / "유기화학_단원별_모범답안_합본.html", outdir / "유기화학_단원별_모범답안_합본(단원순).pdf",
