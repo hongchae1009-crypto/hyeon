@@ -222,3 +222,16 @@ FIGE["osm"] = svg(620, 190,
     + "<rect x='280" + "' y='25' width='330' height='145' rx='6' fill='#fafafa' stroke='#999'/>" + t(445, 47, "우리 모둠의 설계 점검", 11, weight='bold')
     + t(295, 75, "조작: 몰농도  → ㉡ 1 M 한 가지만?", 10, "start") + t(295, 99, "통제: ㉠ 온도뿐?", 10, "start")
     + t(295, 123, "종속: 높이 차 → ㉢ 멈출 때까지?", 10, "start") + t(295, 152, "π = CRT = 1 × 0.082 × 298 ≈ ?", 10, "start"))
+
+# 20. 은거울 반응·음주 측정기
+FIGR["carb"] = svg(620, 180,
+    "<rect x='50' y='40' width='80' height='110' rx='14' fill='#eef0f4' stroke='#555'/><rect x='62' y='28' width='56' height='14' fill='#888'/>"
+    + "<rect x='54' y='60' width='72' height='86' rx='10' fill='url(#ag)' stroke='#999'/>"
+    + "<defs><linearGradient id='ag' x1='0' x2='1'><stop offset='0' stop-color='#ddd'/><stop offset='.5' stop-color='#fff'/><stop offset='1' stop-color='#bbb'/></linearGradient></defs>"
+    + "<path d='M30 150 L150 150 L150 170 L30 170 Z' fill='#f8d4cf' opacity='.6'/>" + t(90, 165, "60 ℃ 물", 9) + t(90, 20, "실험 가: 은거울", 11, weight='bold')
+    + "<rect x='250" + "' y='80' width='230' height='30' rx='14' fill='none' stroke='#555'/>"
+    + "<rect x='255' y='84' width='90' height='22' rx='10' fill='#2f9a5a'/><rect x='345' y='84' width='90' height='22' fill='#e98b2a'/>"
+    + "<ellipse cx='458' cy='95' rx='16' ry='10' fill='#fff' stroke='#999'/>" + t(458, 125, "에탄올 솜", 9)
+    + t(300, 125, "초록색 Cr³⁺", 9) + t(390, 125, "Cr₂O₇²⁻ (㉠ ?색)", 9) + t(365, 60, "실험 나: 음주 측정기 (실리카 겔)", 11, weight='bold')
+    + "<rect x='500" + "' y='30' width='110' height='120' rx='6' fill='#fffbe8' stroke='#cba'/>" + t(555, 52, "작용기 변화", 10, weight='bold')
+    + t(555, 78, "–CHO → –COOH", 10) + t(555, 102, "–OH → –CHO", 10) + t(555, 130, "관찰? 추리?", 10))
