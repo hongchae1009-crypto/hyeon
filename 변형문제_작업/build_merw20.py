@@ -8,7 +8,7 @@ from items_rw import QR
 from figs_merw import FIGE, FIGR
 from expl_merw import EXPLE, EXPLR
 
-ME = ["gas", "hbp", "colli", "fuel", "hess", "ent", "press", "order", "conc", "tcat"]
+ME = ["gas", "hbp", "colli", "osm", "hess", "ent", "press", "order", "conc", "tcat"]
 RW = ["ph4", "titc", "salt", "buf", "hyper", "oxn", "mb", "cell", "plate", "fut"]
 
 Q, FIG, EXPL = [], {}, {}
