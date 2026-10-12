@@ -39,7 +39,7 @@ B.COVER_SUB = ("2022 개정 고등학교 진로 선택 ‘물질과 에너지’
                "소재: 비상교육·미래엔 교과서의 탐구 활동 + {CUR} 원문(성취기준·탐구 활동·성취기준 해설·적용 시 고려 사항·내용 체계·교수·학습 및 평가)")
 B.COVER_LEGEND = ("◦ 파란 굵은 글씨로 표시한 &lt;자료&gt;는 교육과정 원문을 그대로 옮긴 것이며, 빈칸은 원문의 해당 용어입니다. "
                   "◦ [ ] 안은 변형한 원 기출(화교론 우선, 물·생·지는 경향 참고)입니다. ◦ 지도서 문장은 쓰지 않았고, 오개념·유의점만 기출 유형에 맞게 재구성했습니다.<br>"
-                  "<style>.cover .idx{font-size:7.6pt}.cover .idx td{padding:1px 3px;line-height:1.25}.cover .sub,.cover .legend{font-size:8.2pt}.cover h1{font-size:14pt}</style>")
+                  "<style>.cover .idx{font-size:7.6pt}.cover .idx td{padding:1px 3px;line-height:1.25}.cover .sub,.cover .legend{font-size:8.2pt}.cover h1{font-size:14pt}.caps:has(figure:nth-child(3)){display:grid!important;grid-template-columns:1fr 1fr;gap:4px 8px;align-items:start}.caps:has(figure:nth-child(3)) img{max-width:100%}</style>")
 def _unit_of(tb):
     m = re.search(r"\[(.*?)\]\s*([ⅠⅡⅢⅣⅤⅥ]-?\d?)", tb)
     return (m.group(1) + " " + m.group(2)) if m else tb
