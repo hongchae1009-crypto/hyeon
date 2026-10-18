@@ -39,8 +39,15 @@ u{text-underline-offset:2px}
 .small{font-size:9.4pt}
 .blank{color:#888;text-align:center;margin-top:60mm;font-size:12pt}
 /* 정답 책자 */
-.ans{font-family:'NanumGothic',sans-serif;font-size:9.6pt;line-height:1.6}
-.ans .page{height:auto;min-height:420mm}
+.ans{font-family:'NanumGothic',sans-serif;font-size:9.6pt;line-height:1.6;page:ans}
+@page ans{size:297mm 420mm;margin:15mm 15mm 18mm;@bottom-center{content:counter(page);font-size:9pt;color:#666}}
+.ans .page{height:auto;min-height:0;padding:0!important;overflow:visible}
+.ai .ex h4{font-size:10pt;margin:2.6mm 0 1mm;color:#1f3b63;border-bottom:.5pt solid #c8d3e2;padding-bottom:.4mm;break-after:avoid}
+.ai .ex p{margin:.8mm 0;text-align:justify}
+.ai .ex table{width:auto;max-width:100%;margin:1.2mm 0;font-size:9pt}
+.ai .ex th{width:auto}
+.ai{break-inside:auto}
+.ai h3,.ai>table{break-inside:avoid}
 .ah{font-size:13pt;font-weight:bold;border-bottom:1.4pt solid #000;padding-bottom:1.5mm;margin:0 0 3mm}
 .ai{border:.8pt solid #999;border-radius:2mm;padding:3mm 4mm;margin:0 0 4mm;break-inside:avoid}
 .ai h3{margin:0 0 1.5mm;font-size:11pt}
@@ -79,12 +86,14 @@ def booklet(items, part, rnd):
     return page([a, b], part, rnd, 1, 2, notice=True) + page([c, "<p class='blank'>(이 면은 여백입니다.)</p>"], part, rnd, 2, 2)
 
 def answer_html(items, rnd):
-    out = [f"<div class='ah'>화학교육론 실전 모의고사 {rnd}회 — 모범 답안 및 채점 기준</div><div class='acols'>"]
+    out = [f"<div class='acols'><div class='ah' style='column-span:all'>화학교육론 실전 모의고사 {rnd}회 — 모범 답안·채점 기준 및 해설</div>"]
     for it in items:
         rows = "".join(f"<tr><th>작성 {i+1}</th><td>{a}</td><td class='sc'>{s}</td></tr>" for i, (a, s) in enumerate(zip(it["ans"], it["score"])))
         out.append(f"<div class='ai'><h3>전공{it['part']} {it['no']}번 · {it['topic']} <span style='float:right;color:#b8860b'>출제 가능성 {it.get('star','')}</span></h3>"
                    f"<table><tr><th>구분</th><th style='width:auto'>모범 답안</th><th class='sc'>배점</th></tr>{rows}</table>"
-                   f"<div class='note'><b>출제 근거·해설</b> {it['note']}</div></div>")
+                   f"<div class='note'><b>출제 근거</b> {it['note']}</div>"
+                   + ("<div class='ex'>" + "".join(f"<h4>{t}</h4>{h}" for t, h in it.get('expl', [])) + "</div>" if it.get('expl') else "")
+                   + "</div>")
     out.append("</div>")
     return "<div class='ans'><section class='page' style='padding:16mm 15mm'>" + "".join(out) + "</section></div>"
 
