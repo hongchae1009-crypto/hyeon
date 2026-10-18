@@ -10,13 +10,13 @@ CSS = """
 @page{size:297mm 420mm;margin:0}
 *{box-sizing:border-box}
 body{margin:0;font-family:'NanumMyeongjo','Nanum Myeongjo',serif;color:#111;font-size:10.6pt;line-height:1.66;word-break:keep-all}
-.page{width:297mm;height:420mm;position:relative;padding:20mm 15mm 22mm;page-break-after:always;overflow:hidden}
+.page{width:297mm;height:420mm;position:relative;padding:44.8mm 31mm 39.5mm;page-break-after:always;overflow:hidden}
 .page:last-child{page-break-after:auto}
-.top{position:absolute;left:15mm;right:15mm;top:14mm;border-top:1.6pt solid #000}
+.top{position:absolute;left:31mm;right:31mm;top:44.8mm;border-top:1.6pt solid #000}
 .cols{display:flex;height:100%;border-top:0}
-.col{flex:1;padding:4mm 6mm 0 2mm;overflow:hidden}
-.col+.col{border-left:.9pt solid #000;padding-left:7mm;padding-right:2mm}
-.foot{position:absolute;left:15mm;right:15mm;bottom:12mm;border-top:.9pt solid #000;padding-top:2.5mm;text-align:center;font-weight:bold;font-size:11pt;letter-spacing:.5px}
+.col{flex:none;width:50%;padding:4mm 5.5mm 0 0;overflow:hidden}
+.col+.col{border-left:.9pt solid #000;padding-left:5.5mm;padding-right:0}
+.foot{position:absolute;left:31mm;right:31mm;top:382.4mm;border-top:.9pt solid #000;padding-top:2.5mm;text-align:center;font-weight:bold;font-size:11pt;letter-spacing:.5px}
 .foot .big{font-size:17pt;vertical-align:-1.5pt}
 .foot .org{position:absolute;left:0;top:3mm;font-size:8.5pt;font-weight:normal;color:#444}
 .notice{font-size:10pt;margin:0 0 3mm}
@@ -41,7 +41,7 @@ u{text-underline-offset:2px}
 /* 정답 책자 */
 .ans{font-family:'NanumGothic',sans-serif;font-size:9.6pt;line-height:1.6;page:ans}
 @page ans{size:297mm 420mm;margin:15mm 15mm 18mm;@bottom-center{content:counter(page);font-size:9pt;color:#666}}
-.ans .page{height:auto;min-height:0;padding:0!important;overflow:visible}
+.ans .page{width:auto;height:auto;min-height:0;padding:0!important;overflow:visible}
 .ai .ex h4{font-size:10pt;margin:2.6mm 0 1mm;color:#1f3b63;border-bottom:.5pt solid #c8d3e2;padding-bottom:.4mm;break-after:avoid}
 .ai .ex p{margin:.8mm 0;text-align:justify}
 .ai .ex table{width:auto;max-width:100%;margin:1.2mm 0;font-size:9pt}
@@ -61,7 +61,8 @@ u{text-underline-offset:2px}
 
 FIT = """<script>
 window.addEventListener('load',()=>{document.querySelectorAll('.col').forEach(c=>{let f=10.6;
- while(c.scrollHeight>c.clientHeight+1&&f>8.6){f-=0.2;c.style.fontSize=f+'pt';}});});
+ while(c.scrollHeight>c.clientHeight+1&&f>8.6){f-=0.2;c.style.fontSize=f+'pt';}
+ c.dataset.fit=f.toFixed(1)+'/'+(c.scrollHeight-c.clientHeight);});});
 </script>"""
 
 def esc(s): return s  # 문항 데이터는 HTML로 작성(밑줄·아래 첨자 등)

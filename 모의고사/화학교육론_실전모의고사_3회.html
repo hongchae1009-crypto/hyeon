@@ -2,13 +2,13 @@
 @page{size:297mm 420mm;margin:0}
 *{box-sizing:border-box}
 body{margin:0;font-family:'NanumMyeongjo','Nanum Myeongjo',serif;color:#111;font-size:10.6pt;line-height:1.66;word-break:keep-all}
-.page{width:297mm;height:420mm;position:relative;padding:20mm 15mm 22mm;page-break-after:always;overflow:hidden}
+.page{width:297mm;height:420mm;position:relative;padding:44.8mm 31mm 39.5mm;page-break-after:always;overflow:hidden}
 .page:last-child{page-break-after:auto}
-.top{position:absolute;left:15mm;right:15mm;top:14mm;border-top:1.6pt solid #000}
+.top{position:absolute;left:31mm;right:31mm;top:44.8mm;border-top:1.6pt solid #000}
 .cols{display:flex;height:100%;border-top:0}
-.col{flex:1;padding:4mm 6mm 0 2mm;overflow:hidden}
-.col+.col{border-left:.9pt solid #000;padding-left:7mm;padding-right:2mm}
-.foot{position:absolute;left:15mm;right:15mm;bottom:12mm;border-top:.9pt solid #000;padding-top:2.5mm;text-align:center;font-weight:bold;font-size:11pt;letter-spacing:.5px}
+.col{flex:none;width:50%;padding:4mm 5.5mm 0 0;overflow:hidden}
+.col+.col{border-left:.9pt solid #000;padding-left:5.5mm;padding-right:0}
+.foot{position:absolute;left:31mm;right:31mm;top:382.4mm;border-top:.9pt solid #000;padding-top:2.5mm;text-align:center;font-weight:bold;font-size:11pt;letter-spacing:.5px}
 .foot .big{font-size:17pt;vertical-align:-1.5pt}
 .foot .org{position:absolute;left:0;top:3mm;font-size:8.5pt;font-weight:normal;color:#444}
 .notice{font-size:10pt;margin:0 0 3mm}
@@ -33,7 +33,7 @@ u{text-underline-offset:2px}
 /* 정답 책자 */
 .ans{font-family:'NanumGothic',sans-serif;font-size:9.6pt;line-height:1.6;page:ans}
 @page ans{size:297mm 420mm;margin:15mm 15mm 18mm;@bottom-center{content:counter(page);font-size:9pt;color:#666}}
-.ans .page{height:auto;min-height:0;padding:0!important;overflow:visible}
+.ans .page{width:auto;height:auto;min-height:0;padding:0!important;overflow:visible}
 .ai .ex h4{font-size:10pt;margin:2.6mm 0 1mm;color:#1f3b63;border-bottom:.5pt solid #c8d3e2;padding-bottom:.4mm;break-after:avoid}
 .ai .ex p{margin:.8mm 0;text-align:justify}
 .ai .ex table{width:auto;max-width:100%;margin:1.2mm 0;font-size:9pt}
@@ -156,5 +156,6 @@ P = 0.55는 중간 정도의 난이도이고, D = 0.50은 상위 집단과 하�
 <p>기출 연계: 2026 생물 A5(진화 문항 – 내용 타당도, 선택형 보완) 계열의 선택형 문항 평가이며, 문항 분석(정답률·상하위 집단 변별도)과 매력적 오답을 통한 오개념 진단을 결합하였다.</p>
 <p>2027 출제 포인트: 상하위 집단 응답표를 주고 P와 D를 계산하게 한 뒤, 매력적 오답이나 기능하지 않는 오답을 해석하게 하는 형태로 출제될 수 있다.</p><h4>더 알아두기</h4><p>선지 ④는 상위 집단 0명, 하위 집단 2명이 선택하여 매력도는 낮지만 하위 집단만 고르므로 오답으로서 기능은 한다. 어느 집단도 고르지 않는 선지가 있다면 그럴듯한 오개념을 담은 선지로 바꾸어야 한다. 선지 ①은 하위 집단(4명)이 상위 집단(2명)보다 많이 골랐으므로 잘 기능하는 오답이다. 오답의 변별도는 정답과 반대로 음수(상위 &lt; 하위)여야 바람직하다.</p></div></div></div></section></div><script>
 window.addEventListener('load',()=>{document.querySelectorAll('.col').forEach(c=>{let f=10.6;
- while(c.scrollHeight>c.clientHeight+1&&f>8.6){f-=0.2;c.style.fontSize=f+'pt';}});});
+ while(c.scrollHeight>c.clientHeight+1&&f>8.6){f-=0.2;c.style.fontSize=f+'pt';}
+ c.dataset.fit=f.toFixed(1)+'/'+(c.scrollHeight-c.clientHeight);});});
 </script></body></html>
