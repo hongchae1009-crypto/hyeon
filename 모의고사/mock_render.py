@@ -82,7 +82,7 @@ def answer_html(items, rnd):
     out = [f"<div class='ah'>화학교육론 실전 모의고사 {rnd}회 — 모범 답안 및 채점 기준</div><div class='acols'>"]
     for it in items:
         rows = "".join(f"<tr><th>작성 {i+1}</th><td>{a}</td><td class='sc'>{s}</td></tr>" for i, (a, s) in enumerate(zip(it["ans"], it["score"])))
-        out.append(f"<div class='ai'><h3>전공{it['part']} {it['no']}번 · {it['topic']}</h3>"
+        out.append(f"<div class='ai'><h3>전공{it['part']} {it['no']}번 · {it['topic']} <span style='float:right;color:#b8860b'>출제 가능성 {it.get('star','')}</span></h3>"
                    f"<table><tr><th>구분</th><th style='width:auto'>모범 답안</th><th class='sc'>배점</th></tr>{rows}</table>"
                    f"<div class='note'><b>출제 근거·해설</b> {it['note']}</div></div>")
     out.append("</div>")
