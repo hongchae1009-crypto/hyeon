@@ -969,10 +969,10 @@ def _acyl(m, n):
 
 
 def _ester_tail(m, c, r="Et"):
-    o = m.sub("os", c, -30, "O")
-    a = m.sub("r1", o, 30)
+    o = m.sub("eo", c, -30, "O")
+    a = m.sub("e1", o, 30)
     if r == "Et":
-        m.sub("r2", a, -30)
+        m.sub("e2", a, -30)
 
 
 def _cy_acyl(m, ch2=False):
@@ -1072,7 +1072,7 @@ def f30b():
     m = tet(355, tail=False, h2=True)
     f.text(390, y + 45, "알데하이드 (에스터보다 반응성 큼)", size=10.5, color=GRAY)
     f.arrow(430, y, 480, y, "H⁻", "")
-    m = Mol(); m.atom("et", 0, 0, "Et"); c = m.sub("c", "et", 0); m.sub("o", c, 0, "O^−"); f.mol(m, 500, y)
+    m = Mol(); m.atom("et", 0, 0, "Et"); c = m.sub("c", "et", 0, "CH_2"); m.sub("o", c, 0, "O^−"); f.mol(m, 500, y)
     f.arrow(590, y, 640, y, "H₂O", "")
     f.text(650, y - 8, "CH₃CH₂CH₂OH", size=12, anchor="start", weight="bold", color=GREEN)
     f.text(650, y + 12, "+ CH₃CH₂OH", size=12, anchor="start", weight="bold", color=GREEN)
