@@ -126,3 +126,65 @@ def extract_exam_question(path, page_no, qnum, dpi=150):
     buf = io.BytesIO()
     im.convert("L").quantize(16).save(buf, "PNG", optimize=True)
     return {"png": buf.getvalue(), "w": im.width, "h": im.height}
+
+
+# ---------------------------------------------------------------- MDEET 자연과학Ⅱ (2단 편집, A3)
+MD_COLS = {"L": (80, 418), "R": (424, 762)}
+MD_TOP, MD_BOTTOM = 145, 1084
+
+
+def _drop_trailing_rule(im):
+    """맨 아래에 떨어져 있는 가는 가로줄(각주 구분선)을 잘라낸다"""
+    g = im.convert("L")
+    w, h = g.size
+    px = g.load()
+    dark = [sum(1 for x in range(0, w, 2) if px[x, y] < 128) for y in range(h)]
+    rows = [y for y in range(h) if dark[y] > 0]
+    if not rows:
+        return im
+    last = rows[-1]
+    top = last
+    while top > 0 and dark[top - 1] > 0:
+        top -= 1
+    gap = top - max([y for y in rows if y < top] or [0])
+    if last - top <= 4 and gap >= 25:
+        cut = max([y for y in rows if y < top] or [0])
+        return _autocrop(im.crop((0, 0, w, cut + 2))) or im
+    return im
+
+
+def extract_md(path, qnums=range(21, 31), dpi=150):
+    """MDEET 문제지에서 qnums 문항을 단 단위로 잘라 [{q, page, png, w, h}] 반환.
+    같은 단의 다음 문항 시작(또는 '확인 사항' 상자, 단 아래 끝)까지가 한 문항."""
+    doc = fitz.open(path)
+    starts = []   # (q, page, col, y)
+    stops = []    # (page, col, y) 확인 사항 등
+    for i in range(doc.page_count):
+        for b in doc[i].get_text("dict")["blocks"]:
+            if b["type"] != 0:
+                continue
+            for l in b["lines"]:
+                t = "".join(s["text"] for s in l["spans"]).strip()
+                x0, y0 = l["bbox"][0], l["bbox"][1]
+                col = "L" if x0 < 421 else "R"
+                m = re.match(r"^(\d{1,2})\.(\s|$)", t)
+                if m and (x0 < 100 or 425 < x0 < 450) and y0 > MD_TOP:
+                    starts.append((int(m.group(1)), i, col, y0))
+                if t.startswith("* 확인 사항"):
+                    stops.append((i, col, y0))
+    out = []
+    for q, pg, col, y0 in starts:
+        if q not in qnums:
+            continue
+        ys = [y for (_, p2, c2, y) in starts if p2 == pg and c2 == col and y > y0] + \
+             [y for (p2, c2, y) in stops if p2 == pg and c2 == col and y > y0]
+        y1 = min(ys) - 6 if ys else MD_BOTTOM
+        x0, x1 = MD_COLS[col]
+        pm = doc[pg].get_pixmap(dpi=dpi, clip=fitz.Rect(x0, y0 - 6, x1, y1))
+        im = _autocrop(Image.open(io.BytesIO(pm.tobytes("png"))).convert("RGB"))
+        im = _drop_trailing_rule(im)
+        buf = io.BytesIO()
+        im.convert("L").quantize(16).save(buf, "PNG", optimize=True)
+        out.append({"q": q, "page": pg + 1, "png": buf.getvalue(), "w": im.width, "h": im.height})
+    out.sort(key=lambda r: r["q"])
+    return out

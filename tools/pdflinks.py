@@ -72,6 +72,17 @@ def back_links(doc, k):
             _goto(doc[pno], r + (-3, -2, 3, 2), 0)
 
 
+def clean_bottom(doc, k):
+    """Chrome이 다음 문항 머리글 상자의 윗변을 이전 쪽 아래 여백에 그리는 흔적을 흰색으로 덮는다"""
+    for pno in range(k, doc.page_count):
+        page = doc[pno]
+        H = page.rect.height
+        for dr in page.get_drawings():
+            r = dr["rect"]
+            if dr.get("color") and H - 60 < r.y0 < H - 35 and r.width > 150:
+                page.draw_rect(fitz.Rect(r.x0 - 2, r.y0 - 1.5, r.x1 + 2, min(r.y1, H - 32) + 1), color=None, fill=(1, 1, 1), overlay=True)
+
+
 def finalize(pdf, k, index_targets=None, toc_rows=None, outline=None):
     """k: 앞쪽(색인·목차) 쪽 수. index_targets: 색인 행 순서대로 대상 쪽(0부터).
     toc_rows: [(제목, 대상 쪽)] 글자 검색 방식. outline: [[level, title, page(1부터)], ...]"""
@@ -81,6 +92,7 @@ def finalize(pdf, k, index_targets=None, toc_rows=None, outline=None):
     if toc_rows:
         link_rows_text(doc, k, toc_rows)
     back_links(doc, k)
+    clean_bottom(doc, k)
     if outline:
         doc.set_toc(outline)
     _save(doc, pdf)

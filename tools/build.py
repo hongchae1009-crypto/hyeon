@@ -117,7 +117,8 @@ def render_new(it, u):
         f'<div class="answer"><span class="lbl">모범답안</span>{it["answer"]}</div></div>'
         f'<section class="blk"><h5>핵심 개념 · 공식</h5><ul class="concepts">{concepts}</ul></section>'
         f'<section class="blk"><h5>풀이 과정 · 메커니즘</h5><div class="sol">{it["sol"]}</div></section>'
-        f'{figs}<section class="blk"><h5>예상 의문점 Q&amp;A</h5>{faq}</section>'
+        + "".join(f'<section class="blk xtra"><h5>{h}</h5><div class="sol">{b}</div></section>' for h, b in it.get("extra", []))
+        + f'{figs}<section class="blk"><h5>예상 의문점 Q&amp;A</h5>{faq}</section>'
         + (f'<p class="refsrc">{esc(it["ref_src"])}</p>' if it.get("ref_src") else "") + '</article>')
 
 
