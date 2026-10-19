@@ -236,7 +236,7 @@ def f23():
     f.text(460, 215, "A: 누적 이중 결합(중앙 sp 탄소) → 가장 불안정", size=11.5, anchor="start", color=RED)
     f.text(460, 235, "→ |ΔH°| 가장 큼: A > C > B  ⇒ ㄴ ✗", size=11.5, anchor="start", color=RED, weight="bold")
     f.text(460, 265, "C: 고립 다이엔 = 일치환 알켄 2개", size=11.5, anchor="start")
-    f.text(460, 295, "B: 공액 안정화(≈ 15 kJ/mol) + 이치환 알켄", size=11.5, anchor="start", color=BLUE)
+    f.text(460, 295, "B: C보다 ≈ 28 kJ/mol 안정 (공액 + 이치환 알켄)", size=11.5, anchor="start", color=BLUE)
     f.text(460, 315, "→ 가장 안정, 방출 열 가장 작음", size=11.5, anchor="start", color=BLUE)
     f.text(460, 345, "같은 생성물로 가는 반응: |ΔH°| 작을수록 반응물 안정", size=11.5, anchor="start", color=GRAY)
     return f.render()
