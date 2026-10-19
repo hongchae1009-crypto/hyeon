@@ -535,3 +535,53 @@ def f25b():
     f.text(675, 175, "O⁻이 sp³ 탄소로 막혀", size=11, color=RED)
     f.text(675, 192, "C=O와 공액 ✗ → 국재화", size=11, color=RED)
     return f.render()
+
+
+# ------------------------------------------------------------------ 의자형 (figs_u01_04와 같은 방식)
+def chair_pts(R=42, h=8, t=12):
+    """의자형 6개 탄소의 화면 좌표. k 짝수: 위(axial ↑), 홀수: 아래(axial ↓)."""
+    ts, tc = math.sin(math.radians(t)), math.cos(math.radians(t))
+    pts = []
+    for k in range(6):
+        th = math.radians(60 * k)
+        x3, y3 = R * math.cos(th), R * math.sin(th)
+        z3 = h if k % 2 == 0 else -h
+        pts.append((x3, -(z3 * tc + y3 * ts), (x3, y3, z3)))
+    return pts, ts, tc
+
+
+def chair(f, x, y, subs=None, R=42, h=8, t=12, blen=26, size=12, hlc=None):
+    """subs: {k: (axial 라벨, equatorial 라벨)} — None/'' 이면 결합 생략.
+    라벨 앞에 '!'를 붙이면 빨간색."""
+    subs = subs or {}
+    pts, ts, tc = chair_pts(R, h, t)
+    for k in range(6):
+        x1, y1, _ = pts[k]
+        x2, y2, _ = pts[(k + 1) % 6]
+        line(f, x + x1, y + y1, x + x2, y + y2, w=1.6)
+    for k, (ax, eq) in subs.items():
+        px, py, (x3, y3, z3) = pts[k]
+        up = 1 if z3 > 0 else -1
+        for lab, vec in ((ax, (0, 0, up)), (eq, (x3 / R, y3 / R, -up * 0.33))):
+            if not lab:
+                continue
+            n = math.sqrt(vec[0] ** 2 + vec[1] ** 2 + vec[2] ** 2)
+            vx, vy, vz = (v / n for v in vec)
+            dx = vx * blen
+            dy = -(vz * tc + vy * ts) * blen
+            col = INK
+            if lab.startswith("!"):
+                lab, col = lab[1:], RED
+            d = math.hypot(dx, dy)
+            short = 0 if lab == "·" else 9
+            line(f, x + px, y + py, x + px + dx * (d - short) / d, y + py + dy * (d - short) / d, color=col)
+            if lab != "·":
+                anc = "middle"
+                lx, ly = x + px + dx, y + py + dy
+                if abs(dx) > 12:
+                    anc = "start" if dx > 0 else "end"
+                    lx += -6 if dx > 0 else 6
+                f.add(rich(lx, ly, lab, size=size, anchor=anc, color=col, halo=True))
+    return pts
+
+
