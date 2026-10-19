@@ -136,12 +136,92 @@ def build_solutions(imgs, items, css, outdir):
     p.replace(outdir / "MDEET_유기화학_상세해설_2023-2027.pdf")
 
 
+# ------------------------------------------------------------------ 문제집 (A3, 한 쪽에 두 문항, 시험지형 2단)
+P2_CSS = """
+@page{size:A3;margin:12mm 16mm 16mm}
+body{font-family:'Noto Sans CJK KR','Malgun Gothic',sans-serif;color:#111;margin:0}
+.page{height:392mm;display:flex;flex-direction:column;break-after:page;page-break-after:always;overflow:hidden}
+.page:last-child{break-after:auto;page-break-after:auto}
+.hd{display:flex;align-items:baseline;gap:14px;padding:0 0 6px;border-bottom:1.2pt solid #111}
+.hd b{font-size:17pt;font-weight:800}
+.hd span{font-size:10pt;color:#444}
+.cols{flex:1;display:grid;grid-template-columns:1fr 1fr;border-bottom:1.2pt solid #111;min-height:0}
+.col{padding:8px 12px 0 0;min-width:0}
+.col+.col{border-left:.8pt solid #111;padding:8px 0 0 12px}
+.tag{font-size:9.5pt;color:#1f5fbf;font-weight:600;margin:0 0 8px}
+.col img{display:block;max-width:100%;height:auto}
+.solve{font-size:9.5pt;color:#888}
+"""
+
+
+def build_problems_a3(imgs, items, outdir):
+    seq = []
+    for y in YEARS:
+        for q in range(21, 31):
+            r = imgs[(y, q)]
+            it = items[y].get(q, {})
+            seq.append({"y": y, "q": q, "r": r, "pts": it.get("pts"), "sub": it.get("sub", "")})
+    col_h_px = (392 - 16) / 25.4 * 96          # 단 높이(CSS px) — 머리글·꼬리표 제외 근사
+    def h_px(e):
+        return e["r"]["h"] * 0.64
+    def cell(n, e):
+        r = e["r"]
+        src = "data:image/png;base64," + base64.b64encode(r["png"]).decode()
+        pts = f' [{e["pts"]}점]' if e["pts"] else ""
+        return (f'<div class="col" id="p{e["y"]}-{e["q"]}"><p class="tag">{n}. {e["y"]}학년도 MDEET 자연과학Ⅱ {e["q"]}번{pts}</p>'
+                f'<img src="{src}" width="{round(r["w"] * 0.64)}" alt="{e["y"]} {e["q"]}번"></div>')
+    pages, i, n = [], 0, 1
+    while i < len(seq):
+        a = seq[i]
+        short = lambda e: h_px(e) <= col_h_px * 0.55
+        if i + 1 < len(seq) and short(a) and short(seq[i + 1]) and seq[i + 1]["y"] == a["y"]:
+            pages.append(([a, seq[i + 1]], cell(n, a) + cell(n + 1, seq[i + 1])))
+            i, n = i + 2, n + 2
+        else:
+            pages.append(([a], cell(n, a) + '<div class="col"><p class="solve">풀이</p></div>'))
+            i, n = i + 1, n + 1
+    body = "".join(f'<section class="page"><div class="hd"><b>MDEET 유기화학 기출</b><span>자연과학Ⅱ 21–30번 · {es[0]["y"]}학년도</span></div>'
+                   f'<div class="cols">{cells}</div></section>' for es, cells in pages)
+    h = (f'<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>{TITLE_P}</title><style>{P2_CSS}</style></head>'
+         f'<body>{body}</body></html>')
+    hp = outdir / "MDEET_유기화학_기출문제_2023-2027.html"
+    hp.write_text(h, encoding="utf-8")
+    pdf = outdir / "MDEET_유기화학_기출문제_2023-2027.pdf"
+    foot = ('<div style="font-size:8.5pt;color:#333;width:100%;text-align:center;font-family:sans-serif">'
+            'MDEET 유기화학 기출 (<span class="totalPages"></span>면 중 <span class="pageNumber"></span>면)</div>')
+    from playwright.sync_api import sync_playwright
+    with sync_playwright() as p:
+        b = p.chromium.launch(executable_path="/opt/pw-browsers/chromium-1194/chrome-linux/chrome")
+        pg = b.new_page()
+        pg.goto(hp.resolve().as_uri())
+        pg.emulate_media(media="print")
+        pg.pdf(path=str(pdf), prefer_css_page_size=True, print_background=True, display_header_footer=True,
+               header_template="<span></span>", footer_template=foot,
+               margin={"top": "12mm", "bottom": "16mm", "left": "16mm", "right": "16mm"})
+        b.close()
+    # 책갈피: 연도 → 문항
+    doc = fitz.open(pdf)
+    toc, cur = [], None
+    for pno, (es, _) in enumerate(pages, 1):
+        for e in es:
+            if e["y"] != cur:
+                toc.append([1, f'{e["y"]}학년도', pno])
+                cur = e["y"]
+            toc.append([2, f'{e["q"]}번' + (f' · {e["sub"]}' if e["sub"] else ""), pno])
+    doc.set_toc(toc)
+    tmp = str(pdf) + ".tmp"
+    doc.save(tmp, garbage=1, deflate=True)
+    doc.close()
+    pathlib.Path(tmp).replace(pdf)
+    return pdf, len(pages)
+
+
 if __name__ == "__main__":
     model, outdir = sys.argv[1], pathlib.Path(sys.argv[2])
     outdir.mkdir(parents=True, exist_ok=True)
     imgs = load_images()
     items = load_items()
-    print(build_problems(imgs, items, outdir))
+    print(build_problems_a3(imgs, items, outdir))
     if "--problems-only" not in sys.argv:
         css, _ = build.load_model(model)
         build_solutions(imgs, items, css, outdir)
