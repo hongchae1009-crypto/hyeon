@@ -115,8 +115,9 @@ def f21():
     m.sub("m3", "r1", 30)
     ox, oy = 640, 105
     f.mol(m, ox, oy)
-    ringnum(f, m, ox, oy, {"r1": "1", "r2": "2", "r3": "3", "r4": "4", "r5": "5"})
-    num(f, m, "r0", ox, oy, "6", dx=12, dy=8)
+    ringnum(f, m, ox, oy, {"r2": "2", "r3": "3", "r4": "4", "r5": "5"})
+    num(f, m, "r1", ox, oy, "1", dx=14, dy=8)
+    num(f, m, "r0", ox, oy, "6", dx=-13, dy=8)
     f.text(560, 40, "ㄷ", size=14, weight="bold")
     f.text(660, 160, "C=C에 1·2, 치환기 {1,6,6} < {2,3,3}", size=11.5, color=GRAY)
     f.text(660, 182, "옳은 이름: 1,6,6-Trimethylcyclohex-1-ene", size=12.5, weight="bold", color=BLUE)
@@ -270,8 +271,8 @@ def f23b():
     ox, oy = 110, 130
     f.mol(m, ox, oy)
     ringnum(f, m, ox, oy, {"r5": "3", "r4": "4", "r2": "6"})
-    num(f, m, "r1", ox, oy, "1", dx=-12, dy=-4)
-    num(f, m, "r0", ox, oy, "2", dx=12, dy=-4)
+    num(f, m, "r1", ox, oy, "1", dx=14, dy=8)
+    num(f, m, "r0", ox, oy, "2", dx=-13, dy=8)
     num(f, m, "r3", ox, oy, "5", dx=-14, dy=4)
     f.text(110, 205, "C1 NH₂ 위, C2 CH₃ 아래, C5 CH₃ 아래", size=11.5)
     f.text(250, 130, "=", size=22)
@@ -296,7 +297,7 @@ def f23b():
     for n, t, dx, dy in (("C", "1", -2, 14), ("B", "2", 2, -12), ("A", "3", -10, 6), ("F", "4", 0, 13),
                          ("E", "5", 12, 4), ("D", "6", 10, -8)):
         num(f, m, n, ox, oy, t, dx=dx, dy=dy)
-    f.text(410, 255, "NH₂(eq, 위) · C2-CH₃(eq, 아래) · C5-CH₃(ax, 아래)", size=11.5)
+    f.text(410, 250, "NH₂(eq, 위) · C2-CH₃(eq, 아래) · C5-CH₃(ax, 아래)", size=11.5)
     tx = 560
     f.text(tx, 70, "① 치환 위치 1,2,5 동일", size=11.5, anchor="start")
     f.text(tx, 94, "② 1,2-trans: eq/eq ↔ 위/아래 ✓", size=11.5, anchor="start")
@@ -771,7 +772,7 @@ def f30():
     f.mol(m, ox, oy)
     ringnum(f, m, ox, oy, {"r2": "2", "r3": "3"})
     num(f, m, "r1", ox, oy, "1", dx=-4, dy=-12)
-    f.text(70, 222, "cyclohex-2-en-1-one", size=11)
+    f.text(70, 235, "cyclohex-2-en-1-one", size=11)
     f.raw(f'<path d="M125,170 L150,170 M150,60 L150,280 M150,60 L175,60 M150,170 L175,170 M150,280 L175,280" '
           f'fill="none" stroke="{INK}" stroke-width="1.4"/>')
     rows = [(60, "1. LiAlH₄ 2. H₂O", "H⁻: 단단한 친핵체 → C=O 직접(1,2-) 첨가", dict(oh=True, keto=False, db=True),
@@ -791,7 +792,7 @@ def f30():
 
 
 def f30b():
-    f = Fig(800, 200)
+    f = Fig(800, 215)
     f.text(20, 22, "1,4-(짝지은) 첨가 메커니즘: 큐프레이트 → β 탄소, 엔올레이트 → 케톤", size=12.5, anchor="start", weight="bold")
     m = Mol()
     m.ring("r", 0, 0, 6, L, 90, arom=[2])
@@ -813,13 +814,13 @@ def f30b():
     m.sub("o", "s1", 30, "O^−", anchor="start")
     m.sub("m", "s3", -90)
     f.mol(m, 340, 110)
-    f.text(340, 175, "리튬 엔올레이트", size=11)
+    f.text(340, 192, "리튬 엔올레이트", size=11)
     f.arrow(410, 110, 490, 110, "H₂O", "")
     m = Mol()
     _enone(m, "t", keto=True, db=False, me3=True)
     f.mol(m, 540, 110)
-    f.text(540, 175, "C (라셈)", size=11)
-    f.text(690, 110, "LiAlH₄ (A):", size=11, weight="bold")
+    f.text(540, 192, "C (라셈)", size=11)
+    f.text(690, 80, "LiAlH₄ (A):", size=11, weight="bold")
     f.text(690, 98, "H⁻ → C1(카보닐 C)", size=11)
     f.text(690, 122, "Grignard·RLi도 1,2", size=11, color=GRAY)
     f.text(690, 140, "Gilman·엔올레이트·", size=11, color=GRAY)

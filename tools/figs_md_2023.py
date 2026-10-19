@@ -306,13 +306,13 @@ def f25():
     m.sub("c1", "r0", 90, "Cl")
     m.sub("c2", "r1", 30, "Cl")
     f.mol(m, 160, 270)
-    dipole(f, 222, 300, 250, 258)
+    dipole(f, 208, 296, 236, 254)
     f.text(160, 335, "o-: μ ≈ 2.5 D, bp 180 ℃", size=12, weight="bold")
     m = Mol()
     m.ring("r", 0, 0, 6, L, 90, arom=[0, 2, 4])
     m.sub("c1", "r0", 90, "Cl")
     m.sub("c2", "r3", 270, "Cl")
-    f.mol(m, 400, 265)
+    f.mol(m, 400, 250)
     f.text(400, 335, "p-: μ = 0, bp 174 ℃ (mp 53 ℃)", size=12, weight="bold")
     f.text(640, 250, "쌍극자–쌍극자 인력: o- > p-", size=12)
     f.text(640, 272, "끓는점 o- > p- → ㄴ ○", size=13, weight="bold", color=BLUE)
@@ -373,35 +373,30 @@ def f26a():
     return f.render()
 
 
-def _chair(m, p, R=26.0, h=8.0, alpha=24.0):
-    """3D 의자형을 투영.  i=0 오른쪽 끝(위, 머리), i=3 왼쪽 끝(아래, 발).
-    반환: sub(name, i, 'ax'|'eq', label, length) 함수"""
-    a = math.radians(alpha)
-    P3 = {}
-    for i in range(6):
-        th = math.radians(60 * i)
-        z = h if i % 2 == 0 else -h
-        P3[i] = (R * math.cos(th), R * math.sin(th), z)
-
-    def proj(x, y, z):
-        return x, -z * math.cos(a) - y * math.sin(a)
-    for i in range(6):
-        m.atom(f"{p}{i}", *proj(*P3[i]))
+def _chair(m, p, sc=1.15):
+    """교과서식 의자형: p0 왼쪽 끝(발, 아래) … p3 오른쪽 끝(머리, 위).
+    축 방향: p0·p2·p4 아래, p1·p3·p5 위.  반환: sub(name, i, 'ax'|'eq', label, length, anchor)"""
+    e1, e2, e3 = (16 * sc, -26 * sc), (40 * sc, 12 * sc), (28 * sc, -14 * sc)
+    pts = [(0.0, 0.0)]
+    for e in (e1, e2, e3, (-e1[0], -e1[1]), (-e2[0], -e2[1])):
+        pts.append((pts[-1][0] + e[0], pts[-1][1] + e[1]))
+    for i, (x, y) in enumerate(pts):
+        m.atom(f"{p}{i}", x, y)
     for i in range(6):
         m.bond(f"{p}{i}", f"{p}{(i + 1) % 6}")
+    up = {0: False, 1: True, 2: False, 3: True, 4: False, 5: True}
+    # 적도 방향: 한 칸 건너 결합과 평행, 바깥쪽
+    eqd = {0: (-e2[0], -e2[1]), 3: e2, 1: (-e3[0], -e3[1]), 4: e3, 2: e1, 5: (-e1[0], -e1[1])}
 
     def sub(name, i, kind, label=None, length=28, anchor="middle"):
-        x, y, z = P3[i]
-        sg = 1 if z > 0 else -1
+        x, y = pts[i]
         if kind == "ax":
-            d = (0, 0, sg)
+            d = (0, -1) if up[i] else (0, 1)
         else:
-            th = math.radians(60 * i)
-            d = (math.cos(th), math.sin(th), -0.33 * sg)
-            n = math.sqrt(sum(c * c for c in d))
-            d = tuple(c / n for c in d)
-        q = proj(x + d[0] * length, y + d[1] * length, z + d[2] * length)
-        m.atom(name, q[0], q[1], label, anchor)
+            dx, dy = eqd[i]
+            n = math.hypot(dx, dy)
+            d = (dx / n, dy / n)
+        m.atom(name, x + d[0] * length, y + d[1] * length, label, anchor)
         m.bond(f"{p}{i}", name)
         return name
     return sub
@@ -414,31 +409,30 @@ def f26b():
                                           (560, "(나) cis: Br 축 — β-H(축)와 anti (빠름)", BLUE)]):
         m = Mol()
         sub = _chair(m, "c")
-        sub("tb", 3, "eq", "t-Bu", anchor="end", length=30)
+        sub("tb", 0, "eq", "t-Bu", anchor="end", length=30)
         if k == 0:
-            sub("br", 0, "eq", "Br", anchor="start", length=30)
-            sub("h0", 0, "ax", "H", length=24)
-            sub("h1", 1, "ax", "H", length=24)
-            sub("h5", 5, "ax", "H", length=24)
+            sub("br", 3, "eq", "Br", anchor="start", length=30)
+            sub("h0", 3, "ax", "H", length=24)
+            sub("h1", 2, "ax", "H", length=24)
+            sub("h5", 4, "ax", "H", length=24)
         else:
-            sub("br", 0, "ax", "Br", length=32)
-            sub("h1", 1, "ax", "H", length=26)
-            sub("h5", 5, "ax", "H", length=26)
-        oy = 115
+            sub("br", 3, "ax", "Br", length=34)
+            sub("h1", 2, "ax", "H", length=26)
+            sub("h5", 4, "ax", "H", length=26)
+        oy = 125
+        ox -= 50
         f.mol(m, ox, oy)
         if k == 1:
             x1, y1 = ap(m, "br", ox, oy)
-            for hn in ("h1", "h5"):
-                x2, y2 = ap(m, hn, ox, oy)
-                f.raw(f'<line x1="{x1 + 2:.1f}" y1="{y1 + 10:.1f}" x2="{x1 + 2:.1f}" y2="{y2:.1f}" stroke="{BLUE}" stroke-dasharray="2 3" stroke-width="1"/>')
-            x2, y2 = ap(m, "h1", ox, oy)
+            x2, y2 = ap(m, "h5", ox, oy)
+            f.raw(f'<line x1="{x1 + 14:.1f}" y1="{y1:.1f}" x2="{x1 + 14:.1f}" y2="{y2:.1f}" stroke="{BLUE}" stroke-dasharray="2 3" stroke-width="1"/>')
             f.text(x1 + 34, (y1 + y2) / 2, "180°", size=11, color=BLUE)
-            f.text(ox, 172, "β-H(C2·C6 축)과 Br(축) 모두 수직 → anti", size=11, color=BLUE)
+            f.text(ox + 50, 178, "β-H(C2·C6 축, 아래)과 Br(축, 위) → anti", size=11, color=BLUE)
         else:
             x1, y1 = ap(m, "br", ox, oy)
             f.cross(x1 + 12, y1 + 20, s=6)
-            f.text(ox, 172, "Br(적도)과 anti인 것은 고리 C–C 결합뿐", size=11, color=RED)
-        f.text(ox, 200, title, size=12, weight="bold", color=col)
+            f.text(ox + 50, 178, "Br(적도)과 anti인 것은 고리 C–C 결합뿐", size=11, color=RED)
+        f.text(ox + 50, 202, title, size=12, weight="bold", color=col)
     f.text(390, 232, "t-Bu는 항상 적도(A값 ≈ 4.9 kcal/mol) → 형태 고정. (가)는 Br이 축으로 갈 수 없어 E2가 매우 느리다 → ㄴ ✗", size=11)
     return f.render()
 
@@ -643,12 +637,12 @@ def f28():
     _phthalimide_N(m, n)
     f.mol(m, 285, 190)
     f.text(360, 250, "N-알킬프탈이미드 (과알킬화 없음)", size=11, color=GRAY)
-    f.arrow(500, 175, 575, 175, "H₂N–NH₂", "−프탈하이드라자이드")
+    f.arrow(495, 175, 590, 175, "H₂N–NH₂", "−프탈하이드라자이드")
     m = Mol()
     c2 = _phet(m, "b", 0, 0)
     m.sub("n", c2, 30, "NH_2", anchor="start")
-    f.mol(m, 615, 190)
-    f.text(700, 245, "1차 아민 ○", size=12, weight="bold", color=BLUE)
+    f.mol(m, 650, 190)
+    f.text(720, 245, "1차 아민 ○", size=12, weight="bold", color=BLUE)
     # ㄷ
     f.text(20, 280, "ㄷ", size=13, weight="bold")
     m = Mol()
@@ -665,8 +659,8 @@ def f28():
     c = m.sub("co", n, -30)
     m.sub("me", c, 30)
     f.mol(m, 390, 310)
-    f.text(570, 300, "C=O → CH₂ : N-ethyl-2-phenylethanamine", size=12, weight="bold", color=RED, anchor="start")
-    f.text(570, 322, "(2차 아민) ✗", size=12, weight="bold", color=RED, anchor="start")
+    f.text(560, 300, "C=O → CH₂ : 2차 아민 ✗", size=12, weight="bold", color=RED, anchor="start")
+    f.text(560, 322, "N-ethyl-2-phenylethanamine", size=12, color=RED, anchor="start")
     return f.render()
 
 
