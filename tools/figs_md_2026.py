@@ -90,7 +90,7 @@ def f21():
     f.text(468, 48, "C2 (앞 탄소)", size=12.5, anchor="start", weight="bold", color=RED)
     f.text(468, 68, "우선순위: OH ① > C3 ② > CH₃ ③ > H ④", size=11.5, anchor="start")
     f.text(468, 88, "뒤를 향한 C3(②)와 H(④, 4시)를 맞바꾸면 H가 뒤", size=11.5, anchor="start")
-    f.text(468, 108, "OH(7시) → C3(4시) → CH₃(12시): 반시계 = S", size=11.5, anchor="start")
+    f.text(468, 108, "OH(8시) → C3(4시) → CH₃(12시): 반시계 = S", size=11.5, anchor="start")
     f.text(468, 128, "교환 1회로 배열이 뒤집혔으므로 원래는 반대", size=11.5, anchor="start")
     f.text(468, 148, "⇒ C2 = R", size=12.5, anchor="start", weight="bold", color=RED)
     f.text(468, 176, "C3 (뒤 탄소)", size=12.5, anchor="start", weight="bold", color=BLUE)
