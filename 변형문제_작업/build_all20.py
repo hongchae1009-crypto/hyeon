@@ -24,7 +24,9 @@ CAPDIR = B.HERE / "캡처_통과화학"
 def gather_caps(chem_src=None):
     """캡처_통과의 t4~t10을 h1~h7로, chem_src(h8~h20)를 그대로 모아 캡처_통과화학에 둔다."""
     CAPDIR.mkdir(exist_ok=True)
-    meta = {}
+    old = CAPDIR / "captions.json"
+    meta = json.loads(old.read_text(encoding="utf-8")) if old.exists() else {}
+    for p in CAPDIR.glob("h[1-7]_*.png"): p.unlink(); meta.pop(p.name, None)
     tmeta = json.loads((B.HERE / "캡처_통과" / "captions.json").read_text(encoding="utf-8"))
     for n, k in enumerate(TONG, 1):
         for p in sorted((B.HERE / "캡처_통과").glob(f"t{k}_*.png")):
@@ -52,6 +54,10 @@ def _unit_of(tb):
 B.unit_of = _unit_of
 B.OUT_STEM = "화교론_기출변형_통합과학화학{N}제_그림포함"
 
+import answer2p
+answer2p.install(B)
+
 if __name__ == "__main__":
     gather_caps(sys.argv[1] if len(sys.argv) > 1 else None)
     B.main()
+    answer2p.split_answer_pages(B.HERE / (B.OUT_STEM.format(N=len(Q)) + ".html"))

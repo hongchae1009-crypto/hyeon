@@ -24,5 +24,9 @@ def _unit_of(tb):
 B.unit_of = _unit_of
 B.OUT_STEM = "화교론_기출변형_통합과학{N}제_그림포함"
 
+import answer2p
+answer2p.install(B)
+
 if __name__ == "__main__":
     B.main()
+    answer2p.split_answer_pages(B.HERE / (B.OUT_STEM.format(N=len(B.Q)) + ".html"))
