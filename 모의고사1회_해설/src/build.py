@@ -15,8 +15,9 @@ KATEX, FONTS = sys.argv[1], sys.argv[2]
 MD = os.path.join(ROOT, '모의고사1회_상세해설.md')
 OUT = os.path.join(ROOT, '모의고사1회_상세해설.html')
 
-# 원문 이미지 배율: 가장 긴 문항(A형 7번, 1331 px)이 172 mm에 들어가도록 모든 원문에 같은 배율을 쓴다.
-MM_PER_PX = 172 / 1331
+# 원문 이미지 배율: 가장 긴 문항 이미지가 170 mm에 들어가도록 모든 원문에 같은 배율을 쓴다.
+_QIMGS = [os.path.join(ROOT, 'img', f) for f in os.listdir(os.path.join(ROOT, 'img')) if re.fullmatch(r'[AB]\d\d\.png', f)]
+MM_PER_PX = 170 / max(Image.open(f).size[1] for f in _QIMGS)
 
 
 def b64(path):
