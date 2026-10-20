@@ -1,7 +1,7 @@
 """모의고사1회_상세해설.md → A4 가로판 독립 실행형 HTML(이미지·글꼴·KaTeX 내장).
 
-한 문항이 한 쪽: 왼쪽에 문제지 원문(모든 문항 같은 배율), 오른쪽에 정답과 풀이.
-풀이가 넘치면 글씨를 최소 8.5pt까지 줄여 한 쪽에 맞추고, 그래도 넘치면 다음 쪽으로 이어진다.
+가독성 우선: 본문 10pt 고정, 3단 흐름(첫 단에 문제지 원문, 이어서 정답·공식·풀이).
+문항마다 새 쪽에서 시작하고, 상자·표·그림·수식은 단이나 쪽 경계에서 쪼개지 않는다.
 
 사용법: python3 build.py <katex_dist_dir> <noto_sans_kr_files_dir>
 PDF는 같은 폴더의 print.js로 이 HTML을 인쇄해 만든다.
@@ -53,23 +53,24 @@ def cover_page(cover, foot):
 
 
 def question_page(chunk):
+    """문항 한 개: 제목 띠 아래 3단 흐름. 원문 → 정답 → 공식·핵심 개념 → 출제 가능성 → 풀이 순서로 이어진다."""
     h2 = re.match(r'<h2 id="([^"]+)">(.*?)</h2>', chunk, re.S)
     rest = chunk[h2.end():]
     q = re.search(r'<img class="q" src="(img/[^"]+)"[^>]*>', rest)
     rest = rest[:q.start()] + rest[q.end():]
-    ans = re.search(r'<div class="ans">.*?</div>', rest, re.S)
-    body = rest[ans.end():]
-    rest_ans = ans.group(0)
-    # 풀이 속 그림은 2단 본문을 끊지 않도록 정답 상자 바로 아래 한 줄로 모은다
-    figs = re.findall(r'<p>\s*(<img class="s[^"]*"[^>]*>)\s*</p>', body)
-    body = re.sub(r'<p>\s*<img class="s[^"]*"[^>]*>\s*</p>', '', body)
-    if figs:
-        rest_ans += '<div class="figs">' + ''.join(figs) + '</div>'
+    # 정답 상자 속 구조식·그림은 상자 밖 바로 아래 블록으로 빼서, 큰 상자가 통째로 다음 단으로 밀리지 않게 한다
+    def split_ans(m):
+        box = m.group(0)
+        imgs = re.findall(r'<img class="s[^"]*"[^>]*>', box)
+        box = re.sub(r'<p>\s*(<img class="s[^"]*"[^>]*>\s*)+</p>', '', box)
+        box = re.sub(r'<img class="s[^"]*"[^>]*>', '', box)
+        return box + ''.join(f'<div class="ansfig">{i}</div>' for i in imgs)
+    rest = re.sub(r'<div class="ans">.*?</div>', split_ans, rest, count=1, flags=re.S)
     w_mm = Image.open(os.path.join(ROOT, q.group(1))).size[0] * MM_PER_PX
     return (f'<section class="page q">'
             f'<div class="qhead"><h2 id="{h2.group(1)}">{h2.group(2)}</h2><a class="top" href="#toc">목차로 ↑</a></div>'
-            f'<div class="cols"><div class="orig"><img src="{q.group(1)}" style="width:{w_mm:.1f}mm" alt="문항 원문"></div>'
-            f'<div class="fit expl">{rest_ans}<div class="body">{body}</div></div></div></section>')
+            f'<div class="flow"><figure class="orig"><img src="{q.group(1)}" style="width:{w_mm:.1f}mm" alt="문항 원문"></figure>'
+            f'{rest}</div></section>')
 
 
 def main():
@@ -124,16 +125,17 @@ document.fonts.ready.then(() => {
     let s = 1;
     while (k.scrollWidth > k.parentElement.clientWidth + 1 && s > 0.6) { s -= 0.05; k.style.fontSize = s + 'em'; }
   });
+  shrinkWide(document);
   const report = [];
-  document.querySelectorAll('section.page').forEach(sec => {
+  document.querySelectorAll('section.cover').forEach(sec => {
     const fit = sec.querySelector('.fit');
     let pt = 10;
-    for (; pt >= 8.5; pt -= 0.25) {
+    for (; pt >= 9; pt -= 0.25) {
       fit.style.fontSize = pt + 'pt';
       shrinkWide(fit);
       if (sec.getBoundingClientRect().height <= PAGE_H) break;
     }
-    if (pt < 8.5) { pt = 8.5; fit.style.fontSize = pt + 'pt'; shrinkWide(fit); }
+    if (pt < 9) { pt = 9; fit.style.fontSize = pt + 'pt'; shrinkWide(fit); }
     const pages = Math.ceil(sec.getBoundingClientRect().height / PAGE_H);
     report.push((sec.querySelector('h2, h1') || {}).textContent.slice(0, 18) + ' ' + pt + 'pt ' + pages + '쪽');
   });
@@ -143,46 +145,48 @@ document.fonts.ready.then(() => {
 """
 
 CSS = """
-:root{--ink:#1f2933;--muted:#5b6672;--line:#d5dbe3;--accent:#1d4ed8;--ans:#eef4ff;--note:#fff7e6;--noteline:#e0a63b}
+:root{--ink:#1f2933;--muted:#5b6672;--line:#d5dbe3;--accent:#1d4ed8;--ans:#eef4ff;--key:#ecfdf3;--keyline:#16a34a;--odds:#f5f3ff;--oddsline:#7c3aed;--note:#fff7e6;--noteline:#e0a63b}
 *{box-sizing:border-box}
 html{background:#e9edf2}
-body{margin:0;color:var(--ink);font-family:'Noto Sans KR',sans-serif;line-height:1.55;word-break:keep-all}
+body{margin:0;color:var(--ink);font-family:'Noto Sans KR',sans-serif;line-height:1.65;word-break:keep-all;orphans:2;widows:2}
 main{width:277mm;margin:0 auto}
-section.page{background:#fff;padding:0;break-before:page;overflow-x:clip}
-@media print{html{background:none}}
+section.page{background:#fff;break-before:page;overflow-x:clip}
 section.page:first-child{break-before:auto}
-@media screen{section.page{margin:10mm 0;padding:0;box-shadow:0 0 0 10mm #fff,0 1px 14mm rgba(0,0,0,.08)}}
+@media screen{section.page{margin:10mm 0;box-shadow:0 0 0 10mm #fff,0 1px 14mm rgba(0,0,0,.08)}}
+@media print{html{background:none}}
 h1{font-size:17pt;line-height:1.3;margin:0 0 6px;padding-bottom:6px;border-bottom:3px solid var(--ink)}
-h2{font-size:13pt;margin:0;padding:4px 12px;background:var(--ink);color:#fff;border-radius:4px;flex:1}
+h2{font-size:14pt;margin:0;padding:5px 12px;background:var(--ink);color:#fff;border-radius:4px;flex:1}
 h3{font-size:11pt;margin:8px 0 4px;color:var(--accent)}
-p{margin:4px 0}
+p{margin:5px 0}
 strong{color:#0b1b33}
 a{color:var(--accent);text-decoration:none}
-table{border-collapse:collapse;width:100%;margin:5px 0;font-size:.88em;line-height:1.4;break-inside:avoid}
-th,td{border:1px solid var(--line);padding:2px 6px;vertical-align:middle;text-align:left}
+table{border-collapse:collapse;width:100%;margin:6px 0;font-size:.92em;line-height:1.45;break-inside:avoid}
+th,td{border:1px solid var(--line);padding:3px 6px;vertical-align:middle;text-align:left}
 th{background:#f1f4f8;font-weight:700}
-ul,ol{padding-left:20px;margin:3px 0}
-li{margin:1px 0}
-.qhead{display:flex;align-items:center;gap:10px;margin-bottom:3.5mm}
+ul,ol{padding-left:20px;margin:4px 0}
+li{margin:2px 0;break-inside:avoid}
+.qhead{display:flex;align-items:center;gap:10px;margin-bottom:4mm;break-after:avoid}
 .qhead .top{font-size:9pt;white-space:nowrap;border:1px solid var(--line);border-radius:4px;padding:3px 8px}
-.cols{display:grid;grid-template-columns:80mm minmax(0,1fr);gap:6mm;align-items:start}
-.orig img{display:block;border:1px solid var(--line);border-radius:3px}
-.expl .body{columns:2;column-gap:6mm;column-rule:1px solid var(--line)}
-.expl .body>*{break-inside:avoid-column}
-.expl .body>p,.expl .body>ul,.expl .body>ol{break-inside:auto}
-.expl .body>p:has(>strong:first-child){break-after:avoid-column}
-.ans{background:var(--ans);border-left:5px solid var(--accent);border-radius:4px;padding:4px 12px;margin:0 0 3mm}
-.ans>p:first-child{margin-top:2px}
-.note{background:var(--note);border-left:5px solid var(--noteline);border-radius:4px;padding:4px 12px;margin:6px 0;break-inside:avoid}
-img.s{display:block;max-width:100%;max-height:12em;width:auto;height:auto;margin:4px auto}
-.ans img.s{display:inline-block;max-height:8.5em;margin:2px 6px;vertical-align:middle}
-.figs{display:flex;justify-content:center;align-items:flex-end;gap:5mm;margin:0 0 3mm}
-.figs img.s{flex:0 1 auto;min-width:0;max-height:14em;margin:0}
-.figs img.s.wide{max-height:19em}
-.body .note{break-inside:avoid-column}
+.flow{font-size:10pt;columns:3;column-gap:7mm;column-rule:1px solid var(--line);column-fill:auto}
+.flow>p:has(>strong:first-child){break-after:avoid}
+.flow>p:has(>strong:only-child){break-after:avoid}
+figure.orig{margin:0 0 4mm;break-inside:avoid}
+figure.orig img{display:block;max-width:100%;border:1px solid var(--line);border-radius:3px}
+.ans,.key,.odds,.note{border-radius:4px;padding:5px 11px;margin:0 0 3.5mm;break-inside:avoid}
+.ans{background:var(--ans);border-left:5px solid var(--accent)}
+.ansfig{border-left:5px solid var(--accent);background:#f7faff;border-radius:4px;margin:-2.5mm 0 3.5mm;padding:2px 6px;break-inside:avoid}
+.key{background:var(--key);border-left:5px solid var(--keyline)}
+.key>p:first-child strong{color:#15803d}
+.key ul{padding-left:16px}
+.odds{background:var(--odds);border-left:5px solid var(--oddsline);font-size:.95em}
+.odds strong{color:#5b21b6}
+.stars{color:#d97706;letter-spacing:1px}
+.note{background:var(--note);border-left:5px solid var(--noteline)}
+.ans>p:first-child,.key>p:first-child{margin-top:2px}
+img.s{display:block;max-width:100%;width:auto;height:auto;margin:6px auto;break-inside:avoid}
 .katex{font-size:1.04em}
 .katex .katex-mathml{display:none}
-.katex-display{margin:5px 0;overflow:hidden}
+.katex-display{margin:6px 0;overflow:hidden;break-inside:avoid}
 .cover .grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6mm}
 .cover h2{flex:none;display:block;margin:8px 0 4px}
 .cover .note ol{columns:2;column-gap:8mm}
