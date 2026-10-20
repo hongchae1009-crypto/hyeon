@@ -28,7 +28,7 @@ def grid(name, items, per_row=None, size=(260, 200)):
 grid('s_A03', [('CCOc1ccc(cc1)C(=O)OCC', 'ethyl p-ethoxybenzoate (C11H14O3, M=194)')], size=(420, 220))
 grid('s_A10', [('CC(=O)CC(=O)CC', 'A  (2,4-hexanedione)'), ('C=CC(C)=O', 'B  (MVK, C4H6O)'),
                ('CC(=O)C1CCC(C)=CC1=O', 'C  (C9H12O2)'), ('CC(=O)C1CCC(=O)C=C1C', 'D  (C9H12O2)'),
-               ('CC(=O)C(C(C)=O)C1CCCC(=O)C1', 'E  (C11H16O3)')], per_row=3)
+               ('CC(=O)C(C(C)=O)C1CCCC(=O)C1', 'E  (C11H16O3)')], per_row=5, size=(250, 200))
 grid('s_A11', [('CCN=C1CCCCC1', 'A  (imine)'), ('CCN(CC)C1=CCCCC1', 'B  (enamine)'),
                ('CCCNC(CC)CC', 'C  (secondary amine)')])
 grid('s_A11m', [('CCCN.CCC(=O)CC', '(1) amine + ketone'), ('CCC[NH2+]C([O-])(CC)CC', '(2) N attacks C=O'),

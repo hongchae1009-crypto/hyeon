@@ -8,7 +8,7 @@ def svg(w, h, body):
     return (f"<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 {w} {h}' width='{w}' height='{h}'>"
             f"<rect width='{w}' height='{h}' fill='white'/>{body}</svg>")
 
-def text(x, y, s, size=13, anchor='start', color=INK, weight='normal'):
+def text(x, y, s, size=15, anchor='start', color=INK, weight='normal'):
     return f"<text x='{x}' y='{y}' font-size='{size}' text-anchor='{anchor}' fill='{color}' font-weight='{weight}' {FONT}>{s}</text>"
 
 def arrows(cx, y, e):
@@ -31,7 +31,7 @@ def level(x, y, elec, label='', w=26, gap=8, side='right'):
         out += arrows(x0 + w / 2, y, e)
     xe = x + len(elec) * (w + gap) - gap
     if label:
-        out += text(xe + 8, y + 4, label, 12) if side == 'right' else text(x - 8, y + 4, label, 12, 'end')
+        out += text(xe + 8, y + 5, label, 15) if side == 'right' else text(x - 8, y + 5, label, 15, 'end')
     return out, xe
 
 def dash(x1, y1, x2, y2):
