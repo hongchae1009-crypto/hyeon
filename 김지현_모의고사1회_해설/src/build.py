@@ -185,6 +185,7 @@ figure.orig img{display:block;max-width:100%;border:1px solid var(--line);border
 .note{background:var(--note);border-left:5px solid var(--noteline)}
 .ans>p:first-child,.key>p:first-child{margin-top:2px}
 img.s{display:block;max-width:100%;width:auto;height:auto;margin:6px auto;break-inside:avoid}
+img.s.mech{width:100%;border:1px solid var(--line);border-radius:4px;margin:4px 0 8px}
 .katex{font-size:1.04em}
 .katex .katex-mathml{display:none}
 .katex-display{margin:6px 0;overflow:hidden;break-inside:avoid}
