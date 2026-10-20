@@ -146,3 +146,33 @@ mechanism(P('m_B10_grig'), [
     '↓ NH₄Cl, H₂O',
     panel('OCCCCC(O)(C1=CC=CC=C1)C1=CC=CC=C1', h=115, legend='D (C₁₇H₂₀O₂)'),
 ])
+
+# ---------- A형 10번 추가: 술폰화(차단기)와 탈술폰화 ----------
+mechanism(P('m_A10_so3'), [
+    panel('CC(=O)NC1=CC=[C:3]([H:6])[CH:4]=C1.[O:8]=[S:5](=O)=O',
+          [(('b', 3, 4), ('a', 5)), (('b', 5, 8), ('a', 8))],
+          legend='(1) para 탄소의 π 전자가 SO₃의 S 공격'),
+    '↓',
+    panel('CC(=O)N[C+]1C=C[C:3]([H:6])(S(=O)(=O)[O-])C=C1.[OH2:7]',
+          [(('lp', 7), ('a', 6))],
+          legend='(2) σ 착물(+는 N 쪽 탄소까지 비편재화) → H⁺ 제거'),
+    '↓',
+    panel('CC(=O)NC1=CC=C(S(=O)(=O)O)C=C1', h=110, legend='(3) para가 SO₃H로 막힘 → 니트로화는 ortho로'),
+    '↓ HNO₃: 남은 ortho 니트로화',
+    panel('CC(=O)NC1=C([N+](=O)[O-])C=C(S(=O)(=O)O)C=C1', h=120, legend='(4) 2-nitro-4-sulfo-acetanilide'),
+    '↓ (d) 묽은 H₂SO₄·가열 → 탈술폰화 + 아마이드 가수분해; HO⁻',
+    panel('NC1=CC=CC=C1[N+](=O)[O-]', h=110, legend='(5) o-nitroaniline'),
+])
+
+# ---------- B형 1번: KMnO₄ 산화 절단 (cyclohexene) ----------
+mechanism(P('m_B01_kmno4'), [
+    panel('[CH:1]1=[CH:2]CCCC1.[O-:3][Mn:4](=[O:5])(=O)=O',
+          [(('lp', 3), ('a', 1)), (('b', 1, 2), ('a', 5)), (('b', 5, 4), ('a', 4))],
+          legend='(1) [3+2] 고리화 첨가: syn, 고리형 망가네이트 에스터'),
+    '↓',
+    panel('O=[Mn-]1(=O)OC2CCCCC2O1', h=125, legend='(2) 고리형 망가네이트 에스터'),
+    '↓ HO⁻, 물: 가수분해 → cis-1,2-다이올',
+    panel('OC1CCCCC1O', h=105, legend='(3) cis-cyclohexane-1,2-diol'),
+    '↓ 뜨거운 KMnO₄: C–C 절단, 각 탄소 → C=O → COOH',
+    panel('OC(=O)CCCCC(=O)O', h=105, legend='(4) adipic acid (H₃O⁺ 후처리)'),
+])
