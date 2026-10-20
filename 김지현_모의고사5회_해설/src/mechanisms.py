@@ -206,3 +206,16 @@ mechanism(P('m_B10_rad'), [
     panel('CC(Br)C', h=95, legend='2-bromopropane (92 %)'),
 ])
 FISH = False
+
+# ---------- A형 3번: NaOD/D₂O에서 α-H 교환(엔올화) ----------
+mechanism(P('m_A03_hd'), [
+    panel('CC1(C)[CH:2]([H:3])[C:1](=[O:4])c2ccccc21.[O-:5][2H]',
+          [(('lp', 5), ('a', 3)), (('b', 2, 3), ('b', 2, 1)), (('b', 1, 4), ('a', 4))],
+          legend='(1) OD⁻가 C=O 옆(α) H를 떼어 냄'),
+    '↓',
+    panel('CC1(C)[CH:2]=[C:1]([O-:4])c2ccccc21.[2H:6][O:7][2H]',
+          [(('lp', 4), ('b', 4, 1)), (('b', 1, 2), ('a', 6)), (('b', 6, 7), ('a', 7))],
+          legend='(2) 엔올레이트의 α-탄소가 D₂O의 D를 받음'),
+    '↓ 반복',
+    panel('CC1(C)C([2H])([2H])C(=O)c2ccccc21', h=120, legend='α-CD₂: 2.6 ppm 신호 사라짐'),
+])
