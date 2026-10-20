@@ -1,4 +1,4 @@
-"""모의고사2회_상세해설.md → A4 가로판 독립 실행형 HTML(이미지·글꼴·KaTeX 내장).
+"""안병천_모의고사4회_상세해설.md → A4 가로판 독립 실행형 HTML(이미지·글꼴·KaTeX 내장).
 
 가독성 우선: 본문 10pt 고정, 3단 흐름(첫 단에 문제지 원문, 이어서 정답·공식·풀이).
 문항마다 새 쪽에서 시작하고, 상자·표·그림·수식은 단이나 쪽 경계에서 쪼개지 않는다.
@@ -12,8 +12,8 @@ from PIL import Image
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 KATEX, FONTS = sys.argv[1], sys.argv[2]
-MD = os.path.join(ROOT, '모의고사2회_상세해설.md')
-OUT = os.path.join(ROOT, '모의고사2회_상세해설.html')
+MD = os.path.join(ROOT, '안병천_모의고사4회_상세해설.md')
+OUT = os.path.join(ROOT, '안병천_모의고사4회_상세해설.html')
 
 # 원문 이미지 배율: 모든 문항에 같은 배율(0.12 mm/px, 한 단 너비에 맞음). 긴 문항은 crop_questions.py가 단 높이로 나눠 둔다.
 MM_PER_PX = 0.12
@@ -96,7 +96,7 @@ def main():
         return f'src="data:{mime};base64,{b64(path)}"'
     body = re.sub(r'src="(img/[^"]+)"', embed, body)
 
-    title = '김지현 전공화학 모의고사 2회 상세해설'
+    title = '안병천 전공화학 모의고사 4회 상세해설'
     noto = ''.join(
         f"@font-face{{font-family:'Noto Sans KR';font-weight:{w};src:url(data:font/woff2;base64,"
         f"{b64(os.path.join(FONTS, f'noto-sans-kr-korean-{w}-normal.woff2'))}) format('woff2');}}"

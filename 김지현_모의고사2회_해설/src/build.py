@@ -1,4 +1,4 @@
-"""모의고사1회_상세해설.md → A4 가로판 독립 실행형 HTML(이미지·글꼴·KaTeX 내장).
+"""김지현_모의고사2회_상세해설.md → A4 가로판 독립 실행형 HTML(이미지·글꼴·KaTeX 내장).
 
 가독성 우선: 본문 10pt 고정, 3단 흐름(첫 단에 문제지 원문, 이어서 정답·공식·풀이).
 문항마다 새 쪽에서 시작하고, 상자·표·그림·수식은 단이나 쪽 경계에서 쪼개지 않는다.
@@ -12,12 +12,11 @@ from PIL import Image
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 KATEX, FONTS = sys.argv[1], sys.argv[2]
-MD = os.path.join(ROOT, '모의고사1회_상세해설.md')
-OUT = os.path.join(ROOT, '모의고사1회_상세해설.html')
+MD = os.path.join(ROOT, '김지현_모의고사2회_상세해설.md')
+OUT = os.path.join(ROOT, '김지현_모의고사2회_상세해설.html')
 
-# 원문 이미지 배율: 가장 긴 문항 이미지가 170 mm에 들어가도록 모든 원문에 같은 배율을 쓴다.
-_QIMGS = [os.path.join(ROOT, 'img', f) for f in os.listdir(os.path.join(ROOT, 'img')) if re.fullmatch(r'[AB]\d\d\.png', f)]
-MM_PER_PX = 170 / max(Image.open(f).size[1] for f in _QIMGS)
+# 원문 이미지 배율: 모든 문항에 같은 배율(0.12 mm/px, 한 단 너비에 맞음). 긴 문항은 crop_questions.py가 단 높이로 나눠 둔다.
+MM_PER_PX = 0.12
 
 
 def b64(path):
@@ -57,8 +56,11 @@ def question_page(chunk):
     """문항 한 개: 제목 띠 아래 3단 흐름. 원문 → 정답 → 공식·핵심 개념 → 출제 가능성 → 풀이 순서로 이어진다."""
     h2 = re.match(r'<h2 id="([^"]+)">(.*?)</h2>', chunk, re.S)
     rest = chunk[h2.end():]
-    q = re.search(r'<img class="q" src="(img/[^"]+)"[^>]*>', rest)
-    rest = rest[:q.start()] + rest[q.end():]
+    qs = re.findall(r'<img class="q" src="(img/[^"]+)"[^>]*>', rest)
+    # 긴 문항은 crop_questions.py가 A05.png, A05_2.png …로 나눠 둔다
+    qs = [x for q in qs for x in [q] + sorted(f'img/{f}' for f in os.listdir(os.path.join(ROOT, 'img'))
+                                                  if re.fullmatch(re.escape(os.path.basename(q)[:-4]) + r'_\d+\.png', f))]
+    rest = re.sub(r'(<p>\s*)?<img class="q" src="img/[^"]+"[^>]*>(\s*</p>)?', '', rest)
     # 정답 상자 속 구조식·그림은 상자 밖 바로 아래 블록으로 빼서, 큰 상자가 통째로 다음 단으로 밀리지 않게 한다
     def split_ans(m):
         box = m.group(0)
@@ -67,10 +69,11 @@ def question_page(chunk):
         box = re.sub(r'<img class="s[^"]*"[^>]*>', '', box)
         return box + ''.join(f'<div class="ansfig">{i}</div>' for i in imgs)
     rest = re.sub(r'<div class="ans">.*?</div>', split_ans, rest, count=1, flags=re.S)
-    w_mm = Image.open(os.path.join(ROOT, q.group(1))).size[0] * MM_PER_PX
+    figs = ''.join(f'<figure class="orig"><img src="{q}" style="width:{Image.open(os.path.join(ROOT, q)).size[0] * MM_PER_PX:.1f}mm" alt="문항 원문"></figure>'
+                   for q in qs)
     return (f'<section class="page q">'
             f'<div class="qhead"><h2 id="{h2.group(1)}">{h2.group(2)}</h2><a class="top" href="#toc">목차로 ↑</a></div>'
-            f'<div class="flow"><figure class="orig"><img src="{q.group(1)}" style="width:{w_mm:.1f}mm" alt="문항 원문"></figure>'
+            f'<div class="flow">{figs}'
             f'{rest}</div></section>')
 
 
@@ -93,7 +96,7 @@ def main():
         return f'src="data:{mime};base64,{b64(path)}"'
     body = re.sub(r'src="(img/[^"]+)"', embed, body)
 
-    title = '전공화학 모의고사 1회 상세해설'
+    title = '김지현 전공화학 모의고사 2회 상세해설'
     noto = ''.join(
         f"@font-face{{font-family:'Noto Sans KR';font-weight:{w};src:url(data:font/woff2;base64,"
         f"{b64(os.path.join(FONTS, f'noto-sans-kr-korean-{w}-normal.woff2'))}) format('woff2');}}"

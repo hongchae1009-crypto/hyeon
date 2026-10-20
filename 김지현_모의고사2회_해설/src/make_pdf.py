@@ -6,8 +6,8 @@ import json, os, subprocess
 import pypdf
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-HTML = os.path.join(ROOT, '모의고사2회_상세해설.html')
-PDF = os.path.join(ROOT, '모의고사2회_상세해설.pdf')
+HTML = os.path.join(ROOT, '김지현_모의고사2회_상세해설.html')
+PDF = os.path.join(ROOT, '김지현_모의고사2회_상세해설.pdf')
 IDS = [f'a{i}' for i in range(1, 13)] + [f'b{i}' for i in range(1, 12)]
 
 
