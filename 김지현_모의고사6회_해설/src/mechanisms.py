@@ -154,3 +154,19 @@ mechanism(P('m_B11_wittig'), [
     '↓ −Ph₃P=O',
     panel('C=C/C=C/c1ccccc1', h=105, legend='B 1-phenyl-1,3-butadiene'),
 ])
+
+# ---------- A형 3번 (보강): 아세트알데하이드의 산 촉매 삼량화 ----------
+mechanism(P('m_A03_trimer'), [
+    panel('[CH3][CH:1]=[O:2].[H:3][OH2+:4]', [(('lp', 2), ('a', 3)), (('b', 3, 4), ('a', 4))],
+          legend='(1) C=O 산소 양성자화 → 옥소카베늄 이온'),
+    '↓',
+    panel('C[CH:5]=[O:6].C[CH:1]=[OH+:2]', [(('lp', 6), ('a', 1)), (('b', 1, 2), ('a', 2))],
+          legend='(2) 두 번째 알데하이드 O가 C=O⁺H 탄소 공격'),
+    '↓ 같은 과정을 한 번 더 (세 번째 알데하이드)',
+    panel('O[CH:1](C)O[CH](C)[O+:8]=[CH:7]C', h=125, legend='(3) 선형 삼량체 옥소카베늄 이온'),
+    '↓',
+    panel('[OH:9][CH:1](C)O[CH](C)[O+:8]=[CH:7]C', [(('lp', 9), ('a', 7)), (('b', 7, 8), ('a', 8))],
+          legend='(4) 말단 OH가 C=O⁺ 탄소 공격 → 6원 고리, −H⁺'),
+    '↓',
+    panel('CC1OC(C)OC(C)O1', h=115, legend='paraldehyde (C₆H₁₂O₃)'),
+])
