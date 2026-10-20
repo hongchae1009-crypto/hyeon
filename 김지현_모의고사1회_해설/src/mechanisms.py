@@ -153,3 +153,35 @@ mechanism(P('m_B07_benzyne'), [
     panel('N[C:4]1=[C-:3]C(C)=CC=C1.[H:6][NH2:7]', [(('lp', 3), ('a', 6)), (('b', 6, 7), ('a', 7))],
           legend='(4) 양성자화 → m-toluidine (다른 쪽은 o-)'),
 ])
+
+# ---------- 보강: A10 D, B7 Birch, B7 오존화물 분해 ----------
+mechanism(P('m_A10_aldolD'), [
+    panel('CC(=O)C(C(C)=O)CC[C:4](=O)[CH2:5][H:7].[OH-:6]', [(('lp', 6), ('a', 7)), (('b', 5, 7), ('a', 5))],
+          legend='(1) OH⁻가 MVK 쪽 CH₃의 α-H 제거'),
+    '↓',
+    panel('[CH2-:1]C(=O)CCC(C(C)=O)[C:2](C)=[O:3]', [(('lp', 1), ('a', 2)), (('b', 2, 3), ('a', 3))],
+          legend='(2) 그 엔올레이트가 아세틸 C=O 공격 (6원 고리)'),
+    '↓ 양성자화 → E1cB 탈수 (C와 같은 과정)',
+    panel('CC(=O)C1CCC(=O)C=C1C', h=110, legend='D 4-acetyl-3-methylcyclohex-2-enone'),
+])
+mechanism(P('m_B07_birch'), [
+    panel('COc1ccc(C)cc1', h=105, legend='4-methylanisole'),
+    '↓ Li → Li⁺ + e⁻ (전자 1개가 π* 오비탈로)',
+    panel('COC1=C[CH]C(C)=C[CH-:1]1.CC(C)(C)[O:2][H:3]', [(('lp', 1), ('a', 3)), (('b', 3, 2), ('a', 2))],
+          legend='(1) 라디칼 음이온: OMe의 ortho 탄소가 t-BuOH의 H⁺를 받음'),
+    '↓',
+    panel('COC1=C[CH]C(C)=CC1', h=110, legend='(2) 중성 라디칼 (홀전자는 OMe의 meta 탄소)'),
+    '↓ Li → e⁻ 두 번째',
+    panel('COC1=C[CH-:1]C(C)=CC1.CC(C)(C)[O:2][H:3]', [(('lp', 1), ('a', 3)), (('b', 3, 2), ('a', 2))],
+          legend='(3) 탄소음이온이 다시 양성자화'),
+    '↓',
+    panel('COC1=CCC(C)=CC1', h=110, legend='C 1-methoxy-4-methylcyclohexa-1,4-diene'),
+])
+mechanism(P('m_B07_ozone2'), [
+    panel('CO[C:1]1(C)[CH:2](C)[O:5][O:4][O:3]1', [(('lp', 3), ('b', 3, 1)), (('b', 1, 2), ('b', 2, 5)), (('b', 5, 4), ('a', 4))], h=175,
+          legend='(3) 1차 오존화물의 역[3+2] 분해 (C–C, O–O 끊김)'),
+    '↓',
+    panel('CO[C:1](C)=[O+:3][O-:4].[CH:2](C)=[O:5]', h=120, legend='(4) 카보닐 옥사이드 + 카보닐 → 2차 오존화물'),
+    '↓ Me₂S: O–O 환원 (DMSO 생성)',
+    panel('COC(C)=O.CC=O', h=105, legend='(5) OMe 쪽 = 메틸 에스터, 다른 쪽 = 알데하이드'),
+])

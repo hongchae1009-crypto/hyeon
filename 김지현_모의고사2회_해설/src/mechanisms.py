@@ -139,3 +139,26 @@ mechanism(P('m_B10_acyl'), [
     '↓ 아레늄 이온에서 H⁺ 제거',
     panel('O=C1CCC(c2ccc(Cl)c(Cl)c2)c2ccccc21', h=125, legend='D 테트랄론 (C₁₆H₁₂OCl₂)'),
 ])
+
+# B형 10번 보강: NaBH₄ 환원, 아실륨 생성과 아레늄 이온 탈양성자화
+mechanism(P('m_B10_nabh4'), [
+    panel('[H-:3].[O:2]=[C:1](C)c1ccc(Cl)c(Cl)c1', [(('a', 3), ('a', 1)), (('b', 1, 2), ('a', 2))],
+          legend='(1) H⁻가 케톤 C 공격 (사슬은 CH₃로 표시)'),
+    '↓',
+    panel('[OH:5][H:4].[O-:2][CH:1](C)c1ccc(Cl)c(Cl)c1', [(('lp', 2), ('a', 4)), (('b', 4, 5), ('a', 5))],
+          legend='(2) 알콕사이드 양성자화 (COOH는 NaBH₄와 반응 안 함)'),
+    '↓',
+    panel('O=C(O)CCC(O)c1ccc(Cl)c(Cl)c1', h=115, legend='γ-하이드록시산 (HCl에서 고리화 → B)'),
+])
+mechanism(P('m_B10_acylium'), [
+    panel('C[C:1](=O)[Cl:2].[Al:3](Cl)(Cl)Cl', [(('lp', 2), ('a', 3))],
+          legend='(1) 산 염화물의 Cl이 AlCl₃에 배위 (R은 CH₃로 표시)'),
+    '↓',
+    panel('C[C:1](=O)[Cl+:2][Al-:3](Cl)(Cl)Cl', [(('b', 1, 2), ('a', 2))],
+          legend='(2) C–Cl 결합이 끊어지며 AlCl₄⁻ 이탈'),
+    '↓',
+    panel('C[C+]=O.CC#[O+]', h=115, legend='(3) 아실륨 이온 R–C⁺=O ↔ R–C≡O⁺ (공명 안정)'),
+    '↓ 페닐 고리가 아실륨 공격 → 아레늄 이온',
+    panel('[Cl-:3].[H:2][C:1]1([CH3])C=CC=C[CH+:4]1', [(('lp', 3), ('a', 2)), (('b', 1, 2), ('b', 1, 4))],
+          legend='(4) AlCl₄⁻가 H⁺ 제거 (아실기는 CH₃로 표시)'),
+])
