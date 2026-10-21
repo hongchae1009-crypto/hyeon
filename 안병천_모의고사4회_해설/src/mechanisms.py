@@ -175,3 +175,40 @@ mechanism(P('m_B09_diazo'), [
     '↓ ㅁ H₃PO₂ (라디칼 연쇄: Ar· + H₃PO₂ → ArH)',
     panel('Cc1cccc(Br)c1', h=100, legend='B 3-bromotoluene (N₂ 방출)'),
 ])
+
+# ---------- 상세 풀이 보강용 추가 그림 ----------
+# A형 8번: Jones 산화(크로메이트 에스터 → E2형 제거)
+mechanism(P('m_A08_jones'), [
+    panel('C[CH:1](C)[OH:2].[O:3]=[Cr:4](=O)(O)[OH:5]',
+          [(('lp', 2), ('a', 4)), (('b', 4, 3), ('a', 3))],
+          legend='(1) 알코올 O가 Cr(VI)에 첨가 (R은 CH₃로 간략히)'),
+    '↓ 양성자 이동, −H₂O',
+    panel('[OH2:7].[H:6][C:1](C)(C)[O:2][Cr:4](=O)(=O)O',
+          [(('lp', 7), ('a', 6)), (('b', 1, 6), ('b', 1, 2)), (('b', 2, 4), ('a', 4))],
+          legend='(2) 크로메이트 에스터: 물이 C–H 제거, Cr–O 끊김'),
+    '↓ Cr(VI) → Cr(IV)',
+    panel('CC#CC(=O)c1ccccc1', h=105, legend='A 1-phenylbut-2-yn-1-one'),
+])
+
+# B형 8번: H₂O₂ 산화적 후처리 — 알데하이드 → 카복실산 (반응하는 CHO만 표시)
+mechanism(P('m_B08_h2o2'), [
+    panel('CC[CH:1]=[O:2].[OH:3][OH:4]', [(('lp', 3), ('a', 1)), (('b', 1, 2), ('a', 2))],
+          legend='(1) H₂O₂의 O가 알데하이드 C=O 탄소 공격'),
+    '↓ 양성자 이동',
+    panel('CC[C:1]([H:5])([OH:2])[O:3][OH:4]',
+          [(('lp', 2), ('b', 2, 1)), (('b', 1, 5), ('a', 3)), (('b', 3, 4), ('a', 4))],
+          legend='(2) H가 O로 이동하며 O–O 끊김 (OH⁻ 이탈)'),
+    '↓ −H⁺',
+    panel('CCC(=O)O', h=100, legend='카복실산 (양 끝 모두 COOH → C)'),
+])
+
+# B형 9번: ㄹ-2) NaOH 아마이드 가수분해
+mechanism(P('m_B09_hyd'), [
+    panel('[OH-:1].C[C:2](=[O:3])Nc1ccc(Br)cc1C', [(('lp', 1), ('a', 2)), (('b', 2, 3), ('a', 3))],
+          legend='(1) HO⁻가 아마이드 C=O 탄소 공격 (가열)'),
+    '↓',
+    panel('C[C:2]([OH:1])([O-:3])[NH:4]c1ccc(Br)cc1C', [(('lp', 3), ('b', 3, 2)), (('b', 2, 4), ('a', 4))],
+          legend='(2) 사면체 중간체 붕괴: ArNH⁻ 이탈'),
+    '↓ 양성자 이동 (비가역)',
+    panel('CC(=O)[O-].Nc1ccc(Br)cc1C', h=110, legend='아세테이트 + 4-bromo-2-methylaniline'),
+])
