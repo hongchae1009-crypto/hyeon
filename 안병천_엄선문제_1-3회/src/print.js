@@ -27,7 +27,7 @@ const { chromium } = require(path.join(execSync('npm root -g').toString().trim()
     headerTemplate: '<div></div>',
     footerTemplate:
       '<div style="width:100%;font-size:7px;color:#888;text-align:center;font-family:sans-serif">' +
-      '안병천 1~3회 엄선 문항 · <span class="pageNumber"></span> / <span class="totalPages"></span></div>',
+      '안병천 1~3회 전공 엄선 문항 · <span class="pageNumber"></span> / <span class="totalPages"></span></div>',
   });
   await browser.close();
 })();

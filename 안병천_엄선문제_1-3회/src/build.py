@@ -96,7 +96,7 @@ def main():
         return f'src="data:{mime};base64,{b64(path)}"'
     body = re.sub(r'src="(img/[^"]+)"', embed, body)
 
-    title = '안병천 1~3회 엄선 문항'
+    title = '안병천 1~3회 전공 엄선 문항'
     noto = ''.join(
         f"@font-face{{font-family:'Noto Sans KR';font-weight:{w};src:url(data:font/woff2;base64,"
         f"{b64(os.path.join(FONTS, f'noto-sans-kr-korean-{w}-normal.woff2'))}) format('woff2');}}"
