@@ -14,8 +14,10 @@ PG = pathlib.Path(sys.argv[1])          # 쪽 이미지(b{쪽}c.png)와 OCR(b{�
 OUT = HERE / "컷아웃"; OUT.mkdir(exist_ok=True)
 CHROME = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome"
 FONT = ImageFont.truetype("/root/.fonts/NanumGothic.ttf", 30)
+MID_PAGES = [int(x) for x in sys.argv[2].split(",")] if len(sys.argv) > 2 else []  # 중학교 물질 단원 성취기준 쪽
 
 SUBJ = [  # (spec 절 번호, 과목명, 내용 체계 쪽, 성취기준·해설 쪽)
+    (1, "중학교 과학(물질)", [9], MID_PAGES),
     (2, "통합과학1·2", [27, 34], [28, 29, 30, 31, 35, 36]),
     (3, "화학", [62], [63, 64, 65, 66]),
     (4, "물질과 에너지", [74], [75, 76, 77, 78]),
