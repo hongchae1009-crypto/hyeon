@@ -14,6 +14,7 @@ PG = pathlib.Path(sys.argv[1])          # 쪽 이미지(b{쪽}c.png)와 OCR(b{�
 OUT = HERE / "컷아웃"; OUT.mkdir(exist_ok=True)
 CHROME = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome"
 FONT = ImageFont.truetype("/root/.fonts/NanumGothic.ttf", 30)
+ONLY_RIGHT = {9: (950, 420)}  # 중학교 내용 체계 표: 핵심 아이디어 아래는 '중학교 1~3학년' 열만 대상
 MID_PAGES = [int(x) for x in sys.argv[2].split(",")] if len(sys.argv) > 2 else []  # 중학교 물질 단원 성취기준 쪽
 
 SUBJ = [  # (spec 절 번호, 과목명, 내용 체계 쪽, 성취기준·해설 쪽)
@@ -27,55 +28,96 @@ DOTS = str.maketrans({"・": "·", "ㆍ": "·", "•": "·", "‧": "·", "∙":
 def nz(s): return re.sub(r"\s+", "", s.translate(DOTS))
 
 def load(pno):
-    """쪽의 글자 목록: (글자, x0, y0, x1, y1, 줄 id)"""
-    rows = csv.DictReader(open(PG / f"b{pno}.tsv", encoding="utf-8"), delimiter="\t", quoting=csv.QUOTE_NONE)
+    """쪽의 글자 목록: (글자, x0, y0, x1, y1, 줄 id) — tesseract hOCR 문자 상자(h{쪽}.hocr)"""
+    src = (PG / f"h{pno}.hocr").read_text(encoding="utf-8")
     chars = []
-    for r in rows:
-        if r["level"] != "5": continue
-        t = nz(r["text"] or "")
-        if not t: continue
-        x, y, w, h = (int(r[k]) for k in ("left", "top", "width", "height"))
-        lid = (r["block_num"], r["par_num"], r["line_num"])
-        for i, c in enumerate(t):
-            chars.append((c, x + w * i / len(t), y, x + w * (i + 1) / len(t), y + h, lid))
+    for li, line in enumerate(re.split(r"<span class='ocr_line'", src)[1:]):
+        for m in re.finditer(r"<span class='ocrx_cinfo' title='x_bboxes (\d+) (\d+) (\d+) (\d+)[^']*'>([^<]*)</span>", line):
+            c = nz(html.unescape(m.group(5)))
+            if not c: continue
+            x0, y0, x1, y1 = map(int, m.groups()[:4])
+            if pno in ONLY_RIGHT and y0 > ONLY_RIGHT[pno][1] and x0 < ONLY_RIGHT[pno][0]: continue
+            chars.append((c[0], x0, y0, x1, y1, li))
     return chars
 
 def find(chars, item, term):
-    """item 문장 안의 term 자리를 쪽 글자열에서 찾아 (점수, 시작, 끝)을 돌려준다."""
+    """원문 문장 전체를 쪽 OCR 글자열과 정렬한 뒤, term 글자들이 대응하는 OCR 글자 범위를 돌려준다."""
+    import difflib
     txt = "".join(c[0] for c in chars)
     it, tm = nz(item), nz(term)
     k = it.find(tm)
     if k < 0: return None
-    best = None
-    for ctx in (8, 5, 3):
-        pat = it[max(0, k - ctx):k] + tm + it[k + len(tm):k + len(tm) + ctx]
-        a = fuzz.partial_ratio_alignment(pat, txt)
-        if a is None or a.score < 72: continue
-        win = txt[a.dest_start:a.dest_end]
-        b = fuzz.partial_ratio_alignment(tm, win)
-        if b is None: continue
-        pre = k - max(0, k - ctx)
-        # 문맥 길이로 대략 위치를 잡고, 말 자체 정렬로 미세 조정
-        s0 = a.dest_start + b.dest_start; e0 = a.dest_start + b.dest_end
-        sc = min(a.score, b.score + 10)
-        if best is None or sc > best[0]: best = (sc, s0, e0)
-        if a.score >= 88: break
-    return best
+    # 문장 전체(길면 term 주변 40자)로 쪽에서 위치를 잡는다
+    lo, hi = max(0, k - 40), min(len(it), k + len(tm) + 40)
+    seg = it[lo:hi]; kk = k - lo
+    a = fuzz.partial_ratio_alignment(seg, txt)
+    if a is None or a.score < 70: return None
+    w0, w1 = max(0, a.dest_start - 10), min(len(txt), a.dest_end + 10)
+    win = txt[w0:w1]
+    sm = difflib.SequenceMatcher(None, seg, win, autojunk=False)
+    m = {}
+    for bi, bj, n in sm.get_matching_blocks():
+        for t in range(n): m[bi + t] = w0 + bj + t
+    hit = [i for i in range(kk, kk + len(tm)) if i in m]
+    if not hit: return None
+    i0, i1 = hit[0], hit[-1]
+    s0 = m[i0] - (i0 - kk); e0 = m[i1] + (kk + len(tm) - 1 - i1) + 1
+    s0, e0 = max(0, s0), min(len(txt), e0)
+    sc = a.score * len(hit) / len(tm)
+    return (sc, s0, e0) if sc >= 45 else None
+
+def snap(px, W, H, xs, ys, first_x, last_x, pitch):
+    """대략 위치를 실제 잉크에 맞춘 상자로 바꾼다. 가로는 첫 글자 시작 ~ 마지막 글자 시작+피치까지만."""
+    ink = lambda x, y: px[x, y] < 140
+    cy = int(sorted(ys)[len(ys) // 2])
+    xa, xb = int(first_x), int(last_x + pitch * 0.92)
+    rows = lambda y: sum(ink(x, y) for x in range(max(0, xa), min(W, xb), 2))
+    top = bot = cy
+    while top > cy - 30 and rows(top - 1) > 0: top -= 1
+    while bot < cy + 30 and rows(bot + 1) > 0: bot += 1
+    if bot - top < 18: top, bot = cy - 16, cy + 16
+    col = lambda x: 0 <= x < W and any(ink(x, y) for y in range(top, bot + 1))
+    def to_gap(x, rng):  # x 근처(±rng)에서 잉크 없는 세로줄로 맞춘다
+        for k in range(0, int(rng)):
+            for xx in (x + k, x - k):
+                if not col(xx): return xx
+        return x
+    return to_gap(xa - 1, pitch * 0.3), top, to_gap(xb, pitch * 0.3), bot
 
 def draw(img, chars, spans):
-    d = ImageDraw.Draw(img)
-    for no, s, e in spans:
-        segs = {}
+    d = ImageDraw.Draw(img); px = img.load(); W, H = img.size
+    hs = sorted(c[4] - c[2] for c in chars) or [34]
+    h0 = hs[len(hs) // 2]
+    adv = sorted(b[1] - a[1] for a, b in zip(chars, chars[1:]) if a[5] == b[5] and 0.6 * h0 < b[1] - a[1] < 1.6 * h0)
+    pitch = adv[len(adv) // 2] if adv else h0
+    for no, s, e, term in spans:
+        segs, cur = [], None
         for c in chars[s:e]:
-            g = segs.setdefault(c[5], [1e9, 1e9, -1, -1])
-            g[0] = min(g[0], c[1]); g[1] = min(g[1], c[2]); g[2] = max(g[2], c[3]); g[3] = max(g[3], c[4])
+            cy = (c[2] + c[4]) / 2
+            ok = c[4] - c[2] <= 1.6 * h0
+            if cur and (not ok or (abs(cy - cur["y"][-1]) < 0.7 * h0 and c[1] - cur["x"][-1] < 2.5 * pitch)):
+                cur["n"] += 1
+                if ok: cur["x"].append(c[1]); cur["y"].append(cy)
+            elif ok:
+                cur = {"x": [c[1]], "y": [cy], "n": 1}; segs.append(cur)
+        # 각 줄 조각에 들어가는 띄어쓰기 수
+        letters = [ch for ch in term if not ch.isspace()]
+        i = 0
+        for g in segs:
+            sp, cnt = 0, 0
+            while i < len(term) and cnt < g["n"]:
+                if term[i].isspace(): sp += 1
+                else: cnt += 1
+                i += 1
+            g["w"] = g["n"] * pitch + sp * 0.32 * pitch
         first = True
-        for g in sorted(segs.values(), key=lambda g: (g[1], g[0])):
-            x0, y0, x1, y1 = g[0] - 4, g[1] - 6, g[2] + 4, g[3] + 6
+        for g in segs:
+            x0, y0, x1, y1 = snap(px, W, H, g["x"], g["y"], min(g["x"]), max(max(g["x"]), min(g["x"]) + g["w"] - pitch * 1.15), pitch)
+            x0, y0, x1, y1 = x0 - 2, y0 - 4, x1 + 1, y1 + 4
             d.rectangle((x0, y0, x1, y1), fill=255)
             d.line((x0, y1, x1, y1), fill=0, width=3)
             if first:
-                d.text((x0 + 2, y0 - 2), str(no), fill=90, font=FONT); first = False
+                d.text((x0 + 3, y0 - 6), str(no), fill=90, font=FONT); first = False
 
 def build(kind):
     pages_html, keys, report = [], [], []
@@ -100,7 +142,7 @@ def build(kind):
             img = Image.open(PG / f"b{p}c.png").convert("L")
             spans = []
             for t, s, e, sc in sorted(found[p], key=lambda f: (chars[p][f[1]][2] // 25, chars[p][f[1]][1])):
-                spans.append((no, s, e)); ak.append((no, t, p)); no += 1
+                spans.append((no, s, e, t)); ak.append((no, t, p)); no += 1
             draw(img, chars[p], spans)
             # 아래쪽 빈 여백 잘라 내기
             px = img.load(); h = img.height
