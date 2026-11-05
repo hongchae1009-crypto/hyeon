@@ -1,0 +1,74 @@
+<svg baseprofile="full" height="117px" version="1.1" viewbox="0 0 220 117" width="220px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:rdkit="http://www.rdkit.org/xml" xmlns:xlink="http://www.w3.org/1999/xlink">
+<path class="bond-0 atom-0 atom-1" d="M 128.0,77.5 L 105.5,64.5" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"></path>
+<path class="bond-1 atom-1 atom-2" d="M 107.4,65.6 L 107.4,45.3" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"></path>
+<path class="bond-1 atom-1 atom-2" d="M 103.5,65.6 L 103.5,45.3" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"></path>
+<path class="bond-2 atom-1 atom-3" d="M 105.5,64.5 L 83.0,77.6" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"></path>
+<path class="bond-3 atom-3 atom-4" d="M 83.0,77.6 L 60.5,64.6" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"></path>
+<path class="bond-3 atom-3 atom-4" d="M 83.0,73.0 L 62.4,61.2" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"></path>
+<path class="bond-4 atom-4 atom-5" d="M 60.5,64.6 L 42.7,74.9" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"></path>
+<path class="bond-5 atom-6 atom-7" d="M 154.0,58.1 L 175.8,58.1" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"></path>
+<path d="M 106.6,65.2 L 105.5,64.5 L 104.4,65.2" style="fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;"></path>
+<path d="M 84.1,76.9 L 83.0,77.6 L 81.9,76.9" style="fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;"></path>
+<path d="M 61.6,65.2 L 60.5,64.6 L 59.6,65.1" style="fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;"></path>
+<path class="atom-2" d="M 100.2 38.5
+Q 100.2 35.8, 101.6 34.3
+Q 102.9 32.8, 105.4 32.8
+Q 108.0 32.8, 109.3 34.3
+Q 110.6 35.8, 110.6 38.5
+Q 110.6 41.3, 109.3 42.9
+Q 107.9 44.4, 105.4 44.4
+Q 102.9 44.4, 101.6 42.9
+Q 100.2 41.3, 100.2 38.5
+M 105.4 43.1
+Q 107.2 43.1, 108.1 42.0
+Q 109.0 40.8, 109.0 38.5
+Q 109.0 36.3, 108.1 35.2
+Q 107.2 34.1, 105.4 34.1
+Q 103.7 34.1, 102.8 35.2
+Q 101.8 36.3, 101.8 38.5
+Q 101.8 40.8, 102.8 42.0
+Q 103.7 43.1, 105.4 43.1
+" fill="#000000"></path>
+<path class="atom-5" d="M 40.2 83.3
+L 37.5 78.6
+L 37.4 78.6
+L 35.6 78.6
+L 35.6 83.3
+L 34.1 83.3
+L 34.1 72.0
+L 37.4 72.0
+Q 39.4 72.0, 40.3 72.9
+Q 41.3 73.7, 41.3 75.3
+Q 41.3 76.5, 40.7 77.3
+Q 40.1 78.1, 39.0 78.4
+L 41.9 83.3
+L 40.2 83.3
+M 35.6 77.4
+L 37.4 77.4
+Q 38.5 77.4, 39.1 76.8
+Q 39.7 76.3, 39.7 75.3
+Q 39.7 74.3, 39.1 73.8
+Q 38.5 73.3, 37.4 73.3
+L 35.6 73.3
+L 35.6 77.4
+" fill="#000000"></path>
+<path class="atom-7" d="M 176.7 52.4
+L 178.2 52.4
+L 178.2 62.4
+L 183.4 62.4
+L 183.4 63.7
+L 176.7 63.7
+L 176.7 52.4
+" fill="#000000"></path>
+<path class="atom-7" d="M 184.2 52.4
+L 185.7 52.4
+L 185.7 53.8
+L 184.2 53.8
+L 184.2 52.4
+M 184.2 55.5
+L 185.7 55.5
+L 185.7 63.7
+L 184.2 63.7
+L 184.2 55.5
+" fill="#000000"></path>
+<circle cx="102.8" cy="28.1" fill="#000" r="1.35"></circle><circle cx="108.0" cy="28.1" fill="#000" r="1.35"></circle><path d="M167.0,58.1 Q138.7,37.5 119.7,58.7" fill="none" stroke="#c00" stroke-width="1.25"></path><path d="M115.3,63.5 L117.3,56.5 L122.1,60.8 z" fill="#c00"></path><path d="M101.3,54.6 Q87.8,45.3 91.8,40.8" fill="none" stroke="#c00" stroke-width="1.25"></path><path d="M96.1,35.9 L94.2,42.9 L89.4,38.7 z" fill="#c00"></path></svg>

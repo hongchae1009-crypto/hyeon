@@ -1,0 +1,118 @@
+<svg baseprofile="full" height="120px" version="1.1" viewbox="0 0 163 120" width="163px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:rdkit="http://www.rdkit.org/xml" xmlns:xlink="http://www.w3.org/1999/xlink">
+<path class="bond-0 atom-1 atom-2" d="M 64.5,43.3 L 64.5,61.6" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"></path>
+<path class="bond-1 atom-2 atom-3" d="M 65.4,60.0 L 81.5,69.4" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"></path>
+<path class="bond-1 atom-2 atom-3" d="M 63.6,63.1 L 79.7,72.5" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"></path>
+<path class="bond-2 atom-3 atom-4" d="M 90.7,74.7 L 106.9,84.1" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"></path>
+<path class="bond-2 atom-3 atom-4" d="M 88.9,77.8 L 105.1,87.2" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"></path>
+<path class="bond-3 atom-4 atom-5" d="M 106.0,85.6 L 122.6,76.1" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"></path>
+<path class="atom-0" d="M 33.5 56.6
+L 36.7 61.9
+Q 37.0 62.4, 37.6 63.3
+Q 38.1 64.3, 38.1 64.3
+L 38.1 56.6
+L 39.4 56.6
+L 39.4 66.6
+L 38.1 66.6
+L 34.6 60.8
+Q 34.2 60.1, 33.7 59.4
+Q 33.3 58.6, 33.2 58.4
+L 33.2 66.6
+L 31.9 66.6
+L 31.9 56.6
+L 33.5 56.6
+" fill="#000000"></path>
+<path class="atom-0" d="M 41.3 56.6
+L 42.6 56.6
+L 42.6 60.9
+L 47.7 60.9
+L 47.7 56.6
+L 49.0 56.6
+L 49.0 66.6
+L 47.7 66.6
+L 47.7 62.0
+L 42.6 62.0
+L 42.6 66.6
+L 41.3 66.6
+L 41.3 56.6
+" fill="#000000"></path>
+<path class="atom-0" d="M 50.9 66.2
+Q 51.2 65.6, 51.7 65.2
+Q 52.3 64.9, 53.1 64.9
+Q 54.1 64.9, 54.6 65.4
+Q 55.2 66.0, 55.2 66.9
+Q 55.2 67.9, 54.5 68.8
+Q 53.8 69.7, 52.3 70.8
+L 55.3 70.8
+L 55.3 71.5
+L 50.9 71.5
+L 50.9 70.9
+Q 52.1 70.0, 52.8 69.4
+Q 53.6 68.7, 53.9 68.1
+Q 54.3 67.6, 54.3 67.0
+Q 54.3 66.3, 54.0 66.0
+Q 53.6 65.6, 53.1 65.6
+Q 52.6 65.6, 52.2 65.8
+Q 51.9 66.1, 51.6 66.5
+L 50.9 66.2
+" fill="#000000"></path>
+<path class="atom-0" d="M 51.4 58.3
+L 54.8 58.3
+L 54.8 59.0
+L 51.4 59.0
+L 51.4 58.3
+" fill="#000000"></path>
+<path class="atom-1" d="M 60.6 32.6
+L 62.0 32.6
+L 62.0 36.8
+L 67.1 36.8
+L 67.1 32.6
+L 68.4 32.6
+L 68.4 42.5
+L 67.1 42.5
+L 67.1 37.9
+L 62.0 37.9
+L 62.0 42.5
+L 60.6 42.5
+L 60.6 32.6
+" fill="#000000"></path>
+<path class="atom-3" d="M 81.4 73.6
+Q 81.4 71.2, 82.6 69.9
+Q 83.7 68.6, 85.9 68.6
+Q 88.0 68.6, 89.1 70.0
+L 88.1 70.8
+Q 87.3 69.7, 85.9 69.7
+Q 84.4 69.7, 83.6 70.7
+Q 82.8 71.7, 82.8 73.6
+Q 82.8 75.6, 83.6 76.6
+Q 84.5 77.6, 86.1 77.6
+Q 87.2 77.6, 88.4 77.0
+L 88.8 78.0
+Q 88.3 78.3, 87.5 78.5
+Q 86.7 78.7, 85.9 78.7
+Q 83.7 78.7, 82.6 77.4
+Q 81.4 76.1, 81.4 73.6
+" fill="#000000"></path>
+<path class="atom-5" d="M 128.7 78.6
+L 126.3 74.6
+L 126.3 74.6
+L 124.7 74.6
+L 124.7 78.6
+L 123.4 78.6
+L 123.4 68.7
+L 126.3 68.7
+Q 128.0 68.7, 128.9 69.5
+Q 129.7 70.3, 129.7 71.6
+Q 129.7 72.7, 129.2 73.4
+Q 128.7 74.1, 127.7 74.4
+L 130.2 78.6
+L 128.7 78.6
+M 124.7 73.4
+L 126.3 73.4
+Q 127.3 73.4, 127.8 73.0
+Q 128.3 72.5, 128.3 71.6
+Q 128.3 70.8, 127.8 70.3
+Q 127.3 69.8, 126.3 69.8
+L 124.7 69.8
+L 124.7 73.4
+" fill="#000000"></path>
+<circle cx="33.1" cy="52.0" fill="#000" r="1.35"></circle><circle cx="38.3" cy="52.0" fill="#000" r="1.35"></circle><path d="M35.7,51.5 Q41.5,37.2 50.1,39.7" fill="none" stroke="#c00" stroke-width="1.25"></path><path d="M56.3,41.5 L49.2,42.8 L51.0,36.6 z" fill="#c00"></path><path d="M64.5,49.6 Q60.9,63.6 68.6,65.8" fill="none" stroke="#c00" stroke-width="1.25"></path><path d="M74.9,67.6 L67.7,68.9 L69.5,62.7 z" fill="#c00"></path><path d="M91.2,81.5 Q92.4,96.6 97.4,95.6" fill="none" stroke="#c00" stroke-width="1.25"></path><path d="M103.7,94.3 L98.0,98.8 L96.7,92.5 z" fill="#c00"></path></svg>

@@ -1,0 +1,92 @@
+<svg baseprofile="full" height="152px" version="1.1" viewbox="0 0 156 152" width="156px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:rdkit="http://www.rdkit.org/xml" xmlns:xlink="http://www.w3.org/1999/xlink">
+<path class="bond-0 atom-0 atom-1" d="M 45.7,43.6 L 66.2,52.8" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"></path>
+<path class="bond-0 atom-0 atom-1" d="M 44.0,47.4 L 64.5,56.7" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"></path>
+<path class="bond-1 atom-1 atom-2" d="M 63.9,54.1 L 88.3,40.3" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"></path>
+<path class="bond-2 atom-2 atom-3" d="M 88.3,40.3 L 109.0,59.1" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"></path>
+<path class="bond-3 atom-3 atom-4" d="M 109.0,59.1 L 97.4,84.6" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"></path>
+<path class="bond-4 atom-4 atom-5" d="M 97.4,84.6 L 107.4,102.0" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"></path>
+<path class="bond-5 atom-4 atom-6" d="M 97.4,84.6 L 76.1,82.3" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"></path>
+<path class="bond-6 atom-6 atom-7" d="M 63.2,88.6 L 56.4,96.1" style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"></path>
+<path d="M 65.2,53.4 L 63.9,54.1 L 64.1,55.2" style="fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;"></path>
+<path d="M 87.0,41.0 L 88.3,40.3 L 89.3,41.2" style="fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;"></path>
+<path d="M 107.9,58.2 L 109.0,59.1 L 108.4,60.4" style="fill:none;stroke:#000000;stroke-width:1.3px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1;"></path>
+<path class="atom-0" d="M 32.9 42.6
+Q 32.9 39.7, 34.3 38.1
+Q 35.8 36.5, 38.4 36.5
+Q 41.1 36.5, 42.5 38.1
+Q 43.9 39.7, 43.9 42.6
+Q 43.9 45.6, 42.5 47.2
+Q 41.1 48.9, 38.4 48.9
+Q 35.8 48.9, 34.3 47.2
+Q 32.9 45.6, 32.9 42.6
+M 38.4 47.5
+Q 40.3 47.5, 41.2 46.3
+Q 42.2 45.1, 42.2 42.6
+Q 42.2 40.3, 41.2 39.1
+Q 40.3 37.9, 38.4 37.9
+Q 36.6 37.9, 35.6 39.1
+Q 34.6 40.3, 34.6 42.6
+Q 34.6 45.1, 35.6 46.3
+Q 36.6 47.5, 38.4 47.5
+" fill="#000000"></path>
+<path class="atom-5" d="M 115.0 115.0
+L 113.7 111.4
+L 108.9 111.4
+L 107.7 115.0
+L 106.1 115.0
+L 110.2 102.9
+L 112.2 102.9
+L 116.5 115.0
+L 115.0 115.0
+M 109.4 110.1
+L 113.2 110.1
+L 111.3 104.6
+L 109.4 110.1
+" fill="#000000"></path>
+<path class="atom-5" d="M 118.8 106.2
+L 119.0 107.4
+Q 119.9 106.1, 121.4 106.1
+Q 121.9 106.1, 122.5 106.2
+L 122.3 107.7
+Q 121.6 107.5, 121.1 107.5
+Q 120.4 107.5, 120.0 107.8
+Q 119.5 108.1, 119.1 108.7
+L 119.1 115.0
+L 117.5 115.0
+L 117.5 106.2
+L 118.8 106.2
+" fill="#000000"></path>
+<path class="atom-6" d="M 64.1 81.6
+Q 64.1 78.7, 65.5 77.1
+Q 66.9 75.5, 69.6 75.5
+Q 72.3 75.5, 73.7 77.1
+Q 75.1 78.7, 75.1 81.6
+Q 75.1 84.5, 73.7 86.2
+Q 72.3 87.8, 69.6 87.8
+Q 67.0 87.8, 65.5 86.2
+Q 64.1 84.5, 64.1 81.6
+M 69.6 86.5
+Q 71.5 86.5, 72.4 85.2
+Q 73.4 84.0, 73.4 81.6
+Q 73.4 79.2, 72.4 78.0
+Q 71.5 76.8, 69.6 76.8
+Q 67.8 76.8, 66.8 78.0
+Q 65.8 79.2, 65.8 81.6
+Q 65.8 84.0, 66.8 85.2
+Q 67.8 86.5, 69.6 86.5
+" fill="#000000"></path>
+<path class="atom-7" d="M 46.1 96.2
+L 47.7 96.2
+L 47.7 101.4
+L 53.8 101.4
+L 53.8 96.2
+L 55.5 96.2
+L 55.5 108.3
+L 53.8 108.3
+L 53.8 102.7
+L 47.7 102.7
+L 47.7 108.3
+L 46.1 108.3
+L 46.1 96.2
+" fill="#000000"></path>
+<circle cx="75.9" cy="91.2" fill="#000" r="1.35"></circle><circle cx="71.0" cy="93.0" fill="#000" r="1.35"></circle><circle cx="27.0" cy="41.2" fill="#000" r="1.35"></circle><circle cx="28.8" cy="36.3" fill="#000" r="1.35"></circle><path d="M73.6,92.6 Q57.4,81.7 63.5,70.2" fill="none" stroke="#c00" stroke-width="1.25"></path><path d="M66.5,64.4 L66.3,71.7 L60.7,68.7 z" fill="#c00"></path><path d="M56.1,45.7 Q52.9,28.2 46.2,30.3" fill="none" stroke="#c00" stroke-width="1.25"></path><path d="M40.0,32.3 L45.3,27.3 L47.2,33.4 z" fill="#c00"></path></svg>
