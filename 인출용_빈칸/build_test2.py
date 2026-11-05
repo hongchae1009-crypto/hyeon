@@ -11,7 +11,7 @@ def blanks(s):
     for m in re.finditer(r"\[\[(.+?)\]\]", s):
         out.append(s[i:m.start()]); a = m.group(1)
         w = max(3.2, 1.0 * len(a) + 1.4)
-        out.append(f"<span class='bl' style='min-width:{w:.1f}em'><i>{no}</i></span>"); key.append((no, a)); no += 1; i = m.end()
+        out.append(f"<span class='bl' style='min-width:{w:.1f}em'><i>{no}</i><b class='a'>{html.escape(a)}</b></span>"); key.append((no, a)); no += 1; i = m.end()
     out.append(s[i:]); return "".join(out)
 parts, box = [], None
 for raw in L.strip("\n").split("\n"):
@@ -41,8 +41,8 @@ h2{text-align:center;font-size:10pt;margin:2.2mm 0 1mm;break-after:avoid}
 h3{font-size:9.4pt;margin:2mm 0 .3mm;font-weight:bold;break-after:avoid}h4{font-size:9.2pt;margin:1.2mm 0 .2mm;font-weight:normal;break-after:avoid}
 p{margin:0}.it{padding-left:3.2mm;text-indent:-3.2mm}.ln{padding-left:2mm}.ar{padding-left:6mm;line-height:1.3}
 .box{border:.7pt solid #333;padding:1mm 2mm;margin:1mm 0 1mm 3mm;break-inside:avoid}.sp{height:2mm}
-.bl{display:inline-block;border-bottom:.8pt solid #111;height:1.2em;vertical-align:-.15em;position:relative;margin:0 .12em}
-.bl i{font-style:normal;font-size:6.2pt;color:#777;position:absolute;left:.1em;top:-.25em}
+.bl{text-indent:0;display:inline-block;border-bottom:.8pt solid #111;height:1.2em;vertical-align:-.15em;position:relative;margin:0 .12em}
+.bl .a{visibility:hidden;font-weight:bold;padding:0 .1em;position:absolute;left:.5em;bottom:.05em;white-space:nowrap;line-height:1.1;text-indent:0}.bl i{font-style:normal;font-size:6.2pt;color:#777;position:absolute;left:.1em;top:-.25em}
 .ans{font-size:9pt;line-height:1.5}.ans h1{font-size:13pt;border-bottom:1.2pt solid #000;padding-bottom:1.5mm}
 .g{column-count:3;column-gap:6mm;column-rule:.5pt solid #ccc}.g div{break-inside:avoid}.g b{display:inline-block;min-width:7mm;color:#1a3d6d}"""
 hd = f"<div class='hd'><div><b>과교론 암기 필요 파트 — 인출 테스트</b> <small>(빈칸 {N}개)</small></div><div class='who'>날짜 <span></span>&nbsp; 점수 <span style='min-width:12mm'></span> / {N}</div></div>"
@@ -53,7 +53,11 @@ LAND = """<style>@page{size:A4 landscape;margin:6mm 7mm}body{font-size:7.5pt;lin
 h2{font-size:7.8pt;margin:1.2mm 0 .5mm}h3{font-size:7.3pt;margin:1mm 0 0}h4{font-size:7.1pt;margin:.5mm 0 0}
 .ar{line-height:1.05;padding-left:4mm}.box{padding:.4mm 1.2mm;margin:.5mm 0 .5mm 2mm}.sp{height:.8mm}
 .bl i{font-size:5pt}</style>"""
-docs["암기필요파트_인출테스트_A4가로"] = LAND + docs["암기필요파트_인출테스트"]
+FILL = "<style>.bl .a{visibility:visible;background:#fff59d;color:#b3001b;box-shadow:0 0 0 .08em #fff59d;left:.1em}.bl i{display:none}</style>"
+q = docs["암기필요파트_인출테스트"]
+docs["암기필요파트_인출테스트_A4가로"] = LAND + q
+docs["암기필요파트_인출테스트_정답"] = FILL + q.replace("인출 테스트</b>", "인출 테스트 — 정답</b>")
+docs["암기필요파트_인출테스트_A4가로_정답"] = LAND + FILL + q.replace("인출 테스트</b>", "인출 테스트 — 정답</b>")
 for stem, b in docs.items():
     h = HERE / f"{stem}.html"
     h.write_text(f"<!doctype html><html lang='ko'><head><meta charset='utf-8'><title>{stem}</title><style>{css}</style></head><body>{b}</body></html>", encoding="utf-8")
