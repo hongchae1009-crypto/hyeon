@@ -48,6 +48,12 @@ p{margin:0}.it{padding-left:3.2mm;text-indent:-3.2mm}.ln{padding-left:2mm}.ar{pa
 hd = f"<div class='hd'><div><b>과교론 암기 필요 파트 — 인출 테스트</b> <small>(빈칸 {N}개)</small></div><div class='who'>날짜 <span></span>&nbsp; 점수 <span style='min-width:12mm'></span> / {N}</div></div>"
 docs = {"암기필요파트_인출테스트": hd + "<div class='cols'>" + "".join(parts) + "</div>",
         "암기필요파트_인출테스트_정답": "<div class='ans'><h1>암기 필요 파트 인출 테스트 — 정답</h1><div class='g'>" + "".join(f"<div><b>{n}</b>{html.escape(a)}</div>" for n, a in key) + "</div></div>"}
+LAND = """<style>@page{size:A4 landscape;margin:6mm 7mm}body{font-size:7.5pt;line-height:1.66}
+.hd{margin-bottom:1mm}.hd b{font-size:10pt}.cols{column-count:4;column-gap:4.5mm}
+h2{font-size:7.8pt;margin:1.2mm 0 .5mm}h3{font-size:7.3pt;margin:1mm 0 0}h4{font-size:7.1pt;margin:.5mm 0 0}
+.ar{line-height:1.05;padding-left:4mm}.box{padding:.4mm 1.2mm;margin:.5mm 0 .5mm 2mm}.sp{height:.8mm}
+.bl i{font-size:5pt}</style>"""
+docs["암기필요파트_인출테스트_A4가로"] = LAND + docs["암기필요파트_인출테스트"]
 for stem, b in docs.items():
     h = HERE / f"{stem}.html"
     h.write_text(f"<!doctype html><html lang='ko'><head><meta charset='utf-8'><title>{stem}</title><style>{css}</style></head><body>{b}</body></html>", encoding="utf-8")
