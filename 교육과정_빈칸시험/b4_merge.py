@@ -169,26 +169,93 @@ def layout_fold(doc, groups, npages, cph, title, k_max, unit_gap=3.2, gap=1.0):
             pg.insert_image(pymupdf.Rect(x + pad, yy, x + pad + v.width * k, yy + h), stream=_png(v))
     return k
 
-def build_land(a, b, std_pages):
-    """B4 가로(반 접기) 판: 1쪽 내용 체계, 그다음 std_pages쪽 성취기준."""
+def layout_rows(doc, subjects, title, k_max, per_row=4):
+    """성취기준 '과목 = 가로 한 줄, 단원 = 칸' 배치. B4 가로를 반으로 접어 쓰므로 한 줄의 칸은 접는 선 양쪽에 반씩.
+    subjects: [(과목 제목, [단원별 [(종류, 그림)]])]. 과목마다 남색 머리 + 테두리, 단원 사이는 세로 구분선.
+    한 과목이 per_row개보다 단원이 많으면 다음 줄로 이어 간다. 줄이 쪽에 안 들어가면 다음 쪽."""
+    W, H = B4[1], B4[0]; half = W / 2
+    mo, mi, top, bot, cg = 8 * MM, 7 * MM, 14 * MM, 6 * MM, 3 * MM
+    pad, hd, sg = 1.6 * MM, 5.6 * MM, 3.5 * MM
+    cph = per_row // 2
+    cw = (half - mo - mi - (cph - 1) * cg) / cph; ch = H - top - bot
+    def colx(j):
+        h, jj = divmod(j, cph)
+        return (mo if h == 0 else half + mi) + jj * (cw + cg)
+    uh = lambda u, k: sum(im.height * k for _, im in u) + 1.2 * MM * (len(u) - 1)
+    rows = []  # (과목 번호, 이어짐 여부, [단원])
+    for gi, (name, units) in enumerate(subjects):
+        for r in range(0, len(units), per_row): rows.append((gi, r > 0, units[r:r + per_row]))
+    def paginate(k):
+        pages, y = [[]], 0
+        for gi, cont, us in rows:
+            h = hd + pad + max(uh(u, k) for u in us) + pad
+            if y + h > ch and y > 0: pages.append([]); y = 0
+            pages[-1].append((gi, cont, us, y, h)); y += h + sg
+        return pages
+    k = min(k_max, min((cw - 2 * pad) / im.width for _, us in subjects for u in us for _, im in u))
+    best = paginate(k)
+    for t in range(1, 11):  # 10%까지 줄여서 쪽 수가 줄면 그 배율을 쓴다
+        pp = paginate(k * (1 - t / 100))
+        if len(pp) < len(best): k, best = k * (1 - t / 100), pp; break
+    F = pymupdf.Font(fontfile=FONT); NAVY = (.10, .24, .43)
+    for n, rws in enumerate(best):
+        pg = doc.new_page(width=W, height=H); pg.insert_font(fontname="ng", fontfile=FONT)
+        for hf in range(2):
+            x0 = mo if hf == 0 else half + mi; x1 = half - mi if hf == 0 else W - mo
+            pg.insert_text((x0, 10 * MM), title, fontname="ng", fontsize=11.5)
+            tag = f"{n * 2 + hf + 1} / {len(best) * 2}"
+            pg.insert_text((x1 - F.text_length(tag, fontsize=8.5), 10 * MM), tag, fontname="ng", fontsize=8.5, color=(.4, .4, .4))
+            pg.draw_line((x0, 12 * MM), (x1, 12 * MM), width=1)
+        pg.draw_line((half, 4 * MM), (half, H - 4 * MM), width=.5, color=(.6, .6, .6), dashes="[3 3] 0")
+        for gi, cont, us, y, h in rws:
+            name = subjects[gi][0]; yy = top + y
+            for hf in range(2):
+                js = [j for j in range(len(us)) if j // cph == hf]
+                if not js: continue
+                x0 = colx(js[0]); x1 = colx(js[-1]) + cw if hf == 0 or len(js) > 0 else 0
+                if hf == 0 and len(us) <= cph: x1 = colx(cph - 1) + cw
+                if hf == 1: x1 = colx(2 * cph - 1) + cw
+                if hf == 0: x1 = colx(cph - 1) + cw
+                lab = name + (" (계속)" if cont or hf == 1 else "")
+                pg.draw_rect(pymupdf.Rect(x0, yy, x1, yy + hd), color=None, fill=NAVY)
+                fs = min(10, (x1 - x0 - 4 * MM) / F.text_length(lab, fontsize=1))
+                pg.insert_text((x0 + 2 * MM, yy + hd / 2 + fs * .36), lab, fontname="ng", fontsize=fs, color=(1, 1, 1))
+                pg.draw_rect(pymupdf.Rect(x0, yy, x1, yy + h), color=NAVY, width=1)
+                for j in js[1:]:
+                    xs = colx(j) - cg / 2
+                    pg.draw_line((xs, yy + hd + pad), (xs, yy + h - pad), width=.5, color=(.6, .66, .75))
+            for j, u in enumerate(us):
+                x = colx(j) + pad; cy = yy + hd + pad
+                for kd, im in u:
+                    hh = im.height * k
+                    if kd == "unit":
+                        pg.draw_rect(pymupdf.Rect(x - .8 * MM, cy - .5 * MM, colx(j) + cw - pad + .8 * MM, cy + hh + .4 * MM), color=None, fill=(.90, .93, .98))
+                    pg.insert_image(pymupdf.Rect(x, cy, x + im.width * k, cy + hh), stream=_png(im))
+                    cy += hh + 1.2 * MM
+    return k, len(best)
+
+def build_land(a, b):
+    """B4 가로(반 접기) 판: 1쪽 내용 체계, 그다음 쪽들 성취기준(과목 = 한 줄, 단원 = 칸)."""
     bk = Book(a, b); doc = pymupdf.open(); groups = []
     for name, tabs, _ in SUBJ:
         for p, lab in tabs:
             groups.append((f"{lab} — 내용 체계 ({p}쪽)", [("body", x) for x in bands(bk.page(p), 200)]))
     k1 = layout_fold(doc, groups, 1, 2, "2022 개정 교육과정 — 내용 체계", NATIVE)
-    groups = []
+    subjects = []
     for name, _, ps in SUBJ:
-        its = []
+        units, cur = [], None
         for p in ps:
             for x in bands(bk.page(p), 10):
                 kd = kind_of(x)
-                if kd != "drop": its.append((kd, x))
-        groups.append((f"{name}  성취기준 ({ps[0]}~{ps[-1]}쪽)", its))
-        print(name, "세부 단원", sum(k == "unit" for k, _ in its))
-    k2 = layout_fold(doc, groups, std_pages, 3 if std_pages == 1 else 2, "2022 개정 교육과정 — 성취기준", NATIVE)
-    out = HERE / f"교육과정_원문컷아웃_B4가로_{1 + std_pages}쪽.pdf"
+                if kd == "drop": continue
+                if kd == "unit" or cur is None: cur = []; units.append(cur)
+                cur.append((kd, x))
+        subjects.append((f"{name}  성취기준 ({ps[0]}~{ps[-1]}쪽)", units))
+        print(name, "단원", len(units))
+    k2, n = layout_rows(doc, subjects, "2022 개정 교육과정 — 성취기준", NATIVE)
+    out = HERE / "교육과정_원문컷아웃_B4가로.pdf"
     doc.save(out, garbage=4, deflate=True)
-    print(f"{out.name}: {len(doc)}쪽 — 내용 체계 원문 대비 {k1 / NATIVE:.0%}, 성취기준 {k2 / NATIVE:.0%}")
+    print(f"{out.name}: {len(doc)}쪽 — 내용 체계 원문 대비 {k1 / NATIVE:.0%}, 성취기준 {k2 / NATIVE:.0%} ({n}쪽)")
 
 def build(a, b, std_pages=1):
     bk = Book(a, b); doc = pymupdf.open()
@@ -215,4 +282,4 @@ def build(a, b, std_pages=1):
 if __name__ == "__main__":
     if "--세로" in sys.argv:
         build(sys.argv[1], sys.argv[2], 1); build(sys.argv[1], sys.argv[2], 2)
-    build_land(sys.argv[1], sys.argv[2], 1); build_land(sys.argv[1], sys.argv[2], 2)
+    build_land(sys.argv[1], sys.argv[2])
