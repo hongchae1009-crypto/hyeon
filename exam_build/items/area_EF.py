@@ -451,7 +451,7 @@ MECH_E6 = [
               arrows=[ar('lp', 11, 'a', 10), ar('b', (3, 10), 'm', (2, 3)), ar('b', (1, 2), 'a', 1)],
               caption='① α-C–H 탈양성자화'),
         ('→', '<i>n</i>-BuLi', '−BuH'),
-        kstep('[S-:1]/[C:2]([N:7]1CCCC1)=[CH:3]\\[CH3:8].[Br:9][CH2:4][CH:5]=[C:6]1CCCCC1', scale=19, lp=[1], frag_rot={1: 0},
+        kstep('[S-:1]/[C:2]([N:7]1CCCC1)=[CH:3]\\[CH3:8].[Br:9][CH2:4][CH:5]=[C:6]1CCCCC1', scale=19, lp=[1], frag_flip=(1,),
               arrows=[ar('lp', 1, 'a', 4), ar('b', (4, 9), 'a', 9)],
               caption='② (<i>Z</i>)-thioenolate의 S(무른 친핵체)가 S<sub>N</sub>2 공격'),
         ('→', '−Br<sup>−</sup>'),

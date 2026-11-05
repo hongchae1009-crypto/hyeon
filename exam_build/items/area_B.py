@@ -629,7 +629,7 @@ dict(
             step('CC1=CC=C(N)C(Br)=C1', scale=24, caption='<b>A</b>'),
             title='[그림 1] NHAc 오쏘 브로민화 — σ-착물의 양전하를 N이 받아 주므로 NHAc(＞CH<sub>3</sub>)가 배향을 결정'),
         mechanism(
-            step('[*:9][NH2:1].[N:2]#[O+:3]', scale=26, labels={9: 'Ar'}, gap=1.8,
+            step('[*:9][N:1]([H:4])[H:5].[N:2]#[O+:3]', scale=26, labels={9: 'Ar'}, gap=1.3, frag_dy={1: -1.1},
                  arrows=[ar('lp', 1, 'a', 2), ar('b', (2, 3), 'a', 3)], lp=[1], caption='① NO<sup>+</sup>(HNO<sub>2</sub> + H<sup>+</sup> → − H<sub>2</sub>O) 공격'),
             ('→', '', '− H<sup>+</sup>'),
             step('[*:9][NH:1][N:2]=[O:3]', scale=26, labels={9: 'Ar'}, caption='N-나이트로소아민'),
