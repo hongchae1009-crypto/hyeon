@@ -33,11 +33,11 @@ for raw in L.strip("\n").split("\n"):
     elif raw.startswith("•"): parts.append(f"<p class='it'>{blanks(raw)}</p>")
     else: parts.append(f"<p class='ln'>{blanks(raw)}</p>")
 N = no - 1
-css = """@page{size:A4;margin:13mm 12mm 13mm}body{font-family:'NanumGothic',sans-serif;font-size:9.3pt;line-height:1.95;margin:0;color:#111}
+css = """@page{size:A4;margin:10mm 11mm 10mm}body{font-family:'NanumGothic',sans-serif;font-size:9.3pt;line-height:1.78;margin:0;color:#111}
 .hd{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1.2pt solid #111;padding-bottom:1mm;margin-bottom:2mm;line-height:1.4}
 .hd b{font-size:12pt}.who span{display:inline-block;border-bottom:.8pt solid #111;min-width:22mm}
 .cols{column-count:2;column-gap:8mm;column-rule:.5pt solid #bbb}
-h2{text-align:center;font-size:10pt;margin:3mm 0 1.5mm;break-after:avoid}
+h2{text-align:center;font-size:10pt;margin:2.2mm 0 1mm;break-after:avoid}
 h3{font-size:9.4pt;margin:2mm 0 .3mm;font-weight:bold;break-after:avoid}h4{font-size:9.2pt;margin:1.2mm 0 .2mm;font-weight:normal;break-after:avoid}
 p{margin:0}.it{padding-left:3.2mm;text-indent:-3.2mm}.ln{padding-left:2mm}.ar{padding-left:6mm;line-height:1.3}
 .box{border:.7pt solid #333;padding:1mm 2mm;margin:1mm 0 1mm 3mm;break-inside:avoid}.sp{height:2mm}
