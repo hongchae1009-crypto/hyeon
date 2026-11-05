@@ -690,7 +690,7 @@ dict(
             step('[O:1]=[N+:2]=[O:3]', scale=26, caption='나이트로늄 이온 NO<sub>2</sub><sup>+</sup>'),
             title='[그림 1] 친전자체 생성 — HNO<sub>3</sub> + H<sub>2</sub>SO<sub>4</sub> → NO<sub>2</sub><sup>+</sup>'),
         mechanism(
-            step('[Cl:7][C:1]1=[CH:2][CH:3]=[C:4]([H:8])[CH:5]=[CH:6]1.[O:9]=[N+:10]=[O:11]', scale=24, gap=1.0,
+            step('[O:9]=[N+:10]=[O:11].[Cl:7][C:1]1=[CH:2][CH:3]=[CH:4][CH:5]=[CH:6]1', scale=24, gap=1.2, layout='v', frag_dx={0: 0.9},
                  arrows=[ar('b', (4, 3), 'm', (4, 10)), ar('b', (10, 9), 'a', 9)], caption='① 파라 탄소의 공격 (속도 결정 단계)'),
             ('→', ''),
             step('[Cl:7][C:1]1=[CH:2][CH+:3][C:4]([H:8])([N+:10](=[O:11])[O-:9])[CH:5]=[CH:6]1', scale=24,

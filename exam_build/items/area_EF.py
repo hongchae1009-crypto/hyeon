@@ -447,11 +447,11 @@ _THIO_SUBS = {7: (2, 'eq'), 8: (3, 'ax'), 20: (6, 'ax'), 21: (6, 'eq')}   # NR2 
 
 MECH_E6 = [
     mechanism(
-        kstep('[CH3:8][CH:3]([H:10])[C:2](=[S:1])[N:7]1CCCC1.[CH2-:11]CCC', scale=19, lp=[11],
+        kstep('[CH3:8][CH:3]([H:10])[C:2](=[S:1])[N:7]1CCCC1.[CH2-:11]CCC', scale=19, lp=[11], frag_dx={1: -6.2}, frag_dy={1: -2.6},
               arrows=[ar('lp', 11, 'a', 10), ar('b', (3, 10), 'm', (2, 3)), ar('b', (1, 2), 'a', 1)],
               caption='① α-C–H 탈양성자화'),
         ('→', '<i>n</i>-BuLi', '−BuH'),
-        kstep('[S-:1]/[C:2]([N:7]1CCCC1)=[CH:3]\\[CH3:8].[Br:9][CH2:4][CH:5]=[C:6]1CCCCC1', scale=19, lp=[1],
+        kstep('[S-:1]/[C:2]([N:7]1CCCC1)=[CH:3]\\[CH3:8].[Br:9][CH2:4][CH:5]=[C:6]1CCCCC1', scale=19, lp=[1], frag_rot={1: R1},
               arrows=[ar('lp', 1, 'a', 4), ar('b', (4, 9), 'a', 9)],
               caption='② (<i>Z</i>)-thioenolate의 S(무른 친핵체)가 S<sub>N</sub>2 공격'),
         ('→', '−Br<sup>−</sup>'),
@@ -466,7 +466,7 @@ MECH_E6 = [
         ('→', '25 ℃', '[3,3]'),
         kstep('[CH3:8][CH:3]([C:2](=[S:1])[*:7])[C:6]1([CH:5]=[CH2:4])[CH2:20]CCC[CH2:21]1', scale=22, labels={7: 'NR<sub>2</sub>'},
               xy=_chair(_THIO_ORDER, _THIO_SUBS),
-              caption='<b>B</b>: C3–C6 결합 생성, S–C4 절단<br>C=S·CH=CH<sub>2</sub> 형성, 사차 탄소 옆 새 카이랄 중심(라셈)'),
+              caption='<b>B</b>: C3–C6 생성·S–C4 절단, C=S·CH=CH<sub>2</sub> 형성<br>사차 탄소 옆 C3이 새 카이랄 중심(라셈체)'),
         title='[그림 2] thio-Claisen [3,3] 시그마 자리옮김 — 의자형 6원자 고리 전이 상태'),
 ]
 

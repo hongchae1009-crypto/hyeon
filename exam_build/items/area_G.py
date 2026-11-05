@@ -556,7 +556,7 @@ dict(
             ('→', '−SO<sub>2</sub>'),
             step('CCC[C@H:6]2[C@@H]1CCC[S+:8]12.[Cl-:3]', scale=28, gap=1.0,
                  arrows=[ar('lp', 3, 'a', 6), ar('b', (6, 8), 'a', 8)], lp=[3],
-                 caption='② 에피설포늄 이온: Cl<sup>−</sup>가 S 반대편에서 공격(2차 반전)'),
+                 caption='② 에피설포늄: Cl<sup>−</sup>가 S 반대편 공격(2차 반전)'),
             ('→', ''),
             step('CCC[C@@H](Cl)[C@@H]1CCCS1', scale=28, caption='배열 유지(이중 반전), (<i>R</i>) 유지'),
             '<div style="width:100%;height:0"></div>',
