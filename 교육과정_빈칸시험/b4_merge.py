@@ -119,6 +119,9 @@ def layout_fold(doc, groups, npages, cph, title, k_max, unit_gap=3.2, gap=1.0):
     def place(k):
         out, c, y = [], 0, 0  # out: (종류, 값, 단, y, 높이, 과목 번호)
         for gi, (name, items) in enumerate(groups):
+            if name.startswith("과학과 교육과정 설계") and y > 0:  # 개요는 새 단 맨 위에서 시작
+                c += 1; y = 0
+                if c >= ncol: return None
             if y > 0: y += sg
             first = True
             for i, (kd, im) in enumerate(items):
@@ -234,13 +237,85 @@ def layout_rows(doc, subjects, title, k_max, per_row=4):
                     cy += hh + 1.2 * MM
     return k, len(best)
 
+def layout_rows_flow(doc, subjects, title, k_max, cph=3):
+    """성취기준 한 쪽 판: 과목 = 가로 한 줄(접는 선 양쪽 cph단씩, 모두 2·cph단), 줄 안에서는 단원을 1→2→3…
+    왼쪽 단부터 차례로 흘려 담는다(단원 제목은 다음 덩어리와 함께, 단원 사이는 띄움). 과목 줄의 높이는
+    그 과목이 들어가는 가장 낮은 높이로 맞추고, 모든 과목이 한 쪽에 들어가는 가장 큰 배율을 찾는다."""
+    W, H = B4[1], B4[0]; half = W / 2
+    mo, mi, top, bot, cg = 7 * MM, 6 * MM, 13 * MM, 5 * MM, 2.6 * MM
+    pad, hd, sg, ug, ig = 1.3 * MM, 4.6 * MM, 2.2 * MM, 2.4 * MM, .7 * MM
+    ncol = 2 * cph; cw = (half - mo - mi - (cph - 1) * cg) / cph; ch = H - top - bot
+    def colx(j):
+        h, jj = divmod(j, cph)
+        return (mo if h == 0 else half + mi) + jj * (cw + cg)
+    flat = [[(kd, im) for u in units for kd, im in u] for _, units in subjects]
+    def flow(items, k, hmax):
+        pos, c, y = [], 0, 0
+        for i, (kd, im) in enumerate(items):
+            h = im.height * k
+            pre = (ug if kd == "unit" else ig) if y > 0 else 0
+            nxt = items[i + 1][1].height * k + ig if kd == "unit" and i + 1 < len(items) else 0
+            if y + pre + h + nxt > hmax and y > 0:
+                c += 1; y = 0; pre = 0
+                if c >= ncol: return None
+            pos.append((kd, im, c, y + pre, h)); y += pre + h
+        return pos
+    def fit(items, k):  # 이 과목이 들어가는 가장 낮은 줄 높이
+        lo, hi = max(im.height * k for _, im in items), ch
+        if flow(items, k, hi) is None: return None
+        for _ in range(30):
+            mid = (lo + hi) / 2
+            if flow(items, k, mid) is None: lo = mid
+            else: hi = mid
+        return hi, flow(items, k, hi)
+    def total(k):
+        r = [fit(it, k) for it in flat]
+        if any(x is None for x in r): return None
+        return sum(hd + 2 * pad + x[0] for x in r) + sg * (len(r) - 1), r
+    k = min(k_max, min((cw - 2 * pad) / im.width for it in flat for _, im in it))
+    while (t := total(k)) is None or t[0] > ch: k *= 0.99
+    F = pymupdf.Font(fontfile=FONT); NAVY = (.10, .24, .43)
+    pg = doc.new_page(width=W, height=H); pg.insert_font(fontname="ng", fontfile=FONT)
+    for hf in range(2):
+        x0 = mo if hf == 0 else half + mi; x1 = half - mi if hf == 0 else W - mo
+        pg.insert_text((x0, 9.5 * MM), title, fontname="ng", fontsize=11)
+        pg.draw_line((x0, 11.3 * MM), (x1, 11.3 * MM), width=1)
+    pg.draw_line((half, 4 * MM), (half, H - 4 * MM), width=.5, color=(.6, .6, .6), dashes="[3 3] 0")
+    y = top
+    for (name, _), (hh, pos) in zip(subjects, t[1]):
+        bh = hd + 2 * pad + hh
+        for hf in range(2):
+            x0, x1 = colx(hf * cph), colx(hf * cph + cph - 1) + cw
+            if hf == 1 and not any(c >= cph for _, _, c, _, _ in pos): continue
+            lab = name if hf == 0 else name.split("  ")[0] + " (계속)"
+            pg.draw_rect(pymupdf.Rect(x0, y, x1, y + hd), color=None, fill=NAVY)
+            fs = min(9.5, (x1 - x0 - 4 * MM) / F.text_length(lab, fontsize=1))
+            pg.insert_text((x0 + 1.8 * MM, y + hd / 2 + fs * .36), lab, fontname="ng", fontsize=fs, color=(1, 1, 1))
+            pg.draw_rect(pymupdf.Rect(x0, y, x1, y + bh), color=NAVY, width=.9)
+            for j in range(hf * cph + 1, hf * cph + cph):
+                if any(c == j for _, _, c, _, _ in pos):
+                    xs = colx(j) - cg / 2
+                    pg.draw_line((xs, y + hd + pad), (xs, y + bh - pad), width=.4, color=(.6, .66, .75))
+        for kd, im, c, yy, h in pos:
+            x = colx(c) + pad; Y = y + hd + pad + yy
+            if kd == "unit":
+                pg.draw_rect(pymupdf.Rect(x - .7 * MM, Y - .4 * MM, colx(c) + cw - pad + .7 * MM, Y + h + .3 * MM), color=None, fill=(.90, .93, .98))
+            pg.insert_image(pymupdf.Rect(x, Y, x + im.width * k, Y + h), stream=_png(im))
+        y += bh + sg
+    return k
+
 def build_land(a, b):
-    """B4 가로(반 접기) 판: 1쪽 내용 체계, 그다음 쪽들 성취기준(과목 = 한 줄, 단원 = 칸)."""
+    """B4 가로(반 접기) 2쪽 판: 1쪽 내용 체계 + 교육과정 설계의 개요, 2쪽 성취기준 전체."""
     bk = Book(a, b); doc = pymupdf.open(); groups = []
     for name, tabs, _ in SUBJ:
         for p, lab in tabs:
             groups.append((f"{lab} — 내용 체계 ({p}쪽)", [("body", x) for x in bands(bk.page(p), 200)]))
-    k1 = layout_fold(doc, groups, 1, 2, "2022 개정 교육과정 — 내용 체계", NATIVE)
+    ov = bands(bk.page(5), 10)
+    i0 = next(i for i, x in enumerate(ov) if x.height < 90 and "설계" in re.sub(r"\s+", "", subprocess.run(
+        ["tesseract", "-", "-", "-l", "kor", "--psm", "7"], input=_png(x), capture_output=True).stdout.decode("utf-8", "ignore")))
+    ov = ov[i0 + 1:] + bands(bk.page(6), 10)
+    groups.append(("과학과 교육과정 설계의 개요 (5~6쪽)", [("body", x) for x in ov]))
+    k1 = layout_fold(doc, groups, 1, 2, "2022 개정 교육과정 — 내용 체계 · 교육과정 설계의 개요", NATIVE)
     subjects = []
     for name, _, ps in SUBJ:
         units, cur = [], None
@@ -251,11 +326,10 @@ def build_land(a, b):
                 if kd == "unit" or cur is None: cur = []; units.append(cur)
                 cur.append((kd, x))
         subjects.append((f"{name}  성취기준 ({ps[0]}~{ps[-1]}쪽)", units))
-        print(name, "단원", len(units))
-    k2, n = layout_rows(doc, subjects, "2022 개정 교육과정 — 성취기준", NATIVE)
+    k2 = layout_rows_flow(doc, subjects, "2022 개정 교육과정 — 성취기준 (과목별 · 단원 순)", NATIVE)
     out = HERE / "교육과정_원문컷아웃_B4가로.pdf"
     doc.save(out, garbage=4, deflate=True)
-    print(f"{out.name}: {len(doc)}쪽 — 내용 체계 원문 대비 {k1 / NATIVE:.0%}, 성취기준 {k2 / NATIVE:.0%} ({n}쪽)")
+    print(f"{out.name}: {len(doc)}쪽 — 1쪽 원문 대비 {k1 / NATIVE:.0%}, 성취기준 {k2 / NATIVE:.0%}")
 
 def build(a, b, std_pages=1):
     bk = Book(a, b); doc = pymupdf.open()
