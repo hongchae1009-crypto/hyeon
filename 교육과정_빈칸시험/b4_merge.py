@@ -11,6 +11,8 @@ HERE = pathlib.Path(__file__).parent
 FONT = "/root/.fonts/NanumGothic-Bold.ttf"
 MM = 72 / 25.4
 B4 = (257 * MM, 364 * MM)
+PAPER = {"B4": B4, "A3": (297 * MM, 420 * MM)}
+FOLD = [B4]  # 반 접기 판의 종이(세로 기준 너비, 높이)
 DPI = 250
 NATIVE = 25.4 / DPI * MM          # 원문 실제 크기(pt/px)
 SUBJ = [  # (과목명, [(내용 체계 쪽, 표 이름)], 성취기준·해설 쪽)
@@ -108,7 +110,7 @@ def _png(im):
 def layout_fold(doc, groups, npages, cph, title, k_max, unit_gap=3.2, gap=1.0):
     """B4 가로를 반으로 접어 쓰는 판(왼쪽·오른쪽 반이 각각 B5 세로). groups: [(과목 제목, [(종류, 그림)])].
     과목마다 테두리 상자로 묶고(단이 넘어가면 '(계속)' 머리), 세부 단원 사이는 띄운다. 들어가는 가장 큰 배율을 쓴다."""
-    W, H = B4[1], B4[0]; half = W / 2
+    W, H = FOLD[0][1], FOLD[0][0]; half = W / 2
     mo, mi, top, bot, cg = 8 * MM, 7 * MM, 14 * MM, 7 * MM, 4 * MM
     pad, hd, sg = 1.8 * MM, 5.2 * MM, 3.0 * MM  # 상자 안 여백, 상자 머리 높이, 상자 사이 간격
     cw = (half - mo - mi - (cph - 1) * cg) / cph; ch = H - top - bot; ncol = npages * 2 * cph
@@ -176,7 +178,7 @@ def layout_rows(doc, subjects, title, k_max, per_row=4):
     """성취기준 '과목 = 가로 한 줄, 단원 = 칸' 배치. B4 가로를 반으로 접어 쓰므로 한 줄의 칸은 접는 선 양쪽에 반씩.
     subjects: [(과목 제목, [단원별 [(종류, 그림)]])]. 과목마다 남색 머리 + 테두리, 단원 사이는 세로 구분선.
     한 과목이 per_row개보다 단원이 많으면 다음 줄로 이어 간다. 줄이 쪽에 안 들어가면 다음 쪽."""
-    W, H = B4[1], B4[0]; half = W / 2
+    W, H = FOLD[0][1], FOLD[0][0]; half = W / 2
     mo, mi, top, bot, cg = 8 * MM, 7 * MM, 14 * MM, 6 * MM, 3 * MM
     pad, hd, sg = 1.6 * MM, 5.6 * MM, 3.5 * MM
     cph = per_row // 2
@@ -241,7 +243,7 @@ def layout_rows_flow(doc, subjects, title, k_max, cph=3):
     """성취기준 한 쪽 판: 과목 = 가로 한 줄(접는 선 양쪽 cph단씩, 모두 2·cph단), 줄 안에서는 단원을 1→2→3…
     왼쪽 단부터 차례로 흘려 담는다(단원 제목은 다음 덩어리와 함께, 단원 사이는 띄움). 과목 줄의 높이는
     그 과목이 들어가는 가장 낮은 높이로 맞추고, 모든 과목이 한 쪽에 들어가는 가장 큰 배율을 찾는다."""
-    W, H = B4[1], B4[0]; half = W / 2
+    W, H = FOLD[0][1], FOLD[0][0]; half = W / 2
     mo, mi, top, bot, cg = 7 * MM, 6 * MM, 13 * MM, 5 * MM, 2.6 * MM
     pad, hd, sg, ug, ig = 1.3 * MM, 4.6 * MM, 2.2 * MM, 2.4 * MM, .7 * MM
     ncol = 2 * cph; cw = (half - mo - mi - (cph - 1) * cg) / cph; ch = H - top - bot
@@ -304,8 +306,73 @@ def layout_rows_flow(doc, subjects, title, k_max, cph=3):
         y += bh + sg
     return k
 
-def build_land(a, b):
-    """B4 가로(반 접기) 2쪽 판: 1쪽 내용 체계 + 교육과정 설계의 개요, 2쪽 성취기준 전체."""
+def _partition(hs, ncol, gap):
+    """단원 높이 hs를 순서대로 ncol칸 이하로 나눌 때 가장 높은 칸이 가장 낮은 나눔(칸별 단원 번호 목록)."""
+    import itertools
+    n = len(hs); best = None
+    for m in range(1, min(ncol, n) + 1):
+        for cuts in itertools.combinations(range(1, n), m - 1):
+            b = (0,) + cuts + (n,)
+            cols = [list(range(b[i], b[i + 1])) for i in range(m)]
+            hmax = max(sum(hs[j] for j in c) + gap * (len(c) - 1) for c in cols)
+            if best is None or hmax < best[0] - 1e-6: best = (hmax, cols)
+    return best
+
+def layout_halves(doc, subjects, title, k_max, cph=3):
+    """성취기준 한 쪽 판(반 접기): 접은 한 면(왼쪽·오른쪽 반)마다 과목을 위에서 아래로 쌓고,
+    과목 상자 안에서는 단원을 cph칸에 1→2→3… 순서로 나눠 담는다. 단원은 절대 자르지 않는다.
+    앞쪽 과목들은 왼쪽 면, 나머지는 오른쪽 면 — 둘 다 들어가는 가장 큰 배율을 찾는다."""
+    W, H = FOLD[0][1], FOLD[0][0]; half = W / 2
+    mo, mi, top, bot, cg = 7 * MM, 6 * MM, 13.5 * MM, 5 * MM, 3 * MM
+    pad, hd, sg, ug, ig = 1.5 * MM, 5.6 * MM, 3 * MM, 2.6 * MM, .5 * MM
+    cw = (half - mo - mi - (cph - 1) * cg) / cph; ch = H - top - bot
+    uh = lambda u, k: sum(im.height * k for _, im in u) + ig * (len(u) - 1)
+    def block(units, k):
+        hmax, cols = _partition([uh(u, k) for u in units], cph, ug)
+        return hd + 2 * pad + hmax, cols
+    def plan(k):
+        bl = [block(us, k) for _, us in subjects]
+        for m in range(1, len(subjects)):
+            L = sum(h for h, _ in bl[:m]) + sg * (m - 1); R = sum(h for h, _ in bl[m:]) + sg * (len(bl) - m - 1)
+            if L <= ch and R <= ch: return m, bl, max(L, R)
+        return None
+    k = min(k_max, min((cw - 2 * pad) / im.width for _, us in subjects for u in us for _, im in u))
+    while (pl := plan(k)) is None: k *= 0.99
+    m, bl, _ = pl
+    F = pymupdf.Font(fontfile=FONT); NAVY = (.10, .24, .43)
+    pg = doc.new_page(width=W, height=H); pg.insert_font(fontname="ng", fontfile=FONT)
+    pg.draw_line((half, 4 * MM), (half, H - 4 * MM), width=.5, color=(.6, .6, .6), dashes="[3 3] 0")
+    for hf, idx in enumerate((range(0, m), range(m, len(subjects)))):
+        x0 = mo if hf == 0 else half + mi; x1 = x0 + cph * cw + (cph - 1) * cg
+        pg.insert_text((x0, 10 * MM), title, fontname="ng", fontsize=13)
+        tag = f"{hf + 1} / 2"
+        pg.insert_text((x1 - F.text_length(tag, fontsize=9), 10 * MM), tag, fontname="ng", fontsize=9, color=(.4, .4, .4))
+        pg.draw_line((x0, 12 * MM), (x1, 12 * MM), width=1.1)
+        y = top
+        for gi in idx:
+            name, units = subjects[gi]; bh, cols = bl[gi]
+            pg.draw_rect(pymupdf.Rect(x0, y, x1, y + hd), color=None, fill=NAVY)
+            fs = min(11, (x1 - x0 - 4 * MM) / F.text_length(name, fontsize=1))
+            pg.insert_text((x0 + 2 * MM, y + hd / 2 + fs * .36), name, fontname="ng", fontsize=fs, color=(1, 1, 1))
+            pg.draw_rect(pymupdf.Rect(x0, y, x1, y + bh), color=NAVY, width=1)
+            for j, col in enumerate(cols):
+                cx = x0 + j * (cw + cg)
+                if j: pg.draw_line((cx - cg / 2, y + hd + pad), (cx - cg / 2, y + bh - pad), width=.5, color=(.6, .66, .75))
+                yy = y + hd + pad
+                for ui in col:
+                    for kd, im in units[ui]:
+                        h = im.height * k
+                        if kd == "unit":
+                            pg.draw_rect(pymupdf.Rect(cx + pad - .8 * MM, yy - .5 * MM, cx + cw - pad + .8 * MM, yy + h + .4 * MM), color=None, fill=(.90, .93, .98))
+                        pg.insert_image(pymupdf.Rect(cx + pad, yy, cx + pad + im.width * k, yy + h), stream=_png(im))
+                        yy += h + ig
+                    yy += ug - ig
+            y += bh + sg
+    return k
+
+def build_land(a, b, paper="A3"):
+    """가로(반 접기) 2쪽 판: 1쪽 내용 체계 + 교육과정 설계의 개요, 2쪽 성취기준 전체."""
+    FOLD[0] = PAPER[paper]
     bk = Book(a, b); doc = pymupdf.open(); groups = []
     for name, tabs, _ in SUBJ:
         for p, lab in tabs:
@@ -326,8 +393,8 @@ def build_land(a, b):
                 if kd == "unit" or cur is None: cur = []; units.append(cur)
                 cur.append((kd, x))
         subjects.append((f"{name}  성취기준 ({ps[0]}~{ps[-1]}쪽)", units))
-    k2 = layout_rows_flow(doc, subjects, "2022 개정 교육과정 — 성취기준 (과목별 · 단원 순)", NATIVE)
-    out = HERE / "교육과정_원문컷아웃_B4가로.pdf"
+    k2 = layout_halves(doc, subjects, "2022 개정 교육과정 — 성취기준", NATIVE)
+    out = HERE / f"교육과정_원문컷아웃_{paper}가로.pdf"
     doc.save(out, garbage=4, deflate=True)
     print(f"{out.name}: {len(doc)}쪽 — 1쪽 원문 대비 {k1 / NATIVE:.0%}, 성취기준 {k2 / NATIVE:.0%}")
 
