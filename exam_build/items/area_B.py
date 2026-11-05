@@ -29,6 +29,84 @@ def MK(smiles, label='', scale=15):
     return box(svg, label)
 
 
+import mech as _mech
+from mech import mechanism, ar
+
+
+def _parse_kek(smiles):
+    """mech._parse 대체: 방향족화하지 않아 SMILES에 쓴 케쿨레 구조(이중 결합 위치)를 그대로 그린다."""
+    ps = _Chem.SmilesParserParams()
+    ps.removeHs = False
+    ps.sanitize = False
+    mol = _Chem.MolFromSmiles(smiles, ps)
+    if mol is None:
+        raise ValueError('bad SMILES: ' + smiles)
+    _Chem.SanitizeMol(mol, _Chem.SanitizeFlags.SANITIZE_ALL ^ _Chem.SanitizeFlags.SANITIZE_SETAROMATICITY)
+    idx = {}
+    for a in mol.GetAtoms():
+        m = a.GetAtomMapNum()
+        if m:
+            if m in idx:
+                raise ValueError(f'duplicate map number {m} in {smiles}')
+            idx[m] = a.GetIdx()
+            a.SetAtomMapNum(0)
+    _parse_kek.last = idx
+    return mol, idx
+
+
+class _GhostDep:
+    """좌표 계산 때만 보이지 않는 결합(ghost)을 넣어 고리형 전이 상태 모양으로 배치한다."""
+    def __init__(self, ghost):
+        self.ghost = ghost
+
+    def Compute2DCoords(self, mol):
+        idx = _parse_kek.last
+        rw = _Chem.RWMol(mol)
+        for i, j in self.ghost:
+            rw.AddBond(idx[i], idx[j], _Chem.BondType.SINGLE)
+        m2 = rw.GetMol()
+        m2.UpdatePropertyCache(False)
+        _Chem.FastFindRings(m2)
+        _dep.Compute2DCoords(m2)
+        mol.RemoveAllConformers()
+        mol.AddConformer(_Chem.Conformer(m2.GetConformer()), assignId=True)
+        return 0
+
+
+def step(smiles, ghost=(), **kw):
+    """mech.step + 케쿨레 구조 유지(아레늄 이온·σ-착물의 이중 결합 위치 고정) + ghost=[(맵,맵)] 배치용 숨은 결합."""
+    old_p, old_d = _mech._parse, _mech.rdDepictor
+    _mech._parse = _parse_kek
+    if ghost:
+        _mech.rdDepictor = _GhostDep(ghost)
+    try:
+        return _mech.step(smiles, **kw)
+    finally:
+        _mech._parse, _mech.rdDepictor = old_p, old_d
+
+
+PD0 = '<div class="chem" style="font-size:10.5pt;padding:2mm">Pd<sup>0</sup>L<sub>n</sub></div>'
+
+# 공명 화살표(↔)
+RES = ('<div class="marr"><div class="rt"></div><svg width="34" height="12" viewBox="0 0 34 12">'
+       '<line x1="7" y1="6" x2="27" y2="6" stroke="#000" stroke-width="1.1"/>'
+       '<path d="M8,2 L1,6 L8,10 z" fill="#000"/><path d="M26,2 L33,6 L26,10 z" fill="#000"/></svg>'
+       '<div class="rb"></div></div>')
+
+
+def cycle(top, right, left, a1, a2, a3, title=''):
+    """촉매 순환 그림: top → (a1) → right → (a2) → left → (a3) → top. a* = (단계 이름, 들어가고 나오는 물질)."""
+    def lab(t, arrow):
+        return (f'<div style="text-align:center;font-size:7.6pt;line-height:1.25"><div style="font-size:22pt;line-height:1.1;margin-bottom:1mm">{arrow}</div>'
+                f'<b>{t[0]}</b><br>{t[1]}</div>')
+    cell = 'display:flex;align-items:center;justify-content:center'
+    grid = (f'<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1mm 2mm;align-items:center;width:100%">'
+            f'<div style="{cell}">{lab(a3, "↖")}</div><div style="{cell}">{top}</div><div style="{cell}">{lab(a1, "↘")}</div>'
+            f'<div style="{cell}">{left}</div><div style="{cell}">{lab(a2, "⟵")}</div><div style="{cell}">{right}</div></div>')
+    t = f'<div class="mtitle">{title}</div>' if title else ''
+    return f'<div class="mech">{t}{grid}</div>'
+
+
 BX = '<b class="lbltxt">{}</b>'.format
 A_, B_, C_, D_, E_, X_ = (BX(c) for c in 'ABCDEX')
 NOTE = '(단, 각 반응에서는 적절한 분리·정제 과정을 수행하였다.)'
@@ -54,6 +132,39 @@ dict(
 <p class="ask">중간체(C<sub>7</sub>H<sub>6</sub>O)의 구조를 그리시오. 또한 {A_}의 구조를 그리고, {A_}의 위치 이성질체가 아닌 {A_}가 주생성물로 생성되는 이유를 중간체에 대한 친핵체의 첨가 방향과 관련지어 서술하시오. 그리고 {C_}의 구조를 그리시오. [[PTS]]</p>''',
     answer=f'''<div class="ansbox">{MK('COC1=CC=CC#C1', '중간체: 3-methoxybenzyne', 15)}{M('COc1cccc(N)c1', 'A: 3-methoxyaniline', 15)}{M('COc1cccc(-c2ccccc2)c1', 'C: 3-methoxybiphenyl', 14)}</div>
 B = 3-methoxybenzenediazonium tetrafluoroborate. 이유: NH<sub>2</sub><sup>−</sup>가 OMe에서 먼 벤자인 탄소(C3)에 첨가해야 생기는 아릴 음이온(sp<sup>2</sup> 카브음이온)이 전기음성도가 큰 O에 인접(C2)하여 유발 효과로 안정화되므로, 이 방향의 첨가만 일어나 <i>m</i>-이성질체가 생긴다.''',
+    mech=[
+        mechanism(
+            step('C[O:7][C:1]1=CC=C[C:4]([H:5])=[C:2]1[Br:3].[NH2-:6]', scale=26, gap=1.2,
+                 arrows=[ar('lp', 6, 'a', 5), ar('b', (4, 5), 'a', 4)], lp=[6],
+                 caption='① NH<sub>2</sub><sup>−</sup>가 Br 오쏘의 C3–H를 떼어 냄'),
+            ('⇌', '', '+ NH<sub>3</sub>'),
+            step('C[O:7][C:1]1=CC=C[C-:4]=[C:2]1[Br:3]', scale=26,
+                 arrows=[ar('lp', 4, 'm', (4, 2)), ar('b', (2, 3), 'a', 3)], lp=[4],
+                 caption='② 아릴 음이온(sp<sup>2</sup>)이 Br<sup>−</sup>를 밀어냄'),
+            ('→', '− Br<sup>−</sup>'),
+            step('CO[C:1]1=CC=C[C:4]#[C:2]1', scale=26, caption='3-methoxybenzyne (C<sub>7</sub>H<sub>6</sub>O)'),
+            title='[그림 1] 제거 단계 — 벤자인(3-methoxybenzyne) 형성'),
+        mechanism(
+            step('CO[C:1]1=CC=C[C:4]#[C:2]1.[NH2-:6]', scale=26, gap=1.0,
+                 arrows=[ar('lp', 6, 'a', 4), ar('b', (4, 2), 'a', 2)], lp=[6],
+                 caption='③ NH<sub>2</sub><sup>−</sup>가 OMe에서 먼 C3에 첨가'),
+            ('→', ''),
+            step('C[O:7][C:1]1=CC=C[C:4]([NH2:6])=[C-:2]1.[H:8][NH2:9]', scale=26, gap=1.4, layout='v', frag_dx={1: 0.5},
+                 arrows=[ar('lp', 2, 'a', 8), ar('b', (8, 9), 'a', 9)], lp=[2],
+                 caption='음전하가 O 옆 C2(sp<sup>2</sup>, 유발 효과로 안정화) → ④ NH<sub>3</sub>가 양성자화'),
+            ('→', '− NH<sub>2</sub><sup>−</sup>'),
+            step('COC1=CC=CC(N)=C1', scale=26, caption='<b>A</b> 3-methoxyaniline'),
+            title='[그림 2] 첨가 단계 — 위치 선택성: C2의 음전하가 OMe의 −I 효과로 안정화'),
+        cycle(PD0,
+              step('[*:2][Pd+:1]([*:4])[*:5]', labels={1: 'Pd<sup>+</sup>', 2: 'Ar', 4: 'L', 5: 'L'}, scale=26,
+                   caption='Ar–Pd(II)<sup>+</sup> (양이온성)'),
+              step('[*:2][Pd:1]([*:3])([*:4])[*:5]', labels={1: 'Pd', 2: 'Ar', 3: 'Ph', 4: 'L', 5: 'L'}, scale=34,
+                   arrows=[ar('b', (1, 3), 'm', (2, 3))], caption='<i>cis</i>-Ar–Pd(II)–Ph'),
+              ('산화성 첨가 (Pd 0 → +2)', '+ Ar–N<sub>2</sub><sup>+</sup>, − N<sub>2</sub>'),
+              ('금속 교환 (+2 유지)', '+ PhB(OH)<sub>2</sub> (CH<sub>3</sub>OH가 B를 활성화)'),
+              ('환원성 제거 (+2 → 0)', 'Ar–Ph (<b>C</b>) 방출'),
+              title='[그림 3] 아릴다이아조늄 염의 Suzuki 짝지음 촉매 순환 (Ar = 3-MeOC<sub>6</sub>H<sub>4</sub>) — 염기 없이 진행'),
+    ],
     explain='''<p><b>핵심 반응: 제거–첨가(벤자인) 메커니즘의 위치 선택성 + 아릴다이아조늄 염의 Suzuki–Miyaura 짝지음</b></p>
 <p>① 2-bromoanisole에서 Br의 오쏘 수소는 C3–H 하나뿐이다(C1에는 OMe). NH<sub>2</sub><sup>−</sup>가 C3–H를 떼어 내고(Br의 유발 효과로 산성도 증가), 생긴 아릴 음이온이 Br<sup>−</sup>를 내보내 C2≡C3 벤자인, 즉 <b>3-methoxybenzyne</b>(C<sub>7</sub>H<sub>6</sub>O)이 생성된다. 벤자인의 “삼중 결합”의 두 번째 π 결합은 고리 평면 안의 sp<sup>2</sup> 오비탈끼리의 약한 겹침이므로 반응성이 매우 크다.</p>
 <p>② NH<sub>2</sub><sup>−</sup>가 C2에 첨가하면 음전하가 C3에, C3에 첨가하면 음전하가 C2(OMe 바로 옆)에 놓인다. 생성되는 카브음이온의 비공유 전자쌍은 고리 평면 안의 sp<sup>2</sup> 오비탈에 있어 π계와 공명하지 못하므로, 공명 효과가 아니라 <b>유발 효과</b>가 결정적이다. 전기음성도가 큰 O가 붙은 탄소에 인접한 음전하(C2)가 더 안정하므로 첨가는 C3에서 일어나고, NH<sub>3</sub>가 C2를 양성자화하여 <b>3-methoxyaniline(<i>m</i>-anisidine)</b>만 얻는다. (흔한 오답: Br이 있던 자리에 NH<sub>2</sub>가 들어간 <i>o</i>-anisidine — 직접 치환으로 착각한 경우. 이 반응은 <i>cine</i> 치환이다.)</p>
@@ -84,6 +195,39 @@ dict(
 <p class="ask">{A_}의 구조를 그리시오. 또한 {C_}가 {D_}로 전환되는 과정에서 생성되는 중간체(C<sub>6</sub>H<sub>3</sub>ClN<sub>2</sub>O)와 {D_}의 구조를 각각 그리고, {E_}의 구조를 그리시오. [[PTS]]</p>''',
     answer=f'''<div class="ansbox">{M('OC(=O)c1ccc(Cl)nc1', 'A: 6-chloronicotinic acid', 15)}{M('O=C=Nc1ccc(Cl)nc1', '중간체: 아이소사이아네이트', 15)}{M('Nc1ccc(Cl)nc1', 'D: 6-chloropyridin-3-amine', 15)}{M('Clc1ccc(CNC2CCCC2)cn1', 'E', 14)}</div>
 (C = 6-chloronicotinamide, F = 6-chloro-N-cyclopentylnicotinamide C<sub>11</sub>H<sub>13</sub>ClN<sub>2</sub>O, E = N-[(6-chloropyridin-3-yl)methyl]cyclopentanamine)''',
+    mech=[
+        mechanism(
+            step('[OH-:6].[*:9][C:1](=[O:2])[N:3]([H:4])[H:5]', scale=26, labels={9: 'Ar'}, gap=1.0,
+                 arrows=[ar('lp', 6, 'a', 4), ar('b', (3, 4), 'a', 3)], lp=[6], caption='① N–H 탈양성자화'),
+            ('⇌', '', '− H<sub>2</sub>O'),
+            step('[Br:8][Br:7].[*:9][C:1](=[O:2])[N-:3][H:4]', scale=26, labels={9: 'Ar'}, gap=1.0, frag_dy={0: -0.6},
+                 arrows=[ar('lp', 3, 'a', 7), ar('b', (7, 8), 'a', 8)], lp=[3], caption='② N이 Br<sub>2</sub>를 공격'),
+            ('→', '', '− Br<sup>−</sup>'),
+            step('[OH-:6].[*:9][C:1](=[O:2])[N:3]([H:4])[Br:7]', scale=26, labels={9: 'Ar'}, gap=1.6, frag_dy={0: -1.0},
+                 arrows=[ar('lp', 6, 'a', 4), ar('b', (3, 4), 'a', 3)], lp=[6], caption='③ N-브로모아마이드의 두 번째 탈양성자화'),
+            ('⇌', '', '− H<sub>2</sub>O'),
+            step('[*:9][C:1](=[O:2])[N-:3][Br:7]', scale=26, labels={9: 'Ar'}, lp=[3], caption='N-브로모아마이드 음이온'),
+            title='[그림 1] Hofmann 자리옮김 (1) — N-브로민화 (Ar = 6-chloropyridin-3-yl)'),
+        mechanism(
+            step('[*:9][C:1](=[O:2])[N-:3][Br:7]', scale=40, labels={9: 'Ar'}, lp=[3],
+                 arrows=[ar('lp', 3, 'm', (3, 1)), ar('b', (1, 9), 'a', 3, side=1), ar('b', (3, 7), 'a', 7)],
+                 caption='④ Ar이 결합 전자쌍과 함께 C → N 1,2-이동, Br<sup>−</sup> 동시 이탈'),
+            ('→', '', '− Br<sup>−</sup>'),
+            step('O=C=Nc1ccc(Cl)nc1', scale=26, caption='아이소사이아네이트 (C<sub>6</sub>H<sub>3</sub>ClN<sub>2</sub>O)'),
+            title='[그림 2] Hofmann 자리옮김 (2) — 협동적 1,2-아릴 이동으로 아이소사이아네이트 생성'),
+        mechanism(
+            step('[*:9][N:3]=[C:1]=[O:2].[OH-:5]', scale=26, labels={9: 'Ar'}, layout='v', gap=1.5,
+                 arrows=[ar('lp', 5, 'a', 1), ar('b', (3, 1), 'a', 3)], lp=[5], caption='⑤ OH<sup>−</sup>가 N=C=O 탄소에 첨가'),
+            ('⇌', '양성자 이동', '(카밤산 경유)'),
+            step('[*:9][N:3]([H:6])[C:1](=[O:2])[O-:5]', scale=26, labels={9: 'Ar'},
+                 arrows=[ar('lp', 5, 'm', (5, 1)), ar('b', (1, 3), 'a', 3)], lp=[5], caption='⑥ 카바메이트의 탈카복실화'),
+            ('→', '', '− CO<sub>2</sub>'),
+            step('[H:7][OH:8].[*:9][N-:3][H:10]', scale=26, labels={9: 'Ar'}, layout='v', gap=1.2,
+                 arrows=[ar('lp', 3, 'a', 7), ar('b', (7, 8), 'a', 8)], lp=[3], caption='⑦ 양성자화'),
+            ('→', ''),
+            step('Nc1ccc(Cl)nc1', scale=26, caption='<b>D</b> (C<sub>5</sub>H<sub>5</sub>ClN<sub>2</sub>, 탄소 1개 감소)'),
+            title='[그림 3] 아이소사이아네이트의 가수분해·탈카복실화 → 1차 아민'),
+    ],
     explain='''<p><b>핵심 반응: Hofmann 자리옮김(아이소사이아네이트 경유, 탄소 1개 손실) vs 아마이드의 LiAlH<sub>4</sub> 환원(탄소 수 유지)</b></p>
 <p>① KMnO<sub>4</sub>는 벤질(여기서는 피리딜메틸) 위치에 C–H가 있는 알킬기를 COOH로 산화한다. 피리딘 고리 자체는 전자가 부족해 산화에 강하다. 산 처리 후 <b>A</b> = 6-chloronicotinic acid(C<sub>6</sub>H<sub>4</sub>ClNO<sub>2</sub>).</p>
 <p>② [경로 1] SOCl<sub>2</sub> → 산 염화물, 과량 NH<sub>3</sub> → 1차 아마이드 <b>C</b>(C<sub>6</sub>H<sub>5</sub>ClN<sub>2</sub>O). Br<sub>2</sub>/NaOH: N–H 탈양성자화 → N-브로민화(RCONHBr) → 두 번째 N–H 탈양성자화 → 피리딜기가 C에서 N으로 1,2-이동하면서 Br<sup>−</sup>가 동시에 떨어져 <b>아이소사이아네이트</b>(Ar–N=C=O, C<sub>6</sub>H<sub>3</sub>ClN<sub>2</sub>O) 생성. 이동기는 결합 전자쌍과 함께 이동하며 이동 탄소의 배열은 유지된다.</p>
@@ -107,6 +251,34 @@ dict(
 <p class="ask">{A_}의 구조를 그리시오. 또한 {A_}가 생성될 때 거치는 음이온 중간체의 공명 구조 중 음전하가 나이트로기의 산소에 있는 구조를 그리시오. 그리고 할로젠 음이온의 이탈기 능력은 Cl<sup>−</sup>가 F<sup>−</sup>보다 큰데도 F가 치환되는 이유를 속도 결정 단계와 관련지어 서술하시오. [[PTS]]</p>''',
     answer=f'''<div class="ansbox">{M('COc1ccc(C#Cc2cccc(Cl)c2[N+](=O)[O-])cc1', 'A', 14)}{M('COc1ccc(cc1)C#CC1(F)C=CC=C(Cl)C1=[N+]([O-])[O-]', '중간체(Meisenheimer 착물)', 14)}</div>
 이유: SNAr은 첨가–제거 메커니즘이며 친핵체가 고리에 첨가해 Meisenheimer 착물을 만드는 단계가 속도 결정 단계이다. C–X 결합 절단은 그 뒤의 빠른 단계이므로 이탈기 능력은 속도에 거의 영향을 주지 않는다. 전기음성도가 가장 큰 F는 붙은 탄소(ipso)를 더 δ+로 만들고, 유발 효과로 음이온성 전이 상태·중간체를 안정화하므로 C–F 탄소에 대한 첨가가 더 빠르다.''',
+    mech=[
+        mechanism(
+            step('[O:8]=[N+:7]([O-:9])[C:2]1=[C:1]([F:10])[CH:6]=[CH:5][CH:4]=[C:3]1[Cl:11].[C-:12]#[C:13][*:14]', scale=24, frag_flip=(0, 1), gap=1.0, frag_dy={1: 1.6},
+                 labels={14: 'Ar'}, arrows=[ar('lp', 12, 'a', 1, side=-1, bend=0.3), ar('b', (1, 2), 'a', 2)], lp=[12],
+                 caption='① 아세틸라이드가 C–F 탄소(ipso)에 첨가'),
+            ('→', '속도 결정 단계', '(방향족성 상실)'),
+            step('[O:8]=[N+:7]([O-:9])[C-:2]1[C:1]([F:10])([C:12]#[C:13][*:14])[CH:6]=[CH:5][CH:4]=[C:3]1[Cl:11]', scale=24,
+                 labels={14: 'Ar'}, arrows=[ar('lp', 2, 'm', (2, 1)), ar('b', (1, 10), 'a', 10)], lp=[2],
+                 caption='Meisenheimer 착물 → ② F<sup>−</sup> 이탈'),
+            ('→', '빠름', '− F<sup>−</sup>'),
+            step('[O-][N+](=O)C1=C(C#C[*:14])C=CC=C1Cl', scale=24, labels={14: 'Ar'}, caption='<b>A</b> (Ar = 4-MeOC<sub>6</sub>H<sub>4</sub>)'),
+            title='[그림 1] S<sub>N</sub>Ar 첨가–제거 — C–F 결합은 속도 결정 단계 이후에 끊어진다'),
+        mechanism(
+            step('[O:8]=[N+:7]([O-:9])[C-:2]1[C:1]([F:10])([C:12]#[C:13][*:14])[CH:6]=[CH:5][CH:4]=[C:3]1[Cl:11]', scale=25,
+                 labels={14: 'Ar'}, arrows=[ar('lp', 2, 'm', (2, 7)), ar('b', (7, 8), 'a', 8)], lp=[2], caption='C2 음이온'),
+            RES,
+            step('[O-:8][N+:7]([O-:9])=[C:2]1[C:1]([F:10])([C:12]#[C:13][*:14])[CH:6]=[CH:5][CH:4]=[C:3]1[Cl:11]', scale=25,
+                 labels={14: 'Ar'}, caption='음전하가 NO<sub>2</sub>의 O에 있는 구조 (문제 요구)'),
+            step('[O:8]=[N+:7]([O-:9])[C-:2]1[C:1]([F:10])([C:12]#[C:13][*:14])[CH:6]=[CH:5][CH:4]=[C:3]1[Cl:11]', scale=25,
+                 labels={14: 'Ar'}, arrows=[ar('lp', 2, 'm', (2, 3)), ar('b', (3, 4), 'a', 4)], lp=[2], caption='C2 음이온'),
+            RES,
+            step('[O:8]=[N+:7]([O-:9])[C:2]1=[C:3]([Cl:11])[CH-:4][CH:5]=[CH:6][C:1]1([F:10])[C:12]#[C:13][*:14]', scale=25,
+                 labels={14: 'Ar'}, arrows=[ar('lp', 4, 'm', (4, 5)), ar('b', (5, 6), 'a', 6)], lp=[4], caption='C4(파라) 음이온'),
+            RES,
+            step('[O:8]=[N+:7]([O-:9])[C:2]1=[C:3]([Cl:11])[CH:4]=[CH:5][CH-:6][C:1]1([F:10])[C:12]#[C:13][*:14]', scale=25,
+                 labels={14: 'Ar'}, lp=[6], caption='C6(오쏘) 음이온'),
+            title='[그림 2] Meisenheimer 착물의 공명 — 음전하는 ipso의 오쏘·파라 탄소(C2·C4·C6)와 NO<sub>2</sub> 산소로 비편재화'),
+    ],
     explain='''<p><b>핵심 반응: 친핵성 방향족 치환(SNAr, 첨가–제거)과 Meisenheimer 착물</b></p>
 <p>① SNAr의 3조건: 강한 전자 끄는 기(NO<sub>2</sub>), 이탈기, 그리고 EWG가 이탈기의 오쏘/파라에 위치. 이 기질은 F와 Cl이 <b>모두</b> NO<sub>2</sub>의 오쏘 자리에 있으므로 활성화 정도(공명)는 같고, 차이는 할로젠 자체의 효과뿐이다.</p>
 <p>② 메커니즘: 아세틸라이드 탄소가 C–F 탄소(ipso)를 공격 → sp<sup>3</sup> 탄소를 가진 사이클로헥사다이엔일 음이온(Meisenheimer 착물). 음전하는 NO<sub>2</sub>가 붙은 탄소(오쏘)와 파라 탄소로 비편재화되고, NO<sub>2</sub>의 공명(−M)으로 산소까지 퍼진다(문제에서 요구한 구조: C=N<sup>+</sup>(O<sup>−</sup>)O<sup>−</sup>). 이어 F<sup>−</sup>가 떨어지며 방향족성이 회복된다.</p>
@@ -131,6 +303,40 @@ dict(
     answer=f'''<div class="ansbox">{M('C/C=C/COc1c(C)cccc1C', 'C', 15)}{M('C=CC(C)C1(C)C=CC=C(C)C1=O', '중간체', 15)}{M('C/C=C/Cc1cc(C)c(O)c(C)c1', 'D', 15)}</div>
 B = 2,6-dimethylphenol, C = 2-[(<i>E</i>)-but-2-enyloxy]-1,3-dimethylbenzene, 중간체 = 6-(but-3-en-2-yl)-2,6-dimethylcyclohexa-2,4-dien-1-one, D = 4-[(<i>E</i>)-but-2-enyl]-2,6-dimethylphenol.<br>
 이유: 첫 [3,3] Claisen 자리옮김은 오쏘 탄소로 일어나며 알릴 말단이 뒤집혀(1-methylallyl) 붙지만, 오쏘 탄소에 CH<sub>3</sub>가 있어 토토머화로 방향족성을 회복할 수 없다. 이 다이엔온이 두 번째 [3,3] 자리옮김(Cope)을 하여 곁사슬을 파라 탄소로 옮기면서 다시 한번 뒤집으므로 원래의 크로틸(가지 없는 but-2-enyl) 형태로 파라에 붙고, 파라 C–H의 토토머화로 방향족 페놀이 된다.''',
+    mech=[
+        mechanism(
+            step('CC1=CC=CC(C)=[C:1]1[N+:2]#[N:3]', scale=24, arrows=[ar('b', (1, 2), 'a', 2)], caption='① C–N<sub>2</sub><sup>+</sup> 이종 분해'),
+            ('→', '가열', '− N<sub>2</sub>'),
+            step('CC1=CC=CC(C)=[C+:1]1.[OH2:4]', scale=24, arrows=[ar('lp', 4, 'a', 1)], lp=[4], caption='아릴 양이온 ← ② H<sub>2</sub>O 포착'),
+            ('→', ''),
+            step('CC1=CC=CC(C)=[C:1]1[OH+:4][H:5].[OH2:6]', scale=24, arrows=[ar('lp', 6, 'a', 5), ar('b', (4, 5), 'a', 4)], lp=[6],
+                 caption='③ 탈양성자화'),
+            ('→', ''),
+            step('CC1=CC=CC(C)=C1O', scale=24, caption='<b>B</b> 2,6-dimethylphenol'),
+            step('CC1=CC=CC(C)=C1[O-:1].[Br:4][CH2:2]/C=C/C', scale=24, gap=1.2,
+                 arrows=[ar('lp', 1, 'a', 2), ar('b', (2, 4), 'a', 4)], lp=[1], caption='④ 페녹사이드의 S<sub>N</sub>2 (Williamson)'),
+            ('→', '', '− Br<sup>−</sup>'),
+            step('CC1=CC=CC(C)=C1OC/C=C/C', scale=24, caption='<b>C</b>'),
+            title='[그림 1] 다이아조늄 가수분해(S<sub>N</sub>1형, 아릴 양이온) → 페놀 <b>B</b> → Williamson 에터 <b>C</b>'),
+        mechanism(
+            step('[CH3:20][C:2]1=[C:1]([O:3][CH2:4][CH:5]=[CH:6][CH3:7])[C:8]([CH3:21])=[CH:9][CH:10]=[CH:11]1', scale=28, ghost=[(6, 2)],
+                 arrows=[ar('b', (3, 4), 'm', (4, 5)), ar('b', (5, 6), 'm', (6, 2)), ar('b', (2, 1), 'm', (1, 3))], lp=[3],
+                 caption='⑤ 6원 고리 전이 상태: 고리형 6전자 이동 (화살표 3개)'),
+            ('→', '200 ℃', '[3,3] Claisen'),
+            step('[CH3:20][C:2]1([CH:6]([CH3:7])[CH:5]=[CH2:4])[C:1](=[O:3])[C:8]([CH3:21])=[CH:9][CH:10]=[CH:11]1', scale=28,
+                 caption='중간체(C<sub>12</sub>H<sub>16</sub>O): 오쏘 C에 CH<sub>3</sub> → 토토머화 불가'),
+            title='[그림 2] 첫 번째 [3,3] 자리옮김(Claisen) — 크로틸기가 뒤집혀 오쏘 탄소에 결합'),
+        mechanism(
+            step('[CH3:20][C:2]1([CH:6]([CH3:7])[CH:5]=[CH2:4])[C:1](=[O:3])[C:8]([CH3:21])=[CH:9][CH:10]=[CH:11]1', scale=28, ghost=[(4, 10)],
+                 arrows=[ar('b', (2, 6), 'm', (6, 5)), ar('b', (5, 4), 'm', (4, 10)), ar('b', (11, 10), 'm', (11, 2))],
+                 caption='⑥ 1,5-다이엔의 Cope [3,3]: 곁사슬 말단 CH<sub>2</sub>가 파라 탄소로'),
+            ('→', '[3,3] Cope', ''),
+            step('[CH3:20][C:2]1=[CH:11][CH:10]([CH2:4]/[CH:5]=[CH:6]/[CH3:7])[CH:9]=[C:8]([CH3:21])[C:1]1=[O:3]', scale=26,
+                 caption='cyclohexa-2,5-dienone (파라 C에 H 있음)'),
+            ('⇌', '토토머화', '(방향족성 회복)'),
+            step('CC1=CC(C/C=C/C)=CC(C)=C1O', scale=26, caption='<b>D</b> (곁사슬 두 번 뒤집힘 → 가지 없는 크로틸)'),
+            title='[그림 3] 두 번째 [3,3] 자리옮김(Cope) → 토토머화: 파라-Claisen 자리옮김'),
+    ],
     explain='''<p><b>핵심 반응: 다이아조늄 가수분해 → Williamson 에터 합성 → 방향족 Claisen 자리옮김(파라-Claisen = Claisen + Cope)</b></p>
 <p>① 2,6-dimethylaniline → ArN<sub>2</sub><sup>+</sup> → 가열 수용액에서 N<sub>2</sub>가 떨어진 아릴 양이온을 물이 포착 → <b>B</b> = 2,6-dimethylphenol(O–H, 3400 cm<sup>−1</sup>).</p>
 <p>② K<sub>2</sub>CO<sub>3</sub>가 페놀(p<i>K</i><sub>a</sub> ≈ 10)을 페녹사이드로 만들고 1차 알릴 브로마이드에 S<sub>N</sub>2 → <b>C</b> = 크로틸 아릴 에터(O–H 없음). C=C 기하는 유지(<i>E</i>).</p>
@@ -155,6 +361,19 @@ dict(
 <p class="ask">{A_}와 {B_}의 구조를 각각 그리시오. [[PTS]]</p>''',
     answer=f'''<div class="ansbox">{M('Nc1ccc(cc1)S(=O)(=O)O', 'A: sulfanilic acid', 15)}{M('[Na+].[O-]S(=O)(=O)c1ccc(cc1)/N=N/c1c(O)ccc2ccccc12', 'B: Orange II', 13)}</div>
 (A는 실제로 쯔비터이온 H<sub>3</sub>N<sup>+</sup>–C<sub>6</sub>H<sub>4</sub>–SO<sub>3</sub><sup>−</sup>로 존재. B = sodium 4-[(2-hydroxynaphthalen-1-yl)diazenyl]benzenesulfonate)''',
+    mech=[
+        mechanism(
+            step('[*:20][N+:4]#[N:5].[O-:1][C:2]1=[C:3]C2=CC=CC=C2C=C1', scale=26, layout='v', gap=1.6, labels={20: 'Ar'}, frag_dx={0: -1.35}, frag_rot={1: 180}, frag_flip=(1,),
+                 arrows=[ar('lp', 1, 'm', (1, 2)), ar('b', (2, 3), 'm', (3, 5)), ar('b', (4, 5), 'a', 4)], lp=[1],
+                 caption='① 나프톡사이드 C1이 말단 N을 공격 (O<sup>−</sup>가 전자 공여)'),
+            ('→', ''),
+            step('[OH-:6].[O:1]=[C:2]1[C:3]([H:9])([N:5]=[N:4][*:20])C2=CC=CC=C2C=C1', scale=26, labels={20: 'Ar'}, gap=1.0,
+                 arrows=[ar('lp', 6, 'a', 9), ar('b', (3, 9), 'm', (3, 2)), ar('b', (2, 1), 'a', 1)], lp=[6],
+                 caption='σ-착물: 옆 벤젠 고리의 방향족 6전자 유지 → ② C1–H 탈양성자화'),
+            ('→', '', 'H<sub>3</sub>O<sup>+</sup> 후처리'),
+            step('OC1=C(/N=N/[*:20])C2=CC=CC=C2C=C1', scale=26, labels={20: 'Ar'}, caption='<b>B</b> (소듐 염)'),
+            title='[그림 1] 아조 짝지음 — 2-나프톡사이드의 C1 공격 (Ar = 4-<sup>−</sup>O<sub>3</sub>S–C<sub>6</sub>H<sub>4</sub>)'),
+    ],
     explain='''<p><b>핵심 반응: 방향족 술폰화(열역학 조절) → 다이아조화 → 아조 짝지음(나프톨 C1 위치 선택성)</b></p>
 <p>① 아닐린 + 진한 H<sub>2</sub>SO<sub>4</sub> → 아닐리늄 황산수소염 → 고온(180 ℃)에서 술폰화. 술폰화는 가역적이므로 고온에서는 입체 장애가 작고 열역학적으로 가장 안정한 <b>파라</b> 생성물이 축적된다. <b>A</b> = 4-aminobenzenesulfonic acid(C<sub>6</sub>H<sub>7</sub>NO<sub>3</sub>S).</p>
 <p>② NaNO<sub>2</sub>/HCl, 0~5 ℃: NO<sup>+</sup>에 의한 N-나이트로소화 → 탈수 → ArN<sub>2</sub><sup>+</sup>(술포네이트와 함께 쯔비터이온 <sup>−</sup>O<sub>3</sub>S–C<sub>6</sub>H<sub>4</sub>–N<sub>2</sub><sup>+</sup>). 저온 유지는 N<sub>2</sub> 손실(페놀 생성)을 막기 위함이다.</p>
@@ -182,6 +401,51 @@ dict(
     answer=f'''<div class="ansbox">{M('O=C1CCc2c(C)ccc(Br)c2C1', 'A: 8-bromo-5-methyl-2-tetralone', 15)}{M('CC(C)(C)c1ccccc1', 'B: tert-butylbenzene', 15)}</div>
 이유: AlCl<sub>3</sub>와 1차 할로젠화 알킬의 착물에서 C–Cl이 이온화되는 동시에 이웃 C–H의 하이드라이드가 1,2-이동하여 안정한 3차 탄소 양이온((CH<sub>3</sub>)<sub>3</sub>C<sup>+</sup>)이 생성되고, 이것이 벤젠을 공격하기 때문이다.<br>
 합성: ① 벤젠 + (CH<sub>3</sub>)<sub>2</sub>CHCOCl, AlCl<sub>3</sub> → PhCOCH(CH<sub>3</sub>)<sub>2</sub> (아실륨은 재배열하지 않음) ② Zn(Hg)/HCl(Clemmensen 환원) → PhCH<sub>2</sub>CH(CH<sub>3</sub>)<sub>2</sub>''',
+    mech=[
+        mechanism(
+            step('[CH3:8][C:4]([CH3:9])([H:5])[CH2:3][Cl+:2][Al-:1]([Cl:10])([Cl:11])[Cl:12]', scale=24,
+                 arrows=[ar('b', (4, 5), 'a', 3), ar('b', (3, 2), 'a', 2)],
+                 caption='① AlCl<sub>3</sub> 착물: C–Cl 이온화와 동시에 1,2-하이드라이드 이동'),
+            ('→', '', '− AlCl<sub>4</sub><sup>−</sup>'),
+            step('[CH3:8][C+:4]([CH3:9])[CH3:3].[CH:21]1=[CH:22][CH:23]=[CH:24][CH:25]=[CH:26]1', scale=24, gap=1.0,
+                 arrows=[ar('b', (21, 22), 'm', (21, 4))], caption='3차 양이온 ← ② 벤젠 π 전자의 공격'),
+            ('→', ''),
+            step('[CH3:8][C:4]([CH3:9])([CH3:3])[C:21]1([H:27])[CH+:22][CH:23]=[CH:24][CH:25]=[CH:26]1.[Cl:30][Al-](Cl)(Cl)Cl', scale=24, gap=1.0,
+                 arrows=[ar('lp', 30, 'a', 27), ar('b', (21, 27), 'm', (21, 22))], lp=[30], caption='아레늄 이온 → ③ 탈양성자화'),
+            ('→', '', '− HCl, AlCl<sub>3</sub>'),
+            step('CC(C)(C)c1ccccc1', scale=24, caption='<b>B</b> <i>tert</i>-butylbenzene'),
+            title='[그림 1] [반응 2] FC 알킬화 — 1차 → 3차 탄소 양이온 재배열(1,2-H<sup>−</sup> 이동)'),
+        mechanism(
+            step('CC(C)[C:1](=[O:2])[Cl+:3][Al-:4](Cl)(Cl)Cl', scale=24, arrows=[ar('b', (1, 3), 'a', 3)], caption='① 아실륨 이온 생성'),
+            ('→', '', '− AlCl<sub>4</sub><sup>−</sup>'),
+            step('CC(C)[C+:1]=[O:2]', scale=24, arrows=[ar('lp', 2, 'm', (2, 1))], lp=[2]),
+            RES,
+            step('CC(C)[C:1]#[O+:2]', scale=24, caption='모든 원자 옥텟 → 재배열 없음'),
+            step('CC(C)[C:1]#[O+:2].[CH:21]1=[CH:22][CH:23]=[CH:24][CH:25]=[CH:26]1', scale=24, gap=1.0,
+                 arrows=[ar('b', (21, 22), 'm', (21, 1)), ar('b', (1, 2), 'a', 2)], caption='② 벤젠의 공격'),
+            ('→', ''),
+            step('CC(C)[C:1](=[O:2])[C:21]1([H:27])[CH+:22][CH:23]=[CH:24][CH:25]=[CH:26]1.[Cl:30][Al-](Cl)(Cl)Cl', scale=24, gap=1.0,
+                 arrows=[ar('lp', 30, 'a', 27), ar('b', (21, 27), 'm', (21, 22))], lp=[30], caption='③ 탈양성자화'),
+            ('→', ''),
+            step('CC(C)C(=O)c1ccccc1', scale=24, caption='isobutyrophenone'),
+            ('→', 'Zn(Hg), HCl', 'Clemmensen'),
+            step('CC(C)Cc1ccccc1', scale=24, caption='isobutylbenzene'),
+            title='[그림 2] FC 아실화(아실륨은 재배열하지 않음) → Clemmensen 환원'),
+        mechanism(
+            step('[CH2:14]=[CH2:15].[O+:13]#[C:12][CH2:11][C:1]1=[C:2]([Br:16])[CH:3]=[CH:4][C:5]([CH3:17])=[CH:6]1', scale=24, layout='v', frag_dx={0: -0.9}, gap=1.3,
+                 arrows=[ar('b', (14, 15), 'm', (14, 12)), ar('b', (12, 13), 'a', 13)], caption='① 에틸렌 π 전자가 아실륨을 공격'),
+            ('→', ''),
+            step('[O:13]=[C:12]([CH2:11][C:1]1=[C:2]([Br:16])[CH:3]=[CH:4][C:5]([CH3:17])=[C:6]1[H:7])[CH2:14][CH2+:15]', scale=26, ghost=[(15, 6)],
+                 arrows=[ar('b', (6, 5), 'm', (6, 15))],
+                 caption='1차 양이온 등가체(재배열하면 α-카보닐 양이온 → 불리) → ② 분자 내 FC 알킬화(6원 고리)'),
+            ('→', ''),
+            step('[O:13]=[C:12]1[CH2:11][C:1]2=[C:2]([Br:16])[CH:3]=[CH:4][C+:5]([CH3:17])[C:6]2([H:7])[CH2:15][CH2:14]1.[Cl:30][Al-](Cl)(Cl)Cl', scale=26,
+                 gap=1.0, frag_flip=(0,), frag_dy={1: -1.2}, arrows=[ar('lp', 30, 'a', 7), ar('b', (6, 7), 'm', (6, 5))], lp=[30],
+                 caption='아레늄 이온(+가 CH<sub>3</sub> 붙은 3차 탄소) → ③ 탈양성자화'),
+            ('→', ''),
+            step('O=C1CCc2c(C)ccc(Br)c2C1', scale=26, caption='<b>A</b> 8-bromo-5-methyl-2-tetralone'),
+            title='[그림 3] [반응 1] 지방족 아실화 → 분자 내 FC 알킬화 (CH<sub>3</sub>의 오쏘에서 고리화)'),
+    ],
     explain='''<p><b>핵심 반응: Friedel–Crafts 아실화(아실륨, 재배열 없음) vs 알킬화(탄소 양이온 재배열) + Clemmensen 환원</b></p>
 <p>① [반응 1] AlCl<sub>3</sub>가 산 염화물의 Cl을 떼어 공명 안정화된 아실륨 이온(R–C≡O<sup>+</sup>)을 만든다. 아실륨이 자기 고리를 공격하면 4원 고리가 되어 불가능하고, 다른 분자의 고리(Br으로 불활성화)보다 과량 존재하는 에틸렌의 π 전자가 아실륨을 공격하는 지방족 아실화가 먼저 일어나 ArCH<sub>2</sub>C(=O)CH<sub>2</sub>CH<sub>2</sub><sup>+</sup>(또는 Cl<sup>−</sup>가 포착한 β-클로로케톤, AlCl<sub>3</sub>로 재이온화)가 생긴다.</p>
 <p>② 이 1차 양이온 등가체는 하이드라이드 이동을 해도 카보닐 옆(α) 양이온이 되어 오히려 불안정하므로 재배열하지 않고, 6원 고리를 닫을 수 있는 방향족 탄소(CH<sub>2</sub>의 오쏘, Br이 없는 쪽 = CH<sub>3</sub>의 오쏘로 활성화)를 분자 내 FC 알킬화로 공격 → 아레늄 이온 → 탈양성자화 → <b>A</b> = 8-bromo-5-methyl-3,4-dihydronaphthalen-2(1<i>H</i>)-one(C<sub>11</sub>H<sub>11</sub>BrO). CH<sub>2</sub>의 다른 오쏘(C–Br)는 치환 불가.</p>
@@ -205,6 +469,27 @@ dict(
 <p class="ask">{B_}의 구조를 그리시오. 또한 ㉠~㉢의 질소가 각각 양성자화된 짝산의 p<i>K</i><sub>a</sub>만을 고려할 때, 그 값이 작은 것부터 큰 순서대로 나열하시오. [[PTS]]</p>''',
     answer=f'''<div class="ansbox">{M('NC(=[NH2+])NCCCCc1[nH+]ccc2c1[nH]c1cc(Br)ccc12.[Cl-].[Cl-]', 'B (이염산염)', 13)}</div>
 p<i>K</i><sub>a</sub>(짝산): ㉢ &lt; ㉡ &lt; ㉠''',
+    mech=[
+        mechanism(
+            step('N[C:1](=[NH:2])NCCCCC1=[N:3]C=CC2=C1[NH:4]C1=CC(Br)=CC=C12', scale=25,
+                 notes={2: '(a) pKa~13', 3: '(b) pKa~7', 4: '(c) pKa~-3'},
+                 caption='<b>X</b>: (a) = ㉠, (b) = ㉡, (c) = ㉢의 짝산 p<i>K</i><sub>a</sub>. ㉢의 비공유 전자쌍은 방향족 π계에 포함'),
+            ('→', 'HCl (2 당량)', '㉠ → ㉡ 순서로 양성자화'),
+            step('NC(=[NH2+])NCCCCC1=[NH+]C=CC2=C1NC1=CC(Br)=CC=C12.[Cl-].[Cl-]', scale=22, caption='<b>B</b> (이염산염)'),
+            title='[그림 1] 세 질소의 염기도 비교 — 양성자를 받는 자리'),
+        mechanism(
+            step('[Cl:6][H:5].[*:9][NH:1][C:2](=[NH:3])[NH2:4]', scale=26, labels={9: 'R'}, gap=1.0,
+                 arrows=[ar('lp', 3, 'a', 5), ar('b', (5, 6), 'a', 6)], lp=[3], caption='① sp<sup>2</sup> N(㉠)의 양성자화'),
+            ('→', '', '− Cl<sup>−</sup>'),
+            step('[*:9][NH:1][C:2](=[NH2+:3])[NH2:4]', scale=26, labels={9: 'R'},
+                 arrows=[ar('lp', 4, 'm', (4, 2)), ar('b', (2, 3), 'a', 3)], lp=[4]),
+            RES,
+            step('[*:9][NH:1][C:2]([NH2:3])=[NH2+:4]', scale=26, labels={9: 'R'},
+                 arrows=[ar('lp', 1, 'm', (1, 2)), ar('b', (2, 4), 'a', 4)], lp=[1]),
+            RES,
+            step('[*:9][NH+:1]=[C:2]([NH2:3])[NH2:4]', scale=26, labels={9: 'R'}, rotate=180),
+            title='[그림 2] 구아니디늄 이온의 Y자형 공명 — 양전하가 세 N에 고르게 분산 (짝산이 가장 안정 → 가장 강한 염기)'),
+    ],
     explain='''<p><b>핵심 개념: 질소 비공유 전자쌍의 위치(방향족 π계 참여 여부, 혼성)와 짝산의 공명 안정화로 결정되는 아민 염기도</b></p>
 <p>① ㉠ 구아니딘: 양성자화된 구아니디늄 이온은 양전하가 세 질소에 고르게 비편재화되는 공명(Y자형 공명)으로 크게 안정화되어 짝산 p<i>K</i><sub>a</sub> ≈ 13으로 가장 강한 염기이다.</p>
 <p>② ㉡ 피리딘형 N: 비공유 전자쌍이 고리 평면의 sp<sup>2</sup> 오비탈에 있고 방향족 6π계에 참여하지 않으므로 양성자를 받을 수 있다(피리디늄 p<i>K</i><sub>a</sub> ≈ 5; β-carboline은 인돌 N의 전자 공여로 약 7 정도). sp<sup>2</sup>는 s 성질이 커 sp<sup>3</sup> 아민보다 약한 염기이다.</p>
@@ -232,6 +517,28 @@ dict(
     answer=f'''(1) ㉡, (2) ㉢, (3) ㉣
 <div class="ansbox">{M('COc1ccc(cc1)S(=O)(=O)O', 'C: 4-methoxybenzenesulfonic acid', 15)}{M('COc1ccc(cc1Br)S(=O)(=O)O', 'D: 3-bromo-4-methoxybenzenesulfonic acid', 15)}</div>
 메커니즘: H<sub>3</sub>O<sup>+</sup>가 SO<sub>3</sub>H가 붙은 고리 탄소(ipso, OMe의 파라)를 양성자화 → 아레늄 이온(양전하가 OMe의 산소까지 비편재화된 옥소늄 공명 구조로 안정화) → C–S 결합의 전자쌍이 고리로 돌아오며 SO<sub>3</sub>(+H<sup>+</sup>)가 떨어져 방향족성 회복 → B.''',
+    mech=[
+        mechanism(
+            step('[H:14][O:8][S:7](=O)(=O)[C:1]1=[CH:6][CH:5]=[C:4]([O:9][CH3:10])[C:3]([Br:13])=[CH:2]1.[H:12][OH2+:11]', scale=24, gap=1.0,
+                 arrows=[ar('b', (1, 6), 'a', 12), ar('b', (12, 11), 'a', 11)], caption='① H<sub>3</sub>O<sup>+</sup>가 ipso 탄소를 양성자화 (속도 결정 단계)'),
+            ('→', '', '− H<sub>2</sub>O'),
+            step('[H:14][O:8][S:7](=O)(=O)[C:1]1([H:12])[CH+:6][CH:5]=[C:4]([O:9][CH3:10])[C:3]([Br:13])=[CH:2]1', scale=24,
+                 arrows=[ar('b', (5, 4), 'm', (5, 6))], caption='아레늄 이온'),
+            RES,
+            step('[H:14][O:8][S:7](=O)(=O)[C:1]1([H:12])[CH:6]=[CH:5][C+:4]([O:9][CH3:10])[C:3]([Br:13])=[CH:2]1', scale=24,
+                 arrows=[ar('lp', 9, 'm', (9, 4))], lp=[9]),
+            RES,
+            step('[H:14][O:8][S:7](=O)(=O)[C:1]1([H:12])[CH:6]=[CH:5][C:4](=[O+:9][CH3:10])[C:3]([Br:13])=[CH:2]1', scale=24,
+                 caption='옥소카베늄 공명 구조 (모든 원자 옥텟) — OMe의 파라 ipso 공격이라 가능'),
+            title='[그림 1] 탈술폰화 (1) — ipso 양성자화와 OMe에 의한 아레늄 이온 안정화'),
+        mechanism(
+            step('[H:14][O:8][S:7](=O)(=O)[C:1]1([H:12])[CH+:6][CH:5]=[C:4]([O:9][CH3:10])[C:3]([Br:13])=[CH:2]1.[OH2:20]', scale=26, gap=1.0,
+                 arrows=[ar('lp', 20, 'a', 14), ar('b', (14, 8), 'm', (8, 7)), ar('b', (7, 1), 'm', (1, 6))], lp=[20],
+                 caption='② C–S 결합 전자쌍이 고리로 돌아가며 SO<sub>3</sub> 이탈'),
+            ('→', '', '− H<sub>3</sub>O<sup>+</sup>'),
+            step('COC1=CC=CC=C1Br.O=S(=O)=O', scale=26, gap=1.4, caption='<b>B</b> 2-bromoanisole + SO<sub>3</sub> (→ H<sub>2</sub>SO<sub>4</sub>)'),
+            title='[그림 2] 탈술폰화 (2) — 방향족성 회복 (술폰화의 역반응, ipso 치환)'),
+    ],
     explain='''<p><b>핵심 반응: 가역적 술폰화를 이용한 차단기(blocking group) 전략과 ipso 양성자화에 의한 탈술폰화</b></p>
 <p>① [반응 1] OMe는 비공유 전자쌍의 공명 공여로 강하게 활성화하는 o,p-지향기이다. 오쏘 공격은 OMe와의 입체 반발이 있고 통계적 이점(오쏘 2자리)을 상쇄하므로 파라 생성물 <b>A</b>가 주생성물이다.</p>
 <p>② (1) 진한 H<sub>2</sub>SO<sub>4</sub>(SO<sub>3</sub>): 부피 큰 SO<sub>3</sub>H가 파라 자리에 들어가 이를 막는다 → <b>C</b>. (2) Br<sub>2</sub>/FeBr<sub>3</sub>: OMe(오쏘 지향, 강한 활성화)와 SO<sub>3</sub>H(메타 지향)가 <b>모두</b> OMe의 오쏘(= SO<sub>3</sub>H의 메타) 자리를 가리키는 협동 배향 → <b>D</b>. (3) 묽은 산·가열(수증기): 술폰화의 역반응으로 SO<sub>3</sub>H 제거 → <b>B</b> = 2-bromoanisole.</p>
@@ -255,6 +562,33 @@ dict(
 <p class="ask">{A_}와 {C_}의 구조를 각각 그리시오. 또한 {B_}의 공명 구조 중 양전하가 벤젠 고리의 탄소에 있는 구조를 1개 그리고, 아세톤과 같은 단순 케톤은 같은 조건에서 벤젠과 거의 반응하지 않지만 {A_}는 반응하는 이유를 서술하시오. [[PTS]]</p>''',
     answer=f'''<div class="ansbox">{M('[OH+]=C1C[NH+]2CCC1CC2', 'A', 16)}{M('[CH+]1C=CC(=C2C[NH+]3CCC2CC3)C=C1', 'B의 공명 구조(파라)', 15)}{M('[NH+]12CCC(CC1)C(c1ccccc1)(c1ccccc1)C2', 'C: 3,3-diphenylquinuclidinium', 15)}</div>
 이유: A에서는 카보닐 산소뿐 아니라 이웃(β) 위치의 질소도 양성자화되어 있어 암모늄 양전하가 강한 유발 효과로 카보닐 탄소의 양전하(옥소카베늄)를 비편재화·안정화하지 못하게 한다. 두 양전하가 가까이 있어 정전기적으로 불안정한 이가 양이온은 LUMO 에너지가 매우 낮은 “초친전자체”가 되므로, 친핵성이 약한 벤젠의 π 전자도 공격할 수 있다.''',
+    mech=[
+        mechanism(
+            step('[O:1]=[C:2]1[CH2:3][N:4]2CC[CH:5]1CC2', scale=26, lp=[1, 4], caption='quinuclidin-3-one'),
+            ('→', 'CF<sub>3</sub>SO<sub>3</sub>H', 'N, O 이중 양성자화'),
+            step('[OH+:1]=[C:2]1[CH2:3][NH+:4]2CC[CH:5]1CC2.[CH:11]1=[CH:12][CH:13]=[CH:14][CH:15]=[CH:16]1', scale=26, gap=1.0, frag_dy={1: -1.4},
+                 arrows=[ar('b', (11, 12), 'm', (11, 2)), ar('b', (2, 1), 'a', 1)],
+                 caption='<b>A</b> (이가 양이온, 초친전자체) ← ① 벤젠의 공격'),
+            ('→', ''),
+            step('[H:20][O:1][C:2]1([C:11]3([H:17])[CH+:12][CH:13]=[CH:14][CH:15]=[CH:16]3)[CH2:3][NH+:4]2CC[CH:5]1CC2.[O-:30][*:31]', scale=26,
+                 gap=1.0, labels={31: 'SO<sub>2</sub>CF<sub>3</sub>'}, arrows=[ar('lp', 30, 'a', 17), ar('b', (11, 17), 'm', (11, 12))], lp=[30],
+                 caption='아레늄 이온 → ② 탈양성자화'),
+            ('→', ''),
+            step('OC1(C2=CC=CC=C2)C[NH+]2CCC1CC2', scale=26, caption='3-hydroxy-3-phenylquinuclidinium'),
+            title='[그림 1] 초친전자체 <b>A</b>의 첫 번째 S<sub>E</sub>Ar (하이드록시알킬화)'),
+        mechanism(
+            step('[OH2+:1][C:2]1(C3=CC=CC=C3)C[NH+]2CCC1CC2', scale=26, arrows=[ar('b', (2, 1), 'a', 1)], caption='③ OH 양성자화 후 H<sub>2</sub>O 이탈'),
+            ('→', '', '− H<sub>2</sub>O'),
+            step('[C+:2]1([C:11]3=[CH:12][CH:13]=[CH:14][CH:15]=[CH:16]3)C[NH+]2CCC1CC2', scale=26,
+                 arrows=[ar('b', (11, 12), 'm', (11, 2)), ar('b', (13, 14), 'm', (12, 13))], caption='<b>B</b> (3차·벤질 양이온)'),
+            RES,
+            step('[CH+:14]1[CH:13]=[CH:12][C:11](=[C:2]2C[NH+]3CCC2CC3)[CH:16]=[CH:15]1', scale=30, caption='<b>B</b>의 공명 구조(파라 C<sup>+</sup>)'),
+            step('[C+:2]1(C3=CC=CC=C3)C[NH+]2CCC1CC2.[CH:41]1=[CH:42][CH:43]=[CH:44][CH:45]=[CH:46]1', scale=26, gap=1.0, layout='v', frag_dx={1: -0.9},
+                 arrows=[ar('b', (43, 44), 'm', (43, 2))], caption='④ 두 번째 벤젠의 공격'),
+            ('→', '', 'σ-착물, − H<sup>+</sup>'),
+            step('[NH+]12CCC(CC1)C(C1=CC=CC=C1)(C1=CC=CC=C1)C2', scale=26, caption='<b>C</b> 3,3-diphenylquinuclidinium'),
+            title='[그림 2] 이가 양이온 <b>B</b>의 생성·공명과 두 번째 페닐화'),
+    ],
     explain='''<p><b>핵심 반응: Friedel–Crafts형 하이드록시알킬화(카보닐 친전자체) — 초산(superacid)에서의 초친전자적 활성화(Olah)</b></p>
 <p>① CF<sub>3</sub>SO<sub>3</sub>H는 먼저 염기성이 큰 3차 아민 N을 양성자화하고(암모늄), 이어 카보닐 O까지 양성자화하여 이가 양이온 <b>A</b>([C<sub>7</sub>H<sub>13</sub>NO]<sup>2+</sup>)를 만든다. 보통 산에서는 O-양성자화 정도가 낮지만 초강산에서는 충분하다.</p>
 <p>② 벤젠의 π 전자가 A의 카보닐 탄소를 공격 → 아레늄 이온(σ-착물) → 탈양성자화로 방향족성 회복 → 3-hydroxy-3-phenylquinuclidinium. OH가 양성자화되고 H<sub>2</sub>O가 떨어지면 3차·벤질 탄소 양이온 <b>B</b>가 생성된다. B의 양전하는 페닐 고리의 오쏘·파라 탄소로 비편재화된다(정답의 파라 공명 구조; 오쏘 구조도 정답).</p>
@@ -278,6 +612,46 @@ dict(
        scheme(L('A'), arrow('1) NaNO<sub>2</sub>, HCl, 0 ℃', '2) H<sub>3</sub>PO<sub>2</sub>'), L('B')))}
 <p class="ask">{A_}와 {B_}의 구조를 각각 그리시오. [[PTS]]</p>''',
     answer=f'''<div class="ansbox">{M('Cc1ccc(N)c(Br)c1', 'A: 2-bromo-4-methylaniline', 16)}{M('Cc1cccc(Br)c1', 'B: 3-bromotoluene', 16)}</div>''',
+    mech=[
+        mechanism(
+            step('C[C:11](=[O:12])[NH:7][C:1]1=[C:2]([H:8])[CH:3]=[C:4]([CH3:13])[CH:5]=[CH:6]1.[Br:9][Br:10]', scale=24, gap=1.0,
+                 arrows=[ar('b', (1, 2), 'm', (2, 9)), ar('b', (9, 10), 'a', 10)], caption='① NHAc의 오쏘 탄소가 Br<sub>2</sub>를 공격'),
+            ('→', ''),
+            step('C[C:11](=[O:12])[NH:7][C+:1]1[C:2]([H:8])([Br:9])[CH:3]=[C:4]([CH3:13])[CH:5]=[CH:6]1', scale=24,
+                 arrows=[ar('lp', 7, 'm', (7, 1))], lp=[7], caption='σ-착물'),
+            RES,
+            step('C[C:11](=[O:12])[NH+:7]=[C:1]1[C:2]([H:8])([Br:9])[CH:3]=[C:4]([CH3:13])[CH:5]=[CH:6]1.[Br-:10]', scale=24, gap=1.0,
+                 arrows=[ar('lp', 10, 'a', 8), ar('b', (2, 8), 'm', (2, 1)), ar('b', (1, 7), 'a', 7)], lp=[10],
+                 caption='N 공여 공명 구조(모든 원자 옥텟) → ② 탈양성자화'),
+            ('→', '', '− HBr'),
+            step('CC(=O)NC1=CC=C(C)C=C1Br', scale=24),
+            ('→', 'H<sub>3</sub>O<sup>+</sup>, 가열', '아마이드 가수분해'),
+            step('CC1=CC=C(N)C(Br)=C1', scale=24, caption='<b>A</b>'),
+            title='[그림 1] NHAc 오쏘 브로민화 — σ-착물의 양전하를 N이 받아 주므로 NHAc(＞CH<sub>3</sub>)가 배향을 결정'),
+        mechanism(
+            step('[*:9][NH2:1].[N:2]#[O+:3]', scale=26, labels={9: 'Ar'}, gap=1.8,
+                 arrows=[ar('lp', 1, 'a', 2), ar('b', (2, 3), 'a', 3)], lp=[1], caption='① NO<sup>+</sup>(HNO<sub>2</sub> + H<sup>+</sup> → − H<sub>2</sub>O) 공격'),
+            ('→', '', '− H<sup>+</sup>'),
+            step('[*:9][NH:1][N:2]=[O:3]', scale=26, labels={9: 'Ar'}, caption='N-나이트로소아민'),
+            ('⇌', '토토머화', '+ H<sup>+</sup>'),
+            step('[*:9][N:1]=[N:2][OH2+:3]', scale=26, labels={9: 'Ar'},
+                 arrows=[ar('lp', 1, 'm', (1, 2)), ar('b', (2, 3), 'a', 3)], lp=[1], caption='② H<sub>2</sub>O 이탈'),
+            ('→', '', '− H<sub>2</sub>O'),
+            step('[*:9][N+:1]#[N:2]', scale=26, labels={9: 'Ar'}, caption='아릴다이아조늄 이온'),
+            title='[그림 2] 다이아조화 (NaNO<sub>2</sub>, HCl, 0 ℃) — Ar = 2-bromo-4-methylphenyl'),
+        mechanism(
+            step('[*:9][N:1]=[N:2]', scale=42, labels={9: 'Ar'}, rad=[2],
+                 arrows=[ar('lp', 2, 'm', (1, 2), fish=True, side=-1), ar('b', (9, 1), 'm', (1, 2), fish=True, side=1), ar('b', (9, 1), 'a', 9, fish=True)], rotate=30,
+                 caption='① ArN=N• (ArN<sub>2</sub><sup>+</sup> + e<sup>−</sup>) → N<sub>2</sub> 방출'),
+            ('→', '', '− N<sub>2</sub>'),
+            step('[*:9].[H:3][P:4](=O)([H:5])[OH:6]', scale=34, labels={9: 'Ar'}, rad=[9], gap=1.8,
+                 arrows=[ar('lp', 9, 'm', (9, 3), fish=True), ar('b', (3, 4), 'm', (3, 9), fish=True), ar('b', (3, 4), 'a', 4, fish=True)],
+                 caption='② 아릴 라디칼이 H<sub>3</sub>PO<sub>2</sub>의 P–H에서 H• 추출'),
+            ('→', ''),
+            step('CC1=CC=CC(Br)=C1.[P:4](=O)([H:5])[OH:6]', scale=26, rad=[4], gap=1.4,
+                 caption='<b>B</b> 3-bromotoluene + •P(O)(H)OH (→ ArN<sub>2</sub><sup>+</sup>에 전자 전달: 연쇄)'),
+            title='[그림 3] H<sub>3</sub>PO<sub>2</sub> 탈아미노화 — 라디칼 연쇄 (반쪽 화살표 = 전자 1개)'),
+    ],
     explain='''<p><b>핵심 반응: 아세틸 보호로 조절한 EAS + 다이아조늄의 H<sub>3</sub>PO<sub>2</sub> 환원(탈아미노화) — “임시 배향기” 전략</b></p>
 <p>① NH<sub>2</sub>는 너무 강한 활성화기라 Br<sub>2</sub>와 바로 반응시키면 비어 있는 오쏘 자리가 모두 브로민화된다(다중 치환). 아세트산 무수물로 아세트아마이드(NHAc)로 바꾸면 N 비공유 전자쌍이 카보닐과 공명하여 활성화가 중간 정도로 낮아져 1치환만 일어난다.</p>
 <p>② <i>N</i>-(4-methylphenyl)acetamide에서 NHAc(공명 공여, 더 강한 활성화기)와 CH<sub>3</sub>(약한 활성화기)가 경쟁한다. 파라는 CH<sub>3</sub>로 막혀 있으므로 더 강한 활성화기인 NHAc의 <b>오쏘</b> 자리(= CH<sub>3</sub>의 메타)에 Br이 들어간다. 산 가수분해로 아마이드를 제거하면 <b>A</b> = 2-bromo-4-methylaniline.</p>
@@ -305,6 +679,47 @@ dict(
     answer=f'''속도: –OCH<sub>3</sub> &gt; –CH<sub>3</sub> &gt; –Cl &gt; –CO<sub>2</sub>CH<sub>3</sub>
 <div class="ansbox">{M('O=[N+]([O-])c1ccc(Cl)cc1', 'B: 1-chloro-4-nitrobenzene', 15)}{M('COc1cc2c(cc1OC)CNCC2', 'C: 6,7-dimethoxy-1,2,3,4-tetrahydroisoquinoline', 15)}</div>
 이유: Cl은 전기음성도가 커 유발 효과(−I)로 고리 전체의 전자 밀도를 낮추므로 속도는 감소한다. 그러나 오쏘/파라 공격으로 생긴 σ-착물에서는 양전하가 Cl이 붙은 탄소에 놓이는 공명 구조가 있어 Cl의 비공유 전자쌍이 공여(+M)하여 C=Cl<sup>+</sup> 공명 구조로 안정화하므로 o,p 공격이 메타 공격보다 유리하다. 오쏘는 입체 장애가 있어 파라 생성물이 주생성물이다.''',
+    mech=[
+        mechanism(
+            step('[O:1]=[N+:2]([O-:3])[OH:4].[H:5][O:6][S:7](=O)(=O)O', scale=26, gap=1.0,
+                 arrows=[ar('lp', 4, 'a', 5), ar('b', (5, 6), 'a', 6)], lp=[4], caption='① HNO<sub>3</sub>의 OH 양성자화'),
+            ('→', '', '− HSO<sub>4</sub><sup>−</sup>'),
+            step('[O:1]=[N+:2]([O-:3])[OH2+:4]', scale=26, arrows=[ar('lp', 3, 'm', (3, 2)), ar('b', (2, 4), 'a', 4)], lp=[3],
+                 caption='② H<sub>2</sub>O 이탈'),
+            ('→', '', '− H<sub>2</sub>O'),
+            step('[O:1]=[N+:2]=[O:3]', scale=26, caption='나이트로늄 이온 NO<sub>2</sub><sup>+</sup>'),
+            title='[그림 1] 친전자체 생성 — HNO<sub>3</sub> + H<sub>2</sub>SO<sub>4</sub> → NO<sub>2</sub><sup>+</sup>'),
+        mechanism(
+            step('[Cl:7][C:1]1=[CH:2][CH:3]=[C:4]([H:8])[CH:5]=[CH:6]1.[O:9]=[N+:10]=[O:11]', scale=24, gap=1.0,
+                 arrows=[ar('b', (4, 3), 'm', (4, 10)), ar('b', (10, 9), 'a', 9)], caption='① 파라 탄소의 공격 (속도 결정 단계)'),
+            ('→', ''),
+            step('[Cl:7][C:1]1=[CH:2][CH+:3][C:4]([H:8])([N+:10](=[O:11])[O-:9])[CH:5]=[CH:6]1', scale=24,
+                 arrows=[ar('b', (1, 2), 'm', (2, 3))], caption='σ-착물'),
+            RES,
+            step('[Cl:7][C+:1]1[CH:2]=[CH:3][C:4]([H:8])([N+:10](=[O:11])[O-:9])[CH:5]=[CH:6]1', scale=24,
+                 arrows=[ar('lp', 7, 'm', (7, 1))], caption='+가 C–Cl 탄소에'),
+            RES,
+            step('[Cl+:7]=[C:1]1[CH:2]=[CH:3][C:4]([H:8])([N+:10](=[O:11])[O-:9])[CH:5]=[CH:6]1', scale=24,
+                 caption='C=Cl<sup>+</sup> (모든 원자 옥텟): o,p 공격에서만 가능'),
+            step('[Cl:7][C:1]1=[CH:2][CH+:3][C:4]([H:8])([N+:10](=[O:11])[O-:9])[CH:5]=[CH:6]1.[O-:20][*:21]', scale=24, gap=1.0,
+                 labels={21: 'SO<sub>3</sub>H'}, arrows=[ar('lp', 20, 'a', 8), ar('b', (4, 8), 'm', (4, 3))], lp=[20], caption='② 탈양성자화'),
+            ('→', ''),
+            step('O=[N+]([O-])C1=CC=C(Cl)C=C1', scale=24, caption='<b>B</b>'),
+            title='[그림 2] 클로로벤젠의 파라 나이트로화 — Cl의 +M 공명 구조 (메타 공격 σ-착물에는 없음)'),
+        mechanism(
+            step('[CH2:20]=[NH+:21][CH2:22][CH2:23][C:1]1=[C:6]([H:7])[CH:5]=[C:4]([O:10][CH3:11])[C:3]([O:9][CH3:12])=[CH:2]1', scale=26,
+                 ghost=[(20, 6)], lp=[9],
+                 arrows=[ar('lp', 9, 'm', (9, 3)), ar('b', (3, 2), 'm', (2, 1)), ar('b', (1, 6), 'm', (6, 20)), ar('b', (20, 21), 'a', 21)],
+                 caption='이미늄 이온 (RNH<sub>2</sub> + HCHO → −H<sub>2</sub>O) → ① 3-OMe의 파라 탄소가 공격 (6-endo)'),
+            ('→', ''),
+            step('[CH2:20]1[NH:21][CH2:22][CH2:23][C:1]2=[CH:2][C:3](=[O+:9][CH3:12])[C:4]([O:10][CH3:11])=[CH:5][C:6]12[H:7].[OH2:30]', scale=26,
+                 gap=1.0, lp=[30], frag_dy={1: -1.8},
+                 arrows=[ar('lp', 30, 'a', 7), ar('b', (6, 7), 'm', (6, 5)), ar('b', (5, 4), 'm', (4, 3)), ar('b', (3, 9), 'a', 9)],
+                 caption='아레늄 이온(옥소카베늄 공명 구조) → ② 탈양성자화'),
+            ('→', ''),
+            step('COC1=CC2=C(C=C1OC)CNCC2', scale=26, caption='<b>C</b> 6,7-dimethoxy-THIQ'),
+            title='[그림 3] Pictet–Spengler 고리화 — 이미늄 이온에 대한 분자 내 S<sub>E</sub>Ar'),
+    ],
     explain='''<p><b>핵심 반응: 치환기 효과(활성화/불활성화, 배향)와 Pictet–Spengler 반응(이미늄 이온에 대한 분자 내 S<sub>E</sub>Ar)</b></p>
 <p>① 속도 결정 단계는 σ-착물(아레늄 이온) 형성. –OCH<sub>3</sub>: O 비공유 전자쌍의 강한 공명 공여(+M ≫ −I) → 강한 활성화. –CH<sub>3</sub>: 유발·초공액 공여 → 약한 활성화. –Cl: −I &gt; +M → 약한 불활성화(o,p 지향). –CO<sub>2</sub>CH<sub>3</sub>: 카보닐의 공명·유발 끌기 → 중간 정도 불활성화(메타 지향). 상대 속도(벤젠 = 1) 대략 anisole ≫ 톨루엔(~25) &gt; 1 &gt; 클로로벤젠(~0.03) &gt; 벤조산 메틸(~0.004).</p>
 <p>② X = Cl: 메타 공격 σ-착물은 Cl의 공명 공여를 받을 수 없고 −I만 작용한다. 오쏘/파라 공격 σ-착물은 Cl의 3p 비공유 전자쌍이 C=Cl<sup>+</sup> 형태로 양전하를 나누는 네 번째 공명 구조를 가지므로 상대적으로 안정 → o,p 지향. 파라 : 오쏘 ≈ 2 : 1 정도로 파라가 주생성물(<b>B</b> = 1-chloro-4-nitrobenzene).</p>
@@ -330,6 +745,30 @@ dict(
 ④ PhB(OH)<sub>2</sub>, Pd(PPh<sub>3</sub>)<sub>4</sub>, Na<sub>2</sub>CO<sub>3</sub> → D<br>
 순서 이유: (가) FC 아실화는 NO<sub>2</sub> 같은 강한 불활성화기가 있는 고리에서 일어나지 않으므로 나이트로화는 아실화 뒤에 해야 한다. (나) 아세틸기는 메타 지향기이므로 아실화를 먼저 하면 Br이 메타로 들어간다 → 브로민화를 먼저 하여 Br(o,p 지향)이 아세틸기를 파라로 보내게 한다. (다) 4-bromoacetophenone의 나이트로화에서 Br(오쏘 지향)과 COCH<sub>3</sub>(메타 지향)가 같은 탄소(Br의 오쏘)를 가리킨다(협동 배향). (라) 짝지음을 먼저 하면 바이페닐의 활성화된 다른 고리(페닐 치환기의 파라)에서 아실화·나이트로화가 일어나므로 Suzuki 짝지음은 마지막에 한다.<br>
 촉매 순환: 산화성 첨가 [Pd(0) → Pd(II)] → 금속 교환 [Pd(II) → Pd(II)] → 환원성 제거 [Pd(II) → Pd(0)]''',
+    mech=[
+        mechanism(
+            step('[O:9]=[N+:10]=[O:12].CC(=O)[C:1]1=[CH:2][C:3]([H:8])=[C:4]([Br:7])[CH:5]=[CH:6]1', scale=24, gap=1.2, layout='v', frag_dx={0: 1.2},
+                 arrows=[ar('b', (3, 4), 'm', (3, 10)), ar('b', (10, 9), 'a', 9)], caption='① Br의 오쏘(= COCH<sub>3</sub>의 메타) 공격'),
+            ('→', ''),
+            step('CC(=O)[C:1]1=[CH:2][C:3]([H:8])([N+:10](=[O:12])[O-:9])[C+:4]([Br:7])[CH:5]=[CH:6]1', scale=24,
+                 arrows=[ar('lp', 7, 'm', (7, 4))], caption='+가 C–Br 탄소에'),
+            RES,
+            step('CC(=O)[C:1]1=[CH:2][C:3]([H:8])([N+:10](=[O:12])[O-:9])[C:4](=[Br+:7])[CH:5]=[CH:6]1', scale=24,
+                 caption='C=Br<sup>+</sup> 공명 구조; +는 C–COCH<sub>3</sub> 탄소에 오지 않음'),
+            step('CC(=O)[C:1]1=[CH:2][C:3]([H:8])([N+:10](=[O:12])[O-:9])[C+:4]([Br:7])[CH:5]=[CH:6]1.[O-:20][*:21]', scale=24, gap=1.6, frag_dy={1: 1.3},
+                 labels={21: 'SO<sub>3</sub>H'}, arrows=[ar('lp', 20, 'a', 8), ar('b', (3, 8), 'm', (3, 4))], lp=[20], caption='② 탈양성자화'),
+            ('→', ''),
+            step('CC(=O)C1=CC=C(Br)C([N+](=O)[O-])=C1', scale=24, caption='4′-bromo-3′-nitroacetophenone'),
+            title='[그림 1] 3단계 나이트로화의 협동 배향 — σ-착물의 양전하 위치'),
+        cycle(PD0,
+              step('[*:2][Pd:1]([*:4])([*:5])[Br:3]', labels={2: 'Ar', 4: 'L', 5: 'L'}, scale=26, caption='Ar–Pd(II)–Br'),
+              step('[*:2][Pd:1]([*:3])([*:4])[*:5]', labels={1: 'Pd', 2: 'Ar', 3: 'Ph', 4: 'L', 5: 'L'}, scale=34,
+                   arrows=[ar('b', (1, 3), 'm', (2, 3))], caption='<i>cis</i>-Ar–Pd(II)–Ph'),
+              ('산화성 첨가 (Pd 0 → +2)', '+ Ar–Br'),
+              ('금속 교환 (+2 유지)', '+ [PhB(OH)<sub>3</sub>]<sup>−</sup> (PhB(OH)<sub>2</sub> + 염기), − Br<sup>−</sup>, B(OH)<sub>3</sub>'),
+              ('환원성 제거 (+2 → 0)', 'Ar–Ph (<b>D</b>) 방출'),
+              title='[그림 2] Suzuki–Miyaura 촉매 순환 (Ar = 4-acetyl-2-nitrophenyl, L = PPh<sub>3</sub>)'),
+    ],
     explain='''<p><b>핵심 반응: 다치환 벤젠의 역합성(배향 효과·FC 한계) + Suzuki–Miyaura 교차 짝지음</b></p>
 <p>① 역합성: D의 Ar–Ph 결합은 Suzuki로, 그 전구체는 4′-bromo-3′-nitroacetophenone. 이 화합물에서 COCH<sub>3</sub>와 Br은 파라, NO<sub>2</sub>는 Br의 오쏘·COCH<sub>3</sub>의 메타 → Br과 COCH<sub>3</sub>가 이미 있는 고리에 마지막으로 NO<sub>2</sub>를 넣는 것이 협동 배향으로 유일한 위치를 준다.</p>
 <p>② 1단계 Br<sub>2</sub>/FeBr<sub>3</sub>: FeBr<sub>3</sub>가 Br–Br을 분극시켜 Br<sup>+</sup> 등가체 생성 → bromobenzene. 2단계 CH<sub>3</sub>COCl/AlCl<sub>3</sub>: 아실륨 이온이 Br의 파라(오쏘는 입체 장애)를 공격 → 4-bromoacetophenone. Br은 불활성화기지만 할로젠 정도의 약한 불활성화는 FC 아실화를 허용한다.</p>

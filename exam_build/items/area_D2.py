@@ -1,7 +1,9 @@
 """영역 D(입체화학·형태 분석) 기출변형 9문항 — 2026A-1 은 area_D.py 에 있음.
 모든 입체 SMILES 는 RDKit(CIP, 3D 면 판정)로 검증함. 의자 형태·Newman 투영·에너지 도표·크로마토그램은 이 파일의 SVG 도우미로 그린다."""
 import math
+import re
 from chem import M, L, arrow, varrow, scheme, rows, frame, plus
+from mech import step, mechanism, ar
 
 # ───────────────────────── SVG 도우미 (이 파일 전용) ─────────────────────────
 _F = 'font-family="Arial, NanumGothic, sans-serif"'
@@ -167,6 +169,304 @@ CDEC = 'C1CC[C@H]2CCCC[C@H]2C1'
 BEF_BOX = '<div class="ansbox">' + M('C/C=C/C', 'B: (E)-2-butene', 14) + M('C/C=C\\C', 'E: (Z)-2-butene', 14) + M('C[C@@H](O)CC', 'F: (R)-2-butanol (주)', 14) + '</div>'
 DEF = '(단, 각 반응에서는 적절한 분리·정제 과정을 수행하였다.)'
 
+
+# ───────────────────────── 메커니즘·구조 그림 (해설지 mech=) ─────────────────────────
+# 입체 SMILES 의 R/S 는 RDKit(CIP 라벨러; 더미 원자는 실제 치환기로 바꾸어)로, 고리 cis/trans 는 3D 배치로 확인함.
+_EtO = 'EtO<sub>2</sub>C'
+_CO2Et = 'CO<sub>2</sub>Et'
+
+
+def _note(t):
+    return f'<div class="mstep"><div class="mcap" style="max-width:46mm;text-align:left">{t}</div></div>'
+
+
+def chair_attack(sc=1.7, fs=10):
+    """4-tert-butylcyclohexanone 의자 형태와 하이드라이드의 축/적도 방향 접근 경로(이 파일 전용 SVG)."""
+    base = [(0, 30), (25, 12), (60, 22), (90, 10), (65, 28), (30, 18)]
+    P = [(x * sc + 70, y * sc * 1.45 + 50) for x, y in base]
+    s = ''
+    for k in range(6):
+        (x0, y0), (x1, y1) = P[k], P[(k + 1) % 6]
+        s += f'<line x1="{x0:.1f}" y1="{y0:.1f}" x2="{x1:.1f}" y2="{y1:.1f}" stroke="#000" stroke-width="1.3"/>'
+
+    def bond(k, d, Ln, lab, anc='middle', dy=0, col='#000'):
+        x0, y0 = P[k]; x1, y1 = x0 + d[0] * Ln, y0 + d[1] * Ln
+        t = f'<line x1="{x0:.1f}" y1="{y0:.1f}" x2="{x1:.1f}" y2="{y1:.1f}" stroke="#000" stroke-width="1.1"/>'
+        tx = x1 + (2 if anc == 'start' else -2 if anc == 'end' else 0)
+        return t + f'<text x="{tx:.1f}" y="{y1 + dy:.1f}" font-size="{fs}" text-anchor="{anc}" fill="{col}" {_F}>{lab}</text>'
+    # t-Bu (C4 = 위치 0, 적도)
+    a1, a2 = P[1], P[2]; vx, vy = a1[0] - a2[0], a1[1] - a2[1]; n = math.hypot(vx, vy)
+    s += bond(0, (vx / n, vy / n), 24, '<tspan>t-Bu</tspan>', 'end', 4)
+    # 축 방향 H (C3·C5 = 위치 1·5, 위쪽)
+    s += bond(1, (0, -1), 20, 'H', 'middle', -2, '#c00')
+    s += bond(5, (0, -1), 20, 'H', 'middle', -2, '#c00')
+    # C=O (C1 = 위치 3): 두 이웃의 중점 반대쪽
+    mx, my = (P[2][0] + P[4][0]) / 2, (P[2][1] + P[4][1]) / 2
+    ux, uy = P[3][0] - mx, P[3][1] - my; n = math.hypot(ux, uy); ux, uy = ux / n, uy / n
+    x3, y3 = P[3]; xo, yo = x3 + ux * 24, y3 + uy * 24
+    for o in (-1.6, 1.6):
+        s += f'<line x1="{x3 - uy * o:.1f}" y1="{y3 + ux * o:.1f}" x2="{xo - uy * o:.1f}" y2="{yo + ux * o:.1f}" stroke="#000" stroke-width="1.1"/>'
+    s += f'<text x="{xo + 3:.1f}" y="{yo + 2:.1f}" font-size="{fs}" {_F}>O</text>'
+
+    def appr(xa, ya, xb, yb, col, lab, lx, ly, anc):
+        hx, hy = xb - xa, yb - ya; n = math.hypot(hx, hy); hx, hy = hx / n, hy / n
+        bx, by = xb - hx * 7, yb - hy * 7
+        r = (f'<line x1="{xa:.1f}" y1="{ya:.1f}" x2="{bx:.1f}" y2="{by:.1f}" stroke="{col}" stroke-width="1.4" stroke-dasharray="4,2.5"/>'
+             f'<path d="M{xb:.1f},{yb:.1f} L{bx - hy * 3.5:.1f},{by + hx * 3.5:.1f} L{bx + hy * 3.5:.1f},{by - hx * 3.5:.1f} z" fill="{col}"/>')
+        return r + f'<text x="{lx:.1f}" y="{ly:.1f}" font-size="8.5" text-anchor="{anc}" fill="{col}" {_F}>{lab}</text>'
+    s += appr(x3 - 4, y3 - 46, x3 - 1, y3 - 6, '#555', '축 방향: 작은 H⁻ (NaBH₄)', x3 - 8, y3 - 49, 'middle')
+    s += appr(x3 + 26, y3 + 44, x3 + 3, y3 + 6, '#c00', '적도 방향: L-Selectride', x3 + 28, y3 + 56, 'middle')
+    s += f'<text x="{P[1][0] + 5:.1f}" y="{P[1][1] - 26:.1f}" font-size="8" fill="#c00" {_F}>1,3-이축 H가 축 경로를 막음</text>'
+    W, H = 300, 170
+    return f'<svg width="{W}" height="{H}" viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg">{s}</svg>'
+
+
+_eq_all = {(k, 'eq'): 'iPr' for k in range(6)}
+_ax_all = {(k, 'ax'): 'iPr' for k in range(6)}
+
+def _nm(*a, **k):
+    """newman() 에서 'C3' 같은 원자 번호가 아래첨자로 바뀌지 않게 함."""
+    return re.sub(r'C<tspan baseline-shift="sub" font-size="75%">(\d)</tspan>', r'C\1', newman(*a, **k))
+
+
+FIG = {}
+FIG['2025B-2'] = [
+    mechanism(chair(_eq_all, '모두 적도 (iPr–iPr 기어 충돌)', sc=1.9, fs=9.5),
+              ('⇌', '고리 뒤집힘'),
+              chair(_ax_all, '모두 축 (더 안정; 고리 H는 모두 적도)', sc=1.9, fs=9.5),
+              title='[그림 1] X(all-trans)의 두 의자 형태 — 이웃 치환기가 위·아래로 교대하므로 “모두 적도” 또는 “모두 축”'),
+    mechanism(_nm([(90, 'H'), (210, 'C6'), (330, 'iPr')], [(270, 'H'), (150, 'C3'), (30, 'iPr')], 'iPr 적도: H/H 180°'),
+              _nm([(90, 'iPr'), (210, 'C6'), (330, 'H')], [(270, 'iPr'), (150, 'C3'), (30, 'H')], 'iPr 축: H/H ≈ 60° ✔'),
+              _note('C1(앞)–C2(뒤) 결합을 따라 본 Newman 투영.<br>iPr이 적도이면 두 고리 H는 축(<i>trans</i>-이축) → 이면각 180°, '
+                    'iPr이 축이면 두 고리 H는 적도 → 이면각 ≈ 60°.<br>⇒ 자료(모두 약 60°)와 맞는 것은 <b>모두 축</b> 형태'),
+              title='[그림 2] 이웃한 고리 H의 이면각으로 형태 판정'),
+]
+
+FIG['2024B-2'] = [
+    mechanism(
+        step('[*:1].[H:2][CH:3]([*:5])[*:7]', arrows=[ar('lp', 1, 'a', 2), ar('b', (2, 3), 'a', 3)],
+             labels={1: 'B:', 5: _CO2Et, 7: _CO2Et}, scale=26, caption='① 말론산 에스터의 산성 α-H 제거<br>(Cu에 배위한 엔올레이트)'),
+        ('→', ''),
+        step('[*:5][CH-:3][*:7].[*:8]/[CH:9]=[CH:10]/[N+:11](=[O:12])[O-:13]', lp=[3, 12],
+             arrows=[ar('lp', 3, 'a', 9), ar('b', (9, 10), 'm', (10, 11)), ar('b', (11, 12), 'a', 12)],
+             labels={5: _EtO, 7: _CO2Et, 8: 'Ph'}, scale=26, gap=1.6, frag_dy={0: -0.9, 1: 0.5}, frag_rot={1: -30},
+             caption='② β-탄소(Ph 쪽) 공격 — 카이랄 Cu 착물이<br>nitroalkene의 한쪽 면만 열어 둠'),
+        ('→', ''),
+        step('[*:20][H:21].[*:5][CH:3]([*:7])[C@H:9]([CH:10]=[N+:11]([O-:12])[O-:13])[*:8]',
+             arrows=[ar('b', (10, 11), 'a', 21), ar('b', (21, 20), 'a', 20)],
+             labels={5: _CO2Et, 7: _CO2Et, 8: 'Ph', 20: 'B<sup>+</sup>'}, scale=24, gap=1.2,
+             caption='③ 나이트로네이트의 탄소 양성자화'),
+        ('→', ''),
+        step('[*:5][CH:3]([*:7])[C@H:9]([CH2:10][N+:11](=[O:12])[O-:13])[c:8]1ccccc1',
+             labels={5: _EtO, 7: _CO2Et}, notes={10: '1', 8: '2', 3: '3'}, scale=22,
+             caption='<b>P</b> = (<i>S</i>) — CIP 순위(숫자): 1 CH<sub>2</sub>NO<sub>2</sub> (N,H,H)<br>&gt; 2 Ph (C,C,C) &gt; 3 CH(CO<sub>2</sub>Et)<sub>2</sub> (C,C,H) &gt; H'),
+        title='[그림 1] Cu 촉매 비대칭 Michael 첨가 — 말론산 엔올레이트 → 나이트로네이트 → P(<i>S</i>)'),
+]
+
+_ph = {6: 'Ph', 7: 'Ph'}
+FIG['2023B-2'] = [
+    mechanism(
+        step('[Br:4][Br:3].[*:6]/[CH:1]=[CH:2]/[*:7]', layout='v', gap=1.2, labels=_ph, lp=[3],
+             arrows=[ar('b', (1, 2), 'a', 3), ar('b', (3, 4), 'a', 4)], scale=26,
+             caption='① π 전자 → Br, Br–Br 이종 분해'),
+        ('→', ''),
+        step('[*:6][C@H:1]1[Br+:3][C@@H:2]1[*:7].[Br-:4]', labels=_ph, lp=[4], gap=1.0, frag_dy={1: -0.8},
+             arrows=[ar('lp', 4, 'a', 2), ar('b', (2, 3), 'a', 3)], scale=26,
+             caption='② 브로모늄 이온: Br<sup>−</sup>가 Br<sup>+</sup>의 반대쪽(뒷면)에서 S<sub>N</sub>2'),
+        ('→', ''),
+        step('[*:6][C@H:1]([C@@H:2]([Br:4])[*:7])[Br:3]', labels=_ph, scale=26,
+             caption='<b>B</b>: meso-(1<i>R</i>,2<i>S</i>) — 안티 첨가'),
+        title='[그림 1] (<i>E</i>)-stilbene의 Br<sub>2</sub> 첨가 — 브로모늄 이온의 뒷면 개환(anti) → 메조'),
+    mechanism(
+        step('[*:6][C@H:1]1[Br+:3][C@@H:2]1[*:7].[OH2:4]', labels=_ph, lp=[4], gap=1.0, frag_dy={1: -0.8},
+             arrows=[ar('lp', 4, 'a', 2), ar('b', (2, 3), 'a', 3)], scale=24,
+             caption='③ H<sub>2</sub>O가 뒷면 공격'),
+        ('→', '', '−H<sup>+</sup>'),
+        step('[*:6][C@H:1]([C@@H:2]([OH:4])[*:7])[Br:3]', labels=_ph, scale=24,
+             caption='<b>C</b> (1<i>S</i>,2<i>R</i>) 브로모하이드린<br>(+ 거울상, 메조 아님)'),
+        ('→', 'NaOH'),
+        step('[*:6][C@H:1]([C@@H:2]([O-:4])[*:7])[Br:3]', labels=_ph, lp=[4], scale=24,
+             arrows=[ar('lp', 4, 'a', 1), ar('b', (1, 3), 'a', 3)],
+             caption='④ O<sup>−</sup>와 Br이 anti일 때<br>분자 내 S<sub>N</sub>2 (C–Br 탄소 반전)'),
+        ('→', ''),
+        step('[*:6][C@H:1]1[C@H:2]([*:7])[O:4]1', labels=_ph, scale=24,
+             caption='<b>D</b> <i>trans</i>-stilbene oxide<br>(2<i>S</i>,3<i>S</i>) + 거울상'),
+        title='[그림 2] 브로모하이드린 형성(anti) → 분자 내 S<sub>N</sub>2 고리 닫힘'),
+    mechanism(
+        step('[OH2+:9][H:8].[*:6][C@H:1]1[C@H:2]([*:7])[O:4]1', labels=_ph, lp=[4], gap=2.0, frag_dy={0: 0.8},
+             arrows=[ar('lp', 4, 'a', 8), ar('b', (8, 9), 'a', 9)], scale=24, caption='⑤ 에폭사이드 O 양성자화'),
+        ('⇌', ''),
+        step('[*:6][C@H:1]1[C@H:2]([*:7])[OH+:4]1.[OH2:5]', labels=_ph, lp=[5], frag_dy={1: -0.9},
+             arrows=[ar('lp', 5, 'a', 2), ar('b', (2, 4), 'a', 4)], scale=24, caption='⑥ H<sub>2</sub>O가 C–O 반대쪽에서 공격'),
+        ('→', '', '−H<sup>+</sup>'),
+        step('[*:6][C@H:1]([OH:4])[C@H:2]([OH:5])[*:7]', labels=_ph, scale=24,
+             caption='<b>E</b> meso-hydrobenzoin (1<i>R</i>,2<i>S</i>)'),
+        title='[그림 3] 산 촉매 에폭사이드 개환 — 한 탄소만 반전 → 순 anti 다이하이드록시화 → 메조'),
+]
+
+_EtOm = 'CC[O-:1].'
+_E2kw = dict(frag_dx={0: 2.0}, frag_dy={0: 2.9}, scale=22)
+FIG['2021B-8'] = [
+    mechanism(
+        chair({(4, 'eq'): 'Br', (4, 'ax'): 'H', (5, 'eq'): 'CH3', (5, 'ax'): 'H'}, 'A 이적도 (안정, E2 불가)', sc=1.1, ring_lbl={4: '1', 5: '2'}),
+        ('⇌', '고리 뒤집힘'),
+        chair({(4, 'ax'): 'Br', (5, 'ax'): 'CH3', (3, 'ax'): 'H', (3, 'eq'): 'H', (5, 'eq'): 'H'}, 'A 이축 (반응성 형태)', sc=1.1, ring_lbl={4: '1', 5: '2', 3: '6'}),
+        ('→', ''),
+        step(_EtOm + 'C[C@@H]1CCC[C@@:3]([H:2])([*:9])[C@H:4]1[Br:5]', labels={9: 'H'}, lp=[1],
+             arrows=[ar('lp', 1, 'a', 2), ar('b', (3, 2), 'm', (3, 4)), ar('b', (4, 5), 'a', 5)], **_E2kw,
+             caption='C6의 축 H(쐐기)와 Br(점선)이 <i>trans</i>-이축 → E2'),
+        ('→', ''),
+        step('C[C@@H]1CCCC=C1', scale=24, caption='<b>B</b> (<i>R</i>)-3-methylcyclohexene'),
+        title='[그림 1] <b>A</b>(<i>trans</i>)의 E2 — C2의 축 자리는 CH<sub>3</sub>가 차지하므로 C6–H만 anti-periplanar'),
+    mechanism(
+        chair({(4, 'ax'): 'Br', (4, 'eq'): 'H', (5, 'eq'): 'CH3', (5, 'ax'): 'H', (3, 'ax'): 'H'}, 'C (가장 안정한 형태 = 반응성 형태)', sc=1.1, ring_lbl={4: '1', 5: '2', 3: '6'}),
+        ('→', ''),
+        step(_EtOm + 'C[C@:3]1([H:2])CCCC[C@@H:4]1[Br:5]', lp=[1],
+             arrows=[ar('lp', 1, 'a', 2), ar('b', (3, 2), 'm', (3, 4)), ar('b', (4, 5), 'a', 5)], **_E2kw,
+             caption='C2의 축 H와 Br이 <i>trans</i>-이축 → 더 치환된 C=C'),
+        ('→', ''),
+        step('CC1=CCCCC1', scale=24, caption='<b>D</b> 1-methylcyclohexene (Zaitsev)'),
+        title='[그림 2] <b>C</b>(<i>cis</i>)의 E2 — Br 축 형태가 바닥 상태이므로 빠르고, C2–H 제거가 가능'),
+    mechanism(
+        _nm([(270, 'Br'), (30, 'C2'), (150, 'H')], [(90, 'H'), (330, 'C5'), (210, 'D')], 'A′ C1(앞)–C6(뒤)'),
+        _note('Br(아래)과 180°인 뒤 탄소 원자는 H<br>D는 Br과 gauche(60°) → 제거 불가'),
+        step(_EtOm + 'C[C@@H]1CCC[C@:3]([2H:9])([H:2])[C@H:4]1[Br:5]', labels={9: 'D'}, lp=[1],
+             arrows=[ar('lp', 1, 'a', 2), ar('b', (3, 2), 'm', (3, 4)), ar('b', (4, 5), 'a', 5)], **_E2kw,
+             caption='D는 Br과 <i>cis</i>(적도), H는 <i>trans</i>(축)'),
+        ('→', ''),
+        step('C[C@@H]1CCCC([2H:9])=C1', labels={9: 'D'}, scale=24, caption='<b>E</b> (<i>R</i>)-1-deuterio-<br>3-methylcyclohexene'),
+        title='[그림 3] <b>A′</b>의 E2 — anti-periplanar H만 떨어지고 D는 남음'),
+]
+
+FIG['2018A-4'] = [
+    mechanism(
+        newman([(270, 'Br'), (30, 'CH3'), (150, 'H')], [(90, 'H'), (210, 'CH3'), (330, 'H')], 'C2(앞)–C3(뒤)'),
+        step(_EtOm + '[H:2][CH:3](C)[CH:4](C)[Br:5]', lp=[1],
+             arrows=[ar('lp', 1, 'a', 2), ar('b', (3, 2), 'm', (3, 4)), ar('b', (4, 5), 'a', 5)], scale=26,
+             caption='H와 Br anti-periplanar, 두 CH<sub>3</sub>도 anti'),
+        ('→', ''),
+        step('C/C=C/C', scale=26, caption='<b>B</b> (<i>E</i>)-2-butene (주)'),
+        title='[그림 1] 2-bromobutane의 E2 — Zaitsev, 두 CH<sub>3</sub>가 anti인 형태에서 (<i>E</i>)'),
+    mechanism(
+        step('[H:3][BH2:4].C/[CH:1]=[CH:2]/C', layout='v', gap=1.4, labels={4: 'BH<sub>2</sub>'},
+             arrows=[ar('b', (1, 2), 'm', (2, 4)), ar('b', (4, 3), 'm', (3, 1))], scale=28,
+             caption='① 4중심 협동 syn 첨가<br>(B는 C, H는 옆 C로 — 같은 면)'),
+        ('→', '위 면 : 아래 면', '= 1 : 1'),
+        step('C[C@@H]([BH2:1])CC.C[C@H]([BH2:2])CC', labels={1: 'BH<sub>2</sub>', 2: 'BH<sub>2</sub>'}, scale=24, gap=2.2,
+             caption='(<i>R</i>) + (<i>S</i>) 알킬보레인<br>(거울상 전이 상태 → 같은 속도)'),
+        ('→', 'H<sub>2</sub>O<sub>2</sub>, NaOH', '배열 유지'),
+        step('C[C@@H](O)CC.C[C@H](O)CC', scale=24, gap=2.2, caption='<b>C</b> (<i>R</i>)/(<i>S</i>)-2-butanol 1 : 1 (라세미)'),
+        title='[그림 2] 비카이랄 BH<sub>3</sub>의 수소화붕소 첨가 — 두 거울상 면을 구별하지 못함'),
+    mechanism(
+        step('C/C=C\\C', scale=26, caption='<b>E</b> <i>cis</i>-2-butene'),
+        ('→', 'Ipc<sub>2</sub>BH', '한 면 우선(부분입체 TS)'),
+        step('C[C@@H:1]([B:2]([*:6])[*:7])CC.[OH:4][O-:3]', labels={6: 'Ipc', 7: 'Ipc'}, lp=[3],
+             arrows=[ar('lp', 3, 'a', 2)], scale=24, caption='② HOO<sup>−</sup>가 B의 빈 p 오비탈 공격'),
+        ('→', ''),
+        step('C[C@@H:1]([B-:2]([*:6])([*:7])[O:3][OH:4])CC', labels={6: 'Ipc', 7: 'Ipc'},
+             arrows=[ar('b', (1, 2), 'm', (1, 3)), ar('b', (3, 4), 'a', 4)], scale=24,
+             caption='③ 1,2-알킬 이동(O–O 끊김) — C 배열 유지'),
+        ('→', 'H<sub>2</sub>O', '(B–O 가수분해)'),
+        step('C[C@@H](O)CC', scale=26, caption='<b>F</b> (<i>R</i>)-2-butanol (과량)'),
+        title='[그림 3] 카이랄 Ipc<sub>2</sub>BH와 산화 단계 — 면 선택으로 정해진 입체가 그대로 유지'),
+]
+
+_sh = {10: 'CH<sub>2</sub>OBn'}
+FIG['2017A-13'] = [
+    mechanism(
+        step('OC[C@@:2]1([CH3:9])[O:1][C@@H:3]1[*:10]', labels=_sh, lp=[1], scale=24, caption='<b>A</b> (2<i>R</i>,3<i>R</i>)'),
+        ('⇌', 'H<sup>+</sup>', '① O 양성자화'),
+        step('OC[C@@:2]1([CH3:9])[OH+:1][C@@H:3]1[*:10].[CH3:11][O:12][H]', labels=_sh, lp=[12], frag_rot={0: 60}, layout='v', frag_dx={1: 0.9},
+             arrows=[ar('lp', 12, 'a', 2), ar('b', (2, 1), 'a', 1)], scale=24,
+             caption='② C2–O가 먼저 늘어나 3차 C2에 δ+ (S<sub>N</sub>1 성격)<br>→ CH<sub>3</sub>OH가 C2를 O 반대쪽(뒷면)에서 공격'),
+        ('→', '', '−H<sup>+</sup>'),
+        step('OC[C@:2]([CH3:9])([O:12][CH3:11])[C@H:3]([OH:1])[*:10]', labels=_sh, scale=24,
+             caption='<b>B</b> (2<i>S</i>,3<i>R</i>): C2 반전'),
+        title='[그림 1] 산 촉매 메탄올 분해 — 부분 양전하를 잘 안정화하는 3차 탄소(C2) 공격'),
+    mechanism(
+        step('[N-:13]=[N+:14]=[N-:15].OC[C@@:2]1([CH3:9])[O:1][C@@H:3]1[*:10]', labels=_sh, lp=[13], frag_rot={1: 240}, frag_dy={0: 1.8}, frag_dx={0: 3.9},
+             arrows=[ar('lp', 13, 'a', 3), ar('b', (3, 1), 'a', 1)], scale=24,
+             caption='③ N<sub>3</sub><sup>−</sup>가 덜 막힌 2차 C3를 뒷면 공격 (S<sub>N</sub>2)'),
+        ('→', '', 'NH<sub>4</sub><sup>+</sup> → O<sup>−</sup> 양성자화'),
+        step('OC[C@@:2]([CH3:9])([OH:1])[C@@H:3]([N:13]=[N+:14]=[N-:15])[*:10]', labels=_sh, scale=24,
+             caption='<b>C</b> (2<i>S</i>,3<i>S</i>): C3 반전, C2 공간 배치 유지'),
+        title='[그림 2] NaN<sub>3</sub> 개환 — 결합 형성이 앞서는 S<sub>N</sub>2: 입체 장애가 위치 결정'),
+]
+
+FIG['2016A-13'] = [
+    mechanism(
+        step('[H:2][B-:1].[O:4]=[C:3]1CCC(CC1)C(C)(C)C', labels={1: 'B(sBu)<sub>3</sub>'}, lp=[4],
+             arrows=[ar('b', (2, 1), 'a', 3), ar('b', (3, 4), 'a', 4)], scale=24, gap=2.2, frag_dy={0: 0.6},
+             caption='① [H–B(<i>s</i>-Bu)<sub>3</sub>]<sup>−</sup>의 B–H 전자쌍(H<sup>−</sup>) → C=O 탄소'),
+        ('→', 'Li<sup>+</sup>', '−78 ℃'),
+        step('[O-][C@@H]1CC[C@@H](CC1)C(C)(C)C', scale=24, caption='알콕사이드 (O와 t-Bu <i>cis</i>)'),
+        ('→', 'H<sub>3</sub>O<sup>+</sup>'),
+        chair({(3, 'ax'): 'OH', (3, 'eq'): 'H', (0, 'eq'): 'C(CH3)3', (0, 'ax'): 'H'}, '<b>C</b>: OH 축 (<i>cis</i>)', sc=1.0),
+        title='[그림 1] L-Selectride의 하이드라이드 전달 (비가역, 속도론적 조절)'),
+    mechanism(
+        svgbox(chair_attack()),
+        _note('t-Bu가 적도에 고정 → 고리 뒤집힘 없음.<br>'
+              '<b>축 방향 접근</b>(위): C3·C5의 축 H 옆을 지나야 함 → 작은 NaBH<sub>4</sub>만 가능 → OH 적도(<i>trans</i>).<br>'
+              '<b>적도 방향 접근</b>(아래): 입체적으로 열려 있음 → 부피 큰 L-Selectride → O<sup>−</sup>가 축으로 밀려남 → <b>C</b>(<i>cis</i>)'),
+        title='[그림 2] 하이드라이드의 접근 방향 — 축 경로는 1,3-이축 H에 막힘'),
+    mechanism(
+        chair({(3, 'ax'): 'Ph', (3, 'eq'): 'H', (1, 'ax'): 'H', (5, 'ax'): 'H'}, 'P (R 축): 1,3-이축 반발 2개', sc=1.0),
+        ('⇌', 'ΔG° = −(A값)'),
+        chair({(0, 'eq'): 'Ph', (0, 'ax'): 'H'}, 'Q (R 적도)', sc=1.0),
+        _note('[Q]/[P] = e<sup>A/RT</sup> (25 ℃)<br>Ph 11.7 → ≈110<br>iPr 9.2 → ≈40<br>OH 3.8 → ≈5'),
+        title='[그림 3] A값과 평형 상수 — 축 치환기와 C3·C5 축 H의 1,3-이축 반발'),
+]
+
+FIG['2015A-서술3'] = [
+    mechanism(
+        step('CCC#CCC', scale=24, caption='3-hexyne'),
+        ('→', 'Na', '(e<sup>−</sup> 1개)'),
+        step('CC/[C-:1]=[C:2]/CC.[H:3][NH2:4]', rad=[2], lp=[1], arrows=[ar('lp', 1, 'a', 3), ar('b', (3, 4), 'a', 4)],
+             scale=24, caption='① 라디칼 음이온 (두 Et <i>trans</i>)'),
+        ('→', ''),
+        step('CC/[CH:1]=[C:2]/CC', rad=[2], scale=24, caption='② <i>trans</i>-비닐 라디칼'),
+        ('→', 'Na', '(e<sup>−</sup>)'),
+        step('CC/[CH:1]=[C-:2]/CC.[H:3][NH2:4]', lp=[2], arrows=[ar('lp', 2, 'a', 3), ar('b', (3, 4), 'a', 4)],
+             scale=24, caption='③ 비닐 음이온 양성자화'),
+        ('→', ''),
+        step('CC/C=C/CC', scale=24, caption='<b>A</b> (<i>E</i>)-3-hexene'),
+        title='[그림 1] (가) Na/NH<sub>3</sub>(<i>l</i>) 용해 금속 환원 — <i>trans</i> 비닐 라디칼·음이온을 거쳐 (<i>E</i>)-알켄'),
+    mechanism(
+        step('[O:3]=[Os:5](=[O:4])(=O)=O.CC/[CH:1]=[CH:2]/CC', layout='v', gap=1.3, frag_rot={0: 180},
+             arrows=[ar('b', (1, 2), 'm', (2, 3)), ar('b', (5, 3), 'a', 5), ar('b', (5, 4), 'm', (4, 1))], scale=30,
+             caption='① [3+2] 고리 첨가: 두 O가 같은 면(syn)에 동시에'),
+        ('→', ''),
+        step('CC[C@H:1]1[O:3][Os:5](=O)(=O)[O:4][C@@H:2]1CC', scale=26, caption='고리형 오스뮴산 에스터<br>(두 Et <i>trans</i>)'),
+        ('→', 'NaHSO<sub>3</sub>/H<sub>2</sub>O', 'Os–O만 끊김'),
+        step('CC[C@H:1]([C@H:2]([OH:4])CC)[OH:3]', scale=24, caption='<b>B</b> (3<i>R</i>,4<i>R</i>)<br>반대 면 → (3<i>S</i>,4<i>S</i>) 1 : 1 = 라셈'),
+        title='[그림 2] OsO<sub>4</sub> syn 다이하이드록시화 — C–O 결합은 유지되므로 syn 관계가 그대로'),
+    mechanism(
+        step('CC/C=C/CC', scale=24, caption='<b>A</b>'),
+        ('→', 'CH<sub>3</sub>CO<sub>3</sub>H', '협동적 O 전달(syn)'),
+        step('CC[C@@H:1]1[O:3][C@H:2]1CC', scale=24, caption='<i>trans</i>-에폭사이드 (<i>S</i>,<i>S</i>)<br>+ 거울상'),
+        ('→', 'H<sub>3</sub>O<sup>+</sup>'),
+        step('CC[C@@H:1]1[OH+:3][C@H:2]1CC.[OH2:5]', lp=[5], layout='v', gap=0.9, frag_dx={1: -0.9},
+             arrows=[ar('lp', 5, 'a', 2), ar('b', (2, 3), 'a', 3)], scale=24, caption='② 물이 C–O 반대쪽에서 공격'),
+        ('→', '', '−H<sup>+</sup>'),
+        step('CC[C@H:1]([OH:3])[C@H:2]([OH:5])CC', scale=24, caption='<b>C</b> meso-(3<i>R</i>,4<i>S</i>)'),
+        title='[그림 3] 과산 에폭시화(syn) + 산 촉매 개환(anti, 한 C만 반전) → 순 anti 첨가 → 메조'),
+]
+
+FIG['2015A-기입8'] = [
+    mechanism(
+        _nm([(90, 'H'), (210, 'H'), (330, 'H')], [(112, 'H'), (232, 'H'), (352, 'H')], '에테인: 12 = 3 × 4.0'),
+        _nm([(90, 'H'), (210, 'H'), (330, 'H')], [(112, 'H'), (232, '••'), (352, '••')], '메탄올 (C 앞, O 뒤)'),
+        _note('가림 형태(뒤 결합을 약간 비켜 그림).<br>에테인: H/H 가림 3개.<br>메탄올: H/H 1개 + C–H/비공유 전자쌍 2개<br>4.2 = 4.0 + 2<i>x</i> → <i>x</i> = 0.1 kJ/mol (㉠)'),
+        title='[그림 1] 가림 상호작용의 가산성 — 에테인(H/H 1개 = 4.0 kJ/mol)과 메탄올'),
+    mechanism(
+        _nm([(90, 'H'), (210, 'C1'), (330, 'C8')], [(270, 'H'), (150, 'C4'), (30, 'C5')], 'X (trans): C8/C4 anti'),
+        _nm([(90, 'H'), (210, 'C1'), (330, 'C8')], [(150, 'H'), (270, 'C4'), (30, 'C5')], 'Y (cis): C8/C4 gauche'),
+        _note('C8a(앞)–C4a(뒤) Newman 투영. 고리 안의 C1/C4, C8/C5 gauche는 둘 다 공통.<br>'
+              '<b>Y</b>에서만 C4–C4a–C8a–C8 gauche(iii)가 추가되고, 같은 이유로 C8–C8a–C1–C2(i), C4–C4a–C5–C6(ii)도 gauche'
+              ' → 3 × 3.8 = 11.4 kJ/mol (㉡·㉢)'),
+        title='[그림 2] decalin 접합 결합의 Newman 투영 — <i>cis</i>에서 추가되는 gauche-뷰테인 상호작용'),
+]
+
 ITEMS = [
 # ───────────────────────────── 1. 2025B-2 ─────────────────────────────
 dict(
@@ -187,6 +487,7 @@ dict(
 <p class="ask"><b class="lbltxt">B</b>와 <b class="lbltxt">D</b>에 해당하는 형태의 이름을 각각 쓰고, <b class="lbltxt">D</b>의 점군을 쓰시오. 또한 <b class="lbltxt">X</b>의 가장 안정한 의자 형태에서 6개의 아이소프로필기가 축(axial) 방향과 적도(equatorial) 방향 중 어느 쪽에 놓이는지 쓰시오. [[PTS]]</p>''',
     answer='''<b class="lbltxt">B</b> = 보트 형태, <b class="lbltxt">D</b> = 꼬인보트 형태, <b class="lbltxt">D</b>의 점군 = <b>D<sub>2</sub></b><br>
 <b class="lbltxt">X</b>: 6개의 아이소프로필기가 모두 <b>축 방향</b>(고리 수소는 모두 적도 방향)''',
+    mech=FIG['2025B-2'],
     explain='''<p><b>핵심 반응·개념:</b> 사이클로헥세인의 형태 에너지 지형(의자 ⇄ 반쪽의자 ⇄ 꼬인보트 ⇄ 보트), 점군, 이웃 치환기의 기어(gear) 충돌.</p>
 <p>① 양 끝의 최저점 <b>C</b>는 각 변형·비틀림 변형이 모두 없는 <b>의자 형태</b>(0 kJ/mol, 점군 D<sub>3d</sub>)이다. 가장 높은 봉우리 <b>A</b>는 고리 탄소 5개(4개 이상)가 거의 한 평면에 놓여 가림이 심한 <b>반쪽의자</b>(≈45 kJ/mol, C<sub>2</sub>)로, 고리 뒤집힘의 전이 상태이다.</p>
 <p>② 두 개의 국소 최저점 <b>D</b>(≈23 kJ/mol)는 실제로 존재하는 중간체인 <b>꼬인보트</b>이다. 보트의 깃대(flagpole) 수소 반발과 C2–C3·C5–C6 결합의 가림을 비틀어서 줄인 형태다. 서로 수직인 C<sub>2</sub> 축 3개를 가지며 거울면이 없으므로 점군은 <b>D<sub>2</sub></b>이다(카이랄한 형태로, 두 <b>D</b>는 서로 거울상 관계다).</p>
@@ -218,6 +519,7 @@ dict(
 <p class="ask">피크 ㉠에 해당하는 화합물의 <i>R</i>, <i>S</i> 배열을 쓰고, 용매 <i>X</i>를 쓰시오. [[PTS]]</p>''',
     answer=f'''<div class="ansbox">{M(MICHAEL_R, '㉠: (R)-거울상이성질체', 14)}</div>
 ㉠ = <b><i>R</i></b> (P는 <i>S</i>) · ee = (43 − 7)/(43 + 7) × 100 = 72 % → 용매 <i>X</i> = <b>CH<sub>3</sub>CN</b>''',
+    mech=FIG['2024B-2'],
     explain='''<p><b>핵심 반응·개념:</b> 카이랄 촉매에 의한 거울상선택적 Michael 첨가, CIP 우선순위, 카이랄 크로마토그래피와 ee 계산.</p>
 <p>① 메커니즘: 염기와 Cu 촉매가 diethyl malonate의 산성 α-H(pK<sub>a</sub> ≈ 13)를 떼어 Cu에 배위한 엔올레이트를 만든다. 이 엔올레이트가 nitroalkene의 β-탄소(Ph가 붙은 탄소)를 공격하고, 생긴 나이트로네이트가 양성자화되어 P가 된다. 카이랄 리간드가 nitroalkene의 한쪽 거울상 면(enantiotopic face)만 열어 두므로 한 거울상이성질체가 우세해진다. 생성물에서 새로 생긴 카이랄 중심은 Ph가 붙은 벤질 탄소 하나뿐이다.</p>
 <p>② CIP: 카이랄 중심에 붙은 원자는 C(H<sub>2</sub>NO<sub>2</sub>) = (N, H, H), C<sub>6</sub>H<sub>5</sub> = (C, C, C), CH(CO<sub>2</sub>Et)<sub>2</sub> = (C, C, H), H이다. 첫 번째 차이점에서 원자 번호가 가장 큰 N을 가진 <b>CH<sub>2</sub>NO<sub>2</sub> &gt; Ph &gt; CH(CO<sub>2</sub>Et)<sub>2</sub> &gt; H</b>이다. “산소가 4개 있는 malonate 쪽이 1순위”라고 판단하는 것은 흔한 오답이다. 순위는 바로 붙은 원자 집합을 먼저 비교한다. 그려진 P는 <b><i>S</i></b>이다(RDKit로 확인).</p>
@@ -243,6 +545,7 @@ dict(
     answer=f'''<div class="ansbox">{M(STO_RR, 'D: trans-stilbene oxide (라셈)', 15)}</div>
 <b class="lbltxt">D</b> = <i>trans</i>-2,3-diphenyloxirane((2<i>R</i>,3<i>R</i>)와 (2<i>S</i>,3<i>S</i>)의 라셈 혼합물, 한쪽만 그려도 됨)<br>
 메조 화합물: <b class="lbltxt">B</b>, <b class="lbltxt">E</b>''',
+    mech=FIG['2023B-2'],
     explain=f'''<p><b>핵심 반응:</b> 브로모늄 이온을 거치는 안티 첨가, 할로하이드린 형성, 분자 내 S<sub>N</sub>2 에폭사이드 고리 닫힘, 산 촉매 에폭사이드 안티 개환 → <i>trans</i> 알켄 + 순(net) 안티 다이하이드록시화 = 메조.</p>
 <p>① <b class="lbltxt">B</b>는 그림에서 (1<i>R</i>,2<i>S</i>)이고 대칭면을 가지는 meso-1,2-dibromo-1,2-diphenylethane이다. Br<sub>2</sub> 첨가는 브로모늄 이온을 거친 <b>안티 첨가</b>이고, 대칭 알켄에 안티 첨가하여 메조가 생기려면 알켄이 <i>trans</i>여야 한다. 따라서 <b class="lbltxt">A</b> = (<i>E</i>)-stilbene이다(<i>cis</i>-stilbene이면 (<i>R,R</i>)/(<i>S,S</i>) 라셈 다이브로마이드).</p>
 <div class="ansbox">{M(E_STILB, 'A: (E)-stilbene', 13)}{M(BRHYD, 'C: 브로모하이드린 (라셈)', 13)}{M(HB_MESO, 'E: meso-hydrobenzoin', 13)}</div>
@@ -272,6 +575,7 @@ dict(
 반응 속도: <b class="lbltxt">C</b> &gt; <b class="lbltxt">A</b>. <b class="lbltxt">C</b>의 가장 안정한 의자 형태(Br 축, CH<sub>3</sub> 적도):
 <div class="ansbox">{chair({(1, 'ax'): 'Br', (1, 'eq'): 'H', (0, 'eq'): 'CH3', (0, 'ax'): 'H'}, 'C (Br 축 · CH₃ 적도)', ring_lbl={1: '1', 0: '2'})}</div>
 <div class="ansbox">{M(E_PROD, 'E: (R)-1-deuterio-3-methylcyclohexene', 15)}{newman([(270, 'Br'), (30, 'C2'), (150, 'H')], [(90, 'H'), (330, 'C5'), (210, 'D')], 'A′ 반응성 형태 (C1 앞, C6 뒤)')}</div>''',
+    mech=FIG['2021B-8'],
     explain='''<p><b>핵심 반응:</b> E2 제거 — 이탈기와 β-H가 anti-periplanar(고리에서는 <b>trans-이축</b>)여야 한다. 그 결과 위치선택성(Zaitsev 여부)과 속도가 형태로 결정된다.</p>
 <p>① <b class="lbltxt">A</b> = (1<i>R</i>,2<i>R</i>)-<i>trans</i>-1-bromo-2-methylcyclohexane. 안정한 형태는 Br·CH<sub>3</sub>가 모두 적도인 형태인데, 이때 Br과 anti인 β-H가 없다. 고리가 뒤집혀 Br·CH<sub>3</sub>가 모두 축이 되어야 E2가 가능하다. 그 형태에서 C2의 축 자리는 CH<sub>3</sub>가 차지하므로 C2–H는 적도이고 제거될 수 없다. 남은 것은 C6의 축 H뿐이다. 그래서 Zaitsev 규칙에 어긋나는 <b class="lbltxt">B</b> = 3-methylcyclohexene만 생긴다. C2는 반응에 참여하지 않으므로 배열이 유지된다 → (<i>R</i>)-3-methylcyclohexene.</p>
 <p>② <b class="lbltxt">C</b> = (1<i>S</i>,2<i>R</i>)-<i>cis</i>-이성질체. 두 의자 형태 중 (Br 축, CH<sub>3</sub> 적도)가 (Br 적도, CH<sub>3</sub> 축)보다 A값 차이(CH<sub>3</sub> 7.3 vs Br ≈ 2 kJ/mol)만큼 안정하다. 바로 이 <b>가장 안정한 형태가 반응성 형태</b>다. Br(축)과 anti인 축 H가 C2와 C6에 모두 있으므로 더 치환된 <b class="lbltxt">D</b> = 1-methylcyclohexene(Zaitsev)이 주생성물이다(3-methylcyclohexene은 소량).</p>
@@ -299,6 +603,7 @@ dict(
 <p class="ask"><b class="lbltxt">A</b>와 <b class="lbltxt">D</b>의 구조를 각각 그리시오. 또한 [반응 2]의 <b class="lbltxt">F</b>는 광학 활성인 반면 [반응 1]의 <b class="lbltxt">C</b>는 라세미 혼합물로 얻어지는 이유를 서술하시오. [[PTS]]</p>''',
     answer=f'''<div class="ansbox">{M('CCC(C)Br', 'A: 2-bromobutane', 16)}{M('CC#CC', 'D: 2-butyne', 16)}</div>
 <b class="lbltxt">B</b>·<b class="lbltxt">E</b>의 두 면(re/si)은 거울상 관계(enantiotopic)이다. 비카이랄 BH<sub>3</sub>는 두 면에 같은 속도로 첨가되므로(거울상 전이 상태, 에너지 같음) C는 1 : 1 라세미가 된다. 카이랄 Ipc<sub>2</sub>BH는 두 면에서 부분입체이성질체 관계의 전이 상태를 만들고 그 에너지가 서로 달라 한 면으로 우선 첨가된다. 그래서 F는 한 거울상이성질체가 과량인 광학 활성 2-butanol이 된다.''',
+    mech=FIG['2018A-4'],
     explain=f'''<p><b>핵심 반응:</b> E2(Zaitsev) · Lindlar 환원(syn, <i>cis</i>-알켄) · 수소화붕소 첨가–산화(anti-Markovnikov, syn, 배열 유지) · 카이랄 보레인에 의한 비대칭 수소화붕소 첨가.</p>
 <p>① 역추론: 최종 생성물 C<sub>4</sub>H<sub>10</sub>O가 라세미 또는 광학 활성이므로 OH가 입체 중심에 있어야 하고, 이 조건을 만족하는 것은 2-butanol뿐이다. 수소화붕소 첨가로 2-butanol을 주려면 알켄이 2-butene이어야 한다. 1-butene은 anti-Markovnikov 첨가로 비카이랄 1-butanol을 주고, 2-methylpropene은 비카이랄 2-methyl-1-propanol을 준다.</p>
 <p>② [반응 1]: <b class="lbltxt">A</b>(C<sub>4</sub>H<sub>9</sub>Br) + NaOEt → 2-butene(주)이 되려면 <b class="lbltxt">A</b> = <b>2-bromobutane</b>이다. Zaitsev 규칙에 따라 더 치환된 2-butene(<i>trans</i> &gt; <i>cis</i>)이 1-butene보다 많다. 1-bromobutane은 S<sub>N</sub>2가 우세하고 E2를 해도 1-butene만 준다. <b class="lbltxt">B</b> = (<i>E</i>)-2-butene(주)이다.</p>
@@ -327,6 +632,7 @@ dict(
     answer=f'''<div class="ansbox">{M(SH_A, 'A: (2R,3R)', 14)}</div>
 <div class="ansbox">{M(SH_B, 'B: (2S,3R)', 13)}{M(SH_C, 'C: (2S,3S)', 13)}</div>
 A: C2 = <i>R</i>, C3 = <i>R</i>. B는 CH<sub>3</sub>OH가 <b>3차 탄소(C2)</b>를, C는 N<sub>3</sub><sup>−</sup>가 <b>2차 탄소(C3)</b>를 공격했고 두 경우 모두 공격받은 탄소는 반전되었다. 산 촉매 조건에서는 양성자화된 에폭사이드의 C–O 결합이 길어지면서 생기는 부분 양전하를 더 잘 안정화하는 3차 탄소가 공격받는다(S<sub>N</sub>1 성격, 전자 효과). 강한 음이온 친핵체(N<sub>3</sub><sup>−</sup>)는 S<sub>N</sub>2로 입체 장애가 작은 2차 탄소를 공격한다(입체 효과).''',
+    mech=FIG['2017A-13'],
     explain='''<p><b>핵심 반응:</b> Sharpless 비대칭 에폭시화(알릴 알코올의 OH가 Ti에 배위 → 면 선택), 에폭사이드 개환의 위치선택성(산: 더 치환된 C / 강한 친핵체: 덜 치환된 C)과 입체특이성(뒤쪽 공격 → 반전).</p>
 <p>① <b class="lbltxt">S</b>는 (<i>E</i>)-삼치환 알릴 알코올이다. Ti(O<i>i</i>-Pr)<sub>4</sub>–타르트레이트 착물에 S의 알콕사이드와 <i>t</i>-BuOO<sup>−</sup>가 함께 배위하고, 산소가 C=C의 한쪽 면으로만 전달된다(협동적, syn). 알켄의 기하가 그대로 유지되어 CH<sub>2</sub>OH와 CH<sub>2</sub>OBn은 <i>trans</i>로 남는다. 주어진 규칙에서 (−)-DET는 위쪽 면에 산소를 전달하므로 <b class="lbltxt">A</b> = (2<i>R</i>,3<i>R</i>)-3-[(benzyloxy)methyl]-2-methyloxiranylmethanol이다. (+)-DET라면 (2<i>S</i>,3<i>S</i>)가 된다(RDKit로 공간 배치를 대응시켜 확인).</p>
 <p>② CIP(A): C2 = O(고리) &gt; C3(O,C,H) &gt; CH<sub>2</sub>OH(O,H,H) &gt; CH<sub>3</sub> → <i>R</i>. C3 = O(고리) &gt; C2(O,C,C) &gt; CH<sub>2</sub>OBn(O,H,H) &gt; H → <i>R</i>.</p>
@@ -358,6 +664,7 @@ dict(
 <div class="ansbox">{chair({(3, 'ax'): 'OH', (3, 'eq'): 'H', (0, 'eq'): 'C(CH3)3', (0, 'ax'): 'H'}, 'C: cis-4-tert-butylcyclohexanol (OH 축)')}</div>
 이유: t-Bu가 적도에 고정된 의자 형태에서, 부피가 큰 L-Selectride는 C3·C5의 축 방향 H와 1,3-이축 반발을 일으키는 축 방향 접근을 하지 못한다. 그래서 덜 막힌 <b>적도 방향</b>에서 하이드라이드를 전달하고, 그 결과 O는 축으로 밀려나 열역학적으로 덜 안정한 <i>cis</i>(OH 축) 알코올이 생긴다(입체 접근 조절, 속도론적 생성물).<br>
 연소열이 더 큰 것: <b class="lbltxt">2</b>''',
+    mech=FIG['2016A-13'],
     explain='''<p><b>핵심 개념:</b> A값(ΔG°<sub>축→적도</sub>)과 K = e<sup>ΔG°/RT</sup>, t-Bu에 의한 형태 고정, 하이드라이드 환원의 축/적도 공격(작은 NaBH<sub>4</sub> vs 부피 큰 L-Selectride), 고리 고정과 꼬인보트 변형.</p>
 <p>① A값(kJ/mol, 25 ℃): C<sub>6</sub>H<sub>5</sub> ≈ 11.7(2.8 kcal) &gt; CH(CH<sub>3</sub>)<sub>2</sub> ≈ 9.2(2.2 kcal) &gt; OH ≈ 3.8(0.9 kcal, 용매에 따라 2.5–4). K = [Q]/[P] = e<sup>A/RT</sup>로 Ph ≈ 110, iPr ≈ 40, OH ≈ 5이다. iPr은 메타인 H를 고리 쪽으로 돌릴 수 있어 메틸(7.3)보다 A값이 조금 클 뿐이다. 평면인 Ph는 축 방향에서 고리 평면을 어느 쪽으로 돌려도 축 H나 이웃 적도 H와 부딪혀 iPr보다 크다(“iPr이 더 커 보인다”는 오답 유도).</p>
 <p>② <b class="lbltxt">C</b>: t-Bu(A ≈ 21 kJ/mol 이상)는 사실상 항상 적도에 있으므로 고리가 뒤집히지 않는다. 카보닐 탄소에 하이드라이드가 접근하는 경로는 두 가지다. (a) <b>축 방향 공격</b>: 비틀림(가림) 변형이 작다. 그러나 C3·C5의 축 H 쪽을 지나가므로 부피 큰 시약에는 막힌다. 작은 NaBH<sub>4</sub>·LiAlH<sub>4</sub>는 이 경로로 공격하여 OH가 적도인 <i>trans</i> 알코올(약 90 %)을 준다. (b) <b>적도 방향 공격</b>: C2·C3 수소와의 비틀림 변형이 있지만 입체적으로 열려 있다. 세 개의 <i>sec</i>-뷰틸을 가진 L-Selectride는 (b)를 택하므로 O<sup>−</sup>가 축 방향으로 밀려난다. 그 결과 <b class="lbltxt">C</b> = <i>cis</i>-4-<i>tert</i>-butylcyclohexan-1-ol(OH 축, t-Bu 적도)이 >95 % 생긴다.</p>
@@ -387,6 +694,7 @@ A → B: OsO<sub>4</sub> 후 NaHSO<sub>3</sub>/H<sub>2</sub>O (중간체: 고리
 <div class="ansbox">{M(OSMATE, '오스뮴산 에스터 (+거울상)', 13)}{M(EPOX_T, 'trans-에폭사이드 (라셈)', 13)}</div>
 B: <i>trans</i>-알켄의 두 면 어느 쪽에서든 OsO<sub>4</sub>가 두 O를 같은 면에(syn) 동시에 첨가한다. 위 면 첨가와 아래 면 첨가는 서로 거울상인 (3<i>R</i>,4<i>R</i>)/(3<i>S</i>,4<i>S</i>)를 같은 양으로 주므로 라셈이다.<br>
 C: 과산이 <i>trans</i>-에폭사이드(라셈)를 만들고, 산 촉매 조건에서 물이 양성자화된 에폭사이드를 뒤쪽에서 공격하여 한 탄소만 반전된다(순 anti 첨가). <i>trans</i>-알켄의 anti 다이하이드록시화는 어느 쪽 에폭사이드에서 어느 탄소를 공격하든 같은 (3<i>R</i>,4<i>S</i>) 메조 다이올을 준다.''',
+    mech=FIG['2015A-서술3'],
     explain='''<p><b>핵심 반응:</b> 알카인의 입체선택적 환원(Na/NH<sub>3</sub> → <i>trans</i>, Lindlar → <i>cis</i>) + syn/anti 다이하이드록시화의 입체특이성 → “같은 대칭 알켄 + 같은 종류 첨가 → 메조, 반대 → 라셈” 규칙.</p>
 <p>① 역추론: B(트레오, 라셈)와 C(메조)가 둘 다 같은 A에서 나왔다. 대칭 알켄에서 [<i>cis</i>+syn → 메조, <i>cis</i>+anti → 라셈, <i>trans</i>+syn → 라셈, <i>trans</i>+anti → 메조]이다. syn 시약(OsO<sub>4</sub>)이 라셈 B를 주려면 A는 <b><i>trans</i></b>여야 한다. 따라서 (가) = <b>Na/NH<sub>3</sub>(<i>l</i>)</b>(용해 금속 환원)이다. Lindlar를 고르면 B와 C의 입체가 서로 뒤바뀐다(기출 2015A의 상황).</p>
 <p>② Na/NH<sub>3</sub> 메커니즘: Na에서 전자 1개가 알카인 π*로 들어가 라디칼 음이온이 된다 → NH<sub>3</sub>가 양성자를 주어 비닐 라디칼이 된다(두 R가 멀리 떨어진 <i>trans</i> 배치가 더 안정) → 전자 1개를 더 받아 비닐 음이온이 된다 → 다시 양성자화되어 (<i>E</i>)-3-hexene이 된다.</p>
@@ -413,6 +721,7 @@ dict(
        scheme(M(TDEC, 'X', 15), M(CDEC, 'Y', 15)))}
 <p class="ask">메탄올의 가려진(eclipsed) 형태에서 C–H 결합과 산소의 비공유 전자쌍 사이의 가림 상호작용 1개의 에너지는 ( ㉠ ) kJ/mol이다. 가장 안정한 의자–의자 형태에서 <b class="lbltxt">Y</b>는 <b class="lbltxt">X</b>보다 gauche-뷰테인 상호작용이 ( ㉡ )개 더 많으며, 입체 효과만 고려한 <b class="lbltxt">X</b>와 <b class="lbltxt">Y</b>의 에너지 차이는 ( ㉢ ) kJ/mol이다. ㉠~㉢에 해당하는 값을 순서대로 쓰시오. [[PTS]]</p>''',
     answer='''㉠ 0.1　㉡ 3　㉢ 11.4 (≈ 11 kJ/mol, Y가 더 불안정)''',
+    mech=FIG['2015A-기입8'],
     explain='''<p><b>핵심 개념:</b> 비틀림·입체 상호작용의 가산성, gauche-뷰테인 단위 세기, <i>cis</i>-/<i>trans</i>-decalin의 상대 안정성.</p>
 <p>① 에테인의 가려진 형태에는 H/H 가림이 3쌍 있으므로 1쌍 = 12/3 = 4.0 kJ/mol이다.</p>
 <p>② 메탄올의 가려진 형태에서 C의 세 C–H는 O의 세 “치환기”(O–H 1개, 비공유 전자쌍 2개)와 각각 가려진다. 따라서 4.2 = 4.0(H/H) + 2x에서 x = <b>0.1 kJ/mol</b>로, 비공유 전자쌍의 가림은 거의 무시할 만하다. 비공유 전자쌍은 전자 밀도가 핵에 가깝게 모여 있어 결합 전자쌍보다 공간을 덜 차지하기 때문이다(논문의 결론). 같은 논리로 메틸아민(가림 H/H 2쌍 + C–H/n 1쌍)의 장벽이 약 8 kJ/mol로 추정된다.</p>

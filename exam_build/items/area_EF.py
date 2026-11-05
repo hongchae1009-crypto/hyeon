@@ -65,6 +65,411 @@ def _svg_E(scale=15, label='E'):
 
 B_ = lambda t: f'<b class="lbltxt">{t}</b>'
 
+
+# ---------------------------------------------------------------- 메커니즘 그림 보조 함수 (이 파일 전용)
+import math as _math
+import mech as _mech
+from mech import step, mechanism, ar
+
+
+def _kparse(smiles):
+    """mech._parse 와 같지만 방향족 인식을 하지 않아 SMILES 에 쓴 Kekulé 이중 결합 위치를 그대로 그린다
+    (공명 화살표가 가리키는 π 결합이 그림에서 바뀌지 않도록)."""
+    from rdkit import Chem
+    ps = Chem.SmilesParserParams(); ps.removeHs = False; ps.sanitize = False
+    mol = Chem.MolFromSmiles(smiles, ps)
+    if mol is None:
+        raise ValueError('bad SMILES: ' + smiles)
+    Chem.SanitizeMol(mol, Chem.SanitizeFlags.SANITIZE_ALL ^ Chem.SanitizeFlags.SANITIZE_SETAROMATICITY
+                     ^ Chem.SanitizeFlags.SANITIZE_KEKULIZE)
+    idx = {}
+    for a in mol.GetAtoms():
+        m = a.GetAtomMapNum()
+        if m:
+            if m in idx:
+                raise ValueError(f'duplicate map number {m} in {smiles}')
+            idx[m] = a.GetIdx()
+            a.SetAtomMapNum(0)
+    return mol, idx
+
+
+class _FixedDepictor:
+    """rdDepictor 대용: Compute2DCoords 에서 지정 원자 좌표를 고정(coordMap)."""
+    def __init__(self, real, cmap):
+        self.real, self.cmap = real, cmap
+
+    def Compute2DCoords(self, mol, *a, **k):
+        from rdkit.Geometry import Point2D
+        cm = {i: Point2D(x, y) for i, (x, y) in self.cmap.items()}
+        self.real.SetPreferCoordGen(False)
+        try:
+            self.real.Compute2DCoords(mol, coordMap=cm)
+        finally:
+            self.real.SetPreferCoordGen(True)
+
+    def __getattr__(self, n):
+        return getattr(self.real, n)
+
+
+def kstep(smiles, xy=None, absolute=False, lp_rot=None, **kw):
+    """mech.step 래퍼. Kekulé 구조 보존 + xy={맵: (x, y)}(RDKit 좌표 단위, 결합 길이 1.5)로 원자 좌표 고정.
+    absolute=True 이면 조각 자동 배치를 끄고 xy 좌표 그대로 둔다(고리화 첨가에서 두 분자의 말단을 마주 보게 놓을 때).
+    lp_rot={맵: 각도}: 그 원자의 비공유 전자쌍 점(과 그 점에서 출발하는 화살표)의 방향을 돌림(형식 전하 기호와 겹칠 때)."""
+    real_parse, real_dep, real_lay, real_fd = _mech._parse, _mech.rdDepictor, _mech._layout_frags, _mech._free_dir
+    _mech._parse = _kparse
+    try:
+        if lp_rot:
+            _, idx0 = _kparse(smiles)
+            rot = {idx0[m]: _math.radians(-d) for m, d in lp_rot.items()}   # SVG y 아래쪽 → 화면 기준 반시계 = +
+
+            def _fd(P, mol, i, k=0):
+                ux, uy = real_fd(P, mol, i, k)
+                if i in rot:
+                    c, s_ = _math.cos(rot[i]), _math.sin(rot[i])
+                    ux, uy = ux * c - uy * s_, ux * s_ + uy * c
+                return ux, uy
+            _mech._free_dir = _fd
+        if xy:
+            _, idx = _kparse(smiles)
+            _mech.rdDepictor = _FixedDepictor(real_dep, {idx[m]: p for m, p in xy.items() if m in idx})
+        if absolute:
+            _mech._layout_frags = lambda *a, **k: None
+        return step(smiles, **kw)
+    finally:
+        _mech._parse, _mech.rdDepictor, _mech._layout_frags, _mech._free_dir = real_parse, real_dep, real_lay, real_fd
+
+
+def _poly(n, start_deg, cx=0.0, cy=0.0, b=1.5, ccw=True):
+    """정 n각형 꼭짓점 좌표 목록(결합 길이 b, 첫 꼭짓점 각도 start_deg)."""
+    R = b / (2 * _math.sin(_math.pi / n))
+    s = 1 if ccw else -1
+    return [(cx + R * _math.cos(_math.radians(start_deg + s * 360 * k / n)),
+             cy + R * _math.sin(_math.radians(start_deg + s * 360 * k / n))) for k in range(n)]
+
+
+def RES():
+    """공명 구조 사이의 양쪽 화살표 ↔ (평형 화살표와 구별)."""
+    return ('<div class="marr"><div class="rt"></div><svg width="38" height="12" viewBox="0 0 38 12">'
+            '<line x1="8" y1="6" x2="30" y2="6" stroke="#000" stroke-width="1.1"/>'
+            '<path d="M30,2 L37,6 L30,10 z" fill="#000"/><path d="M8,2 L1,6 L8,10 z" fill="#000"/></svg>'
+            '<div class="rb"></div></div>')
+
+
+def TXT(t):
+    """그림 줄 안의 짧은 글(‘+’, ‘vs’ 등)."""
+    return f'<div class="marr" style="font-size:9pt">{t}</div>'
+
+# ---------------------------------------------------------------- 그림: E-1 (2025B-7)
+_TP = '[O:8]=[C:1]1[C:2]([O-:9])=[CH:3][CH:4]=[CH:5][CH:6]=[CH:7]1'          # tropolonate (C1=O, C2–O⁻)
+_TP_AR = '[O-:8][C+:1]1[C:2]([O-:9])=[CH:3][CH:4]=[CH:5][CH:6]=[CH:7]1'       # 방향족(tropylium) 기여 구조
+
+
+def _xy_64():
+    """[6+4]: 왼쪽 cyclopentadiene(CH2가 오른쪽), 오른쪽 tropone(C=O가 왼쪽) — 말단 C1'·C4'와 C2·C7이 마주 봄."""
+    t = _poly(7, 180, 0, 0, ccw=False)           # C1(180°), C2(128.6°, 위) … C7(아래)
+    xy = {m: t[k] for k, m in enumerate([1, 2, 3, 4, 5, 6, 7])}
+    xy[8] = (t[0][0] - 1.5, 0.0)
+    p = _poly(5, 0, -5.4, 0)                      # C5'(0°, 오른쪽) C1'(72°) C2' C3' C4'(288°)
+    for k, m in enumerate([25, 21, 22, 23, 24]):
+        xy[m] = p[k]
+    return xy
+
+
+def _xy_trop(H=False):
+    """tropolone/tropolonate 공통 배치: C1–C2 결합이 위쪽 수평, O8(C1)·O9(C2)가 위로."""
+    t = _poly(7, 64.29, 0, 0)                      # C1(64°) C7 … 반시계: C1, C2(115.7°), C3 …
+    xy = {1: t[0], 2: t[1], 3: t[2], 4: t[3], 5: t[4], 6: t[5], 7: t[6]}
+    for m, k in ((8, 0), (9, 1)):
+        a = _math.atan2(t[k][1], t[k][0])
+        xy[m] = (t[k][0] + 1.5 * _math.cos(a), t[k][1] + 1.5 * _math.sin(a))
+    if H:
+        xy[10] = (xy[9][0] - 1.4, xy[9][1] + 0.3)
+        xy[11] = (xy[10][0] - 2.4, xy[10][1] - 0.2)
+    return xy
+
+
+MECH_E1 = [
+    mechanism(
+        kstep('[O:8]=[C:1]1[C:2]([O:9][H:10])=[CH:3][CH:4]=[CH:5][CH:6]=[CH:7]1.[OH-:11]', xy=_xy_trop(True), absolute=True,
+              scale=21, arrows=[ar('lp', 11, 'a', 10, side=1), ar('b', (9, 10), 'a', 9)],
+              caption='① O–H 탈양성자화(pK<sub>a</sub> 6.7)'),
+        ('⇌', '−H<sub>2</sub>O'),
+        kstep(_TP, xy=_xy_trop(), scale=21, arrows=[ar('b', (1, 8), 'a', 8)], lp=[9],
+              caption='② tropolonate: C=O π 전자 → O'),
+        RES(),
+        kstep(_TP_AR, xy=_xy_trop(), scale=21, lp=[8, 9], hl=[1],
+              caption='③ O<sup>−</sup> 2개 + tropylium(6π) 고리'),
+        title='[그림 1] tropolone 짝염기의 공명 — 칠원 고리가 방향족(4<i>n</i>+2 = 6π) 양이온이 되는 기여 구조'),
+    mechanism(
+        kstep('[CH:21]1=[CH:22][CH:23]=[CH:24][CH2:25]1.[O:8]=[C:1]1[CH:2]=[CH:3][CH:4]=[CH:5][CH:6]=[CH:7]1',
+              xy=_xy_64(), absolute=True, scale=22,
+              arrows=[ar('b', (21, 22), 'm', (21, 2)), ar('b', (2, 3), 'm', (3, 4)), ar('b', (4, 5), 'm', (5, 6)),
+                      ar('b', (6, 7), 'm', (7, 24)), ar('b', (23, 24), 'm', (22, 23))],
+              caption='cyclopentadiene 4π + tropone C2~C7 6π<br>(굽은 화살표 5개 = 10전자)'),
+        ('→', '가열', '[π6s + π4s]'),
+        f'<div class="mstep">{_svg_E(19, "")}<div class="mcap"><b>E</b>: exo [6+4] 첨가물(C=O 다리 + CH<sub>2</sub> 다리)</div></div>',
+        title='[그림 2] 열적 [6+4] 고리 첨가 — 10전자(4<i>n</i>+2) 고리형 전자 이동, supra/supra 허용'),
+]
+
+
+# ---------------------------------------------------------------- 그림: E-2 (2022A-2)
+def _xy_c9(H=False):
+    """nonagon: C4 위(90°), 시계 방향 C5 C6 C7 C8 C9 C1 C2 C3 — C8–C9가 아래, C1/C7·C3/C5 좌우 대칭."""
+    v = _poly(9, 90, 0, 0, ccw=False)
+    xy = {m: v[k] for k, m in enumerate([4, 5, 6, 7, 8, 9, 1, 2, 3])}
+    if H:
+        x5, y5 = xy[5]; a = _math.atan2(y5, x5)
+        xy[10] = (x5 + 1.2 * _math.cos(a), y5 + 1.2 * _math.sin(a))
+        xy[11] = (x5 + 3.3 * _math.cos(a), y5 + 3.3 * _math.sin(a) - 0.3)
+    return xy
+
+
+_C9 = {5: '[CH:1]1=[CH:2][CH:3]=[CH:4][CH-:5][CH:6]=[CH:7][CH2:8][CH2:9]1',
+       3: '[CH:1]1=[CH:2][CH-:3][CH:4]=[CH:5][CH:6]=[CH:7][CH2:8][CH2:9]1',
+       1: '[CH-:1]1[CH:2]=[CH:3][CH:4]=[CH:5][CH:6]=[CH:7][CH2:8][CH2:9]1',
+       7: '[CH:1]1=[CH:2][CH:3]=[CH:4][CH:5]=[CH:6][CH-:7][CH2:8][CH2:9]1'}
+
+MECH_E2 = [
+    mechanism(
+        kstep('[CH:1]1=[CH:2][CH:3]=[CH:4][CH:5]([H:10])[CH:6]=[CH:7][CH2:8][CH2:9]1.[NH2-:11]', xy=_xy_c9(True),
+              absolute=True, scale=21, arrows=[ar('lp', 11, 'a', 10, side=-1), ar('b', (5, 10), 'a', 5)], lp=[11],
+              notes={1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6', 7: '7', 8: '8', 9: '9'},
+              caption='① 이중 알릴 위치 C5–H 탈양성자화'),
+        ('→', 'KNH<sub>2</sub>', '액체 NH<sub>3</sub>'),
+        kstep(_C9[5], xy=_xy_c9(), scale=21, lp=[5], lp_rot={5: 40}, caption='C5 음이온(+ NH<sub>3</sub>)'),
+        title='[그림 1] 1,3,6-cyclononatriene의 탈양성자화 — 두 C=C 사이(C5)의 H가 가장 산성'),
+    mechanism(
+        kstep(_C9[7], xy=_xy_c9(), scale=18, lp=[7], arrows=[ar('lp', 7, 'm', (6, 7)), ar('b', (5, 6), 'a', 5)],
+              caption='C7<sup>−</sup>'),
+        RES(),
+        kstep(_C9[5], xy=_xy_c9(), scale=18, lp=[5], lp_rot={5: 40}, arrows=[ar('lp', 5, 'm', (4, 5)), ar('b', (3, 4), 'a', 3)],
+              caption='C5<sup>−</sup> (탈양성자화 직후)'),
+        RES(),
+        kstep(_C9[3], xy=_xy_c9(), scale=18, lp=[3], arrows=[ar('lp', 3, 'm', (2, 3)), ar('b', (1, 2), 'a', 1)],
+              caption='C3<sup>−</sup>'),
+        RES(),
+        kstep(_C9[1], xy=_xy_c9(), scale=18, lp=[1], caption='C1<sup>−</sup>'),
+        title='[그림 2] 짝염기 <b>Y</b>의 공명 구조 — 음전하는 홀수 번째 탄소(C1·C3·C5·C7)에만; C8·C9(sp<sup>3</sup>)에서 고리 콘쥬게이션이 끊김'),
+]
+
+
+# ---------------------------------------------------------------- 그림: E-3 (2020B-7)
+def _xy_da(gap=1.5):
+    """Diels–Alder: 왼쪽 s-cis 다이엔(C1 위·C4 아래, 바깥쪽 치환기 R은 C1 위쪽), 오른쪽 다이엔오필 C6(위)=C5(아래)."""
+    h = _poly(6, 90)                               # 90°(C1) 150°(C2) 210°(C3) 270°(C4) 330° 30°
+    xy = {1: h[0], 2: h[1], 3: h[2], 4: h[3], 7: (h[0][0], h[0][1] + 1.5)}
+    x6, y6 = h[5][0] + gap, h[5][1]
+    xy[6], xy[5] = (x6, y6), (x6, -y6)
+    p = _poly(5, 144, x6 + 1.032, 0, ccw=False)    # C6(144°) C10(72°) N12(0°) C13(288°) C5(216°)
+    xy[10], xy[12], xy[13] = p[1], p[2], p[3]
+    cx = x6 + 1.032
+    for c, o in ((10, 11), (13, 14), (12, 9)):
+        a = _math.atan2(xy[c][1], xy[c][0] - cx)
+        xy[o] = (xy[c][0] + 1.5 * _math.cos(a), xy[c][1] + 1.5 * _math.sin(a))
+    return xy
+
+
+_R_OAC = 'R'
+_DA_ENDO_R = '[*:7][C@H]1C=CC[C@H]2C(=O)N([*:9])C(=O)[C@@H]12'    # DA_ENDO 에서 R·Ph 만 축약(입체 표기 동일)
+_DA_EXO_R = '[*:7][C@H]1C=CC[C@@H]2C(=O)N([*:9])C(=O)[C@H]12'
+
+MECH_E3 = [
+    mechanism(
+        kstep('CC(=O)OCC[CH2:3][CH2:4][CH:5]=[CH2:6]', scale=17, hl=[3, 4], caption='hex-5-en-1-yl acetate'),
+        ('→', '탈수소화 촉매', '수소 받개, −H<sub>2</sub>'),
+        kstep('CC(=O)OCC/[CH:3]=[CH:4]/[CH:5]=[CH2:6]', scale=17, caption='<b>A</b>: (<i>E</i>)-1,3-다이엔(콘쥬게이션)'),
+        title='[그림 1] 탠덤 반응 ① — C3–C4 탈수소화로 (<i>E</i>)-다이엔 <b>A</b> 생성'),
+    mechanism(
+        kstep('[*:7][CH:1]=[CH:2][CH:3]=[CH2:4].[CH:5]1=[CH:6][C:10](=[O:11])[N:12]([*:9])[C:13]1=[O:14]', xy=_xy_da(),
+              absolute=True, scale=22, labels={7: _R_OAC, 9: 'Ph'},
+              arrows=[ar('b', (1, 2), 'm', (2, 3)), ar('b', (3, 4), 'm', (4, 5)), ar('b', (5, 6), 'm', (6, 1))],
+              caption='s-cis <b>A</b>(R = CH<sub>2</sub>CH<sub>2</sub>OAc, outside) + N-phenylmaleimide<br>화살표 3개(6전자), supra/supra'),
+        ('→', '가열', 'endo 전이 상태'),
+        step(_DA_ENDO_R, scale=21, labels={7: _R_OAC, 9: 'Ph'},
+             caption='<b>B</b> (endo): R와 이미드 C=O가 cis<br>(C3a–H·C7a–H·C4–H 모두 같은 면)'),
+        title='[그림 2] Diels–Alder — 고리형 전자 이동 3개, endo 규칙(이차 궤도 상호작용)으로 <b>B</b>'),
+    mechanism(
+        step(_DA_ENDO_R, scale=20, labels={7: _R_OAC, 9: 'Ph'},
+             caption='<b>B</b> endo (주) — 거울상과 라셈체<br>(3a<i>S</i>,4<i>S</i>,7a<i>R</i>)/(3a<i>R</i>,4<i>R</i>,7a<i>S</i>)'),
+        TXT('부분입체<br>이성질체'),
+        step(_DA_EXO_R, scale=20, labels={7: _R_OAC, 9: 'Ph'},
+             caption='<b>B′</b> exo (부) — 라셈체<br>R가 고리 접합 H와 같은 면'),
+        title='[그림 3] endo/exo 첨가물 — 고리 접합 cis(다이엔오필 cis 보존)는 같고 C4 배열만 다름'),
+]
+
+
+# ---------------------------------------------------------------- 그림: E-4 (2019B-4)
+def _xy_hda():
+    """oxa-DA: 왼쪽 s-cis 1-oxadiene(C4 위·O1 아래), 오른쪽 vinyl ether C6H2(위)=C5H(OEt)(아래)."""
+    xy = _xy_da()
+    m = {1: 4, 2: 3, 3: 2, 4: 1, 7: 10, 6: 6, 5: 5}           # _xy_da 맵 → 이 그림 맵
+    out = {m[k]: xy[k] for k in m}
+    a = _math.radians(210)
+    out[11] = (out[2][0] + 1.5 * _math.cos(a), out[2][1] + 1.5 * _math.sin(a))     # CO2Me (C2 바깥쪽)
+    out[9] = (out[5][0] + 1.3, out[5][1] - 0.75)                                      # OEt (C5 오른쪽 아래)
+    return out
+
+
+_HDA_LAB = {10: 'Ph', 11: 'CO<sub>2</sub>Me'}
+
+def _xy_dhp(extra=None):
+    """3,4-dihydro-2H-pyran 고리 공통 배치: C4 위, C3 오른쪽 위, C2 오른쪽 아래, O1 아래, C5 왼쪽 아래, C6 왼쪽 위."""
+    h = _poly(6, 90, ccw=False)
+    xy = {m: h[k] for k, m in enumerate([4, 3, 2, 1, 5, 6])}
+
+    def out(m, ang, d=1.5):
+        return (xy[m][0] + d * _math.cos(_math.radians(ang)), xy[m][1] + d * _math.sin(_math.radians(ang)))
+    xy[10], xy[11] = out(4, 90), out(2, -30)
+    for k, (m, ang, d) in (extra or {}).items():
+        xy[k] = out(m, ang, d)
+    return xy
+
+
+MECH_E4 = [
+    mechanism(
+        step('[O:1]=[C:2]([*:11])[CH:3]=[CH:4][*:10]', scale=19, labels=_HDA_LAB, rotate=0,
+             arrows=[ar('b', (1, 2), 'a', 1), ar('b', (3, 4), 'm', (2, 3))], caption='다이엔(X 부분)'),
+        RES(),
+        step('[O-:1][C:2]([*:11])=[CH:3][CH+:4][*:10]', scale=19, labels=_HDA_LAB, caption='C4 δ+ (LUMO 계수 큼)'),
+        TXT('&nbsp;&nbsp;&nbsp;'),
+        step('[CH2:6]=[CH:5][O:8]C', scale=19, lp=[8], arrows=[ar('lp', 8, 'm', (8, 5)), ar('b', (5, 6), 'a', 6)],
+             caption='vinyl ether'),
+        RES(),
+        step('[CH2-:6][CH:5]=[O+:8]C', scale=19, caption='CH<sub>2</sub> δ− (HOMO 계수 큼)'),
+        title='[그림 1] 반응물의 부분 전하(공명) — 1-oxadiene의 C4는 δ+, vinyl ether의 말단 CH<sub>2</sub>는 δ−'),
+    mechanism(
+        kstep('[O:1]=[C:2]([*:11])[CH:3]=[CH:4][*:10].[CH2:6]=[CH:5][*:9]', xy=_xy_hda(), absolute=True, scale=23,
+              labels={**_HDA_LAB, 9: 'OEt'},
+              arrows=[ar('b', (5, 6), 'm', (6, 4)), ar('b', (3, 4), 'm', (2, 3)), ar('b', (1, 2), 'm', (1, 5))],
+              caption='LUMO(다이엔)–HOMO(vinyl ether): δ+ C4 ↔ δ− CH<sub>2</sub>'),
+        ('→', '가열', 'endo'),
+        kstep('CC[O:7][CH:5]1[CH2:6][CH:4]([*:10])[CH:3]=[C:2]([*:11])[O:1]1', xy=_xy_dhp({7: (5, -150, 1.5)}), scale=22,
+              labels=_HDA_LAB, caption='<b>A</b>: 2-ethoxy-3,4-dihydro-2<i>H</i>-pyran<br>(C4–CH<sub>2</sub>, O1–CH(OEt) 결합)'),
+        title='[그림 2] 역전자 요구형 oxa-Diels–Alder — 고리형 전자 이동 3개, 큰 계수끼리 결합하는 위치선택성'),
+    mechanism(
+        kstep('CC[OH+:7][CH:5]1[CH2:6][CH:4]([*:10])[CH:3]=[C:2]([*:11])[O:1]1', xy=_xy_dhp({7: (5, -150, 1.5)}), scale=19,
+              labels=_HDA_LAB, lp=[1], arrows=[ar('lp', 1, 'm', (1, 5)), ar('b', (5, 7), 'a', 7)],
+              caption='① OEt 양성자화 → EtOH 이탈'),
+        ('→', '−EtOH'),
+        kstep('[CH:5]1=[O+:1][C:2]([*:11])=[CH:3][CH:4]([*:10])[CH2:6]1.[OH2:12]', xy=_xy_dhp({12: (5, 200, 2.6)}), absolute=True,
+              scale=19, labels=_HDA_LAB, lp=[12], arrows=[ar('lp', 12, 'a', 5), ar('b', (5, 1), 'a', 1)],
+              caption='② 옥소카베늄 + H<sub>2</sub>O'),
+        ('⇌', '−H<sup>+</sup>, +H<sup>+</sup>'),
+        kstep('[H:13][O:12][CH:5]1[CH2:6][CH:4]([*:10])[CH:3]=[C:2]([*:11])[OH+:1]1', xy=_xy_dhp({12: (5, -150, 1.5)}), scale=19,
+              labels=_HDA_LAB, lp=[12], arrows=[ar('lp', 12, 'm', (12, 5)), ar('b', (5, 1), 'a', 1)],
+              caption='③ 락톨(고리 O 양성자화) 고리 열림'),
+        ('→', '−H<sup>+</sup>'),
+        step('O=[CH:5][CH2:6][CH:4]([*:10])[CH:3]=[C:2]([*:11])[O:1][H:13].[H:14][OH2+:15]', scale=19, labels=_HDA_LAB, lp=[1],
+             frag_dx={1: -4.2}, frag_dy={1: 1.9},
+             arrows=[ar('lp', 1, 'm', (1, 2)), ar('b', (2, 3), 'a', 14), ar('b', (14, 15), 'a', 15)],
+             caption='④ 알데하이드 + 엔올 → 케토형(토토머화)'),
+        ('→', '−H<sup>+</sup>'),
+        step('O=[CH:5][CH2:6][CH:4]([*:10])[CH2:3][C:2](=[O:1])[*:11]', scale=19, labels=_HDA_LAB,
+             caption='<b>C</b>: 1,5-다이카보닐(2,6-dioxo)'),
+        title='[그림 3] <b>A</b>의 산 가수분해 — 고리형 아세탈 → 락톨 → 고리 열림(알데하이드 + 엔올) → α-케토 에스터'),
+]
+
+
+# ---------------------------------------------------------------- 그림: E-5 (2015B-논술2)
+def _xy_trz(extra=None):
+    """1,2,3-triazole 공통 배치: C5 왼쪽 위, N1 오른쪽 위, N2 오른쪽 아래, N3 아래, C4 왼쪽; 치환기는 바깥쪽."""
+    p = _poly(5, 126, ccw=False)
+    xy = {m: p[k] for k, m in enumerate([5, 1, 2, 3, 4])}
+    for sub, m in ((8, 5), (9, 1), (10, 4)):
+        a = _math.atan2(xy[m][1], xy[m][0])
+        xy[sub] = (xy[m][0] + 1.5 * _math.cos(a), xy[m][1] + 1.5 * _math.sin(a))
+    for k, (m, ang, d) in (extra or {}).items():
+        xy[k] = (xy[m][0] + d * _math.cos(_math.radians(ang)), xy[m][1] + d * _math.sin(_math.radians(ang)))
+    return xy
+
+
+_OCT = 'CN1C(=O)C2=CC=CC=C2[C:1]#[C:2]C2=CC=CC=C21'                      # P (Kekulé, C1: C=O 쪽, C2: N-Me 쪽)
+_TRZ_B_K = 'CN1C(=O)C2=CC=CC=C2[C:1]3=[C:2]([N:3]([*:9])[N:4]=[N:5]3)C2=CC=CC=C21'   # = TRZ_B
+_TRZ_C_K = 'CN1C(=O)C2=CC=CC=C2[C:1]3=[C:2]([N:5]=[N:4][N:3]3[*:9])C2=CC=CC=C21'     # = TRZ_C
+
+MECH_E5 = [
+    mechanism(
+        kstep(_OCT + '.[*:9][N:3]=[N+:4]=[N-:5]', scale=20, layout='v', gap=1.7, labels={9: 'Bn'}, lp=[5], frag_flip=(1,), lp_rot={5: -75},
+              arrows=[ar('lp', 5, 'm', (5, 1)), ar('b', (1, 2), 'm', (2, 3)), ar('b', (3, 4), 'm', (4, 5))],
+              caption='굽은 sp 탄소(고리 변형) + 1,3-쌍극자(4π)'),
+        ('→', '25 ℃', '[3+2], 6전자'),
+        kstep(_TRZ_B_K, scale=17, labels={9: 'Bn'}, rotate=180, caption='<b>B</b>'),
+        TXT('+'),
+        kstep(_TRZ_C_K, scale=17, labels={9: 'Bn'}, rotate=180, flip=True, caption='<b>C</b> (반대 배향, ≈1 : 1)'),
+        title='[그림 1] 변형 촉진 아자이드–알카인 고리 첨가(SPAAC) — 협동적 고리형 전자 이동 3개, 두 배향이 비슷하여 위치 이성질체 혼합물'),
+    mechanism(
+        kstep('[*:10][C:4]#[C:5][H:6].[Cu+:8].[*:7]', scale=21, labels={10: 'Ph', 7: 'B'}, lp=[7], absolute=True,
+              xy={10: (0, 0), 4: (1.5, 0), 5: (3.0, 0), 6: (4.3, 0), 8: (2.25, 1.6), 7: (6.0, -0.9)},
+              arrows=[ar('lp', 7, 'a', 6, side=-1), ar('b', (5, 6), 'm', (5, 8), side=1)],
+              caption='① Cu(I) π 배위 → 말단 C–H 탈양성자화'),
+        ('→', '−BH<sup>+</sup>'),
+        kstep('[*:10][C:4]#[C:5][Cu:8]', scale=21, labels={10: 'Ph'}, caption='Cu(I) 아세틸라이드'),
+        ('→', 'BnN<sub>3</sub> (N 배위)', '6원 Cu-메탈라사이클 → 고리 축소'),
+        kstep('[*:10][C:4]1=[C:5]([Cu:8])[N:1]([*:9])[N:2]=[N:3]1.[H:6][*:7]', scale=21, labels={10: 'Ph', 9: 'Bn', 7: 'B<sup>+</sup>'},
+              xy=_xy_trz({6: (8, 200, 1.6), 7: (8, 200, 2.9)}), absolute=True,
+              arrows=[ar('b', (5, 8), 'a', 6, side=-1), ar('b', (6, 7), 'a', 7)],
+              caption='③ 트라이아졸릴–Cu의 양성자 첨가 분해'),
+        ('→', '−Cu(I)'),
+        kstep('[*:10][C:4]1=[CH:5][N:1]([*:9])[N:2]=[N:3]1', xy=_xy_trz(), scale=24, labels={10: 'Ph', 9: 'Bn'}, lp=[1, 2, 3], hl=[1],
+              caption='<b>D</b> (1,4-이치환): C4=C5 2e + N2=N3 2e<br>+ N1(○) 비공유 전자쌍 2e = 6π 방향족<br>(N2·N3의 전자쌍은 sp<sup>2</sup>, 고리 평면)'),
+        title='[그림 2] CuAAC — 말단 C–H에서 생긴 Cu 아세틸라이드의 탄소(C5)에 N1이 결합하여 1,4-위치특이적; 생성된 triazole은 6π 방향족'),
+]
+
+
+# ---------------------------------------------------------------- 그림: E-6 (2014A-기입7)
+def _chair(order, subs, b=1.5):
+    """교과서식 의자형 6원자 배열(평면 좌표). order: P0(왼쪽 끝, 아래)·P1(앞 왼쪽)·P2(앞 오른쪽)·P3(오른쪽 끝, 위)·P4(뒤 오른쪽)·P5(뒤 왼쪽)에 놓을 맵.
+    subs={맵: (고리 원자 맵, 'ax'|'eq')}: 축 방향은 P0·P2·P4 아래, P1·P3·P5 위; 적도 방향은 한 칸 건너 결합과 평행(바깥쪽)."""
+    f = b / 1.5
+    u, v, w = (1.3 * f, -0.75 * f), (1.5 * f, 0.3 * f), (1.0 * f, 1.1 * f)
+    P = [(0.0, 0.0)]
+    for d in (u, v, w, (-u[0], -u[1]), (-v[0], -v[1])):
+        P.append((P[-1][0] + d[0], P[-1][1] + d[1]))
+    xy = {m: P[k] for k, m in enumerate(order)}
+    cx = sum(p[0] for p in P) / 6
+    cy = sum(p[1] for p in P) / 6
+    for s_, (m, kind) in subs.items():
+        k = order.index(m)
+        if kind == 'ax':
+            d = (0.0, -1.0 if k % 2 == 0 else 1.0)
+        else:
+            q1, q2 = P[(k + 1) % 6], P[(k + 2) % 6]
+            d = (q2[0] - q1[0], q2[1] - q1[1])
+            n = _math.hypot(*d); d = (d[0] / n, d[1] / n)
+            if (P[k][0] - cx) * d[0] + (P[k][1] - cy) * d[1] < 0:
+                d = (-d[0], -d[1])
+        xy[s_] = (P[k][0] + b * d[0], P[k][1] + b * d[1])
+    return xy
+
+
+_THIO_ORDER = [5, 6, 3, 2, 1, 4]       # P0 C5H, P1 C6(고리), P2 C3(CH–CH3), P3 C2(C–N), P4 S1, P5 C4H2 — S1–C4(뒤), C3···C6(앞)
+_THIO_SUBS = {7: (2, 'eq'), 8: (3, 'ax')}   # NR2 적도, CH3 축 방향((Z)-A → 유사 축)
+
+MECH_E6 = [
+    mechanism(
+        kstep('[CH3:8][CH:3]([H:10])[C:2](=[S:1])[N:7]1CCCC1.[CH2-:11]CCC', scale=19, lp=[11],
+              arrows=[ar('lp', 11, 'a', 10), ar('b', (3, 10), 'm', (2, 3)), ar('b', (1, 2), 'a', 1)],
+              caption='① α-C–H 탈양성자화'),
+        ('→', '<i>n</i>-BuLi', '−BuH'),
+        kstep('[S-:1]/[C:2]([N:7]1CCCC1)=[CH:3]\\[CH3:8].[Br:9][CH2:4][CH:5]=[C:6]1CCCCC1', scale=19, lp=[1],
+              arrows=[ar('lp', 1, 'a', 4), ar('b', (4, 9), 'a', 9)],
+              caption='② (<i>Z</i>)-thioenolate의 S(무른 친핵체)가 S<sub>N</sub>2 공격'),
+        ('→', '−Br<sup>−</sup>'),
+        kstep('[CH3:8]/[CH:3]=[C:2](\\[S:1][CH2:4][CH:5]=[C:6]1CCCCC1)[N:7]1CCCC1', scale=19,
+              caption='<b>A</b>: (<i>Z</i>)-ketene N,S-acetal (C=S 없음)'),
+        title='[그림 1] thioenolate 형성과 S-알킬화 — C-알킬화가 아니라 S-알킬화이므로 <b>A</b>에는 C=S가 없다'),
+    mechanism(
+        kstep('[CH3:8][CH:3]=[C:2]([S:1][CH2:4][CH:5]=[C:6]1[CH2:20]CCC[CH2:21]1)[*:7]', scale=22, labels={7: 'NR<sub>2</sub>'},
+              xy=_chair(_THIO_ORDER, _THIO_SUBS),
+              arrows=[ar('b', (2, 3), 'm', (3, 6)), ar('b', (5, 6), 'm', (4, 5)), ar('b', (1, 4), 'm', (1, 2))],
+              caption='<b>A</b>의 의자형 배치(C3–CH<sub>3</sub>는 <i>Z</i>이므로 유사 축 방향)<br>화살표 3개(6전자)'),
+        ('→', '25 ℃', '[3,3]'),
+        kstep('[CH3:8][CH:3]([C:2](=[S:1])[*:7])[C:6]1([CH:5]=[CH2:4])[CH2:20]CCC[CH2:21]1', scale=22, labels={7: 'NR<sub>2</sub>'},
+              xy=_chair(_THIO_ORDER, _THIO_SUBS),
+              caption='<b>B</b>: C3–C6 결합 생성, S–C4 절단<br>C=S·CH=CH<sub>2</sub> 형성, 사차 탄소 옆 새 카이랄 중심(라셈)'),
+        title='[그림 2] thio-Claisen [3,3] 시그마 자리옮김 — 의자형 6원자 고리 전이 상태'),
+]
+
 ITEMS = [
 # =====================================================================  E-1  2025B-7
 dict(
@@ -98,6 +503,7 @@ dict(
 · {B_('E')}: tricyclo[4.4.1.1<sup>2,5</sup>]dodeca-3,7,9-trien-11-one 골격(트로폰 C2·C7이 cyclopentadiene C1·C4와 결합; exo 첨가물)<br>
 · 이유: 6π + 4π = 10π(4<i>n</i>+2, <i>n</i> = 2)이므로 두 성분이 모두 같은 면(supra–supra)에서 결합하는 열적 고리 첨가가 대칭 허용이다.
 cyclopentadiene의 HOMO(ψ<sub>2</sub>)와 트로폰 6π 부분의 LUMO(ψ<sub>4</sub>*)의 양 말단 위상이 서로 일치하여 두 σ 결합이 동시에 결합성 겹침을 한다.''',
+    mech=MECH_E1,
     explain=f'''<p><b>핵심 반응: 방향족성(Hückel 4<i>n</i>+2)과 열적 [6+4] 고리 첨가(Woodward–Hoffmann 선택 규칙).</b></p>
 <p>① <b>tropolone의 산성</b>: O–H가 떨어진 tropolonate에서 음전하는 두 산소에 걸쳐 비편재화된다(비닐로그 카복실산: O=C–C=C–OH ⇄ ⁻O–C=C–C=O).
 여기에 더해 C=O의 π 전자를 산소로 옮기면 두 산소가 모두 O<sup>−</sup>, 칠원 고리는 6개의 π 전자를 가진 cycloheptatrienyl 양이온(tropylium)이 되는 공명 구조가 가능하다.
@@ -138,6 +544,7 @@ dict(
 · δ 3.39, 3.74: C1, C3, C5, C7에 결합한 H(음전하가 놓이는 홀수 번째 탄소; C1/C7, C3/C5는 각각 대칭 동등)<br>
 · C<sub>9</sub>H<sub>9</sub><sup>−</sup>: 9개 탄소 모두 sp<sup>2</sup>인 평면 고리에서 p 오비탈이 끊김 없이 고리를 따라 이어지고 π 전자가 10개(4<i>n</i>+2, <i>n</i> = 2)이므로 방향족이다.
 {B_('Y')}: π 전자는 8개가 7개 탄소(C1~C7)에 비편재화되어 있지만 C8·C9가 sp<sup>3</sup>이어서 고리 콘쥬게이션이 끊긴 사슬형(헵타트라이엔일) 음이온이므로 방향족이 아니다.''',
+    mech=MECH_E2,
     explain=f'''<p><b>핵심 반응: 탄소산의 탈양성자화와 짝염기의 공명·방향족성(Hückel 규칙).</b></p>
 <p>① <b>탈양성자화 위치</b>: {B_('X')}에서 두 C=C 사이에 끼인 C5–H<sub>2</sub>는 이중 알릴 위치이므로 가장 산성이 크다. KNH<sub>2</sub>(NH<sub>3</sub> pK<sub>a</sub> ≈ 38)가 이 H를 떼면 음전하는 두 C=C로 비편재화되어 C1~C7의 7개 탄소에 걸친 헵타트라이엔일 음이온(8π/7중심)이 된다.</p>
 <p>② <b>공명 구조</b>: 음전하를 C1에 둔 구조에서 출발하여 이웃 π 결합 쪽으로 계속 밀면 음전하는 C1 → C3 → C5 → C7로 옮겨 간다. 짝수 번째 탄소(C2, C4, C6)에는 음전하가 놓이는 공명 구조가 없다(홀수 교대 계의 비결합 MO 마디).
@@ -173,6 +580,7 @@ dict(
 · {B_('B')}: 고리 접합 H(C3a, C7a)와 C4–H가 모두 같은 면(= C4의 CH<sub>2</sub>CH<sub>2</sub>OAc가 이미드 C=O들과 같은 면), (3a<i>S</i>,4<i>S</i>,7a<i>R</i>)/(3a<i>R</i>,4<i>R</i>,7a<i>S</i>) 라셈체<br>
 · 이유: endo 전이 상태 — 이미드의 두 C=O가 다이엔 C2–C3 아래에 놓여 C=O π*와 다이엔 HOMO(C2·C3 계수) 사이의 이차 궤도 상호작용으로 안정화된다. 이때 다이엔 말단의 outside 치환기(CH<sub>2</sub>CH<sub>2</sub>OAc)는 endo C=O와 같은 면에 놓인다.<br>
 · {B_('B′')}: C4 치환기가 고리 접합 H와 같은 면(이미드 C=O의 반대 면)인 exo 첨가물. {B_('B')}와 {B_('B′')}는 부분입체이성질체.''',
+    mech=MECH_E3,
     explain=f'''<p><b>핵심 반응: Diels–Alder 반응의 입체특이성(suprafacial)과 endo 규칙, 1-치환 다이엔의 outside 치환기 배향.</b></p>
 <p>① <b>A</b>: 말단 알켄의 C3–C4 탈수소화로 콘쥬게이션된 1,3-다이엔이 생긴다(C<sub>8</sub>H<sub>14</sub>O<sub>2</sub> − H<sub>2</sub> = C<sub>8</sub>H<sub>12</sub>O<sub>2</sub>). 열역학적으로 안정한 (<i>E</i>)-다이엔이 주로 생기며, (<i>E</i>)-1-치환 다이엔은 치환기가 바깥쪽(outside)에 있어 s-cis 형태를 쉽게 취하므로 Diels–Alder에 적합하다((<i>Z</i>)-다이엔은 inside 치환기가 C4-H와 부딪혀 s-cis가 불리하다).</p>
 <p>② <b>입체특이성</b>: 다이엔과 다이엔오필 모두 같은 면으로 결합(supra/supra)하므로 cis-다이엔오필(말레이미드)의 두 C=O는 생성물에서 cis로 보존되고 → 고리 접합 H 2개도 cis이다.</p>
@@ -216,6 +624,7 @@ dict(
 · {B_('A')}: methyl 2-ethoxy-4-phenyl-3,4-dihydro-2<i>H</i>-pyran-6-carboxylate &nbsp; · {B_('C')}: methyl 2,6-dioxo-4-phenylhexanoate(OHC–CH<sub>2</sub>–CH(Ph)–CH<sub>2</sub>–CO–CO<sub>2</sub>CH<sub>3</sub>)<br>
 · 이유: 역전자 요구형이므로 주된 상호작용은 LUMO(X)–HOMO(vinyl ether)이다. X의 LUMO 계수는 β-탄소(C4, Ph가 붙은 탄소)에서 가장 크고(공명 구조에서 C4가 δ+), vinyl ether의 HOMO 계수는 말단 CH<sub>2</sub>에서 가장 크다(산소 비공유 전자쌍의 공명으로 CH<sub>2</sub>가 δ−).
 큰 계수끼리(δ+ C4 ↔ δ− CH<sub>2</sub>) C–C 결합이 생기고 카보닐 O는 OEt가 붙은 탄소와 결합하므로 2-alkoxy 아세탈형 생성물 {B_('A')}가 생긴다.''',
+    mech=MECH_E4,
     explain=f'''<p><b>핵심 반응: 역전자 요구형 oxa-Diels–Alder 반응의 FMO 해석(속도·위치선택성)과 고리형 아세탈의 산 가수분해.</b></p>
 <p>① <b>다이엔 성분</b>: X에서 C=C–C=O(엔온의 O=C2–C3=C4) 4원자가 1-oxa-1,3-diene으로 작용한다. 케톤 C=O에 이웃한 에스터(–CO<sub>2</sub>CH<sub>3</sub>)가 전자를 더 끌어 다이엔 LUMO를 크게 낮춘다 → 전자가 부족한 다이엔.</p>
 <p>② <b>속도(역전자 요구형)</b>: 에너지 차가 가장 작은 쌍은 LUMO(다이엔)–HOMO(다이엔오필)이다. 다이엔오필의 HOMO가 높을수록 빠르다. –OEt는 비공유 전자쌍의 공명 주게로 HOMO를 크게 높이고(엔올 에터), –CH<sub>2</sub>CH<sub>3</sub>는 약한 유발 주게, –CO<sub>2</sub>CH<sub>3</sub>는 HOMO를 낮추는 끌개이다 → OEt &gt; Et &gt; CO<sub>2</sub>Me.
@@ -257,6 +666,7 @@ dict(
 · {B_('B')}, {B_('C')}: 트라이아졸의 N-Bn이 카보닐 쪽 벤젠 고리에 붙은 탄소에 이웃하는 것과 N-Me 쪽 벤젠 고리에 붙은 탄소에 이웃하는 것(위치 이성질체; 어느 쪽을 B로 하든 무방)<br>
 · 이유: {B_('P')}는 팔원 고리 안에 sp 탄소(이상적 180°)가 있어 C–C≡C 각이 크게 굽은(약 155° 내외) 고리 변형 알카인이다. 바닥 상태가 이미 전이 상태 구조 쪽으로 변형되어 있어 변형 에너지가 방출되며 활성화 에너지가 작고(또 굽은 알카인은 HOMO–LUMO 간격이 작다), 선형인 2-butyne은 이런 변형이 없어 실온 장벽을 넘지 못한다.<br>
 · 방향족성: 평면 오원자 고리의 모든 원자가 sp<sup>2</sup>로 p 오비탈이 연속되고, C=C 2개 + N=N 2개 + N1(Bn) 비공유 전자쌍 2개 = 6π(4<i>n</i>+2, <i>n</i> = 1)이다.''',
+    mech=MECH_E5,
     explain=f'''<p><b>핵심 반응: Huisgen 1,3-쌍극자 [3+2] 고리 첨가 — 변형 촉진형(SPAAC)과 Cu(I) 촉매형(CuAAC) 클릭 반응.</b></p>
 <p>① <b>메커니즘(SPAAC)</b>: 아자이드(R–N=N<sup>+</sup>=N<sup>−</sup> ↔ R–N<sup>−</sup>–N<sup>+</sup>≡N)는 3원자 4π 성분(1,3-쌍극자), 알카인의 한 π 결합은 2π 성분이다. 4π + 2π = 6π(4<i>n</i>+2)이므로 열적으로 허용된 협동 반응이며, 굽은 화살표로는 (i) 말단 N<sup>−</sup>의 비공유 전자쌍 → 알카인 탄소 한쪽, (ii) C≡C π 전자 → 아자이드 치환 N(N1)과의 결합, (iii) N=N<sup>+</sup> π 전자 → 가운데 N 쪽으로 이동시켜 고리를 한 번에 닫는다.</p>
 <p>② <b>위치 이성질체 B, C</b>: {B_('P')}의 두 알카인 탄소는 각각 다른 벤젠 고리(락탐 C=O 쪽, N-CH<sub>3</sub> 쪽)에 붙어 있어 전자적으로 약간 다르지만, 협동 고리 첨가의 두 배향에서 결합 형성 정도와 입체 장애가 거의 같아 아자이드의 N1(Bn이 붙은 N)이 어느 쪽 탄소와 결합하든 비슷한 속도로 반응한다 → 약 1:1의 위치 이성질체 혼합물(무구리 클릭의 한계).</p>
@@ -288,6 +698,7 @@ dict(
     answer=f'''<div class="ansbox">{M(KETENE_NS, 'A (ketene N,S-acetal)', 14)}{M(THIO_B, 'B', 14)}</div>
 · {B_('A')}: 1-[1-((2-cyclohexylideneethyl)thio)prop-1-en-1-yl]pyrrolidine — S-알킬화된 ketene N,S-acetal(주로 <i>Z</i>)<br>
 · {B_('B')}: 2-(1-vinylcyclohexyl)-1-(pyrrolidin-1-yl)propane-1-thione (α-탄소가 카이랄 중심, 라셈체)''',
+    mech=MECH_E6,
     explain=f'''<p><b>핵심 반응: [3,3] 시그마 자리옮김(thio-Claisen; Claisen·Cope와 같은 6원자 의자형 협동 반응).</b></p>
 <p>① <b>탈양성자화</b>: <i>n</i>-BuLi가 C=S에 이웃한 α-CH<sub>2</sub>의 H를 떼어 thioenolate(⁻S–C(NR<sub>2</sub>)=CH–CH<sub>3</sub> ↔ S=C(NR<sub>2</sub>)–CH<sup>−</sup>–CH<sub>3</sub>)를 만든다. 피롤리딘 고리와 CH<sub>3</sub>의 A(1,3) 변형을 피하는 (<i>Z</i>)-엔올레이트가 주로 생긴다.</p>
 <p>② <b>S-알킬화</b>: 황은 크고 분극성이 큰(무른) 친핵체 자리이며 음전하 밀도도 크므로 알릴형 브로마이드를 S<sub>N</sub>2로 공격한다 → C=S가 사라지고 C=C가 생긴 ketene N,S-acetal {B_('A')}(분자식 변화: C<sub>7</sub>H<sub>13</sub>NS − H + C<sub>8</sub>H<sub>13</sub> = C<sub>15</sub>H<sub>25</sub>NS). 단서 “C=S 없음”이 C-알킬화가 아님을 알려 준다.</p>

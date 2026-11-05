@@ -99,7 +99,8 @@ h2.nobreak { break-before: auto; }
 .a .meta td:first-child { white-space: nowrap; font-weight: 700; }
 .a .ans { padding: 2mm 3mm; border-bottom: 1px dashed #999; }
 .a .mfig { padding: 2mm 3mm; border-bottom: 1px dashed #999; }
-.a .mfig b.t { display:inline-block; background:#000; color:#fff; padding: 0 2mm; margin-right: 2mm; font-size: 8.4pt; }
+.a .mfig { break-inside: auto; }
+.a .mfig > b.t { display:table; break-after: avoid; page-break-after: avoid; margin-bottom: 1mm; background:#000; color:#fff; padding: 0 2mm; margin-right: 2mm; font-size: 8.4pt; }
 .a .ans b.t, .a .exp b.t { display:inline-block; background:#000; color:#fff; padding: 0 2mm; margin-right: 2mm; font-size: 8.4pt; }
 .a .exp { padding: 2mm 3mm; }
 .a .exp p { margin: 0 0 1.2mm; }
@@ -109,6 +110,15 @@ table.idx th { background:#eee; }
 table.idx td.l { text-align:left; }
 table.idx td:nth-child(-n+3), table.idx th { white-space: nowrap; }
 '''
+
+
+def mfig_html(m):
+    """메커니즘 그림 칸: 제목과 첫 그림을 한 덩어리로 묶어 제목만 페이지 끝에 남지 않게 한다."""
+    if not m:
+        return ''
+    figs = m if isinstance(m, list) else [m]
+    first = f'<div style="break-inside: avoid; page-break-inside: avoid"><b class="t">메커니즘·구조 그림</b>{figs[0]}</div>'
+    return f'<div class="mfig">{first}{"".join(figs[1:])}</div>'
 
 
 def ans_html(items):
@@ -129,7 +139,7 @@ def ans_html(items):
 {f'<tr><td>노벨상 연계</td><td>{d["nobel"]}</td></tr>' if d.get("nobel") else ''}
 </table></div>
 <div class="ans"><b class="t">정답</b>{d["answer"]}</div>
-{f'<div class="mfig"><b class="t">메커니즘·구조 그림</b>{"".join(d["mech"]) if isinstance(d.get("mech"), list) else d.get("mech","")}</div>' if d.get("mech") else ''}
+{mfig_html(d.get("mech"))}
 <div class="exp"><b class="t">해설</b>{d["explain"]}</div></div>''')
     return f'''<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>기출변형 정답과 해설</title><style>{CSS.replace("@page { size: A4; margin: 0; }","")}{ANS_CSS}{MECH_CSS}</style></head><body>

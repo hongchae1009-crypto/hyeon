@@ -177,9 +177,7 @@ def step(smiles, arrows=(), lp=(), rad=(), notes=None, dash=(), hl=(), rotate=0,
     if labels:
         for k, v in labels.items():
             m2.GetAtomWithIdx(idx[k]).SetProp('atomLabel', str(v))
-    if notes:
-        for k, v in notes.items():
-            m2.GetAtomWithIdx(idx[k]).SetProp('atomNote', str(v))
+    # notes 는 RDKit 글꼴에 한글·원문자(㉠)가 없어 SVG <text> 오버레이로 그린다(아래)
     for (i, j) in dash:
         b = m2.GetBondBetweenAtoms(idx[i], idx[j])
         if b is not None:
@@ -214,6 +212,13 @@ def step(smiles, arrows=(), lp=(), rad=(), notes=None, dash=(), hl=(), rotate=0,
             tx, ty = -uy, ux
             for s in (-1, 1):
                 ov.append(f'<circle cx="{px + tx * s * 2.6:.1f}" cy="{py + ty * s * 2.6:.1f}" r="1.35" fill="#000"/>')
+    for m, v in (notes or {}).items():
+        i = idx[m]
+        ux, uy = _free_dir(P, mol, i, 0)
+        tx_, ty_ = P[i][0] + ux * bl * 0.78, P[i][1] + uy * bl * 0.78 + 3
+        anchor = 'middle' if abs(ux) < 0.4 else ('start' if ux > 0 else 'end')
+        ov.append(f'<text x="{tx_:.1f}" y="{ty_:.1f}" font-size="{bl * 0.42:.1f}" text-anchor="{anchor}" '
+                  f'font-family="NanumGothic, Noto Sans CJK KR, sans-serif" fill="#1a3fa0">{v}</text>')
     for m in rad:
         i = idx[m]
         ux, uy = _free_dir(P, mol, i, 0)
