@@ -3,7 +3,7 @@
   1쪽: 내용 체계 표 6개  /  2쪽~: 성취기준 · 성취기준 해설 · 적용 시 고려 사항
 쪽마다 바깥 테두리 안쪽만 잘라, 빈 줄로 나뉜 내용 띠를 다단으로 차례대로 채운다.
 사용: python3 b4_merge.py <2022 교육과정-1-23.pdf> <2022 교육과정-24-48.pdf>"""
-import io, pathlib, sys
+import io, pathlib, re, subprocess, sys
 import numpy as np, pymupdf
 from PIL import Image
 sys.dont_write_bytecode = True
@@ -93,6 +93,103 @@ def layout(doc, items, ncol, title, sub, k_max, gap=2.2):
             pg.insert_image(pymupdf.Rect(x, yy, x + v.width * k, yy + h), stream=buf.getvalue())
     return k
 
+def kind_of(im):
+    """한 줄짜리 좁은 띠를 OCR해서 세부 단원 제목 '(1) …'인지, 지울 머리 제목('나. 성취기준' 등)인지 가린다."""
+    if im.height > 75 or im.width > 0.6 * 1400: return "body"
+    t = subprocess.run(["tesseract", "-", "-", "-l", "kor", "--psm", "7"], input=_png(im), capture_output=True).stdout.decode("utf-8", "ignore")
+    t = re.sub(r"\s+", "", t)
+    if re.match(r"^[\(（]\d+[\)）]", t): return "unit"
+    if re.match(r"^(나\.|가\.|\d\.)?(성취기준|내용체계)", t) or re.match(r"^\d\.내용체계", t): return "drop"
+    return "body"
+
+def _png(im):
+    buf = io.BytesIO(); im.save(buf, "PNG", optimize=True); return buf.getvalue()
+
+def layout_fold(doc, groups, npages, cph, title, k_max, unit_gap=3.2, gap=1.0):
+    """B4 가로를 반으로 접어 쓰는 판(왼쪽·오른쪽 반이 각각 B5 세로). groups: [(과목 제목, [(종류, 그림)])].
+    과목마다 테두리 상자로 묶고(단이 넘어가면 '(계속)' 머리), 세부 단원 사이는 띄운다. 들어가는 가장 큰 배율을 쓴다."""
+    W, H = B4[1], B4[0]; half = W / 2
+    mo, mi, top, bot, cg = 8 * MM, 7 * MM, 14 * MM, 7 * MM, 4 * MM
+    pad, hd, sg = 1.8 * MM, 5.2 * MM, 3.0 * MM  # 상자 안 여백, 상자 머리 높이, 상자 사이 간격
+    cw = (half - mo - mi - (cph - 1) * cg) / cph; ch = H - top - bot; ncol = npages * 2 * cph
+    iw = cw - 2 * pad
+    def colx(c):
+        h, j = divmod(c % (2 * cph), cph)
+        return (mo if h == 0 else half + mi) + j * (cw + cg)
+    def place(k):
+        out, c, y = [], 0, 0  # out: (종류, 값, 단, y, 높이, 과목 번호)
+        for gi, (name, items) in enumerate(groups):
+            if y > 0: y += sg
+            first = True
+            for i, (kd, im) in enumerate(items):
+                if im.width * k > iw: return None
+                h = im.height * k
+                pre = (unit_gap * MM if kd == "unit" and not first else gap * MM if not first else 0)
+                nxt = items[i + 1][1].height * k if kd == "unit" and i + 1 < len(items) else 0  # 단원 제목은 다음 덩어리와 함께
+                head = hd if first else 0
+                if y + head + pre + h + nxt + pad > ch and y > 0:
+                    c += 1; y = 0
+                    if c >= ncol: return None
+                    out.append(("head", name + (" (계속)" if not first else ""), c, 0, hd, gi)); y = hd + pad; pre = 0
+                elif first:
+                    out.append(("head", name, c, y, hd, gi)); y += hd + pad
+                y += pre
+                out.append((kd, im, c, y, h, gi)); y += h
+                first = False
+            y += pad
+        return out
+    k = k_max
+    while (pos := place(k)) is None: k *= 0.99
+    F = pymupdf.Font(fontfile=FONT); base = len(doc)
+    for n in range(npages):
+        pg = doc.new_page(width=W, height=H); pg.insert_font(fontname="ng", fontfile=FONT)
+        for hf in range(2):
+            x0 = mo if hf == 0 else half + mi; x1 = half - mi if hf == 0 else W - mo
+            pg.insert_text((x0, 10 * MM), title, fontname="ng", fontsize=11.5)
+            tag = f"{n * 2 + hf + 1} / {npages * 2}"
+            pg.insert_text((x1 - F.text_length(tag, fontsize=8.5), 10 * MM), tag, fontname="ng", fontsize=8.5, color=(.4, .4, .4))
+            pg.draw_line((x0, 12 * MM), (x1, 12 * MM), width=1)
+        pg.draw_line((half, 4 * MM), (half, H - 4 * MM), width=.5, color=(.6, .6, .6), dashes="[3 3] 0")
+    # 과목 상자: 같은 과목·같은 단의 덩어리를 하나의 테두리로
+    seg = {}
+    for kd, v, c, y, h, gi in pos:
+        a0, a1 = seg.get((gi, c), (y, y + h)); seg[(gi, c)] = (min(a0, y), max(a1, y + h))
+    for (gi, c), (y0, y1) in seg.items():
+        pg = doc[base + c // (2 * cph)]; x = colx(c)
+        pg.draw_rect(pymupdf.Rect(x, top + y0, x + cw, top + y1 + pad), color=(.10, .24, .43), width=.9)
+    for kd, v, c, y, h, gi in pos:
+        pg = doc[base + c // (2 * cph)]; x = colx(c); yy = top + y
+        if kd == "head":
+            pg.draw_rect(pymupdf.Rect(x, yy, x + cw, yy + h), color=None, fill=(.10, .24, .43))
+            fs = min(9.5, (cw - 3.6 * MM) / F.text_length(v, fontsize=1))
+            pg.insert_text((x + 1.8 * MM, yy + h / 2 + fs * 0.36), v, fontname="ng", fontsize=fs, color=(1, 1, 1))
+        else:
+            if kd == "unit":  # 세부 단원: 옅은 띠 + 앞쪽 구분선
+                pg.draw_rect(pymupdf.Rect(x + pad * .5, yy - .6 * MM, x + cw - pad * .5, yy + h + .4 * MM), color=None, fill=(.91, .93, .97))
+            pg.insert_image(pymupdf.Rect(x + pad, yy, x + pad + v.width * k, yy + h), stream=_png(v))
+    return k
+
+def build_land(a, b, std_pages):
+    """B4 가로(반 접기) 판: 1쪽 내용 체계, 그다음 std_pages쪽 성취기준."""
+    bk = Book(a, b); doc = pymupdf.open(); groups = []
+    for name, tabs, _ in SUBJ:
+        for p, lab in tabs:
+            groups.append((f"{lab} — 내용 체계 ({p}쪽)", [("body", x) for x in bands(bk.page(p), 200)]))
+    k1 = layout_fold(doc, groups, 1, 2, "2022 개정 교육과정 — 내용 체계", NATIVE)
+    groups = []
+    for name, _, ps in SUBJ:
+        its = []
+        for p in ps:
+            for x in bands(bk.page(p), 10):
+                kd = kind_of(x)
+                if kd != "drop": its.append((kd, x))
+        groups.append((f"{name}  성취기준 ({ps[0]}~{ps[-1]}쪽)", its))
+        print(name, "세부 단원", sum(k == "unit" for k, _ in its))
+    k2 = layout_fold(doc, groups, std_pages, 3 if std_pages == 1 else 2, "2022 개정 교육과정 — 성취기준", NATIVE)
+    out = HERE / f"교육과정_원문컷아웃_B4가로_{1 + std_pages}쪽.pdf"
+    doc.save(out, garbage=4, deflate=True)
+    print(f"{out.name}: {len(doc)}쪽 — 내용 체계 원문 대비 {k1 / NATIVE:.0%}, 성취기준 {k2 / NATIVE:.0%}")
+
 def build(a, b, std_pages=1):
     bk = Book(a, b); doc = pymupdf.open()
     items = []
@@ -116,5 +213,6 @@ def build(a, b, std_pages=1):
     print(f"{out.name}: {len(doc)}쪽 — 내용 체계 원문 대비 {k1 / NATIVE:.0%}, 성취기준 {k2 / NATIVE:.0%}")
 
 if __name__ == "__main__":
-    build(sys.argv[1], sys.argv[2], 1)
-    build(sys.argv[1], sys.argv[2], 2)
+    if "--세로" in sys.argv:
+        build(sys.argv[1], sys.argv[2], 1); build(sys.argv[1], sys.argv[2], 2)
+    build_land(sys.argv[1], sys.argv[2], 1); build_land(sys.argv[1], sys.argv[2], 2)
