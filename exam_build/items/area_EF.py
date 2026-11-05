@@ -447,7 +447,7 @@ _THIO_SUBS = {7: (2, 'eq'), 8: (3, 'ax'), 20: (6, 'ax'), 21: (6, 'eq')}   # NR2 
 
 MECH_E6 = [
     mechanism(
-        kstep('[CH3:8][CH:3]([H:10])[C:2](=[S:1])[N:7]1CCCC1.[CH2-:11]CCC', scale=19, lp=[11], frag_dx={1: -6.2}, frag_dy={1: -2.6},
+        kstep('[CH3:8][CH:3]([H:10])[C:2](=[S:1])[N:7]1CCCC1.[CH2-:11]CCC', scale=19, lp=[11], lp_rot={11: 70}, frag_dx={1: -6.2}, frag_dy={1: -2.6},
               arrows=[ar('lp', 11, 'a', 10), ar('b', (3, 10), 'm', (2, 3)), ar('b', (1, 2), 'a', 1)],
               caption='① α-C–H 탈양성자화'),
         ('→', '<i>n</i>-BuLi', '−BuH'),
@@ -468,6 +468,68 @@ MECH_E6 = [
               xy=_chair(_THIO_ORDER, _THIO_SUBS),
               caption='<b>B</b>: C3–C6 생성·S–C4 절단, C=S·CH=CH<sub>2</sub> 형성<br>사차 탄소 옆 C3이 새 카이랄 중심(라셈체)'),
         title='[그림 2] thio-Claisen [3,3] 시그마 자리옮김 — 의자형 6원자 고리 전이 상태'),
+]
+
+
+# ---------------------------------------------------------------- 그림: F-1 (2023B-1)
+_PH = {1: 'Ph', 5: 'Ph'}
+
+MECH_F1 = [
+    mechanism(
+        step('[*:1][CH:2]([H:3])[C:4](C)=O.[*:5][CH-:6][C:7](=O)N(C)C', scale=21, labels=_PH, lp=[6], gap=2.2,
+             arrows=[ar('lp', 6, 'a', 3, side=1), ar('b', (2, 3), 'a', 2)],
+             caption='(나) pK<sub>a</sub> 19.9 + (라)의 짝염기'),
+        ('⇌', '<i>K</i> = 10<sup>26.6−19.9</sup>', '= 10<sup>6.7</sup>'),
+        step('[*:1][CH-:2][C:4](C)=O.[*:5][CH2:6][C:7](=O)N(C)C', scale=21, labels=_PH, lp=[2], gap=2.2,
+             caption='(나)의 짝염기 + (라) pK<sub>a</sub> 26.6'),
+        title='[그림 1] 탄소산 사이의 양성자 이동 — 평형은 더 약한 산·더 안정한 짝염기 쪽(오른쪽)으로 치우침'),
+    mechanism(
+        step('[*:1][CH-:2][C:4](C)=[O:8]', scale=22, labels={1: 'Ph'}, lp=[2], arrows=[ar('lp', 2, 'm', (2, 4)), ar('b', (4, 8), 'a', 8)],
+             caption='(나)<sup>−</sup>'),
+        RES(),
+        step('[*:1][CH:2]=[C:4](C)[O-:8]', scale=22, labels={1: 'Ph'}, lp=[8], caption='엔올레이트: 음전하가 O에(가장 큰 기여)'),
+        TXT('&nbsp;&nbsp;'),
+        step('[*:1][CH-:2][C:4]#[N:8]', scale=22, labels={1: 'Ph'}, lp=[2], arrows=[ar('lp', 2, 'm', (2, 4)), ar('b', (4, 8), 'a', 8)],
+             caption='(다)<sup>−</sup>'),
+        RES(),
+        step('[*:1][CH:2]=[C:4]=[N-:8]', scale=22, labels={1: 'Ph'}, lp=[8], caption='케텐이민 음이온: 음전하가 N에'),
+        title='[그림 2] (나)·(다) 짝염기의 공명 — 음전하를 받는 원자 O &gt; N (전기음성도)'),
+    mechanism(
+        step('[*:1][CH2:2][C:4](=[O:8])[N:9](C)C', scale=21, labels={1: 'Ph'}, lp=[9], arrows=[ar('lp', 9, 'm', (9, 4)), ar('b', (4, 8), 'a', 8)],
+             caption='(라) 아마이드'),
+        RES(),
+        step('[*:1][CH2:2][C:4]([O-:8])=[N+:9](C)C', scale=21, labels={1: 'Ph'}, lp=[8],
+             caption='N이 이미 C=O에 전자를 주고 있음<br>→ α-음전하를 받는 능력 ↓'),
+        TXT('&nbsp;&nbsp;'),
+        kstep('[*:1][CH-:2][C:3]1=[CH:4][CH:5]=[CH:7][CH:10]=[CH:6]1', scale=19, labels={1: 'Ph'}, lp=[2],
+              arrows=[ar('lp', 2, 'm', (2, 3)), ar('b', (3, 4), 'a', 4)], caption='(가)<sup>−</sup>'),
+        RES(),
+        kstep('[*:1][CH:2]=[C:3]1[CH-:4][CH:5]=[CH:7][CH:10]=[CH:6]1', scale=19, labels={1: 'Ph'}, lp=[4],
+              caption='고리 탄소(o, p)로만 비편재화<br>(방향족성 일부 손실)'),
+        title='[그림 3] (라)·(가)가 약한 산인 이유 — 아마이드 공명의 경쟁, 전기음성 원자 없는 고리 비편재화'),
+]
+
+# ---------------------------------------------------------------- 그림: F-2 (2019A-5)
+_LYS_R = '(CH<sub>2</sub>)<sub>4</sub>NHCO<sub>2</sub>CH<sub>2</sub>C≡CH'
+
+MECH_F2 = [
+    mechanism(
+        step('[NH3+:1][CH:2]([*:9])[C:3](=O)[O:4][H:5].[OH2:6]', scale=21, labels={9: 'R'}, lp=[6], gap=1.4,
+             arrows=[ar('lp', 6, 'a', 5), ar('b', (4, 5), 'a', 4)], caption='pH 1: 양이온(+1)'),
+        ('⇌', 'pK<sub>a1</sub> 2.2', '−H<sub>3</sub>O<sup>+</sup>'),
+        step('[N+:1]([H:7])([H:10])([H:11])[CH:2]([*:9])[C:3](=O)[O-:4].[OH2:6]', scale=21, labels={9: 'R'}, lp=[6], gap=1.4,
+             arrows=[ar('lp', 6, 'a', 7), ar('b', (1, 7), 'a', 1)], caption='pH 6.0: 쌍극자 이온(알짜 전하 0)'),
+        ('⇌', 'pK<sub>a2</sub> 9.0', '−H<sub>3</sub>O<sup>+</sup>'),
+        step('[NH2:1][CH:2]([*:9])[C:3](=O)[O-:4]', scale=21, labels={9: 'R'}, lp=[1], caption='pH &gt; 9: 음이온(−1)'),
+        title='[그림 1] 산–염기 단계 — 먼저 α-COOH(H<sub>D</sub>), 다음 –NH<sub>3</sub><sup>+</sup>(H<sub>C</sub>)가 물에 양성자를 준다 (R = ' + _LYS_R + ')'),
+    mechanism(
+        step('[*:1][N-:2][C:3](=[O:4])O[*:5]', scale=21, labels={1: 'R′', 5: 'R″'}, lp=[2], arrows=[ar('lp', 2, 'm', (2, 3)), ar('b', (3, 4), 'a', 4)],
+             caption='H<sub>B</sub> 제거: 카바메이트 N<sup>−</sup>'),
+        RES(),
+        step('[*:1][N:2]=[C:3]([O-:4])O[*:5]', scale=21, labels={1: 'R′', 5: 'R″'}, lp=[4], caption='음전하가 O로 비편재화(공명) → pK<sub>a</sub> ≈ 17~20'),
+        TXT('&nbsp;&nbsp;&nbsp;vs&nbsp;&nbsp;&nbsp;'),
+        step('[*:1][CH2]C#[C-:2]', scale=21, labels={1: 'R‴'}, lp=[2], caption='H<sub>A</sub> 제거: 아세틸라이드<br>sp 오비탈(50% s)에 국재, 공명 없음 → pK<sub>a</sub> ≈ 25'),
+        title='[그림 2] 수용액에서 해리되지 않는 두 약산 비교 — H<sub>B</sub>(N–H, 공명) &gt; H<sub>A</sub>(≡C–H, 혼성만)'),
 ]
 
 ITEMS = [
@@ -728,6 +790,7 @@ dict(
 (나) + (라)의 짝염기 ⇌ (나)의 짝염기 + (라) 반응의 평형상수(<i>K</i>)를 쓰시오. [[PTS]]</p>''',
     answer='''· pK<sub>a</sub>: (가) &gt; (라) &gt; (다) &gt; (나) &nbsp;(DMSO 실측 32.2 &gt; 26.6 &gt; 21.9 &gt; 19.9)<br>
 · <i>K</i> = 10<sup>(26.6 − 19.9)</sup> = 10<sup>6.7</sup> ≈ 5 × 10<sup>6</sup>''',
+    mech=MECH_F1,
     explain='''<p><b>핵심 개념: 탄소산의 산도 = 짝염기(카보음이온) 안정성 — 공명(전기음성 원자로의 비편재화) > 고리로의 비편재화, 그리고 pK<sub>a</sub> 차로 평형 위치 예측.</b></p>
 <p>① 네 화합물 모두 벤질 CH<sub>2</sub>이므로 음전하는 페닐 고리(o, p 탄소)로 비편재화되는 공통 기여가 있다. 차이는 다른 쪽 치환기가 음전하를 얼마나 잘 받느냐이다.</p>
 <p>② (가) Ph<sub>2</sub>CH<sub>2</sub>: 음전하가 두 벤젠 고리의 탄소에만 퍼진다(전기음성 원자 없음, 비편재화 때 고리 방향족성 일부 손실) → 가장 약한 산(32.2).</p>
@@ -756,6 +819,7 @@ dict(
 <p class="ask">H<sub>A</sub>~H<sub>D</sub>를 산도(acidity)가 큰 것부터 순서대로 나열하시오. 또한, 이 화합물이 pH = 6.0인 수용액에서 가장 많이 존재하는 형태의 구조를 그리시오. [[PTS]]</p>''',
     answer=f'''· 산도: H<sub>D</sub> &gt; H<sub>C</sub> &gt; H<sub>B</sub> &gt; H<sub>A</sub> &nbsp;(pK<sub>a</sub> ≈ 2.2 &lt; 9.0 &lt; 약 17~20 &lt; 약 25)<br>
 <div class="ansbox">{M(LYS_PH7, 'pH 6.0: 쌍극자 이온(−COO⁻, −NH₃⁺)', 15)}</div>''',
+    mech=MECH_F2,
     explain=f'''<p><b>핵심 개념: ARIO(원자·공명·유발·오비탈)에 의한 산도 비교와 pH–pK<sub>a</sub> 관계에 따른 우세 화학종 판정.</b></p>
 <p>① H<sub>D</sub>(α-COOH, pK<sub>a</sub> 2.2): 카복실레이트는 두 산소에 음전하가 공명 비편재화되고, 이웃한 –NH<sub>3</sub><sup>+</sup>의 강한 유발 효과가 짝염기를 더 안정화하여 보통 카복실산(≈ 4.8)보다 강하다.</p>
 <p>② H<sub>C</sub>(–NH<sub>3</sub><sup>+</sup>, 9.0): 양이온 산으로, 떨어진 뒤 중성 아민이 된다. 측정 가능한 두 번째 pK<sub>a</sub>.</p>
