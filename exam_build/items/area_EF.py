@@ -442,8 +442,8 @@ def _chair(order, subs, b=1.5):
     return xy
 
 
-_THIO_ORDER = [5, 6, 3, 2, 1, 4]       # P0 C5H, P1 C6(고리), P2 C3(CH–CH3), P3 C2(C–N), P4 S1, P5 C4H2 — S1–C4(뒤), C3···C6(앞)
-_THIO_SUBS = {7: (2, 'eq'), 8: (3, 'ax')}   # NR2 적도, CH3 축 방향((Z)-A → 유사 축)
+_THIO_ORDER = [6, 5, 4, 1, 2, 3]       # P0 C6(고리), P1 C5H, P2 C4H2, P3 S1, P4 C2(C–N), P5 C3(CH–CH3): S1–C4 절단, C3···C6 형성
+_THIO_SUBS = {7: (2, 'eq'), 8: (3, 'ax'), 20: (6, 'ax'), 21: (6, 'eq')}   # NR2 적도, CH3 축((Z)-A → 유사 축), 고리 CH2 2개
 
 MECH_E6 = [
     mechanism(

@@ -527,10 +527,50 @@ dict(
 ㉣ &gt; ㉡: 두 기질은 같은 양이온 PhCHCl<sup>+</sup>를 만들지만 ㉣는 Br<sup>−</sup>가 이탈한다. Br<sup>−</sup>는 더 약한 염기(HBr이 더 강한 산)이고 C–Br 결합이 더 약해 더 좋은 이탈기이다.<br>
 [반응 2]: ① ROH + SOCl<sub>2</sub> → 클로로설파이트 R–O–S(=O)Cl (C–O 결합 유지, pyridine이 HCl 제거) → ② 고리 S의 비공유 전자쌍이 C–OS(O)Cl 탄소를 뒤쪽에서 공격(분자 내 S<sub>N</sub>2, 1차 반전), SO<sub>2</sub> + Cl<sup>−</sup> 이탈 → 3원 고리 설포늄(에피설포늄, 1-thioniabicyclo[3.1.0]hexane) → ③ Cl<sup>−</sup>가 같은 탄소를 S의 반대편에서 공격(2차 반전)하여 고리를 연다.<br>
 배열 유지: 반전이 두 번 일어나므로(이중 반전) 전체적으로 배열이 유지된다. 황이 없는 경우에는 Cl<sup>−</sup>의 한 번의 S<sub>N</sub>2만 일어나 반전된다.''',
+    mech=[
+        mechanism(
+            step('c1ccccc1[CH:1](Cl)[Cl:3]', scale=26,
+                 arrows=[ar('b', (1, 3), 'a', 3)], caption='① C–Cl 이종 분해(속도 결정 단계)'),
+            ('→', '−Cl<sup>−</sup>'),
+            step('c1ccccc1[CH+:1][Cl:2]', scale=30, lp=[2],
+                 arrows=[ar('lp', 2, 'm', (2, 1))], caption='벤질 양이온'),
+            res(),
+            step('c1ccccc1[CH:1]=[Cl+:2]', scale=28, caption='Cl의 π 주개(+R) 공명'),
+            res(),
+            step('Cl[CH:1]=C1C=CC=C[CH+]1', scale=26, caption='고리 <i>o</i>,<i>p</i> 공명'),
+            title='[그림 1] PhCHCl<sub>2</sub>의 S<sub>N</sub>1 — α-Cl 비공유 전자쌍이 양이온을 추가로 안정화 '
+                  '(㉣ PhCHClBr: 같은 양이온, 더 좋은 이탈기 Br<sup>−</sup>)'),
+        mechanism(
+            step('[Cl:3][S:4](=O)Cl.CCC[C@@H]([O:1][H:2])[C@@H]1CCCS1', scale=24, gap=0.8, layout='v',
+                 arrows=[ar('lp', 1, 'a', 4), ar('b', (4, 3), 'a', 3)], lp=[1], caption='① OH의 O → S, Cl<sup>−</sup> 이탈'),
+            ('→', ''),
+            step('CCC[C@@H]([O+:1]([H:2])S(=O)Cl)[C@@H]1CCCS1.c1cc[n:5]cc1', scale=24, gap=1.0,
+                 arrows=[ar('lp', 5, 'a', 2), ar('b', (2, 1), 'a', 1)], lp=[5], caption='② pyridine이 H<sup>+</sup> 제거'),
+            ('→', ''),
+            step('CCC[C@@H](OS(=O)Cl)[C@@H]1CCCS1', scale=24, caption='클로로설파이트(C–O 유지, 배열 그대로)'),
+            title='[그림 2] SOCl<sub>2</sub>/pyridine — OH를 좋은 이탈기 –OS(O)Cl로 전환'),
+        mechanism(
+            step('CCC[C@@H:6]([O:1][S:4](=O)[Cl:3])[C@@H:7]1CCC[S:8]1', scale=28,
+                 arrows=[ar('lp', 8, 'a', 6), ar('b', (6, 1), 'm', (1, 4)), ar('b', (4, 3), 'a', 3)], lp=[8],
+                 caption='① 고리 S가 뒤쪽 공격(1차 반전), SO<sub>2</sub> + Cl<sup>−</sup> 이탈'),
+            ('→', '−SO<sub>2</sub>'),
+            step('CCC[C@H:6]2[C@@H]1CCC[S+:8]12.[Cl-:3]', scale=28, gap=1.0,
+                 arrows=[ar('lp', 3, 'a', 6), ar('b', (6, 8), 'a', 8)], lp=[3],
+                 caption='② 에피설포늄 이온: Cl<sup>−</sup>가 S 반대편에서 공격(2차 반전)'),
+            ('→', ''),
+            step('CCC[C@@H](Cl)[C@@H]1CCCS1', scale=28, caption='배열 유지(이중 반전), (<i>R</i>) 유지'),
+            '<div style="width:100%;height:0"></div>',
+            step('CCC[C@@H:6]([O:1][S:4](=O)[Cl:5])C1CCCC1.[Cl-:3]', scale=26, gap=0.6, layout='v', frag_dx={1: -0.6},
+                 arrows=[ar('lp', 3, 'a', 6), ar('b', (6, 1), 'm', (1, 4)), ar('b', (4, 5), 'a', 5)], lp=[3],
+                 caption='(대조) 황이 없으면 Cl<sup>−</sup>의 S<sub>N</sub>2 1회'),
+            ('→', ''),
+            step('CCC[C@H](Cl)C1CCCC1', scale=26, caption='배열 반전 (<i>S</i>)'),
+            title='[그림 3] 황의 인접기 관여(anchimeric assistance) — 반전 × 2 = 배열 유지'),
+    ],
     explain='''<p><b>핵심 반응:</b> S<sub>N</sub>1 속도 = 탄소 양이온(전이 상태) 안정성 + 이탈기 능력 / 인접기 관여(anchimeric assistance)에 의한 이중 반전·배열 유지.</p>
-<p>① ㉠→㉡→㉢: 이탈기가 모두 Cl<sup>−</sup>로 같으므로 차이는 양이온 안정성에서 온다. α-Cl은 전기음성도 때문에 σ 결합으로 전자를 끌지만(−I), 3p 비공유 전자쌍으로 빈 p 오비탈에 π 주개(+R) 작용을 한다: [Ph–C<sup>+</sup>H–Cl ↔ Ph–CH=Cl<sup>+</sup>]. 결과적으로 Cl 하나 추가에 약 10배, 두 개 추가에 약 500배 빨라진다. (3p–2p 겹침은 O·N의 2p–2p보다 약하지만 효과는 분명하다. 이런 할로카베늄 이온은 Olah가 초산 매질에서 직접 관찰하였다.)</p>
+<p>① ㉠→㉡→㉢: 이탈기가 모두 Cl<sup>−</sup>로 같으므로 차이는 양이온 안정성에서 온다. α-Cl은 전기음성도 때문에 σ 결합으로 전자를 끌지만(−I), 3p 비공유 전자쌍으로 빈 p 오비탈에 π 주개(+R) 작용을 한다: [Ph–C<sup>+</sup>H–Cl ↔ Ph–CH=Cl<sup>+</sup>]. 결과적으로 Cl 하나 추가에 약 10배, 두 개 추가에 약 500배 빨라진다(「[그림 1]」). (3p–2p 겹침은 O·N의 2p–2p보다 약하지만 효과는 분명하다. 이런 할로카베늄 이온은 Olah가 초산 매질에서 직접 관찰하였다.)</p>
 <p>② ㉡ vs ㉣: 같은 PhCHCl<sup>+</sup>를 거치므로 이탈기만 다르다. Br<sup>−</sup>가 더 크고 분극성이 커서 음전하를 더 잘 분산시키며(약한 염기), C–Br 결합이 C–Cl보다 약하다 → 약 14배 빠르다. (기출의 R-OTs 비교처럼 “양이온 안정성”과 “이탈기”를 분리해 해석하는 것이 출제 의도이다.)</p>
-<p>③ [반응 2]의 메커니즘: SOCl<sub>2</sub>는 OH를 좋은 이탈기 –OS(O)Cl로 바꾼다(이 단계에서 탄소의 배열은 변하지 않음). 일반적인 2차 알코올에서는 pyridine·HCl에서 나온 Cl<sup>−</sup>가 뒤쪽에서 S<sub>N</sub>2 하여 반전된다. 그러나 이 기질에서는 고리 황이 반응 중심 바로 옆(β 위치)에 있어 분자 내 친핵체로서 Cl<sup>−</sup>보다 먼저, 훨씬 빠르게 뒤쪽 공격을 한다(3원 고리 전이 상태, 높은 유효 농도). 생긴 이환 에피설포늄 이온은 고리 무리와 양전하 때문에 반응성이 커서, Cl<sup>−</sup>가 S–C 결합의 반대편(원래 OH가 있던 쪽)에서 공격한다.</p>
+<p>③ [반응 2]의 메커니즘(「[그림 2]」, 「[그림 3]」): SOCl<sub>2</sub>는 OH를 좋은 이탈기 –OS(O)Cl로 바꾼다(이 단계에서 탄소의 배열은 변하지 않음). 일반적인 2차 알코올에서는 pyridine·HCl에서 나온 Cl<sup>−</sup>가 뒤쪽에서 S<sub>N</sub>2 하여 반전된다. 그러나 이 기질에서는 고리 황이 반응 중심 바로 옆(β 위치)에 있어 분자 내 친핵체로서 Cl<sup>−</sup>보다 먼저, 훨씬 빠르게 뒤쪽 공격을 한다(3원 고리 전이 상태, 높은 유효 농도). 생긴 이환 에피설포늄 이온은 고리 무리와 양전하 때문에 반응성이 커서, Cl<sup>−</sup>가 S–C 결합의 반대편(원래 OH가 있던 쪽)에서 공격한다.</p>
 <p>④ 입체: 1차 반전(S가 OH의 반대편에서 결합) + 2차 반전(Cl이 S의 반대편에서 결합) = 배열 유지. CIP 우선순위가 O→Cl로 바뀌어도 순서(Cl/O &gt; 고리 C(S) &gt; 프로필 &gt; H)가 같아 출발물과 생성물 모두 (<i>R</i>) 카비놀 탄소, (<i>S</i>) 고리 탄소이다. 이는 기출의 겨자 가스형 S 인접기 관여(EtSCH<sub>2</sub>CH<sub>2</sub>Cl 가수분해 3000배 가속)와 같은 원리이다.</p>
 <p>⑤ 참고·오답: 에피설포늄을 Cl<sup>−</sup>가 고리 탄소 쪽에서 열면 6원 고리로 확장된 3-chlorothiane이 생길 수 있으나, 문헌(biotin 합성)에서는 고리 크기가 유지된 배열 유지 염화물이 얻어졌다. “SOCl<sub>2</sub>는 S<sub>N</sub>i로 배열을 유지한다”는 답은 pyridine 존재 조건(반전이 정상)과 황 없는 대조 실험 결과를 설명하지 못하므로 불충분하다.</p>''',
 ),

@@ -697,7 +697,7 @@ dict(
                  arrows=[ar('b', (1, 2), 'm', (2, 3))], caption='σ-착물'),
             RES,
             step('[Cl:7][C+:1]1[CH:2]=[CH:3][C:4]([H:8])([N+:10](=[O:11])[O-:9])[CH:5]=[CH:6]1', scale=24,
-                 arrows=[ar('lp', 7, 'm', (7, 1))], caption='+가 C–Cl 탄소에'),
+                 arrows=[ar('lp', 7, 'm', (7, 1), side=1)], caption='+가 C–Cl 탄소에'),
             RES,
             step('[Cl+:7]=[C:1]1[CH:2]=[CH:3][C:4]([H:8])([N+:10](=[O:11])[O-:9])[CH:5]=[CH:6]1', scale=24,
                  caption='C=Cl<sup>+</sup> (모든 원자 옥텟): o,p 공격에서만 가능'),
@@ -747,7 +747,7 @@ dict(
 촉매 순환: 산화성 첨가 [Pd(0) → Pd(II)] → 금속 교환 [Pd(II) → Pd(II)] → 환원성 제거 [Pd(II) → Pd(0)]''',
     mech=[
         mechanism(
-            step('[O:9]=[N+:10]=[O:12].CC(=O)[C:1]1=[CH:2][C:3]([H:8])=[C:4]([Br:7])[CH:5]=[CH:6]1', scale=24, gap=1.2, layout='v', frag_dx={0: 1.2},
+            step('[O:9]=[N+:10]=[O:12].CC(=O)[C:1]1=[CH:2][CH:3]=[C:4]([Br:7])[CH:5]=[CH:6]1', scale=24, gap=1.2, layout='v', frag_dx={0: 1.2},
                  arrows=[ar('b', (3, 4), 'm', (3, 10)), ar('b', (10, 9), 'a', 9)], caption='① Br의 오쏘(= COCH<sub>3</sub>의 메타) 공격'),
             ('→', ''),
             step('CC(=O)[C:1]1=[CH:2][C:3]([H:8])([N+:10](=[O:12])[O-:9])[C+:4]([Br:7])[CH:5]=[CH:6]1', scale=24,
