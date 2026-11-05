@@ -318,46 +318,70 @@ def _partition(hs, ncol, gap):
             if best is None or hmax < best[0] - 1e-6: best = (hmax, cols)
     return best
 
-def layout_halves(doc, subjects, title, k_max, cph=3):
-    """성취기준 한 쪽 판(반 접기): 접은 한 면(왼쪽·오른쪽 반)마다 과목을 위에서 아래로 쌓고,
+def layout_halves(doc, subjects, title, k_max, cph=3, npages=1):
+    """성취기준 판(반 접기): 접은 면(쪽마다 왼쪽·오른쪽 반, 모두 2·npages면)마다 과목을 위에서 아래로 쌓고,
     과목 상자 안에서는 단원을 cph칸에 1→2→3… 순서로 나눠 담는다. 단원은 절대 자르지 않는다.
-    앞쪽 과목들은 왼쪽 면, 나머지는 오른쪽 면 — 둘 다 들어가는 가장 큰 배율을 찾는다."""
-    W, H = FOLD[0][1], FOLD[0][0]; half = W / 2
-    mo, mi, top, bot, cg = 7 * MM, 6 * MM, 13.5 * MM, 5 * MM, 3 * MM
-    pad, hd, sg, ug, ig = 1.5 * MM, 5.6 * MM, 3 * MM, 2.6 * MM, .5 * MM
+    과목을 순서대로 면에 나눠 담되, 모두 들어가는 가장 큰 배율을 찾는다."""
+    import itertools
+    W, H = FOLD[0][1], FOLD[0][0]; half = W / 2; nf = 2 * npages
+    mo, mi, top, bot, cg = 7 * MM, 6 * MM, 13.5 * MM, 5 * MM, 3.5 * MM
+    pad, hd, sg, ug, ig = 1.8 * MM, 6 * MM, 4 * MM, 3.2 * MM, .6 * MM
     cw = (half - mo - mi - (cph - 1) * cg) / cph; ch = H - top - bot
     uh = lambda u, k: sum(im.height * k for _, im in u) + ig * (len(u) - 1)
-    def block(units, k):
-        hmax, cols = _partition([uh(u, k) for u in units], cph, ug)
-        return hd + 2 * pad + hmax, cols
+    seq = [(gi, ui) for gi, (_, us) in enumerate(subjects) for ui in range(len(us))]  # 단원 순서
+    def blocks(a, b):  # seq[a:b]를 과목별 덩어리로: (과목 번호, [단원 번호], 이어짐 여부)
+        out = []
+        for gi, ui in seq[a:b]:
+            if out and out[-1][0] == gi: out[-1][1].append(ui)
+            else: out.append((gi, [ui], ui > 0))
+        return out
     def plan(k):
-        bl = [block(us, k) for _, us in subjects]
-        for m in range(1, len(subjects)):
-            L = sum(h for h, _ in bl[:m]) + sg * (m - 1); R = sum(h for h, _ in bl[m:]) + sg * (len(bl) - m - 1)
-            if L <= ch and R <= ch: return m, bl, max(L, R)
-        return None
+        memo = {}
+        def bh(gi, uis):
+            key = (gi, tuple(uis))
+            if key not in memo:
+                hmax, cols = _partition([uh(subjects[gi][1][u], k) for u in uis], cph, ug)
+                memo[key] = (hd + 2 * pad + hmax, [[uis[c] for c in col] for col in cols])
+            return memo[key]
+        n = len(seq); best = None
+        for m in range(1, min(nf, n) + 1):
+            for cuts in itertools.combinations(range(1, n), m - 1):
+                b = (0,) + cuts + (n,); fh = []
+                for i in range(m):
+                    bs = blocks(b[i], b[i + 1])
+                    fh.append(sum(bh(g, u)[0] for g, u, _ in bs) + sg * (len(bs) - 1))
+                    if fh[-1] > ch: break
+                else:
+                    # 같은 높이면 과목 경계에서 나누는 쪽을 고른다
+                    score = (max(fh), sum(1 for c in cuts if seq[c][1] > 0))
+                    if best is None or score < best[0]: best = (score, b)
+        if best is None: return None
+        b = best[1]
+        return [[(g, bh(g, u)[0], bh(g, u)[1], c) for g, u, c in blocks(b[i], b[i + 1])] for i in range(len(b) - 1)]
     k = min(k_max, min((cw - 2 * pad) / im.width for _, us in subjects for u in us for _, im in u))
-    while (pl := plan(k)) is None: k *= 0.99
-    m, bl, _ = pl
-    F = pymupdf.Font(fontfile=FONT); NAVY = (.10, .24, .43)
-    pg = doc.new_page(width=W, height=H); pg.insert_font(fontname="ng", fontfile=FONT)
-    pg.draw_line((half, 4 * MM), (half, H - 4 * MM), width=.5, color=(.6, .6, .6), dashes="[3 3] 0")
-    for hf, idx in enumerate((range(0, m), range(m, len(subjects)))):
+    while (faces := plan(k)) is None: k *= 0.99
+    F = pymupdf.Font(fontfile=FONT); NAVY = (.10, .24, .43); base = len(doc)
+    for n in range(npages):
+        pg = doc.new_page(width=W, height=H); pg.insert_font(fontname="ng", fontfile=FONT)
+        pg.draw_line((half, 4 * MM), (half, H - 4 * MM), width=.5, color=(.6, .6, .6), dashes="[3 3] 0")
+    for fi in range(nf):
+        pg = doc[base + fi // 2]; hf = fi % 2
         x0 = mo if hf == 0 else half + mi; x1 = x0 + cph * cw + (cph - 1) * cg
-        pg.insert_text((x0, 10 * MM), title, fontname="ng", fontsize=13)
-        tag = f"{hf + 1} / 2"
+        pg.insert_text((x0, 10 * MM), title, fontname="ng", fontsize=12)
+        tag = f"{fi + 1} / {nf}"
         pg.insert_text((x1 - F.text_length(tag, fontsize=9), 10 * MM), tag, fontname="ng", fontsize=9, color=(.4, .4, .4))
         pg.draw_line((x0, 12 * MM), (x1, 12 * MM), width=1.1)
         y = top
-        for gi in idx:
-            name, units = subjects[gi]; bh, cols = bl[gi]
+        for gi, bhh, cols, cont in (faces[fi] if fi < len(faces) else []):
+            name, units = subjects[gi]
+            lab = name.split("  ")[0] + " 성취기준 (계속)" if cont else name
             pg.draw_rect(pymupdf.Rect(x0, y, x1, y + hd), color=None, fill=NAVY)
-            fs = min(11, (x1 - x0 - 4 * MM) / F.text_length(name, fontsize=1))
-            pg.insert_text((x0 + 2 * MM, y + hd / 2 + fs * .36), name, fontname="ng", fontsize=fs, color=(1, 1, 1))
-            pg.draw_rect(pymupdf.Rect(x0, y, x1, y + bh), color=NAVY, width=1)
+            fs = min(11, (x1 - x0 - 4 * MM) / F.text_length(lab, fontsize=1))
+            pg.insert_text((x0 + 2 * MM, y + hd / 2 + fs * .36), lab, fontname="ng", fontsize=fs, color=(1, 1, 1))
+            pg.draw_rect(pymupdf.Rect(x0, y, x1, y + bhh), color=NAVY, width=1)
             for j, col in enumerate(cols):
                 cx = x0 + j * (cw + cg)
-                if j: pg.draw_line((cx - cg / 2, y + hd + pad), (cx - cg / 2, y + bh - pad), width=.5, color=(.6, .66, .75))
+                if j: pg.draw_line((cx - cg / 2, y + hd + pad), (cx - cg / 2, y + bhh - pad), width=.5, color=(.6, .66, .75))
                 yy = y + hd + pad
                 for ui in col:
                     for kd, im in units[ui]:
@@ -367,10 +391,10 @@ def layout_halves(doc, subjects, title, k_max, cph=3):
                         pg.insert_image(pymupdf.Rect(cx + pad, yy, cx + pad + im.width * k, yy + h), stream=_png(im))
                         yy += h + ig
                     yy += ug - ig
-            y += bh + sg
+            y += bhh + sg
     return k
 
-def build_land(a, b, paper="A3"):
+def build_land(a, b, paper="A3", std_pages=1, cph=3):
     """가로(반 접기) 2쪽 판: 1쪽 내용 체계 + 교육과정 설계의 개요, 2쪽 성취기준 전체."""
     FOLD[0] = PAPER[paper]
     bk = Book(a, b); doc = pymupdf.open(); groups = []
@@ -393,8 +417,8 @@ def build_land(a, b, paper="A3"):
                 if kd == "unit" or cur is None: cur = []; units.append(cur)
                 cur.append((kd, x))
         subjects.append((f"{name}  성취기준 ({ps[0]}~{ps[-1]}쪽)", units))
-    k2 = layout_halves(doc, subjects, "2022 개정 교육과정 — 성취기준", NATIVE)
-    out = HERE / f"교육과정_원문컷아웃_{paper}가로.pdf"
+    k2 = layout_halves(doc, subjects, "2022 개정 교육과정 — 성취기준", NATIVE, cph=cph, npages=std_pages)
+    out = HERE / f"교육과정_원문컷아웃_{paper}가로{'' if std_pages == 1 else f'_{1 + std_pages}쪽'}.pdf"
     doc.save(out, garbage=4, deflate=True)
     print(f"{out.name}: {len(doc)}쪽 — 1쪽 원문 대비 {k1 / NATIVE:.0%}, 성취기준 {k2 / NATIVE:.0%}")
 
@@ -423,4 +447,5 @@ def build(a, b, std_pages=1):
 if __name__ == "__main__":
     if "--세로" in sys.argv:
         build(sys.argv[1], sys.argv[2], 1); build(sys.argv[1], sys.argv[2], 2)
-    build_land(sys.argv[1], sys.argv[2])
+    build_land(sys.argv[1], sys.argv[2], "A3")
+    build_land(sys.argv[1], sys.argv[2], "B4", std_pages=2, cph=2)
