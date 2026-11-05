@@ -474,39 +474,58 @@ MECH_E6 = [
 # ---------------------------------------------------------------- 그림: F-1 (2023B-1)
 _PH = {1: 'Ph', 5: 'Ph'}
 
+
+def _xy_acyl(linear=False):
+    """Ph(1)–C2–C4(=X8)–Y9 공통 배치. linear=True: C2–C4–N8 일직선(나이트릴·케텐이민)."""
+    xy = {1: (0, 0), 2: (1.3, 0.75), 4: (2.6, 0), 9: (2.6, -1.5), 11: (1.3, -2.25), 12: (3.9, -2.25)}
+    xy[8] = (3.9, -0.75) if linear else (3.9, 0.75)
+    return xy
+
+
+def _xy_bzan():
+    """Ph(1)–C2(벤질 탄소)–벤젠 고리(C3 위쪽 꼭짓점, C4 오른쪽 위 …)."""
+    h = _poly(6, 90, ccw=False)
+    xy = {m: h[k] for k, m in enumerate([3, 4, 5, 7, 10, 6])}
+    xy[2] = (0, 3.0)
+    xy[1] = (-1.3, 3.75)
+    return xy
+
+
 MECH_F1 = [
     mechanism(
-        step('[*:1][CH:2]([H:3])[C:4](C)=O.[*:5][CH-:6][C:7](=O)N(C)C', scale=21, labels=_PH, lp=[6], gap=2.2,
-             arrows=[ar('lp', 6, 'a', 3, side=1), ar('b', (2, 3), 'a', 2)],
-             caption='(나) pK<sub>a</sub> 19.9 + (라)의 짝염기'),
+        kstep('[*:1][CH:2]([H:3])[C:4](C)=O.[*:5][CH-:6][C:7](=O)N(C)C', scale=21, labels=_PH, lp=[6], gap=2.2,
+              arrows=[ar('lp', 6, 'a', 3, side=1), ar('b', (2, 3), 'a', 2)],
+              caption='(나) pK<sub>a</sub> 19.9 + (라)의 짝염기'),
         ('⇌', '<i>K</i> = 10<sup>26.6−19.9</sup>', '= 10<sup>6.7</sup>'),
-        step('[*:1][CH-:2][C:4](C)=O.[*:5][CH2:6][C:7](=O)N(C)C', scale=21, labels=_PH, lp=[2], gap=2.2,
-             caption='(나)의 짝염기 + (라) pK<sub>a</sub> 26.6'),
+        kstep('[*:1][CH-:2][C:4](C)=O.[*:5][CH2:6][C:7](=O)N(C)C', scale=21, labels=_PH, lp=[2], lp_rot={2: -70}, gap=2.2,
+              caption='(나)의 짝염기 + (라) pK<sub>a</sub> 26.6'),
         title='[그림 1] 탄소산 사이의 양성자 이동 — 평형은 더 약한 산·더 안정한 짝염기 쪽(오른쪽)으로 치우침'),
     mechanism(
-        step('[*:1][CH-:2][C:4](C)=[O:8]', scale=22, labels={1: 'Ph'}, lp=[2], arrows=[ar('lp', 2, 'm', (2, 4)), ar('b', (4, 8), 'a', 8)],
-             caption='(나)<sup>−</sup>'),
+        kstep('[*:1][CH-:2][C:4]([CH3:9])=[O:8]', xy=_xy_acyl(), scale=22, labels={1: 'Ph'}, lp=[2], lp_rot={2: 70},
+              arrows=[ar('lp', 2, 'm', (2, 4)), ar('b', (4, 8), 'a', 8)], caption='(나)<sup>−</sup>'),
         RES(),
-        step('[*:1][CH:2]=[C:4](C)[O-:8]', scale=22, labels={1: 'Ph'}, lp=[8], caption='엔올레이트: 음전하가 O에(가장 큰 기여)'),
+        kstep('[*:1][CH:2]=[C:4]([CH3:9])[O-:8]', xy=_xy_acyl(), scale=22, labels={1: 'Ph'}, lp=[8], lp_rot={8: -60},
+              caption='엔올레이트: 음전하가 O에<br>(가장 큰 기여)'),
         TXT('&nbsp;&nbsp;'),
-        step('[*:1][CH-:2][C:4]#[N:8]', scale=22, labels={1: 'Ph'}, lp=[2], arrows=[ar('lp', 2, 'm', (2, 4)), ar('b', (4, 8), 'a', 8)],
-             caption='(다)<sup>−</sup>'),
+        kstep('[*:1][CH-:2][C:4]#[N:8]', xy=_xy_acyl(True), scale=22, labels={1: 'Ph'}, lp=[2], lp_rot={2: 70},
+              arrows=[ar('lp', 2, 'm', (2, 4)), ar('b', (4, 8), 'a', 8)], caption='(다)<sup>−</sup>'),
         RES(),
-        step('[*:1][CH:2]=[C:4]=[N-:8]', scale=22, labels={1: 'Ph'}, lp=[8], caption='케텐이민 음이온: 음전하가 N에'),
+        kstep('[*:1][CH:2]=[C:4]=[N-:8]', xy=_xy_acyl(True), scale=22, labels={1: 'Ph'}, lp=[8], lp_rot={8: -60},
+              caption='케텐이민 음이온: 음전하가 N에'),
         title='[그림 2] (나)·(다) 짝염기의 공명 — 음전하를 받는 원자 O &gt; N (전기음성도)'),
     mechanism(
-        step('[*:1][CH2:2][C:4](=[O:8])[N:9](C)C', scale=21, labels={1: 'Ph'}, lp=[9], arrows=[ar('lp', 9, 'm', (9, 4)), ar('b', (4, 8), 'a', 8)],
-             caption='(라) 아마이드'),
+        kstep('[*:1][CH2:2][C:4](=[O:8])[N:9]([CH3:11])[CH3:12]', xy=_xy_acyl(), scale=21, labels={1: 'Ph'}, lp=[9], lp_rot={9: 0},
+              arrows=[ar('lp', 9, 'm', (9, 4)), ar('b', (4, 8), 'a', 8)], caption='(라) 아마이드'),
         RES(),
-        step('[*:1][CH2:2][C:4]([O-:8])=[N+:9](C)C', scale=21, labels={1: 'Ph'}, lp=[8],
-             caption='N이 이미 C=O에 전자를 주고 있음<br>→ α-음전하를 받는 능력 ↓'),
+        kstep('[*:1][CH2:2][C:4]([O-:8])=[N+:9]([CH3:11])[CH3:12]', xy=_xy_acyl(), scale=21, labels={1: 'Ph'}, lp=[8], lp_rot={8: -60},
+              caption='N이 이미 C=O에 전자를 줌<br>→ α-음전하 수용 능력 ↓'),
         TXT('&nbsp;&nbsp;'),
-        kstep('[*:1][CH-:2][C:3]1=[CH:4][CH:5]=[CH:7][CH:10]=[CH:6]1', scale=19, labels={1: 'Ph'}, lp=[2],
+        kstep('[*:1][CH-:2][C:3]1=[CH:4][CH:5]=[CH:7][CH:10]=[CH:6]1', xy=_xy_bzan(), scale=19, labels={1: 'Ph'}, lp=[2], lp_rot={2: 80},
               arrows=[ar('lp', 2, 'm', (2, 3)), ar('b', (3, 4), 'a', 4)], caption='(가)<sup>−</sup>'),
         RES(),
-        kstep('[*:1][CH:2]=[C:3]1[CH-:4][CH:5]=[CH:7][CH:10]=[CH:6]1', scale=19, labels={1: 'Ph'}, lp=[4],
+        kstep('[*:1][CH:2]=[C:3]1[CH-:4][CH:5]=[CH:7][CH:10]=[CH:6]1', xy=_xy_bzan(), scale=19, labels={1: 'Ph'}, lp=[4],
               caption='고리 탄소(o, p)로만 비편재화<br>(방향족성 일부 손실)'),
-        title='[그림 3] (라)·(가)가 약한 산인 이유 — 아마이드 공명의 경쟁, 전기음성 원자 없는 고리 비편재화'),
+        title='[그림 3] (라)·(가)가 약한 산인 이유 — 아마이드 공명의 경쟁, 전기음성 원자가 없는 고리 비편재화'),
 ]
 
 # ---------------------------------------------------------------- 그림: F-2 (2019A-5)
