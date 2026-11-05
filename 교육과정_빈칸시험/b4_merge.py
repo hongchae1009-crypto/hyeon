@@ -1,123 +1,120 @@
 # -*- coding: utf-8 -*-
-"""컷아웃 빈칸 시험지(컷아웃/*.png)를 B4 모아찍기로 합친다.
-쪽마다 내용 덩어리(빈 줄로 나뉜 띠)만 잘라 내어 다단으로 채운다.
-  1쪽: 내용 체계 6개 표  /  2쪽: 성취기준·해설·적용 시 고려 사항 전체
-정답지는 같은 B4 한 쪽에 내용 체계·성취기준 정답을 모은다."""
-import io, pathlib, re, subprocess, sys
+"""2022 개정 과학과 교육과정 원문(김지현 편집 스캔 PDF)을 B4 모아찍기로 컷아웃한다.
+  1쪽: 내용 체계 표 6개  /  2쪽~: 성취기준 · 성취기준 해설 · 적용 시 고려 사항
+쪽마다 바깥 테두리 안쪽만 잘라, 빈 줄로 나뉜 내용 띠를 다단으로 차례대로 채운다.
+사용: python3 b4_merge.py <2022 교육과정-1-23.pdf> <2022 교육과정-24-48.pdf>"""
+import io, pathlib, sys
 import numpy as np, pymupdf
 from PIL import Image
 sys.dont_write_bytecode = True
 HERE = pathlib.Path(__file__).parent
-SRC = HERE / "컷아웃"
 FONT = "/root/.fonts/NanumGothic-Bold.ttf"
-CHROME = next(iter(sorted(pathlib.Path("/opt/pw-browsers").glob("chromium-*/chrome-linux*/chrome"))))
 MM = 72 / 25.4
 B4 = (257 * MM, 364 * MM)
-ORDER = ["중학교 과학(물질)", "통합과학12", "화학", "물질과 에너지", "화학 반응의 세계"]
-LABEL = {"통합과학12": "통합과학1·2", 27: "통합과학1", 34: "통합과학2"}
+DPI = 250
+NATIVE = 25.4 / DPI * MM          # 원문 실제 크기(pt/px)
+SUBJ = [  # (과목명, [(내용 체계 쪽, 표 이름)], 성취기준·해설 쪽)
+    ("중학교 과학(물질)", [(9, "중학교 과학 — 물질")], [12, 13, 14, 15, 16]),
+    ("통합과학1·2", [(27, "통합과학1"), (34, "통합과학2")], [28, 29, 30, 31, 35, 36]),
+    ("화학", [(62, "화학")], [63, 64, 65, 66]),
+    ("물질과 에너지", [(74, "물질과 에너지")], [75, 76, 77, 78]),
+    ("화학 반응의 세계", [(86, "화학 반응의 세계")], [87, 88, 89]),
+]
 
-def bands(f, min_h):
-    """쪽 그림에서 테두리를 빼고, 28px 이상 빈 줄로 나뉜 내용 띠(잘라 낸 그림)를 돌려준다."""
-    im = Image.open(f).convert("L"); a = np.array(im) < 150; H, W = a.shape
-    bc = np.where(a.sum(0) > 0.8 * H)[0]; br = np.where(a.sum(1) > 0.8 * W)[0]
-    x0 = bc[bc < W / 2].max() + 6 if (bc < W / 2).any() else 0
-    x1 = bc[bc > W / 2].min() - 6 if (bc > W / 2).any() else W
-    y1 = br[br > H / 2].min() - 6 if (br > H / 2).any() else H
-    sub = a[:y1, x0:x1]; rows = sub.sum(1) > 0
-    out, s, gap = [], None, 0
+class Book:
+    """책 쪽 번호 → 스캔 쪽 그림. 앞 파일은 펼침 쪽 i에 (2i-1, 2i)쪽, 뒤 파일은 펼침 쪽 j에 (45+2j, 46+2j)쪽."""
+    def __init__(self, a, b): self.a, self.b = pymupdf.open(a), pymupdf.open(b)
+    def page(self, p):
+        d, i = (self.a, (p + 1) // 2) if p <= 44 else (self.b, (p - 45) // 2)
+        r = d[i].rect; w = r.width / 2
+        clip = pymupdf.Rect(0, 0, w, r.height) if p % 2 else pymupdf.Rect(w, 0, r.width, r.height)
+        pm = d[i].get_pixmap(dpi=DPI, clip=clip, colorspace=pymupdf.csGRAY)
+        return Image.frombytes("L", (pm.width, pm.height), pm.samples)
+
+def bands(im, min_h):
+    """바깥 테두리(세로선) 안쪽만 남기고, 28px 이상 빈 줄로 나뉜 내용 띠를 잘라 돌려준다."""
+    a = np.array(im) < 150; H, W = a.shape
+    bc = np.where(a.sum(0) > 0.7 * H)[0]
+    L, R = bc[bc < W / 2], bc[bc > W / 2]
+    x0 = L.max() + 8 if len(L) else 0; x1 = R.min() - 8 if len(R) else W
+    ref = L.max() if len(L) else (R.min() if len(R) else None)
+    if ref is not None:
+        ys = np.where(a[:, ref])[0]; y0, y1 = ys.min() + 8, ys.max() - 8
+    else:
+        y0, y1 = 0, H
+    sub = a[y0:y1, x0:x1]; rows = sub.sum(1) > 0
+    out, s, gap, e = [], None, 0, 0
     for y, r in enumerate(list(rows) + [False] * 30):
         if r:
             s = y if s is None else s; gap = 0; e = y
         elif s is not None:
             gap += 1
             if gap >= 28:
-                if e - s + 1 >= min_h:
-                    cols = np.where(sub[s:e + 1].any(0))[0]
-                    if cols.max() - cols.min() < 0.97 * sub.shape[1] or e - s > 20:  # 쪽 아래 가로줄 제외
-                        out.append(im.crop((x0 + cols.min() - 4, s - 4, x0 + cols.max() + 5, e + 5)))
+                cols = np.where(sub[s:e + 1].any(0))[0]
+                full = cols.max() - cols.min() > 0.97 * sub.shape[1] and e - s < 12  # 테두리 가로줄
+                if e - s + 1 >= min_h and not full:
+                    out.append(im.crop((x0 + cols.min() - 4, y0 + s - 4, x0 + cols.max() + 5, y0 + e + 5)))
                 s = None
     return out
 
-def pages(kind):
-    fs = sorted(SRC.glob(f"{kind}_*.png"), key=lambda f: (ORDER.index(f.stem.split("_")[1]), int(f.stem.split("_")[2])))
-    return [(f.stem.split("_")[1], int(f.stem.split("_")[2]), f) for f in fs]
-
 def layout(doc, items, ncol, title, sub, k_max, gap=2.2):
-    """items: ('label', 글) 또는 ('img', PIL) — ncol단에 한 쪽으로 넣는다. 들어가는 가장 큰 배율을 찾는다."""
-    W, H = B4; mx, top, bot, cg = 9 * MM, 19 * MM, 8 * MM, 5 * MM
+    """items: ('label', 글) 또는 ('img', PIL)을 ncol단에 차례대로 채운다. 한 쪽에 들어가는 가장 큰 배율을 쓴다."""
+    W, H = B4; mx, top, bot, cg = 9 * MM, 17 * MM, 7 * MM, 5 * MM
     cw = (W - 2 * mx - (ncol - 1) * cg) / ncol; ch = H - top - bot
     def place(k):
         pos, c, y = [], 0, 0
         for t, v in items:
-            h = 4.6 * MM if t == "label" else v.height * k
-            w = 0 if t == "label" else v.width * k
-            if t == "img" and w > cw: return None
+            h = 4.8 * MM if t == "label" else v.height * k
+            if t == "img" and v.width * k > cw: return None
             if y + h > ch and y > 0:
                 c += 1; y = 0
                 if c >= ncol: return None
-            pos.append((t, v, c, y, h)); y += h + (0.6 * MM if t == "label" else gap * MM)
+            pos.append((t, v, c, y, h)); y += h + (0.8 * MM if t == "label" else gap * MM)
         return pos
     k = k_max
-    while (pos := place(k)) is None: k *= 0.985
+    while (pos := place(k)) is None: k *= 0.99
     pg = doc.new_page(width=W, height=H)
     pg.insert_font(fontname="ng", fontfile=FONT)
-    pg.insert_text((mx, 11 * MM), title, fontname="ng", fontsize=13)
-    pg.insert_text((mx, 15.5 * MM), sub, fontname="ng", fontsize=8.5, color=(.3, .3, .3))
-    pg.insert_text((W - mx - 62 * MM, 13 * MM), "이름 ____________   점수 ________", fontname="ng", fontsize=10)
-    pg.draw_line((mx, 17 * MM), (W - mx, 17 * MM), width=1.1)
+    pg.insert_text((mx, 10.5 * MM), title, fontname="ng", fontsize=13)
+    F = pymupdf.Font(fontfile=FONT)
+    pg.insert_text((W - mx - F.text_length(sub, fontsize=8.5), 10.5 * MM), sub, fontname="ng", fontsize=8.5, color=(.35, .35, .35))
+    pg.draw_line((mx, 13.5 * MM), (W - mx, 13.5 * MM), width=1.1)
     for c in range(1, ncol):
         x = mx + c * cw + (c - 0.5) * cg
-        pg.draw_line((x, top), (x, H - bot), width=.4, color=(.7, .7, .7))
+        pg.draw_line((x, top), (x, H - bot), width=.4, color=(.75, .75, .75))
     for t, v, c, y, h in pos:
         x = mx + c * (cw + cg); yy = top + y
         if t == "label":
-            pg.draw_rect(pymupdf.Rect(x, yy, x + cw, yy + h), color=None, fill=(.88, .91, .96))
-            pg.insert_text((x + 1.5 * MM, yy + h - 1.2 * MM), v, fontname="ng", fontsize=8.6, color=(.1, .24, .43))
+            pg.draw_rect(pymupdf.Rect(x, yy, x + cw, yy + h), color=None, fill=(.10, .24, .43))
+            fs = min(9, (cw - 3.6 * MM) / F.text_length(v, fontsize=1))
+            pg.insert_text((x + 1.8 * MM, yy + h / 2 + fs * 0.36), v, fontname="ng", fontsize=fs, color=(1, 1, 1))
         else:
-            buf = io.BytesIO(); v.save(buf, "PNG")
+            buf = io.BytesIO(); v.save(buf, "PNG", optimize=True)
             pg.insert_image(pymupdf.Rect(x, yy, x + v.width * k, yy + h), stream=buf.getvalue())
     return k
 
-def build():
-    doc = pymupdf.open(); info = []
-    # 1쪽: 내용 체계
+def build(a, b, std_pages=1):
+    bk = Book(a, b); doc = pymupdf.open()
     items = []
-    for subj, p, f in pages("내용체계"):
-        items.append(("label", f"{LABEL.get(p, LABEL.get(subj, subj))} — 내용 체계 (원문 {p}쪽)"))
-        items += [("img", b) for b in bands(f, 200)]
-    k1 = layout(doc, items, 2, "2022 개정 과학과 교육과정 — 내용 체계 (원문 컷아웃 빈칸)",
-                "중학교 과학(물질) · 통합과학1·2 · 화학 · 물질과 에너지 · 화학 반응의 세계  |  빈칸 번호는 과목별로 1번부터", 0.2)
-    # 2쪽: 성취기준
-    items, last = [], None
-    for subj, p, f in pages("성취기준"):
-        if subj != last:
-            items.append(("label", f"{LABEL.get(subj, subj)} — 성취기준 · 해설 · 적용 시 고려 사항")); last = subj
-        items += [("img", b) for b in bands(f, 10)]
-    k2 = layout(doc, items, 4, "2022 개정 과학과 교육과정 — 성취기준 (원문 컷아웃 빈칸)",
-                "성취기준 · 성취기준 해설 · 적용 시 고려 사항  |  빈칸 번호는 과목별로 1번부터", 0.2, gap=1.2)
-    out = HERE / "교육과정_원문컷아웃_B4_문제지.pdf"
+    for name, tabs, _ in SUBJ:
+        for p, lab in tabs:
+            items.append(("label", f"{lab} — 내용 체계 (원문 {p}쪽)"))
+            items += [("img", x) for x in bands(bk.page(p), 200)]
+    k1 = layout(doc, items, 2, "2022 개정 과학과 교육과정 — 내용 체계", "원문 컷아웃 · 중학교 과학(물질) · 통합과학1·2 · 화학 · 물질과 에너지 · 화학 반응의 세계", NATIVE)
+    items = []
+    for name, _, ps in SUBJ:
+        items.append(("label", f"{name} (원문 {ps[0]}~{ps[-1]}쪽)"))
+        for p in ps: items += [("img", x) for x in bands(bk.page(p), 10)]
+    if std_pages == 1:
+        k2 = layout(doc, items, 4, "2022 개정 과학과 교육과정 — 성취기준", "원문 컷아웃 · 성취기준 · 성취기준 해설 · 적용 시 고려 사항", NATIVE, gap=1.0)
+    else:  # 두 쪽: 앞의 절반 과목 / 나머지
+        n = next(i for i, (t, v) in enumerate(items) if t == "label" and v.startswith("화학 ("))
+        k2 = min(layout(doc, items[:n], 3, "2022 개정 과학과 교육과정 — 성취기준 ①", "원문 컷아웃 · 중학교 과학(물질) · 통합과학1·2", NATIVE, gap=1.2),
+                 layout(doc, items[n:], 3, "2022 개정 과학과 교육과정 — 성취기준 ②", "원문 컷아웃 · 화학 · 물질과 에너지 · 화학 반응의 세계", NATIVE, gap=1.2))
+    out = HERE / f"교육과정_원문컷아웃_B4{'' if std_pages == 1 else '_성취기준2쪽'}.pdf"
     doc.save(out, garbage=4, deflate=True)
-    native = 186 / 1755 * MM  # 기존 A4 컷아웃 시험지 배율
-    print(f"문제지 {len(doc)}쪽 — 내용 체계 배율 {k1 / native:.2f}, 성취기준 배율 {k2 / native:.2f} (A4 컷아웃 대비)")
-    # 정답지: 기존 정답 HTML 두 개의 본문을 B4 한 쪽에
-    body = ""
-    for kind in ("내용체계", "성취기준"):
-        h = (HERE / f"교육과정_원문컷아웃_{kind}_정답지.html").read_text(encoding="utf-8")
-        h = re.search(r"<div class='ans'>(.*)</div></body>", h, re.S).group(1)
-        body += re.sub(r"<h1>.*?</h1>", f"<h2>{'내용 체계' if kind == '내용체계' else '성취기준 · 해설 · 적용 시 고려 사항'}</h2>", h, flags=re.S)
-    css = """@page{size:257mm 364mm;margin:9mm 9mm}body{margin:0;font-family:'NanumGothic',sans-serif;font-size:7.6pt;line-height:1.32}
-h1{font-size:12pt;margin:0 0 2mm;border-bottom:1.1pt solid #111;padding-bottom:1mm}
-h2{font-size:9.4pt;margin:2mm 0 1mm;background:#1a3d6d;color:#fff;padding:.4mm 2mm}
-h3{font-size:8.2pt;margin:1.6mm 0 .6mm;color:#1a3d6d;border-bottom:.4pt solid #9ab}
-.grid{column-count:5;column-gap:3.5mm;column-rule:.4pt solid #ccc}.grid div{break-inside:avoid}
-.grid b{display:inline-block;min-width:5mm;color:#1a3d6d}.grid small{color:#999}"""
-    stem = "교육과정_원문컷아웃_B4_정답지"
-    hp = HERE / f"{stem}.html"
-    hp.write_text(f"<!doctype html><html lang='ko'><head><meta charset='utf-8'><title>{stem}</title><style>{css}</style></head><body>"
-                  f"<h1>2022 개정 교육과정 원문 컷아웃 빈칸 — 정답 (B4)</h1>{body}</body></html>", encoding="utf-8")
-    subprocess.run([str(CHROME), "--headless", "--no-sandbox", "--disable-gpu", "--no-pdf-header-footer",
-                    f"--print-to-pdf={HERE / (stem + '.pdf')}", f"file://{hp}"], capture_output=True)
-    print("정답지", len(pymupdf.open(HERE / f"{stem}.pdf")), "쪽")
+    print(f"{out.name}: {len(doc)}쪽 — 내용 체계 원문 대비 {k1 / NATIVE:.0%}, 성취기준 {k2 / NATIVE:.0%}")
 
 if __name__ == "__main__":
-    build()
+    build(sys.argv[1], sys.argv[2], 1)
+    build(sys.argv[1], sys.argv[2], 2)
