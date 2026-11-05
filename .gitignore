@@ -1,2 +1,3 @@
-exam_build/__pycache__/
+__pycache__/
+*.pyc
 exam_build/out/preview_*
