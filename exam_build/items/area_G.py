@@ -593,10 +593,37 @@ dict(
 <p class="ask"><b class="lbltxt">B</b>의 입체구조를 그리고 카이랄 중심의 절대 배열(<i>R</i>/<i>S</i>)을 쓰시오. 또한 <b class="lbltxt">C</b>의 구조를 그리시오. [[PTS]]</p>''',
     answer=f'''<div class="ansbox">{M('CCCCCC[C@@H](C)OS(=O)(=O)c1ccc(C)cc1', 'A: (R)-2-octyl tosylate', 12)}{M('CCCCCC[C@H](C)C#N', 'B: (S)', 14)}{M('C=CCCCCCC', 'C: 1-octene', 14)}</div>
 B = (<i>S</i>)-2-methyloctanenitrile, C = 1-octene''',
+    mech=[
+        mechanism(
+            step('CCCCCC[C@@H](C)[O:1][H:2].[Cl:3][S:4](=O)(=O)[*:5]', scale=26, labels={5: 'Ar'}, gap=0.8, layout='v',
+                 arrows=[ar('lp', 1, 'a', 4), ar('b', (4, 3), 'a', 3)], lp=[1], caption='① O → S, Cl<sup>−</sup> 이탈'),
+            ('→', ''),
+            step('CCCCCC[C@@H](C)[O+:1]([H:2])S(=O)(=O)[*:5].c1cc[n:6]cc1', scale=24, labels={5: 'Ar'}, gap=1.0,
+                 arrows=[ar('lp', 6, 'a', 2), ar('b', (2, 1), 'a', 1)], lp=[6], caption='② pyridine이 H<sup>+</sup> 제거'),
+            ('→', ''),
+            step('CCCCCC[C@@H](C)O[*:5]', scale=26, labels={5: 'Ts'}, caption='<b>A</b> (<i>R</i>) — C–O 유지, 배열 유지'),
+            title='[그림 1] 토실화 — 카이랄 C의 결합은 끊어지지 않음 (Ar = 4-CH<sub>3</sub>C<sub>6</sub>H<sub>4</sub>)'),
+        mechanism(
+            step('[N:1]#[C-:2].[*:7][C@@H:3](C)[O:4][*:5]', scale=30, labels={5: 'Ts', 7: 'C<sub>6</sub>H<sub>13</sub>'}, gap=1.2,
+                 frag_rot={1: 150}, arrows=[ar('lp', 2, 'a', 3), ar('b', (3, 4), 'a', 4)], lp=[2],
+                 caption='<sup>−</sup>CN이 OTs 반대편(뒤쪽)에서 공격'),
+            ('→', 'DMSO'),
+            step('[*:7][C@H](C)C#N.[*:5]', scale=28, labels={5: 'TsO<sup>-</sup>', 7: 'C<sub>6</sub>H<sub>13</sub>'}, gap=1.4,
+                 frag_rot={0: -30}, caption='<b>B</b> (<i>S</i>) — Walden 반전'),
+            title='[그림 2] S<sub>N</sub>2 — 극성 비양성자성 용매 속 강한 친핵체·약한 염기, 배열 반전'),
+        mechanism(
+            step('CC(C)(C)[O-:1].[H:2][CH2:3][C@H:4]([*:7])[O:5][*:6]', scale=28, labels={6: 'Ts', 7: 'C<sub>6</sub>H<sub>13</sub>'},
+                 gap=1.0, frag_rot={1: -30},
+                 arrows=[ar('lp', 1, 'a', 2), ar('b', (3, 2), 'm', (3, 4)), ar('b', (4, 5), 'a', 5)], lp=[1],
+                 caption='<i>t</i>-BuO<sup>−</sup>가 덜 붐비는 C1–H를 뗌(H와 OTs anti)'),
+            ('→', '<i>t</i>-BuOH, 50 ℃'),
+            step('C=CCCCCCC', scale=26, caption='<b>C</b> 1-octene (Hofmann)'),
+            title='[그림 3] E2 — 부피 큰 염기는 말단 CH<sub>3</sub>의 H를 제거(덜 치환된 알켄)'),
+    ],
     explain='''<p><b>핵심 반응:</b> 알코올 → 토실레이트(C–O 결합 유지, 배열 유지) → 강한 친핵체·약한 염기의 S<sub>N</sub>2(반전) vs 부피 큰 강염기의 E2(Hofmann 위치선택성).</p>
-<p>① A: 알코올 O가 TsCl의 S를 공격하고 Cl<sup>−</sup>가 떨어지며 pyridine이 HCl을 받는다. 카이랄 탄소의 C–O 결합은 끊어지지 않으므로 (<i>R</i>)이 유지된다. OH(나쁜 이탈기, HO<sup>−</sup>의 짝산 pK<sub>a</sub> 15.7)가 TsO<sup>−</sup>(짝산 pK<sub>a</sub> ≈ −2.8, 좋은 이탈기)로 바뀐다.</p>
-<p>② B: CN<sup>−</sup>는 강한 친핵체이면서 비교적 약한 염기이고, DMSO(극성 비양성자성 용매)는 음이온을 거의 용매화하지 않아 친핵성을 크게 높인다 → 2차 기질이라도 S<sub>N</sub>2가 우세하다. 뒤쪽 공격으로 배열이 반전된다(Walden 반전). CIP: CN(C에 N,N,N) &gt; 헥실 &gt; CH<sub>3</sub> &gt; H이고 CN이 원래 OTs 자리의 우선순위를 그대로 이어받으므로 공간 배열 반전 = 표기도 <i>R</i> → <i>S</i>. 탄소가 하나 늘어난 C<sub>9</sub>H<sub>17</sub>N이 확인된다.</p>
-<p>③ C: <i>t</i>-BuO<sup>−</sup>는 부피가 커서 2차 탄소 뒤쪽 공격(S<sub>N</sub>2)을 거의 못 하고 염기로 작용(E2)한다. 내부 C3–H보다 입체 장애가 작은 말단 CH<sub>3</sub>(C1)의 H를 떼는 것이 유리하여 덜 치환된 1-octene(Hofmann 생성물)이 주생성물이다. 논문 데이터에서도 2-butyl–Y/<i>t</i>-BuOK는 모든 이탈기에서 1-butene이 주생성물이었고, 특히 OTs는 이탈기가 크고 산소에 결합해 있어 2-알켄 중에서도 <i>cis</i>가 <i>trans</i>보다 많았다(trans:cis = 0.6). 이 이탈기 크기 효과 때문에 토실레이트는 E2에서 Hofmann 선택성이 할로젠화물보다 더 크게 나타난다.</p>
+<p>① A(「[그림 1]」): 알코올 O가 TsCl의 S를 공격하고 Cl<sup>−</sup>가 떨어지며 pyridine이 HCl을 받는다. 카이랄 탄소의 C–O 결합은 끊어지지 않으므로 (<i>R</i>)이 유지된다. OH(나쁜 이탈기, HO<sup>−</sup>의 짝산 pK<sub>a</sub> 15.7)가 TsO<sup>−</sup>(짝산 pK<sub>a</sub> ≈ −2.8, 좋은 이탈기)로 바뀐다.</p>
+<p>② B(「[그림 2]」): CN<sup>−</sup>는 강한 친핵체이면서 비교적 약한 염기이고, DMSO(극성 비양성자성 용매)는 음이온을 거의 용매화하지 않아 친핵성을 크게 높인다 → 2차 기질이라도 S<sub>N</sub>2가 우세하다. 뒤쪽 공격으로 배열이 반전된다(Walden 반전). CIP: CN(C에 N,N,N) &gt; 헥실 &gt; CH<sub>3</sub> &gt; H이고 CN이 원래 OTs 자리의 우선순위를 그대로 이어받으므로 공간 배열 반전 = 표기도 <i>R</i> → <i>S</i>. 탄소가 하나 늘어난 C<sub>9</sub>H<sub>17</sub>N이 확인된다.</p>
+<p>③ C(「[그림 3]」): <i>t</i>-BuO<sup>−</sup>는 부피가 커서 2차 탄소 뒤쪽 공격(S<sub>N</sub>2)을 거의 못 하고 염기로 작용(E2)한다. 내부 C3–H보다 입체 장애가 작은 말단 CH<sub>3</sub>(C1)의 H를 떼는 것이 유리하여 덜 치환된 1-octene(Hofmann 생성물)이 주생성물이다. 논문 데이터에서도 2-butyl–Y/<i>t</i>-BuOK는 모든 이탈기에서 1-butene이 주생성물이었고, 특히 OTs는 이탈기가 크고 산소에 결합해 있어 2-알켄 중에서도 <i>cis</i>가 <i>trans</i>보다 많았다(trans:cis = 0.6). 이 이탈기 크기 효과 때문에 토실레이트는 E2에서 Hofmann 선택성이 할로젠화물보다 더 크게 나타난다.</p>
 <p>④ 확장: 같은 (<i>R</i>)-2-octyl 술폰산 에스터를 H<sub>2</sub>O–dioxane에서 가수분해하면 물의 직접 S<sub>N</sub>2로 (<i>S</i>)-2-octanol이 생기지만, dioxane 비율이 높을수록 광학 순도가 떨어진다(100 % 물 → 100 %, 25:75 → 77 %). dioxane O가 먼저 S<sub>N</sub>2(반전)로 옥소늄을 만들고 물이 다시 S<sub>N</sub>2(반전)하는 이중 반전 경로가 (<i>R</i>)-알코올을 섞기 때문이다(Klein 7.82).</p>
 <p>⑤ 흔한 오답: (i) A 단계에서 반전을 적용해 B를 (<i>R</i>)로 씀 — 반전은 S<sub>N</sub>2 단계에서 한 번만 일어난다. (ii) C를 Zaitsev 생성물 (<i>E</i>)-2-octene으로 씀 — 부피 큰 염기 조건을 무시한 것이다. (iii) B를 아이소나이트릴(–NC)로 씀 — CN<sup>−</sup>는 탄소 말단으로 S<sub>N</sub>2 한다.</p>''',
 ),

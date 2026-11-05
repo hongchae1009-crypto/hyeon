@@ -166,11 +166,11 @@ B = 3-methoxybenzenediazonium tetrafluoroborate. 이유: NH<sub>2</sub><sup>−<
               title='[그림 3] 아릴다이아조늄 염의 Suzuki 짝지음 촉매 순환 (Ar = 3-MeOC<sub>6</sub>H<sub>4</sub>) — 염기 없이 진행'),
     ],
     explain='''<p><b>핵심 반응: 제거–첨가(벤자인) 메커니즘의 위치 선택성 + 아릴다이아조늄 염의 Suzuki–Miyaura 짝지음</b></p>
-<p>① 2-bromoanisole에서 Br의 오쏘 수소는 C3–H 하나뿐이다(C1에는 OMe). NH<sub>2</sub><sup>−</sup>가 C3–H를 떼어 내고(Br의 유발 효과로 산성도 증가), 생긴 아릴 음이온이 Br<sup>−</sup>를 내보내 C2≡C3 벤자인, 즉 <b>3-methoxybenzyne</b>(C<sub>7</sub>H<sub>6</sub>O)이 생성된다. 벤자인의 “삼중 결합”의 두 번째 π 결합은 고리 평면 안의 sp<sup>2</sup> 오비탈끼리의 약한 겹침이므로 반응성이 매우 크다.</p>
-<p>② NH<sub>2</sub><sup>−</sup>가 C2에 첨가하면 음전하가 C3에, C3에 첨가하면 음전하가 C2(OMe 바로 옆)에 놓인다. 생성되는 카브음이온의 비공유 전자쌍은 고리 평면 안의 sp<sup>2</sup> 오비탈에 있어 π계와 공명하지 못하므로, 공명 효과가 아니라 <b>유발 효과</b>가 결정적이다. 전기음성도가 큰 O가 붙은 탄소에 인접한 음전하(C2)가 더 안정하므로 첨가는 C3에서 일어나고, NH<sub>3</sub>가 C2를 양성자화하여 <b>3-methoxyaniline(<i>m</i>-anisidine)</b>만 얻는다. (흔한 오답: Br이 있던 자리에 NH<sub>2</sub>가 들어간 <i>o</i>-anisidine — 직접 치환으로 착각한 경우. 이 반응은 <i>cine</i> 치환이다.)</p>
+<p>① 2-bromoanisole에서 Br의 오쏘 수소는 C3–H 하나뿐이다(C1에는 OMe). NH<sub>2</sub><sup>−</sup>가 C3–H를 떼어 내고(Br의 유발 효과로 산성도 증가), 생긴 아릴 음이온이 Br<sup>−</sup>를 내보내 C2≡C3 벤자인, 즉 <b>3-methoxybenzyne</b>(C<sub>7</sub>H<sub>6</sub>O)이 생성된다. 벤자인의 “삼중 결합”의 두 번째 π 결합은 고리 평면 안의 sp<sup>2</sup> 오비탈끼리의 약한 겹침이므로 반응성이 매우 크다(「[그림 1]」).</p>
+<p>② NH<sub>2</sub><sup>−</sup>가 C2에 첨가하면 음전하가 C3에, C3에 첨가하면 음전하가 C2(OMe 바로 옆)에 놓인다. 생성되는 카브음이온의 비공유 전자쌍은 고리 평면 안의 sp<sup>2</sup> 오비탈에 있어 π계와 공명하지 못하므로, 공명 효과가 아니라 <b>유발 효과</b>가 결정적이다. 전기음성도가 큰 O가 붙은 탄소에 인접한 음전하(C2)가 더 안정하므로 첨가는 C3에서 일어나고, NH<sub>3</sub>가 C2를 양성자화하여 <b>3-methoxyaniline(<i>m</i>-anisidine)</b>만 얻는다(「[그림 2]」). (흔한 오답: Br이 있던 자리에 NH<sub>2</sub>가 들어간 <i>o</i>-anisidine — 직접 치환으로 착각한 경우. 이 반응은 <i>cine</i> 치환이다.)</p>
 <p>③ 논문(Klein 19.88) 연결: 7-hydroxynitidine 합성에서도 NaNH<sub>2</sub>가 C5–Br의 오쏘 C6–H를 떼어 C5≡C6 아라인을 만들고, 나프틸 카브음이온이 OMe(C4)에서 먼 C6에 첨가하여 음전하가 OMe 옆 C5에 놓인다 — 같은 규칙이다.</p>
 <p>④ NaNO<sub>2</sub>/HBF<sub>4</sub>: HNO<sub>2</sub> → NO<sup>+</sup>, 아민 N이 NO<sup>+</sup>를 공격 → N-나이트로소아민 → 토토머화·탈수 → ArN<sub>2</sub><sup>+</sup>. 짝음이온이 BF<sub>4</sub><sup>−</sup>이면 다이아조늄 염이 비교적 안정한 고체로 분리된다(<b>B</b> = 3-MeOC<sub>6</sub>H<sub>4</sub>N<sub>2</sub><sup>+</sup> BF<sub>4</sub><sup>−</sup>).</p>
-<p>⑤ Suzuki 짝지음: Pd(0)가 Ar–N<sub>2</sub><sup>+</sup> 결합에 <b>산화성 첨가</b>(N<sub>2</sub> 방출, Ar–Pd(II)<sup>+</sup>) → PhB(OH)<sub>2</sub>와 <b>금속 교환</b>(Ar–Pd–Ph) → <b>환원성 제거</b>로 Ar–Ph 결합 형성, Pd(0) 재생. N<sub>2</sub>가 매우 좋은 이탈기이므로 아릴 할라이드보다 산화성 첨가가 쉽고, 양이온성 Pd 중간체가 금속 교환을 쉽게 하므로 염기 없이 실온에서 진행된다. <b>C</b> = 3-methoxybiphenyl(C<sub>13</sub>H<sub>12</sub>O).</p>
+<p>⑤ Suzuki 짝지음(「[그림 3]」): Pd(0)가 Ar–N<sub>2</sub><sup>+</sup> 결합에 <b>산화성 첨가</b>(N<sub>2</sub> 방출, Ar–Pd(II)<sup>+</sup>) → PhB(OH)<sub>2</sub>와 <b>금속 교환</b>(Ar–Pd–Ph) → <b>환원성 제거</b>로 Ar–Ph 결합 형성, Pd(0) 재생. N<sub>2</sub>가 매우 좋은 이탈기이므로 아릴 할라이드보다 산화성 첨가가 쉽고, 양이온성 Pd 중간체가 금속 교환을 쉽게 하므로 염기 없이 실온에서 진행된다. <b>C</b> = 3-methoxybiphenyl(C<sub>13</sub>H<sub>12</sub>O).</p>
 <p>⑥ 벤자인 존재의 증거: 같은 조건에서 furan을 넣으면 벤자인이 친다이엔체로 [4+2] Diels–Alder 고리화 첨가하여 5-methoxy-1,4-dihydro-1,4-epoxynaphthalene(C<sub>11</sub>H<sub>10</sub>O<sub>2</sub>)이 포획된다.</p>''',
 ),
 # ---------------------------------------------------------------- 2025A-10
@@ -230,8 +230,8 @@ dict(
     ],
     explain='''<p><b>핵심 반응: Hofmann 자리옮김(아이소사이아네이트 경유, 탄소 1개 손실) vs 아마이드의 LiAlH<sub>4</sub> 환원(탄소 수 유지)</b></p>
 <p>① KMnO<sub>4</sub>는 벤질(여기서는 피리딜메틸) 위치에 C–H가 있는 알킬기를 COOH로 산화한다. 피리딘 고리 자체는 전자가 부족해 산화에 강하다. 산 처리 후 <b>A</b> = 6-chloronicotinic acid(C<sub>6</sub>H<sub>4</sub>ClNO<sub>2</sub>).</p>
-<p>② [경로 1] SOCl<sub>2</sub> → 산 염화물, 과량 NH<sub>3</sub> → 1차 아마이드 <b>C</b>(C<sub>6</sub>H<sub>5</sub>ClN<sub>2</sub>O). Br<sub>2</sub>/NaOH: N–H 탈양성자화 → N-브로민화(RCONHBr) → 두 번째 N–H 탈양성자화 → 피리딜기가 C에서 N으로 1,2-이동하면서 Br<sup>−</sup>가 동시에 떨어져 <b>아이소사이아네이트</b>(Ar–N=C=O, C<sub>6</sub>H<sub>3</sub>ClN<sub>2</sub>O) 생성. 이동기는 결합 전자쌍과 함께 이동하며 이동 탄소의 배열은 유지된다.</p>
-<p>③ 물/OH<sup>−</sup>가 N=C=O 탄소에 첨가 → 카밤산(ArNHCOOH) → 탈카복실화(CO<sub>2</sub> 손실) → <b>D</b> = 6-chloropyridin-3-amine. 카보닐 탄소가 CO<sub>2</sub>로 빠지므로 <b>탄소 수가 1 감소</b>(C<sub>6</sub> → C<sub>5</sub>)하고 NH<sub>2</sub>는 원래 카복실기가 붙어 있던 고리 탄소에 직접 결합한다.</p>
+<p>② [경로 1] SOCl<sub>2</sub> → 산 염화물, 과량 NH<sub>3</sub> → 1차 아마이드 <b>C</b>(C<sub>6</sub>H<sub>5</sub>ClN<sub>2</sub>O). Br<sub>2</sub>/NaOH: N–H 탈양성자화 → N-브로민화(RCONHBr) → 두 번째 N–H 탈양성자화 → 피리딜기가 C에서 N으로 1,2-이동하면서 Br<sup>−</sup>가 동시에 떨어져 <b>아이소사이아네이트</b>(Ar–N=C=O, C<sub>6</sub>H<sub>3</sub>ClN<sub>2</sub>O) 생성(「[그림 1]」, 「[그림 2]」). 이동기는 결합 전자쌍과 함께 이동하며 이동 탄소의 배열은 유지된다.</p>
+<p>③ 「[그림 3]」 물/OH<sup>−</sup>가 N=C=O 탄소에 첨가 → 카밤산(ArNHCOOH) → 탈카복실화(CO<sub>2</sub> 손실) → <b>D</b> = 6-chloropyridin-3-amine. 카보닐 탄소가 CO<sub>2</sub>로 빠지므로 <b>탄소 수가 1 감소</b>(C<sub>6</sub> → C<sub>5</sub>)하고 NH<sub>2</sub>는 원래 카복실기가 붙어 있던 고리 탄소에 직접 결합한다.</p>
 <p>④ [경로 2](논문) 산 염화물 + cyclopentylamine(2 당량: 1 당량은 HCl 포착) → 2차 아마이드 <b>F</b> → LiAlH<sub>4</sub>: 하이드라이드 첨가 → 알루미늄 알콕사이드가 이탈하면서 이미늄 이온 형성 → 두 번째 하이드라이드 첨가 → C=O가 CH<sub>2</sub>로 바뀐 2차 아민 <b>E</b>(C<sub>11</sub>H<sub>15</sub>ClN<sub>2</sub>). 탄소 수 유지, 아미노기는 CH<sub>2</sub>를 사이에 두고 고리에 연결.</p>
 <p>⑤ 피리딘 C2의 Cl은 LiAlH<sub>4</sub>, Br<sub>2</sub>/NaOH 조건에서 보존된다. 흔한 오답: D를 Ar–CH<sub>2</sub>NH<sub>2</sub>(탄소 보존)로 그리거나, 중간체를 카밤산(C<sub>6</sub>H<sub>5</sub>ClN<sub>2</sub>O<sub>2</sub>)으로 그리는 것 — 분자식 C<sub>6</sub>H<sub>3</sub>ClN<sub>2</sub>O는 아이소사이아네이트만 만족한다.</p>''',
 ),
@@ -281,7 +281,7 @@ dict(
     ],
     explain='''<p><b>핵심 반응: 친핵성 방향족 치환(SNAr, 첨가–제거)과 Meisenheimer 착물</b></p>
 <p>① SNAr의 3조건: 강한 전자 끄는 기(NO<sub>2</sub>), 이탈기, 그리고 EWG가 이탈기의 오쏘/파라에 위치. 이 기질은 F와 Cl이 <b>모두</b> NO<sub>2</sub>의 오쏘 자리에 있으므로 활성화 정도(공명)는 같고, 차이는 할로젠 자체의 효과뿐이다.</p>
-<p>② 메커니즘: 아세틸라이드 탄소가 C–F 탄소(ipso)를 공격 → sp<sup>3</sup> 탄소를 가진 사이클로헥사다이엔일 음이온(Meisenheimer 착물). 음전하는 NO<sub>2</sub>가 붙은 탄소(오쏘)와 파라 탄소로 비편재화되고, NO<sub>2</sub>의 공명(−M)으로 산소까지 퍼진다(문제에서 요구한 구조: C=N<sup>+</sup>(O<sup>−</sup>)O<sup>−</sup>). 이어 F<sup>−</sup>가 떨어지며 방향족성이 회복된다.</p>
+<p>② 메커니즘(「[그림 1]」, 공명 구조는 「[그림 2]」): 아세틸라이드 탄소가 C–F 탄소(ipso)를 공격 → sp<sup>3</sup> 탄소를 가진 사이클로헥사다이엔일 음이온(Meisenheimer 착물). 음전하는 NO<sub>2</sub>가 붙은 탄소(오쏘)와 파라 탄소로 비편재화되고, NO<sub>2</sub>의 공명(−M)으로 산소까지 퍼진다(문제에서 요구한 구조: C=N<sup>+</sup>(O<sup>−</sup>)O<sup>−</sup>). 이어 F<sup>−</sup>가 떨어지며 방향족성이 회복된다.</p>
 <p>③ 속도 결정 단계는 방향족성이 깨지는 ②의 첨가 단계(흡열적)이다. 이 단계의 전이 상태에서는 C–X 결합이 아직 끊어지지 않으므로, 이탈기 능력(I > Br > Cl > F)이 아니라 ipso 탄소의 친전자성과 음전하 안정화가 속도를 좌우한다. 따라서 SNAr의 할로젠 반응성은 <b>F ≫ Cl ≈ Br > I</b>로 S<sub>N</sub>2와 반대이다. 만약 C–X 절단이 속도 결정 단계라면 Cl이 치환된 생성물(C<sub>15</sub>H<sub>10</sub>FNO<sub>3</sub>)이 얻어졌을 것이다 — 이 생성물의 부재가 메커니즘의 증거이다.</p>
 <p>④ <b>A</b> = 1-chloro-3-[(4-methoxyphenyl)ethynyl]-2-nitrobenzene(C<sub>15</sub>H<sub>10</sub>ClNO<sub>3</sub>). 남은 Cl은 이후 다른 변환(예: Pd 짝지음)에 쓸 수 있는 손잡이가 된다. 이 반응은 Pd/Cu를 쓰는 Sonogashira 짝지음 없이 아릴알카인을 만드는 대안이다.</p>
 <p>⑤ 흔한 오답: Cl이 치환된 구조, 또는 NO<sub>2</sub>가 치환된 구조. 또 중간체의 음전하를 NO<sub>2</sub>와 메타 관계인 탄소에 두는 것(불가능한 공명)도 틀린다.</p>''',
@@ -338,10 +338,10 @@ B = 2,6-dimethylphenol, C = 2-[(<i>E</i>)-but-2-enyloxy]-1,3-dimethylbenzene, �
             title='[그림 3] 두 번째 [3,3] 자리옮김(Cope) → 토토머화: 파라-Claisen 자리옮김'),
     ],
     explain='''<p><b>핵심 반응: 다이아조늄 가수분해 → Williamson 에터 합성 → 방향족 Claisen 자리옮김(파라-Claisen = Claisen + Cope)</b></p>
-<p>① 2,6-dimethylaniline → ArN<sub>2</sub><sup>+</sup> → 가열 수용액에서 N<sub>2</sub>가 떨어진 아릴 양이온을 물이 포착 → <b>B</b> = 2,6-dimethylphenol(O–H, 3400 cm<sup>−1</sup>).</p>
+<p>① 2,6-dimethylaniline → ArN<sub>2</sub><sup>+</sup> → 가열 수용액에서 N<sub>2</sub>가 떨어진 아릴 양이온을 물이 포착 → <b>B</b> = 2,6-dimethylphenol(O–H, 3400 cm<sup>−1</sup>). 「[그림 1]」</p>
 <p>② K<sub>2</sub>CO<sub>3</sub>가 페놀(p<i>K</i><sub>a</sub> ≈ 10)을 페녹사이드로 만들고 1차 알릴 브로마이드에 S<sub>N</sub>2 → <b>C</b> = 크로틸 아릴 에터(O–H 없음). C=C 기하는 유지(<i>E</i>).</p>
-<p>③ 200 ℃: 의자형 6원 고리 전이 상태의 협동 [3,3] 시그마 결합 자리옮김. O–CH<sub>2</sub> 결합이 끊어지고 크로틸의 CH(CH<sub>3</sub>) 말단(γ 탄소)이 오쏘 탄소와 결합 → 알릴기가 <b>뒤집혀</b> 1-methylallyl(but-3-en-2-yl)로 붙은 cyclohexa-2,4-dienone(중간체, C<sub>12</sub>H<sub>16</sub>O, 방향족 아님, C=O). 오쏘 탄소에 이미 CH<sub>3</sub>가 있어 H가 없으므로 토토머화할 수 없다.</p>
-<p>④ 이 다이엔온에서 C6(사차 탄소)–C(H)(CH<sub>3</sub>) 결합, 고리 C=C, 곁사슬 C=C가 1,5-다이엔을 이루므로 두 번째 [3,3](Cope) 자리옮김이 일어나 곁사슬 말단 CH<sub>2</sub>가 파라 탄소(C4)와 결합하고 사슬은 다시 뒤집혀 –CH<sub>2</sub>CH=CHCH<sub>3</sub>가 된다. 의자형 전이 상태에서 CH<sub>3</sub>가 적도 방향(equatorial) 자리를 차지하므로 (<i>E</i>)-알켄이 주로 생긴다. 파라 C–H가 토토머화되며 방향족 페놀 <b>D</b>로 회복 — 이것이 반응의 열역학적 구동력이다.</p>
+<p>③ 200 ℃(「[그림 2]」): 의자형 6원 고리 전이 상태의 협동 [3,3] 시그마 결합 자리옮김. O–CH<sub>2</sub> 결합이 끊어지고 크로틸의 CH(CH<sub>3</sub>) 말단(γ 탄소)이 오쏘 탄소와 결합 → 알릴기가 <b>뒤집혀</b> 1-methylallyl(but-3-en-2-yl)로 붙은 cyclohexa-2,4-dienone(중간체, C<sub>12</sub>H<sub>16</sub>O, 방향족 아님, C=O). 오쏘 탄소에 이미 CH<sub>3</sub>가 있어 H가 없으므로 토토머화할 수 없다.</p>
+<p>④ 이 다이엔온에서 C6(사차 탄소)–C(H)(CH<sub>3</sub>) 결합, 고리 C=C, 곁사슬 C=C가 1,5-다이엔을 이루므로 두 번째 [3,3](Cope) 자리옮김(「[그림 3]」)이 일어나 곁사슬 말단 CH<sub>2</sub>가 파라 탄소(C4)와 결합하고 사슬은 다시 뒤집혀 –CH<sub>2</sub>CH=CHCH<sub>3</sub>가 된다. 의자형 전이 상태에서 CH<sub>3</sub>가 적도 방향(equatorial) 자리를 차지하므로 (<i>E</i>)-알켄이 주로 생긴다. 파라 C–H가 토토머화되며 방향족 페놀 <b>D</b>로 회복 — 이것이 반응의 열역학적 구동력이다.</p>
 <p>⑤ NMR 단서: 방향족 H 1종(2H, s) → 3,5-H가 동등한 2,4,6-삼치환 페놀(파라 생성물). 1.0~1.5 ppm 이중선 없음 → –CH(CH<sub>3</sub>)CH=CH<sub>2</sub>(가지 사슬)가 아니라 CH<sub>3</sub>CH= (≈1.7 ppm, d이지만 알릴 위치) 형태의 가지 없는 사슬. 흔한 오답: 오쏘 생성물(오쏘가 막혀 불가), 또는 파라에 1-methylallyl이 붙은 구조(한 번만 뒤집힌 것으로 착각).</p>''',
 ),
 # ---------------------------------------------------------------- 2023A-2
@@ -377,7 +377,7 @@ dict(
     explain='''<p><b>핵심 반응: 방향족 술폰화(열역학 조절) → 다이아조화 → 아조 짝지음(나프톨 C1 위치 선택성)</b></p>
 <p>① 아닐린 + 진한 H<sub>2</sub>SO<sub>4</sub> → 아닐리늄 황산수소염 → 고온(180 ℃)에서 술폰화. 술폰화는 가역적이므로 고온에서는 입체 장애가 작고 열역학적으로 가장 안정한 <b>파라</b> 생성물이 축적된다. <b>A</b> = 4-aminobenzenesulfonic acid(C<sub>6</sub>H<sub>7</sub>NO<sub>3</sub>S).</p>
 <p>② NaNO<sub>2</sub>/HCl, 0~5 ℃: NO<sup>+</sup>에 의한 N-나이트로소화 → 탈수 → ArN<sub>2</sub><sup>+</sup>(술포네이트와 함께 쯔비터이온 <sup>−</sup>O<sub>3</sub>S–C<sub>6</sub>H<sub>4</sub>–N<sub>2</sub><sup>+</sup>). 저온 유지는 N<sub>2</sub> 손실(페놀 생성)을 막기 위함이다.</p>
-<p>③ 다이아조늄 이온은 약한 친전자체이므로 매우 활성화된 고리(나프톡사이드)와만 반응한다. NaOH는 2-naphthol(p<i>K</i><sub>a</sub> ≈ 9.5)을 나프톡사이드로 바꿔 친핵성을 높인다. 2-나프톡사이드는 <b>C1</b>에서 공격하는데, C1 공격 σ-착물은 다른 벤젠 고리의 방향족 6전자를 그대로 유지한 공명 구조를 가지면서 O<sup>−</sup>의 공여로 안정화된다(C3 공격은 옆 고리의 방향족성을 깨야 O의 공명 안정화를 받음). 탈양성자화로 방향족성 회복 → 아조 화합물.</p>
+<p>③ 「[그림 1]」 다이아조늄 이온은 약한 친전자체이므로 매우 활성화된 고리(나프톡사이드)와만 반응한다. NaOH는 2-naphthol(p<i>K</i><sub>a</sub> ≈ 9.5)을 나프톡사이드로 바꿔 친핵성을 높인다. 2-나프톡사이드는 <b>C1</b>에서 공격하는데, C1 공격 σ-착물은 다른 벤젠 고리의 방향족 6전자를 그대로 유지한 공명 구조를 가지면서 O<sup>−</sup>의 공여로 안정화된다(C3 공격은 옆 고리의 방향족성을 깨야 O의 공명 안정화를 받음). 탈양성자화로 방향족성 회복 → 아조 화합물.</p>
 <p>④ <b>B</b> = Orange II(Acid Orange 7). 술폰산염기는 물 용해도와 섬유(양모·나일론의 양이온 자리)와의 이온 결합을 제공하는 “산성 염료”의 특징이다. 아조 결합으로 두 방향족계가 콘쥬게이션되어 가시광(주황)을 흡수한다.</p>
 <p>⑤ 흔한 오답: C3 또는 C6에 짝지음한 구조, 술폰산기를 메타에 둔 A(아닐리늄의 메타 지향과 혼동 — 고온 가역 조건에서는 파라가 주생성물).</p>''',
 ),
@@ -447,10 +447,10 @@ dict(
             title='[그림 3] [반응 1] 지방족 아실화 → 분자 내 FC 알킬화 (CH<sub>3</sub>의 오쏘에서 고리화)'),
     ],
     explain='''<p><b>핵심 반응: Friedel–Crafts 아실화(아실륨, 재배열 없음) vs 알킬화(탄소 양이온 재배열) + Clemmensen 환원</b></p>
-<p>① [반응 1] AlCl<sub>3</sub>가 산 염화물의 Cl을 떼어 공명 안정화된 아실륨 이온(R–C≡O<sup>+</sup>)을 만든다. 아실륨이 자기 고리를 공격하면 4원 고리가 되어 불가능하고, 다른 분자의 고리(Br으로 불활성화)보다 과량 존재하는 에틸렌의 π 전자가 아실륨을 공격하는 지방족 아실화가 먼저 일어나 ArCH<sub>2</sub>C(=O)CH<sub>2</sub>CH<sub>2</sub><sup>+</sup>(또는 Cl<sup>−</sup>가 포착한 β-클로로케톤, AlCl<sub>3</sub>로 재이온화)가 생긴다.</p>
+<p>① [반응 1](「[그림 3]」) AlCl<sub>3</sub>가 산 염화물의 Cl을 떼어 공명 안정화된 아실륨 이온(R–C≡O<sup>+</sup>)을 만든다. 아실륨이 자기 고리를 공격하면 4원 고리가 되어 불가능하고, 다른 분자의 고리(Br으로 불활성화)보다 과량 존재하는 에틸렌의 π 전자가 아실륨을 공격하는 지방족 아실화가 먼저 일어나 ArCH<sub>2</sub>C(=O)CH<sub>2</sub>CH<sub>2</sub><sup>+</sup>(또는 Cl<sup>−</sup>가 포착한 β-클로로케톤, AlCl<sub>3</sub>로 재이온화)가 생긴다.</p>
 <p>② 이 1차 양이온 등가체는 하이드라이드 이동을 해도 카보닐 옆(α) 양이온이 되어 오히려 불안정하므로 재배열하지 않고, 6원 고리를 닫을 수 있는 방향족 탄소(CH<sub>2</sub>의 오쏘, Br이 없는 쪽 = CH<sub>3</sub>의 오쏘로 활성화)를 분자 내 FC 알킬화로 공격 → 아레늄 이온 → 탈양성자화 → <b>A</b> = 8-bromo-5-methyl-3,4-dihydronaphthalen-2(1<i>H</i>)-one(C<sub>11</sub>H<sub>11</sub>BrO). CH<sub>2</sub>의 다른 오쏘(C–Br)는 치환 불가.</p>
-<p>③ [반응 2] 1-chloro-2-methylpropane은 1차 할로젠화물이라 자유 1차 양이온을 만들지 않지만, AlCl<sub>3</sub> 착물의 이온화와 2번 탄소 H의 1,2-하이드라이드 이동이 함께 일어나 3차 양이온이 되고, 이 친전자체가 벤젠과 반응하므로 isobutylbenzene 대신 <b>tert-butylbenzene</b>이 주생성물이다. (보기의 (CH<sub>3</sub>)<sub>2</sub>C=CH<sub>2</sub>/H<sub>3</sub>PO<sub>4</sub>도 Markovnikov 양성자화로 같은 t-Bu<sup>+</sup>를 주므로 오답.)</p>
-<p>④ 재배열 없는 직쇄 알킬 도입: 아실륨 이온은 C≡O<sup>+</sup> 공명으로 안정하여 재배열하지 않고, 생성된 아릴 케톤은 고리를 불활성화하므로 다중 치환도 없다. 이어서 Zn(Hg)/HCl(Clemmensen)으로 C=O → CH<sub>2</sub>. NaBH<sub>4</sub>는 알코올까지만 환원하므로 부적절하다.</p>
+<p>③ [반응 2](「[그림 1]」) 1-chloro-2-methylpropane은 1차 할로젠화물이라 자유 1차 양이온을 만들지 않지만, AlCl<sub>3</sub> 착물의 이온화와 2번 탄소 H의 1,2-하이드라이드 이동이 함께 일어나 3차 양이온이 되고, 이 친전자체가 벤젠과 반응하므로 isobutylbenzene 대신 <b>tert-butylbenzene</b>이 주생성물이다. (보기의 (CH<sub>3</sub>)<sub>2</sub>C=CH<sub>2</sub>/H<sub>3</sub>PO<sub>4</sub>도 Markovnikov 양성자화로 같은 t-Bu<sup>+</sup>를 주므로 오답.)</p>
+<p>④ 재배열 없는 직쇄 알킬 도입(「[그림 2]」): 아실륨 이온은 C≡O<sup>+</sup> 공명으로 안정하여 재배열하지 않고, 생성된 아릴 케톤은 고리를 불활성화하므로 다중 치환도 없다. 이어서 Zn(Hg)/HCl(Clemmensen)으로 C=O → CH<sub>2</sub>. NaBH<sub>4</sub>는 알코올까지만 환원하므로 부적절하다.</p>
 <p>⑤ 이부프로펜 공정(BHC)은 isobutylbenzene의 FC 아세틸화로 시작한다 — 순서상 isobutyl기를 먼저 정확히 만들어야 하므로 ④의 아실화–환원이 산업적으로도 핵심이다.</p>''',
 ),
 # ---------------------------------------------------------------- 2020A-4
@@ -491,10 +491,10 @@ p<i>K</i><sub>a</sub>(짝산): ㉢ &lt; ㉡ &lt; ㉠''',
             title='[그림 2] 구아니디늄 이온의 Y자형 공명 — 양전하가 세 N에 고르게 분산 (짝산이 가장 안정 → 가장 강한 염기)'),
     ],
     explain='''<p><b>핵심 개념: 질소 비공유 전자쌍의 위치(방향족 π계 참여 여부, 혼성)와 짝산의 공명 안정화로 결정되는 아민 염기도</b></p>
-<p>① ㉠ 구아니딘: 양성자화된 구아니디늄 이온은 양전하가 세 질소에 고르게 비편재화되는 공명(Y자형 공명)으로 크게 안정화되어 짝산 p<i>K</i><sub>a</sub> ≈ 13으로 가장 강한 염기이다.</p>
+<p>① ㉠ 구아니딘(「[그림 2]」): 양성자화된 구아니디늄 이온은 양전하가 세 질소에 고르게 비편재화되는 공명(Y자형 공명)으로 크게 안정화되어 짝산 p<i>K</i><sub>a</sub> ≈ 13으로 가장 강한 염기이다.</p>
 <p>② ㉡ 피리딘형 N: 비공유 전자쌍이 고리 평면의 sp<sup>2</sup> 오비탈에 있고 방향족 6π계에 참여하지 않으므로 양성자를 받을 수 있다(피리디늄 p<i>K</i><sub>a</sub> ≈ 5; β-carboline은 인돌 N의 전자 공여로 약 7 정도). sp<sup>2</sup>는 s 성질이 커 sp<sup>3</sup> 아민보다 약한 염기이다.</p>
 <p>③ ㉢ 인돌(피롤형) N–H: 비공유 전자쌍이 p 오비탈에서 방향족 π계(4n+2)의 일부이므로 양성자화하면 방향족성이 깨진다. 짝산 p<i>K</i><sub>a</sub> ≈ −3 수준으로 사실상 염기가 아니다.</p>
-<p>④ 따라서 HCl 2 당량은 가장 염기성이 큰 ㉠과 그 다음 ㉡을 차례로 양성자화하여 <b>B</b> = 이염산염(구아니디늄 + β-carbolinium, Cl<sup>−</sup> 2개)이 된다. 인돌 N–H는 그대로이다.</p>
+<p>④ 따라서(「[그림 1]」) HCl 2 당량은 가장 염기성이 큰 ㉠과 그 다음 ㉡을 차례로 양성자화하여 <b>B</b> = 이염산염(구아니디늄 + β-carbolinium, Cl<sup>−</sup> 2개)이 된다. 인돌 N–H는 그대로이다.</p>
 <p>⑤ 기출(2020A-4)과의 연결: 아닐리늄(p<i>K</i><sub>a</sub> 4.6)이 아세트산 소듐(아세트산 p<i>K</i><sub>a</sub> 4.8)으로 일부 탈양성자화되어 아실화되는 것처럼, 산–염기 평형의 방향은 언제나 “짝산의 p<i>K</i><sub>a</sub>가 큰 쪽으로” 양성자가 이동한다. 흔한 오답: 인돌 N을 양성자화하거나, 피리딘 N과 구아니딘의 순서를 바꾸는 것.</p>''',
 ),
 # ---------------------------------------------------------------- 2018A-12
@@ -542,7 +542,7 @@ dict(
     explain='''<p><b>핵심 반응: 가역적 술폰화를 이용한 차단기(blocking group) 전략과 ipso 양성자화에 의한 탈술폰화</b></p>
 <p>① [반응 1] OMe는 비공유 전자쌍의 공명 공여로 강하게 활성화하는 o,p-지향기이다. 오쏘 공격은 OMe와의 입체 반발이 있고 통계적 이점(오쏘 2자리)을 상쇄하므로 파라 생성물 <b>A</b>가 주생성물이다.</p>
 <p>② (1) 진한 H<sub>2</sub>SO<sub>4</sub>(SO<sub>3</sub>): 부피 큰 SO<sub>3</sub>H가 파라 자리에 들어가 이를 막는다 → <b>C</b>. (2) Br<sub>2</sub>/FeBr<sub>3</sub>: OMe(오쏘 지향, 강한 활성화)와 SO<sub>3</sub>H(메타 지향)가 <b>모두</b> OMe의 오쏘(= SO<sub>3</sub>H의 메타) 자리를 가리키는 협동 배향 → <b>D</b>. (3) 묽은 산·가열(수증기): 술폰화의 역반응으로 SO<sub>3</sub>H 제거 → <b>B</b> = 2-bromoanisole.</p>
-<p>③ (3) 메커니즘 상세: 고농도의 물과 열이 평형을 탈술폰화 쪽으로 이동시킨다(르샤틀리에). H<sup>+</sup>가 ipso 탄소에 첨가하는 것이 속도 결정 단계이며, 이 탄소는 OMe의 파라이므로 생성되는 아레늄 이온의 공명 구조 중 하나가 CH<sub>3</sub>O<sup>+</sup>=C(모든 원자가 옥텟)로 특히 안정하다. 이어 C–SO<sub>3</sub>H 결합이 끊어지며 SO<sub>3</sub>(→ H<sub>2</sub>SO<sub>4</sub>)가 이탈한다. 논문(Klein 19.86)의 탈삼중수소화도 ipso 양성자화 → 아레늄 이온 → T<sup>+</sup> 이탈로, 같은 친전자성 ipso 치환이며 OMe가 오쏘/파라에 많을수록 빠르다.</p>
+<p>③ (3) 메커니즘 상세(「[그림 1]」, 「[그림 2]」): 고농도의 물과 열이 평형을 탈술폰화 쪽으로 이동시킨다(르샤틀리에). H<sup>+</sup>가 ipso 탄소에 첨가하는 것이 속도 결정 단계이며, 이 탄소는 OMe의 파라이므로 생성되는 아레늄 이온의 공명 구조 중 하나가 CH<sub>3</sub>O<sup>+</sup>=C(모든 원자가 옥텟)로 특히 안정하다. 이어 C–SO<sub>3</sub>H 결합이 끊어지며 SO<sub>3</sub>(→ H<sub>2</sub>SO<sub>4</sub>)가 이탈한다. 논문(Klein 19.86)의 탈삼중수소화도 ipso 양성자화 → 아레늄 이온 → T<sup>+</sup> 이탈로, 같은 친전자성 ipso 치환이며 OMe가 오쏘/파라에 많을수록 빠르다.</p>
 <p>④ 오답 함정: ㉠(나이트로화)을 넣으면 Br이 아닌 NO<sub>2</sub>가 들어가고, ㉤은 아민이 없어 의미가 없다. 순서를 (2)→(1)로 하면 파라 브로민화가 먼저 일어난다. 또 탈술폰화 조건(㉣)과 술폰화 조건(㉡)은 같은 평형의 양 방향 — 농도(SO<sub>3</sub>/물)로 방향을 정한다.</p>
 <p>⑤ 생성된 <b>B</b>(2-bromoanisole)는 NaNH<sub>2</sub>와의 벤자인 반응으로 <i>m</i>-anisidine을 주는 출발물로 쓰인다.</p>''',
 ),
@@ -591,8 +591,8 @@ dict(
     ],
     explain='''<p><b>핵심 반응: Friedel–Crafts형 하이드록시알킬화(카보닐 친전자체) — 초산(superacid)에서의 초친전자적 활성화(Olah)</b></p>
 <p>① CF<sub>3</sub>SO<sub>3</sub>H는 먼저 염기성이 큰 3차 아민 N을 양성자화하고(암모늄), 이어 카보닐 O까지 양성자화하여 이가 양이온 <b>A</b>([C<sub>7</sub>H<sub>13</sub>NO]<sup>2+</sup>)를 만든다. 보통 산에서는 O-양성자화 정도가 낮지만 초강산에서는 충분하다.</p>
-<p>② 벤젠의 π 전자가 A의 카보닐 탄소를 공격 → 아레늄 이온(σ-착물) → 탈양성자화로 방향족성 회복 → 3-hydroxy-3-phenylquinuclidinium. OH가 양성자화되고 H<sub>2</sub>O가 떨어지면 3차·벤질 탄소 양이온 <b>B</b>가 생성된다. B의 양전하는 페닐 고리의 오쏘·파라 탄소로 비편재화된다(정답의 파라 공명 구조; 오쏘 구조도 정답).</p>
-<p>③ 두 번째 벤젠이 B의 양이온 탄소를 공격(두 번째 S<sub>E</sub>Ar), 탈양성자화 → <b>C</b> = 3,3-diphenylquinuclidinium([C<sub>19</sub>H<sub>22</sub>N]<sup>+</sup>). 염기 처리하면 중성 아민 C<sub>19</sub>H<sub>21</sub>N이 된다.</p>
+<p>② 「[그림 1]」 벤젠의 π 전자가 A의 카보닐 탄소를 공격 → 아레늄 이온(σ-착물) → 탈양성자화로 방향족성 회복 → 3-hydroxy-3-phenylquinuclidinium. OH가 양성자화되고 H<sub>2</sub>O가 떨어지면 3차·벤질 탄소 양이온 <b>B</b>가 생성된다. B의 양전하는 페닐 고리의 오쏘·파라 탄소로 비편재화된다(정답의 파라 공명 구조; 오쏘 구조도 정답).</p>
+<p>③ 「[그림 2]」 두 번째 벤젠이 B의 양이온 탄소를 공격(두 번째 S<sub>E</sub>Ar), 탈양성자화 → <b>C</b> = 3,3-diphenylquinuclidinium([C<sub>19</sub>H<sub>22</sub>N]<sup>+</sup>). 염기 처리하면 중성 아민 C<sub>19</sub>H<sub>21</sub>N이 된다.</p>
 <p>④ 초친전자성의 근거: 양성자화된 카보닐은 보통 O의 비공유 전자쌍과 알킬기의 공여로 양전하가 분산된다. 그러나 A는 C=O<sup>+</sup>H 탄소에서 두 결합 떨어진 곳에 N<sup>+</sup>H가 있어 전자를 강하게 끌어당기므로 카보닐 탄소가 극도로 전자 부족해진다(전하–전하 반발 = 불안정 = 고반응성). 같은 이유로 B도 일반 벤질 양이온보다 친전자성이 커서 두 번째 페닐화가 빠르다.</p>
 <p>⑤ 기출(퓨란 브로민화)과의 공통 원리: 반응성과 위치 선택성은 <b>양이온 중간체(또는 그에 이르는 전이 상태)의 안정성</b>(Hammond 가설)으로 판단한다. 여기서는 반대로 친전자체가 불안정할수록(이가 양이온) 약한 친핵체와도 반응한다. 흔한 오답: 페닐이 1개만 붙은 3차 알코올을 최종 생성물로 쓰거나, N이 양성자화되지 않은 단일 양이온을 A로 그리는 것(분자식 불일치).</p>''',
 ),
@@ -654,8 +654,8 @@ dict(
     ],
     explain='''<p><b>핵심 반응: 아세틸 보호로 조절한 EAS + 다이아조늄의 H<sub>3</sub>PO<sub>2</sub> 환원(탈아미노화) — “임시 배향기” 전략</b></p>
 <p>① NH<sub>2</sub>는 너무 강한 활성화기라 Br<sub>2</sub>와 바로 반응시키면 비어 있는 오쏘 자리가 모두 브로민화된다(다중 치환). 아세트산 무수물로 아세트아마이드(NHAc)로 바꾸면 N 비공유 전자쌍이 카보닐과 공명하여 활성화가 중간 정도로 낮아져 1치환만 일어난다.</p>
-<p>② <i>N</i>-(4-methylphenyl)acetamide에서 NHAc(공명 공여, 더 강한 활성화기)와 CH<sub>3</sub>(약한 활성화기)가 경쟁한다. 파라는 CH<sub>3</sub>로 막혀 있으므로 더 강한 활성화기인 NHAc의 <b>오쏘</b> 자리(= CH<sub>3</sub>의 메타)에 Br이 들어간다. 산 가수분해로 아마이드를 제거하면 <b>A</b> = 2-bromo-4-methylaniline.</p>
-<p>③ NaNO<sub>2</sub>/HCl로 다이아조늄 염을 만든 뒤 H<sub>3</sub>PO<sub>2</sub>(하이포아인산)로 처리하면 라디칼 연쇄 과정으로 N<sub>2</sub>가 H로 치환된다(Ar–N<sub>2</sub><sup>+</sup> → Ar–H). 결과적으로 NH<sub>2</sub>는 Br의 위치를 정해 준 뒤 흔적 없이 사라진다 → <b>B</b> = 3-bromotoluene(1-bromo-3-methylbenzene).</p>
+<p>② <i>N</i>-(4-methylphenyl)acetamide에서 NHAc(공명 공여, 더 강한 활성화기)와 CH<sub>3</sub>(약한 활성화기)가 경쟁한다. 파라는 CH<sub>3</sub>로 막혀 있으므로 더 강한 활성화기인 NHAc의 <b>오쏘</b> 자리(= CH<sub>3</sub>의 메타)에 Br이 들어간다. 이 σ-착물은 N의 비공유 전자쌍이 양전하를 받는 공명 구조(모든 원자 옥텟)를 가지기 때문이다(「[그림 1]」). 산 가수분해로 아마이드를 제거하면 <b>A</b> = 2-bromo-4-methylaniline.</p>
+<p>③ NaNO<sub>2</sub>/HCl로 다이아조늄 염을 만든 뒤(「[그림 2]」) H<sub>3</sub>PO<sub>2</sub>(하이포아인산)로 처리하면 라디칼 연쇄 과정(「[그림 3]」)으로 N<sub>2</sub>가 H로 치환된다(Ar–N<sub>2</sub><sup>+</sup> → Ar–H). 결과적으로 NH<sub>2</sub>는 Br의 위치를 정해 준 뒤 흔적 없이 사라진다 → <b>B</b> = 3-bromotoluene(1-bromo-3-methylbenzene).</p>
 <p>④ 의의: 톨루엔을 직접 브로민화하면 o-/p-bromotoluene만 생기고, 메타 생성물은 거의 얻을 수 없다. CH<sub>3</sub>와 Br이 메타 관계인 화합물은 이처럼 “아미노기 배향 → 제거”로 만든다(같은 전략: 2,6-dimethylaniline → 4-bromo-2,6-dimethylaniline → 1-bromo-3,5-dimethylbenzene, 논문의 출발물).</p>
 <p>⑤ 흔한 오답: A에서 Br을 CH<sub>3</sub>의 오쏘에 둔 것(약한 활성화기를 우선시), B를 Sandmeyer로 착각하여 Br이 2개인 구조(C<sub>7</sub>H<sub>6</sub>Br<sub>2</sub>)로 쓰는 것.</p>''',
 ),
@@ -721,9 +721,9 @@ dict(
             title='[그림 3] Pictet–Spengler 고리화 — 이미늄 이온에 대한 분자 내 S<sub>E</sub>Ar'),
     ],
     explain='''<p><b>핵심 반응: 치환기 효과(활성화/불활성화, 배향)와 Pictet–Spengler 반응(이미늄 이온에 대한 분자 내 S<sub>E</sub>Ar)</b></p>
-<p>① 속도 결정 단계는 σ-착물(아레늄 이온) 형성. –OCH<sub>3</sub>: O 비공유 전자쌍의 강한 공명 공여(+M ≫ −I) → 강한 활성화. –CH<sub>3</sub>: 유발·초공액 공여 → 약한 활성화. –Cl: −I &gt; +M → 약한 불활성화(o,p 지향). –CO<sub>2</sub>CH<sub>3</sub>: 카보닐의 공명·유발 끌기 → 중간 정도 불활성화(메타 지향). 상대 속도(벤젠 = 1) 대략 anisole ≫ 톨루엔(~25) &gt; 1 &gt; 클로로벤젠(~0.03) &gt; 벤조산 메틸(~0.004).</p>
-<p>② X = Cl: 메타 공격 σ-착물은 Cl의 공명 공여를 받을 수 없고 −I만 작용한다. 오쏘/파라 공격 σ-착물은 Cl의 3p 비공유 전자쌍이 C=Cl<sup>+</sup> 형태로 양전하를 나누는 네 번째 공명 구조를 가지므로 상대적으로 안정 → o,p 지향. 파라 : 오쏘 ≈ 2 : 1 정도로 파라가 주생성물(<b>B</b> = 1-chloro-4-nitrobenzene).</p>
-<p>③ [반응 2] 1차 아민 + HCHO → 카비놀아민 → 탈수 → 이미늄 이온(CH<sub>2</sub>=N<sup>+</sup>H–). 다이메톡시 고리가 친핵체로 이미늄 탄소를 공격(6-endo 고리화) → 아레늄 이온 → 탈양성자화 → 1,2,3,4-tetrahydroisoquinoline.</p>
+<p>① 속도 결정 단계는 NO<sub>2</sub><sup>+</sup>(「[그림 1]」)의 공격에 의한 σ-착물(아레늄 이온) 형성. –OCH<sub>3</sub>: O 비공유 전자쌍의 강한 공명 공여(+M ≫ −I) → 강한 활성화. –CH<sub>3</sub>: 유발·초공액 공여 → 약한 활성화. –Cl: −I &gt; +M → 약한 불활성화(o,p 지향). –CO<sub>2</sub>CH<sub>3</sub>: 카보닐의 공명·유발 끌기 → 중간 정도 불활성화(메타 지향). 상대 속도(벤젠 = 1) 대략 anisole ≫ 톨루엔(~25) &gt; 1 &gt; 클로로벤젠(~0.03) &gt; 벤조산 메틸(~0.004).</p>
+<p>② X = Cl(「[그림 2]」): 메타 공격 σ-착물은 Cl의 공명 공여를 받을 수 없고 −I만 작용한다. 오쏘/파라 공격 σ-착물은 Cl의 3p 비공유 전자쌍이 C=Cl<sup>+</sup> 형태로 양전하를 나누는 네 번째 공명 구조를 가지므로 상대적으로 안정 → o,p 지향. 파라 : 오쏘 ≈ 2 : 1 정도로 파라가 주생성물(<b>B</b> = 1-chloro-4-nitrobenzene).</p>
+<p>③ [반응 2](「[그림 3]」) 1차 아민 + HCHO → 카비놀아민 → 탈수 → 이미늄 이온(CH<sub>2</sub>=N<sup>+</sup>H–). 다이메톡시 고리가 친핵체로 이미늄 탄소를 공격(6-endo 고리화) → 아레늄 이온 → 탈양성자화 → 1,2,3,4-tetrahydroisoquinoline.</p>
 <p>④ 위치 선택성: 원료 고리를 C1(CH<sub>2</sub>CH<sub>2</sub>NH<sub>2</sub>), C3·C4(OMe)로 번호 매기면, 고리화가 가능한 탄소는 곁사슬의 두 오쏘 자리인 C2(3-OMe의 오쏘, 두 치환기 사이)와 C6(3-OMe의 파라, 4-OMe의 메타)이다. 3-OMe의 <b>파라</b>인 C6은 공명 활성화를 받으면서 입체 장애가 없으므로 이곳에서 고리화하여 <b>C</b> = 6,7-dimethoxy-THIQ가 생성된다(7,8-dimethoxy 이성질체는 소량). 논문의 crispine A 합성에서도 OMe의 파라에서 Pictet–Spengler 고리화가 일어난다.</p>
 <p>⑤ 흔한 오답: 속도 순서에서 Cl을 CO<sub>2</sub>CH<sub>3</sub>보다 느리게 쓰는 것, B를 메타 생성물로 그리는 것, C를 고리화되지 않은 이민/N-메틸 아민으로 그리는 것(분자식 C<sub>11</sub>H<sub>15</sub>NO<sub>2</sub> = 원료 + C − H<sub>2</sub>O 이므로 고리화 필요).</p>''',
 ),
@@ -772,8 +772,8 @@ dict(
     explain='''<p><b>핵심 반응: 다치환 벤젠의 역합성(배향 효과·FC 한계) + Suzuki–Miyaura 교차 짝지음</b></p>
 <p>① 역합성: D의 Ar–Ph 결합은 Suzuki로, 그 전구체는 4′-bromo-3′-nitroacetophenone. 이 화합물에서 COCH<sub>3</sub>와 Br은 파라, NO<sub>2</sub>는 Br의 오쏘·COCH<sub>3</sub>의 메타 → Br과 COCH<sub>3</sub>가 이미 있는 고리에 마지막으로 NO<sub>2</sub>를 넣는 것이 협동 배향으로 유일한 위치를 준다.</p>
 <p>② 1단계 Br<sub>2</sub>/FeBr<sub>3</sub>: FeBr<sub>3</sub>가 Br–Br을 분극시켜 Br<sup>+</sup> 등가체 생성 → bromobenzene. 2단계 CH<sub>3</sub>COCl/AlCl<sub>3</sub>: 아실륨 이온이 Br의 파라(오쏘는 입체 장애)를 공격 → 4-bromoacetophenone. Br은 불활성화기지만 할로젠 정도의 약한 불활성화는 FC 아실화를 허용한다.</p>
-<p>③ 3단계 HNO<sub>3</sub>/H<sub>2</sub>SO<sub>4</sub>: NO<sub>2</sub><sup>+</sup>가 Br의 오쏘(= COCH<sub>3</sub>의 메타)를 공격. 고리가 두 EWG로 불활성화되어 있으나 나이트로늄 이온은 강한 친전자체라 반응한다.</p>
-<p>④ 4단계 Suzuki: (i) <b>산화성 첨가</b> — Pd(0)L<sub>n</sub>이 Ar–Br 결합에 끼어들어 Ar–Pd(II)–Br (Pd 0 → +2). 오쏘-NO<sub>2</sub>와 파라-COCH<sub>3</sub>가 고리를 전자 부족하게 하여 이 단계가 빠르다. (ii) <b>금속 교환</b> — Na<sub>2</sub>CO<sub>3</sub>가 PhB(OH)<sub>2</sub>를 붕산염 [PhB(OH)<sub>3</sub>]<sup>−</sup>으로 활성화하여 Ph를 Pd로 전달 → Ar–Pd(II)–Ph (+2 유지). (iii) <b>환원성 제거</b> — cis 배치된 Ar과 Ph가 결합하며 생성물 방출, Pd(II) → Pd(0) 재생.</p>
+<p>③ 3단계 HNO<sub>3</sub>/H<sub>2</sub>SO<sub>4</sub>(「[그림 1]」): NO<sub>2</sub><sup>+</sup>가 Br의 오쏘(= COCH<sub>3</sub>의 메타)를 공격. 고리가 두 EWG로 불활성화되어 있으나 나이트로늄 이온은 강한 친전자체라 반응한다.</p>
+<p>④ 4단계 Suzuki(「[그림 2]」): (i) <b>산화성 첨가</b> — Pd(0)L<sub>n</sub>이 Ar–Br 결합에 끼어들어 Ar–Pd(II)–Br (Pd 0 → +2). 오쏘-NO<sub>2</sub>와 파라-COCH<sub>3</sub>가 고리를 전자 부족하게 하여 이 단계가 빠르다. (ii) <b>금속 교환</b> — Na<sub>2</sub>CO<sub>3</sub>가 PhB(OH)<sub>2</sub>를 붕산염 [PhB(OH)<sub>3</sub>]<sup>−</sup>으로 활성화하여 Ph를 Pd로 전달 → Ar–Pd(II)–Ph (+2 유지). (iii) <b>환원성 제거</b> — cis 배치된 Ar과 Ph가 결합하며 생성물 방출, Pd(II) → Pd(0) 재생.</p>
 <p>⑤ 논문(Klein 19.87) 연결: D에서 NO<sub>2</sub>는 부피 큰 페닐기와 오쏘 관계이므로 둘 다 고리 평면 밖으로 비틀려 공명이 줄어든다(공명의 입체 억제) — 피크릴 아이오다이드의 오쏘-NO<sub>2</sub>가 C–N 결합이 길어지는 것과 같은 현상이다.</p>
 <p>⑥ 흔한 오답 순서: 나이트로화 → 아실화(FC 실패), 아실화 → 브로민화(Br이 메타), Suzuki → 아실화 → 나이트로화(치환이 바이페닐의 다른 고리 4′ 자리로 감).</p>''',
 ),
