@@ -2,7 +2,9 @@
 const { chromium } = require('playwright');
 (async () => {
   const [inp, out] = process.argv.slice(2);
-  const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome' });
+  const fs = require('fs'); const dirs = fs.readdirSync('/opt/pw-browsers').filter(d => /^chromium-\d+$/.test(d)).sort();
+  const exe = dirs.map(d => ['/opt/pw-browsers/' + d + '/chrome-linux/chrome', '/opt/pw-browsers/' + d + '/chrome-linux64/chrome']).flat().find(p => fs.existsSync(p));
+  const b = await chromium.launch(exe ? { executablePath: exe } : {});
   const p = await b.newPage();
   await p.goto('file://' + require('path').resolve(inp), { waitUntil: 'networkidle' });
   if (await p.$('#pool')) await p.waitForSelector('body[data-ready="1"]', { timeout: 60000 });

@@ -17,6 +17,7 @@ import glob, importlib.util, html, json, os, subprocess, sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from areas import AREAS, SETS, EXAM_ITEMS, allocate
+from mech import MECH_CSS
 
 CSS = open(os.path.join(HERE, 'style.css'), encoding='utf-8').read()
 PAG = open(os.path.join(HERE, 'paginate.js'), encoding='utf-8').read()
@@ -97,6 +98,8 @@ h2.nobreak { break-before: auto; }
 .a .meta td { padding: .2mm 2mm .2mm 0; vertical-align: top; }
 .a .meta td:first-child { white-space: nowrap; font-weight: 700; }
 .a .ans { padding: 2mm 3mm; border-bottom: 1px dashed #999; }
+.a .mfig { padding: 2mm 3mm; border-bottom: 1px dashed #999; }
+.a .mfig b.t { display:inline-block; background:#000; color:#fff; padding: 0 2mm; margin-right: 2mm; font-size: 8.4pt; }
 .a .ans b.t, .a .exp b.t { display:inline-block; background:#000; color:#fff; padding: 0 2mm; margin-right: 2mm; font-size: 8.4pt; }
 .a .exp { padding: 2mm 3mm; }
 .a .exp p { margin: 0 0 1.2mm; }
@@ -126,9 +129,10 @@ def ans_html(items):
 {f'<tr><td>노벨상 연계</td><td>{d["nobel"]}</td></tr>' if d.get("nobel") else ''}
 </table></div>
 <div class="ans"><b class="t">정답</b>{d["answer"]}</div>
+{f'<div class="mfig"><b class="t">메커니즘·구조 그림</b>{"".join(d["mech"]) if isinstance(d.get("mech"), list) else d.get("mech","")}</div>' if d.get("mech") else ''}
 <div class="exp"><b class="t">해설</b>{d["explain"]}</div></div>''')
     return f'''<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>기출변형 정답과 해설</title><style>{CSS.replace("@page { size: A4; margin: 0; }","")}{ANS_CSS}</style></head><body>
+<title>기출변형 정답과 해설</title><style>{CSS.replace("@page { size: A4; margin: 0; }","")}{ANS_CSS}{MECH_CSS}</style></head><body>
 <h1>유기화학 기출변형 모의고사 — 정답 및 해설</h1>
 <div class="sub">변형 기출 · 소스 논문(Klein 유기화학 인용 문헌) · 노벨상 연계 · 상세 해설</div>
 <h2 class="nobreak">문항 색인</h2>

@@ -1,5 +1,6 @@
 """표준 예시 문항 (작성 에이전트용 견본). 최종본에서는 set1.py 에 편입."""
 from chem import M, L, arrow, varrow, scheme, rows, frame, nmr, ir, spec, plus
+from mech import step, mechanism, ar
 
 ITEMS = [
 dict(
@@ -19,6 +20,26 @@ dict(
 <p class="ask"><b class="lbltxt">A</b>의 입체구조를 그리고, <b class="lbltxt">C</b>의 입체구조를 그린 후 <b class="lbltxt">C</b>에 있는 모든 카이랄 중심의 절대 배열(<i>R</i>/<i>S</i>)을 쓰시오. [[PTS]]</p>''',
     answer=f'''<div class="ansbox">{M('CCOC(=O)/C=C/c1ccccc1', 'A: ethyl (E)-cinnamate', 15)}{M('OC[C@@H]1O[C@H]1c1ccccc1', 'C: (2S,3S)-3-phenylglycidol', 15)}</div>
 C의 두 카이랄 중심: C2 = <i>S</i>, C3 = <i>S</i> (B = (<i>E</i>)-cinnamyl alcohol)''',
+    mech=[
+        mechanism(
+            step('[*:6][CH:4]=[O:3].[*:5][CH-:1][P+:2]', layout='v', gap=1.5, scale=30, frag_dx={0: 0.0},
+                 arrows=[ar('lp', 1, 'a', 4, side=1), ar('lp', 3, 'a', 2, side=-1)], lp=[1, 3],
+                 labels={2: 'PPh<sub>3</sub>', 5: 'EtO<sub>2</sub>C', 6: 'Ph'},
+                 caption='① 일라이드 C<sup>−</sup> → 카보닐 C, 카보닐 O → P<sup>+</sup>'),
+            ('⇌', '가역'),
+            step('[*:5][CH:1]1[P:2][O:3][CH:4]1[*:6]', rotate=0, scale=30,
+                 arrows=[ar('b', (1, 2), 'm', (1, 4)), ar('b', (3, 4), 'm', (3, 2))],
+                 labels={2: 'PPh<sub>3</sub>', 5: 'CO<sub>2</sub>Et', 6: 'Ph'},
+                 caption='② trans-oxaphosphetane의 역 [2+2] 분해'),
+            ('→', ''),
+            step('CCOC(=O)/C=C/c1ccccc1.O=[P:2]', labels={2: 'PPh<sub>3</sub>'}, caption='(<i>E</i>)-알켄 <b>A</b> + Ph<sub>3</sub>P=O'),
+            title='[그림 1] Wittig 반응 — 안정화 일라이드의 oxaphosphetane 경로(E 선택)'),
+        mechanism(
+            step('[OH:1]C/C=C/c1ccccc1', caption='<b>B</b> (<i>E</i>)-cinnamyl alcohol: Ti–OR 배위'),
+            ('→', 'Ti(O<i>i</i>-Pr)<sub>4</sub>, L-(+)-DET', '<i>t</i>-BuOOH (O 전달: 아래쪽 면)'),
+            step('OC[C@@H]1O[C@H]1c1ccccc1', caption='<b>C</b> (2<i>S</i>,3<i>S</i>)-3-phenylglycidol'),
+            title='[그림 2] Sharpless 비대칭 에폭시화 — 알켄 기하 유지(입체특이적) + 한쪽 면 선택(거울상선택적)'),
+    ],
     explain='''<p>① 안정화 일라이드(Ph<sub>3</sub>P=CHCO<sub>2</sub>Et)는 oxaphosphetane 형성이 가역적이어서 열역학적으로 유리한 <i>trans</i>-oxaphosphetane을 거쳐 (<i>E</i>)-알켄을 준다(cf. 기출의 비안정화 일라이드 PhCH=PPh<sub>3</sub>는 <i>Z</i> 선택적).</p>
 <p>② DIBAL-H 2당량은 에스터를 1차 알코올로 환원하며 C=C는 보존된다 → B = (<i>E</i>)-cinnamyl alcohol.</p>
 <p>③ Sharpless 비대칭 에폭시화: Ti–tartrate 촉매가 알릴 알코올의 OH에 배위하여 한쪽 면에만 산소를 전달한다. C=C를 지면에 세로 방향으로 놓고 CH<sub>2</sub>OH가 아래쪽 알켄 탄소의 오른쪽 아래에 오도록 그리면 L-(+)-DET는 아래쪽 면, D-(−)-DET는 위쪽 면에서 산소를 전달한다. (<i>E</i>)-알켄의 기하가 그대로 유지(입체특이적)되므로 <i>trans</i>-에폭사이드, 즉 (2<i>S</i>,3<i>S</i>)-3-phenylglycidol이 생성된다.</p>
