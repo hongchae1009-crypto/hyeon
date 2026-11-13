@@ -4,7 +4,7 @@
 import html, pathlib, subprocess, sys
 
 HERE = pathlib.Path(__file__).parent
-CHROME = "/opt/pw-browsers/chromium-1194/chrome-linux/chrome"
+CHROME = str(sorted(__import__("pathlib").Path("/opt/pw-browsers").glob("chromium-*/chrome-linux*/chrome"))[-1])
 
 CSS = """
 @page{size:297mm 420mm;margin:0}
