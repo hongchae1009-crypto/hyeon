@@ -135,7 +135,7 @@ td.l{text-align:left}td.s{white-space:nowrap;letter-spacing:-.5pt}
 .tb{border:.5pt solid #000;padding:1mm;margin:0 0 1.5mm;display:inline-block;width:62mm;vertical-align:top}
 .tb img{width:100%;display:block}.tc{font-size:7.2pt;margin-top:.6mm}
 .clr{clear:both}
-.toct{font-size:7.8pt;line-height:1.3}.toct td{padding:.35mm 1.4mm!important}.toc .box{margin-bottom:2mm}
+.toct{font-size:7.4pt;line-height:1.22}.toct td{padding:.15mm 1.4mm!important}.keys{font-size:7.9pt;line-height:1.35}.keys li{margin:.2mm 0!important}.toc .box{margin-bottom:2mm}
 .sep{text-align:left!important;font-weight:bold;border-top:1.2pt solid #000!important}"""
     doc = f"<!doctype html><html lang='ko'><head><meta charset='utf-8'><title>{STEM}</title><style>{css}</style></head><body>{toc}{topics}{core}{items}</body></html>"
     h = HERE / f"{STEM}.html"; h.write_text(doc, encoding="utf-8")
