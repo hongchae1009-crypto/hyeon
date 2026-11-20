@@ -12,7 +12,7 @@ IMG = HERE / "img"; IMG.mkdir(exist_ok=True)
 CHROME = str(sorted(pathlib.Path("/opt/pw-browsers").glob("chromium-*/chrome-linux*/chrome"))[-1])
 STEM = "2027_화학임용_과교론_최종정리"
 NAME = {it["id"]: it for it in ITEMS}
-lab = lambda i: f"20{i[:2]} {i[2:]}"
+lab = lambda i: NAME[i].get("lab") or f"20{i[:2]} {i[2:]}"
 MM_PER_PX_EXAM = 25.4 / 200
 MM_PER_PX_CUR = 25.4 / cut.DPI
 
@@ -73,7 +73,7 @@ def item_html(n, it):
 
 def build():
     # 목차
-    rows = "".join(f"<tr><td>{n:02d}</td><td><a href='#q{it['id']}'>{lab(it['id'])}</a></td><td class='l'><a href='#q{it['id']}'>{e(it['topic'])}</a></td><td>{'●' if it['key'] else ''}</td></tr>"
+    rows = "".join((f"<tr><td colspan='4' class='sep'>옛 기출(2016~2020) — 주제가 다시 나올 만한 문항, 2022 개정 기준으로 다시 보기</td></tr>" if it["id"] == next(i["id"] for i in ITEMS if int(i["id"][:2]) < 21) else "") + f"<tr><td>{n:02d}</td><td><a href='#q{it['id']}'>{lab(it['id'])}</a></td><td class='l'><a href='#q{it['id']}'>{e(it['topic'])}</a></td><td>{'●' if it['key'] else ''}</td></tr>"
                    for n, it in enumerate(ITEMS, 1))
     keys = "".join(f"<li><a href='#q{it['id']}'><b>{lab(it['id'])}</b> {e(it['topic'])}</a></li>" for it in ITEMS if it["key"])
     toc = f"""<section class='toc' id='toc'><h1>2027 중등 화학 임용 · 과학교육론 최종 정리</h1>
@@ -81,7 +81,7 @@ def build():
 <div class='box'><div class='bt'>구성</div><ol class='parts'>
 <li><a href='#topics'>Ⅰ. 2027 출제 유력 주제</a> — 물·생·지 최근 기출에서 화학으로 넘어올 주제</li>
 <li><a href='#core'>Ⅱ. 핵심 압축</a> — 문항 해설에서 다 못 다룬 이론 용어</li>
-<li><a href='#items'>Ⅲ. 다시 볼 기출 20문항</a> — 기출 원문 · 모범 답안 · 짚을 점 · 2022 개정 원문 컷아웃 · 교과서</li></ol></div>
+<li><a href='#items'>Ⅲ. 다시 볼 기출 {len(ITEMS)}문항</a> — 2021~2026 {sum(int(i['id'][:2]) >= 21 for i in ITEMS)}문항 + 주제가 다시 나올 만한 2016~2020 {sum(int(i['id'][:2]) < 21 for i in ITEMS)}문항 · 기출 원문 · 모범 답안 · 짚을 점 · 2022 개정 원문 컷아웃 · 교과서</li></ol></div>
 <div class='box' id='keys'><div class='bt'>주요 문제 {sum(i['key'] for i in ITEMS)}선 — 시간이 없으면 이것부터</div><ol class='keys'>{keys}</ol></div>
 <div class='box' id='items'><div class='bt'>Ⅲ. 다시 볼 기출 목록 (● 주요 문제)</div><table class='toct'><tr><th>번호</th><th>문항</th><th>주제</th><th>주요</th></tr>{rows}</table></div></section>"""
     trs = ""
@@ -134,7 +134,9 @@ td.l{text-align:left}td.s{white-space:nowrap;letter-spacing:-.5pt}
 .cut img{display:block;max-width:100%}.ct{font-size:7.3pt;margin-bottom:.8mm;font-weight:bold}
 .tb{border:.5pt solid #000;padding:1mm;margin:0 0 1.5mm;display:inline-block;width:62mm;vertical-align:top}
 .tb img{width:100%;display:block}.tc{font-size:7.2pt;margin-top:.6mm}
-.clr{clear:both}"""
+.clr{clear:both}
+.toct{font-size:7.8pt;line-height:1.3}.toct td{padding:.35mm 1.4mm!important}.toc .box{margin-bottom:2mm}
+.sep{text-align:left!important;font-weight:bold;border-top:1.2pt solid #000!important}"""
     doc = f"<!doctype html><html lang='ko'><head><meta charset='utf-8'><title>{STEM}</title><style>{css}</style></head><body>{toc}{topics}{core}{items}</body></html>"
     h = HERE / f"{STEM}.html"; h.write_text(doc, encoding="utf-8")
     pdf = HERE / f"{STEM}.pdf"
