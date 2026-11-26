@@ -70,37 +70,53 @@ def bands(doc, pno, clip=None, drop_top=0.0, drop_bot=1.0, gap_pt=9, dpi=60, nof
 
 class Flow:
     def __init__(self):
-        self.doc = pymupdf.open(); self.y = None; self.pg = None; self.marks = []
+        self.doc = pymupdf.open(); self.y = None; self.pg = None; self.marks = []; self.pend = None
     def newpage(self):
         self.pg = self.doc.new_page(width=A4.width, height=A4.height); self.y = M
     def room(self): return A4.height - M - self.y if self.pg else -1
+    def empty(self): return self.pg is None or self.y <= M + 1
     def head(self, tag, title):
-        """문항 머리줄(굵은 글씨 + ‘목차로’ + 가로선). 남은 공간이 적으면 새 쪽."""
-        if self.room() < 120: self.newpage()
-        elif self.y > M: self.y += 6
+        """머리줄은 첫 내용과 같은 쪽에 그리도록 미뤄 둔다."""
+        self.pend = (tag, title)
+    def _draw_head(self):
+        tag, title = self.pend; self.pend = None
+        if not self.empty(): self.y += 6
         pg, y = self.pg, self.y
-        txt = f"{tag}  {title}"; fs = 8.2
-        tw = pymupdf.TextWriter(pg.rect); tw.append((M, y + 9), txt[:95], font=FONT, fontsize=fs, ); tw.write_text(pg, color=(0.05, 0.2, 0.45))
+        tw = pymupdf.TextWriter(pg.rect); tw.append((M, y + 9), f"{tag}  {title}"[:95], font=FONT, fontsize=8.2); tw.write_text(pg, color=(0.05, 0.2, 0.45))
         bw = FONT.text_length("목차로", fontsize=7.5)
         tw = pymupdf.TextWriter(pg.rect); tw.append((A4.width - M - bw, y + 9), "목차로", font=FONT, fontsize=7.5); tw.write_text(pg)
-        pg.insert_link({"kind": pymupdf.LINK_GOTO, "from": pymupdf.Rect(A4.width - M - bw - 2, y, A4.width - M + 2, y + 12), "page": 0})
         pg.draw_line((M, y + 12), (A4.width - M, y + 12), width=0.8, color=(0.05, 0.2, 0.45))
         self.marks.append((tag, title, self.doc.page_count - 1))
         self.y = y + 15
+    def _place(self, src, pno, r, s):
+        h = r.height * s; w = r.width * s; xo = M + (UW - w) / 2
+        self.pg.show_pdf_page(pymupdf.Rect(xo, self.y, xo + w, self.y + h), src, pno, clip=r)
+        self.y += h + 2
     def put(self, src, pno, rects, smax=1.15):
-        """한 원본 쪽의 띠들을 같은 배율로 이어 붙인다."""
+        """한 원본 쪽의 띠들을 같은 배율로 이어 붙인다(들어가지 않으면 다음 쪽)."""
         if not rects: return
         x0 = min(r.x0 for r in rects); x1 = max(r.x1 for r in rects)
-        s = min(UW / (x1 - x0), smax)
+        s = min(UW / (x1 - x0), smax); first = True
         for r in rects:
-            r = pymupdf.Rect(x0, r.y0, x1, r.y1)
-            h = r.height * s; ss = s
-            if h > A4.height - 2 * M: ss = (A4.height - 2 * M) / r.height; h = r.height * ss
-            if h > self.room():
-                self.newpage()
-            w = r.width * ss; xo = M + (UW - w) / 2 if ss < s else M
-            self.pg.show_pdf_page(pymupdf.Rect(xo, self.y, xo + w, self.y + h), src, pno, clip=r)
-            self.y += h + 2
+            r = pymupdf.Rect(x0, r.y0, x1, r.y1); ss = s
+            hh = 21 if (self.pend and first) else 0
+            if r.height * ss + hh > A4.height - 2 * M: ss = (A4.height - 2 * M - hh) / r.height
+            if self.pg is None or (r.height * ss + hh > self.room() and not self.empty()): self.newpage()
+            if self.pend: self._draw_head()
+            self._place(src, pno, r, ss); first = False
+    def put_onepage(self, groups, smax=1.1):
+        """groups: [(src, pno, rects)] — 새 쪽 한 장에 모두 들어가도록 배율을 줄여 배치."""
+        groups = [(d, p, rs) for d, p, rs in groups if rs]
+        if not self.empty() or self.pg is None: self.newpage()
+        sc = []
+        for d, p, rs in groups:
+            x0 = min(r.x0 for r in rs); x1 = max(r.x1 for r in rs); sc.append((x0, x1, min(UW / (x1 - x0), smax)))
+        need = sum(sum(r.height for r in rs) * s + 2 * len(rs) for (d, p, rs), (_, _, s) in zip(groups, sc)) + 6 * len(groups)
+        avail = A4.height - 2 * M - 21; f = min(1.0, avail / need)
+        if self.pend: self._draw_head()
+        for (d, p, rs), (x0, x1, s) in zip(groups, sc):
+            for r in rs: self._place(d, p, pymupdf.Rect(x0, r.y0, x1, r.y1), s * f)
+            self.y += 4
 
 # ─────────────────────────── 김지현 답안 위치
 def kjh_answers(w):
@@ -132,7 +148,7 @@ def build():
     F = Flow(); toc = []
     # Ⅰ 출제 예상
     p = pymupdf.open(HERE / "2027_화학임용_과교론_출제예상주제.pdf")
-    F.newpage(); F.head("Ⅰ", "2027 출제 예상 이론·모형")
+    F.head("Ⅰ", "2027 출제 예상 이론·모형")
     for i in range(len(p)): F.put(p, i, bands(p, i))
     toc.append(("Ⅰ. 2027 출제 예상 이론·모형", F.marks[-1:]))
     # Ⅱ-1 2026 기출(최종 정리)
@@ -160,12 +176,14 @@ def build():
     ans = {w: kjh_answers(w) for w in (1, 2, 3, 4)}
     qd = {w: pymupdf.open(KJH / "src" / f"w{w}q.pdf") for w in (1, 2, 3, 4)}; n0 = len(F.marks)
     for w, n, topic in KSEL:
-        a, b = items[f"{w}-{n}"]; F.head(f"김지현 {w}주 {n}번", topic)
+        a, b = items[f"{w}-{n}"]; F.head(f"김지현 {w}주 {n}번", topic); grp = []
         for p in range(a, b + 1):
-            F.put(qd[w], p - 1, bands(qd[w], p - 1, drop_top=0.092, drop_bot=0.91, noframe=True))
+            grp.append((qd[w], p - 1, bands(qd[w], p - 1, drop_top=0.092, drop_bot=0.91, noframe=True)))
         ad, am = ans[w]
         for i, r in am.get(n, []):
-            F.put(ad, i, bands(ad, i, clip=r))
+            grp.append((ad, i, bands(ad, i, clip=r)))
+        F.put_onepage(grp)
+        F.pg = None  # 다음 문항은 새 쪽
     toc.append(("Ⅲ. 김지현 화교론 엄선 (문제 바로 아래 답안)", F.marks[n0:]))
     # Ⅳ 직접 만든 변형
     titles = {k: (t, pt) for g, xs in BP.GROUPS for k, t, why, pt in xs}; n0 = len(F.marks)
