@@ -92,18 +92,35 @@ class Flow:
         h = r.height * s; w = r.width * s; xo = M + (UW - w) / 2
         self.pg.show_pdf_page(pymupdf.Rect(xo, self.y, xo + w, self.y + h), src, pno, clip=r)
         self.y += h + 2
+    @staticmethod
+    def _cut(src, pno, r, hmax):
+        """띠 r을 위에서 hmax(원본 좌표) 이내의 빈 줄(글줄 사이)에서 자를 y. 상자 세로선은 무시. 없으면 None."""
+        pm = src[pno].get_pixmap(dpi=72, clip=r, colorspace=pymupdf.csGRAY)
+        a = np.frombuffer(pm.samples, np.uint8).reshape(pm.height, pm.width) < 200
+        k = r.height / pm.height; lim = int(hmax / k)
+        blank = a.sum(1) <= max(4, 0.012 * pm.width)
+        for y in range(min(lim, pm.height - 1), int(pm.height * 0.08), -1):
+            if blank[y] and blank[y - 1]: return r.y0 + y * k
+        return None
     def put(self, src, pno, rects, smax=1.15):
-        """한 원본 쪽의 띠들을 같은 배율로 이어 붙인다(들어가지 않으면 다음 쪽)."""
+        """한 원본 쪽의 띠들을 같은 배율로 이어 붙인다. 남은 칸이 넉넉한데 띠가 안 들어가면 글줄 사이에서 잘라 채운다."""
         if not rects: return
         x0 = min(r.x0 for r in rects); x1 = max(r.x1 for r in rects)
-        s = min(UW / (x1 - x0), smax); first = True
-        for r in rects:
-            r = pymupdf.Rect(x0, r.y0, x1, r.y1); ss = s
-            hh = 21 if (self.pend and first) else 0
+        s = min(UW / (x1 - x0), smax)
+        todo = [pymupdf.Rect(x0, r.y0, x1, r.y1) for r in rects]
+        while todo:
+            r = todo.pop(0); ss = s
+            hh = 21 if self.pend else 0
+            if self.pg is None: self.newpage()
+            room = self.room() - hh
+            if r.height * ss > room and room > 70:
+                y = self._cut(src, pno, r, room / ss)
+                if y and y - r.y0 > 20:
+                    todo.insert(0, pymupdf.Rect(r.x0, y, r.x1, r.y1)); r = pymupdf.Rect(r.x0, r.y0, r.x1, y)
             if r.height * ss + hh > A4.height - 2 * M: ss = (A4.height - 2 * M - hh) / r.height
-            if self.pg is None or (r.height * ss + hh > self.room() and not self.empty()): self.newpage()
+            if r.height * ss + hh > self.room() and not self.empty(): self.newpage()
             if self.pend: self._draw_head()
-            self._place(src, pno, r, ss); first = False
+            self._place(src, pno, r, ss)
     def put_onepage(self, groups, smax=1.1):
         """groups: [(src, pno, rects)] — 새 쪽 한 장에 모두 들어가도록 배율을 줄여 배치."""
         groups = [(d, p, rs) for d, p, rs in groups if rs]
