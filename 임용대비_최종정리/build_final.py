@@ -121,19 +121,50 @@ class Flow:
             if r.height * ss + hh > self.room() and not self.empty(): self.newpage()
             if self.pend: self._draw_head()
             self._place(src, pno, r, ss)
-    def put_onepage(self, groups, smax=1.1):
-        """groups: [(src, pno, rects)] — 새 쪽 한 장에 모두 들어가도록 배율을 줄여 배치."""
-        groups = [(d, p, rs) for d, p, rs in groups if rs]
-        if not self.empty() or self.pg is None: self.newpage()
-        sc = []
+    def put_onepage(self, groups, smax=1.1, cols=(1,)):
+        """groups: [(src, pno, rects)] — 새 쪽 한 장에 모두 들어가도록 배율을 줄여 배치.
+        cols에 2가 있으면 두 단 배치도 계산해서 글자가 더 크게 나오는 쪽을 고른다."""
+        items = []
         for d, p, rs in groups:
-            x0 = min(r.x0 for r in rs); x1 = max(r.x1 for r in rs); sc.append((x0, x1, min(UW / (x1 - x0), smax)))
-        need = sum(sum(r.height for r in rs) * s + 2 * len(rs) for (d, p, rs), (_, _, s) in zip(groups, sc)) + 6 * len(groups)
-        avail = A4.height - 2 * M - 21; f = min(1.0, avail / need)
+            if not rs: continue
+            x0 = min(r.x0 for r in rs); x1 = max(r.x1 for r in rs)
+            for r in rs: items.append((d, p, pymupdf.Rect(x0, r.y0, x1, r.y1)))
+        if not items: return
+        if not self.empty() or self.pg is None: self.newpage()
+        top = self.y + (15 if self.pend else 0) + 2; H = A4.height - M - top; G = 8
+        def layout(nc, f):
+            cw = (UW - G * (nc - 1)) / nc; c = 0; y = 0; pos = []
+            for d, p, r in items:
+                sc = min(cw / r.width, smax) * f; h = r.height * sc
+                if y + h > H and y > 0:
+                    c += 1; y = 0
+                    if c >= nc: return None
+                if h > H: return None
+                pos.append((d, p, r, c, y, sc, cw)); y += h + 2
+            return pos
+        best = None
+        for nc in cols:
+            lo, hi = 0.05, 1.0
+            if layout(nc, hi): f = hi
+            else:
+                for _ in range(25):
+                    mid = (lo + hi) / 2
+                    if layout(nc, mid): lo = mid
+                    else: hi = mid
+                f = lo
+            pos = layout(nc, f)
+            eff = min(x[5] * x[2].width for x in pos) / UW if pos else 0  # 배치된 폭 기준(글자 크기 대용)
+            eff = min(x[5] for x in pos) if pos else 0
+            if pos and (best is None or eff > best[0] * 1.0001): best = (eff, nc, pos)
         if self.pend: self._draw_head()
-        for (d, p, rs), (x0, x1, s) in zip(groups, sc):
-            for r in rs: self._place(d, p, pymupdf.Rect(x0, r.y0, x1, r.y1), s * f)
-            self.y += 4
+        _, nc, pos = best
+        for d, p, r, c, y, sc, cw in pos:
+            x = M + c * (cw + G) + (cw - r.width * sc) / 2
+            self.pg.show_pdf_page(pymupdf.Rect(x, top + y, x + r.width * sc, top + y + r.height * sc), d, p, clip=r)
+        if nc == 2:
+            xm = M + (UW - G * 1) / 2 + G / 2
+            self.pg.draw_line((xm, top), (xm, A4.height - M), width=0.4, color=(0.6, 0.6, 0.7))
+        self.y = A4.height - M
 
 # ─────────────────────────── 김지현 답안 위치
 def kjh_answers(w):
@@ -177,11 +208,12 @@ def build():
     for iid in Y26:
         a = starts[iid]; b = starts[order[order.index(iid) + 1]] if order.index(iid) + 1 < len(order) else len(fin)
         it = next(x for x in spec.ITEMS if x["id"] == iid)
-        F.head(f"2026 {iid[2:]}", it["topic"])
+        F.head(f"2026 {iid[2:]}", it["topic"]); grp = []
         for i in range(a, b):
             rs = bands(fin, i)
             if i == a: rs = rs[1:]  # 원래 머리줄은 새 머리줄로 대체
-            F.put(fin, i, rs)
+            grp.append((fin, i, rs))
+        F.put_onepage(grp, cols=(1, 2)); F.pg = None
     toc.append(("Ⅱ-1. 2026 기출 — 원문 · 모범 답안 · 2022 개정 원문 컷아웃", F.marks[n0:]))
     # Ⅱ-2 내 기출 정리본
     docs = {k: pymupdf.open(v) for k, v in MYNOTE.items()}; n0 = len(F.marks)
@@ -199,18 +231,20 @@ def build():
         ad, am = ans[w]
         for i, r in am.get(n, []):
             grp.append((ad, i, bands(ad, i, clip=r)))
-        F.put_onepage(grp)
+        F.put_onepage(grp, cols=(1, 2))
         F.pg = None  # 다음 문항은 새 쪽
     toc.append(("Ⅲ. 김지현 화교론 엄선 (문제 바로 아래 답안)", F.marks[n0:]))
     # Ⅳ 직접 만든 변형
     titles = {k: (t, pt) for g, xs in BP.GROUPS for k, t, why, pt in xs}; n0 = len(F.marks)
     for key in PSEL:
         probs, anss, srcname = BP.locate(key)
-        F.head(srcname, titles[key][0])
+        F.head(srcname, titles[key][0]); grp = []
         for d, idx, clip in probs:
-            F.put(d, idx, bands(d, idx, clip=clip, drop_bot=0.97 if clip is None else 1))
+            grp.append((d, idx, bands(d, idx, clip=clip, drop_bot=0.97 if clip is None else 1)))
         for d, idx in anss:
-            F.put(d, idx, bands(d, idx, drop_bot=0.97))
+            grp.append((d, idx, bands(d, idx, drop_bot=0.97)))
+        F.put_onepage(grp, cols=(1, 2))
+        F.pg = None
     toc.append(("Ⅳ. 직접 만든 변형 엄선 (문제 + 해설)", F.marks[n0:]))
     body = F.doc
     # 목차
