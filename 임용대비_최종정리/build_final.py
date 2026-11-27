@@ -197,7 +197,9 @@ def build():
     # Ⅰ 출제 예상
     p = pymupdf.open(HERE / "2027_화학임용_과교론_출제예상주제.pdf")
     F.head("Ⅰ", "2027 출제 예상 이론·모형")
-    for i in range(len(p)): F.put(p, i, bands(p, i))
+    for i in range(len(p)):
+        if i: F.head("Ⅰ", "2027 출제 예상 이론·모형 (계속)")
+        F.put_onepage([(p, i, bands(p, i))]); F.pg = None
     toc.append(("Ⅰ. 2027 출제 예상 이론·모형", F.marks[-1:]))
     # Ⅱ-1 2026 기출(최종 정리)
     fin = pymupdf.open(HERE / "2027_화학임용_과교론_최종정리.pdf"); n0 = len(F.marks)
@@ -218,7 +220,7 @@ def build():
     # Ⅱ-2 내 기출 정리본
     docs = {k: pymupdf.open(v) for k, v in MYNOTE.items()}; n0 = len(F.marks)
     for f, i, lab, why in NOTE:
-        F.head(lab, why); F.put(docs[f], i, bands(docs[f], i, drop_bot=0.955), smax=1.05)
+        F.head(lab, why); F.put_onepage([(docs[f], i, bands(docs[f], i, drop_bot=0.955))], smax=1.05); F.pg = None
     toc.append(("Ⅱ-2. 내 기출 정리본 (원본 그대로)", F.marks[n0:]))
     # Ⅲ 김지현
     items = json.load(open(KJH / "work" / "items.json"))
